@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes, Fragment  } from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
@@ -22,20 +22,22 @@ class Desktop extends Component {
 
     render() {        
         return (
-            <div>
-                <ProjectMenu/>
-                <Toolbar/>
-                <MdoSubsystem
-
-                />
-                <InfoButton/>
-                <QuestionButton/>
-
-                <LeftMenu/>
-            </div>
+            <Fragment>                
+                <Toolbar/>                
+            </Fragment>
         )
     }
 }
+
+/*<ProjectMenu/>
+<Toolbar/>
+<MdoSubsystem
+
+/>
+<InfoButton/>
+<QuestionButton/>
+
+<LeftMenu/>*/
 
 
 function mapStateToProps (state) {
