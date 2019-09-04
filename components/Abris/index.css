@@ -1,0 +1,180 @@
+
+.abris_overlay{
+    position: absolute;
+}
+
+.abris_overlay_background {
+    z-index: 20;
+    position: absolute;
+}
+
+.abris_overlay_background button{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 3px 3px 10px 0px #333;
+    width: 40px;
+    height: 40px;
+}
+.abris_overlay_background button:active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333;
+}
+
+.abris_overlay_mode{
+    z-index: 20;
+    position: absolute;
+    margin-left: 55px!important;
+}
+
+.abris_overlay_mode button{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 3px 3px 10px 0px #333;
+    width: 40px;
+    height: 40px;
+}
+
+.abris_overlay_mode_button_active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333!important;
+}
+
+.abris_overlay_mode button:active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333;
+}
+
+.abris_overlay_print{
+    z-index: 20;
+    position: absolute;
+    margin-left: 55px!important;
+}
+.abris_overlay_print button{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 3px 3px 10px 0px #333;
+    width: 40px;
+    height: 40px;
+}
+
+.abris_overlay_print button:active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333;
+}
+
+
+.abris_overlay_calibrate{
+    z-index: 20;
+    position: absolute;
+}
+
+.abris_overlay_calibrate button{
+    color: gray!important;
+    background-color: white;
+}
+.abris_overlay_calibrate button:hover{
+    color: white!important;
+}
+.abris_overlay_calibrate button:focus{
+    color: white!important;
+}
+
+
+.abris_overlay_creat{
+    z-index: 20;
+    position: absolute;
+    margin-left: 120px!important;
+}
+
+.abris_overlay_creat button{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 3px 3px 10px 0px #333;
+    width: 100px;
+    height: 40px;
+}
+
+.abris_overlay_creat button:active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333;
+}
+
+.abris_overlay_list{
+    z-index: 20;
+    position: absolute;
+    margin-left: 240px!important;
+}
+
+.abris_overlay_list button{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 3px 3px 10px 0px #333;
+    width: 180px;
+    height: 40px;
+}
+
+.abris_overlay_list button:active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333;
+}
+
+.abris_background_status{
+    border-style: none;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.property_toolbar_head > span{
+
+}
+
+.layot_background_white{
+    background: rgba(255, 255, 255,100)!important;
+}
+
+.abris_overlay_allactions{
+    z-index: 20;
+    position: absolute;
+    //position: absolute;
+    //margin-left: 170px!important;
+}
+
+
+.abris_overlay_allactions button{
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 3px 3px 10px 0px #333;
+    width: 40px;
+    height: 40px;
+}
+
+.abris_overlay_allactions button:active{
+    background-color: #FFFFFF!important;
+    box-shadow: inset 3px 3px 10px 0px #333;
+}
+
+.property_switch_head label {
+    text-decoration: underline;
+    color: #3498db!important;
+}
+
+.property_switch_head label:hover {
+    text-decoration: underline;
+    color: #3498db!important;
+}
+
+.google-map{
+    z-index: -2;
+    position: absolute;
+}
+
+
+
+
+
+

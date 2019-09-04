@@ -1,0 +1,25 @@
+{
+  "main": "index.html",
+  "name": "MDO",
+  "description": "MDO #5.2",
+  "version": "5.1.1",
+  "chromium-args": "--user-data-dir='data/'",
+  "window": {
+    "title": "АВЕРС:МДО #5",
+    "icon": "img/logo_avers_inform.png",
+    "toolbar": false,
+	"show": true,
+	"kiosk": false,
+    "width": 1360,
+    "height": 768,
+    "position": "center",
+    "min_width": 400,
+    "min_height": 200
+  },
+  "dependencies": {
+  },
+  "author": "ООО 'Аверс информ'",
+  "webkit": {
+    "plugin": true
+  }
+}
