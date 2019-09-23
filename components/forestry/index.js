@@ -69,8 +69,7 @@ export default class ComponentForestry extends Component {
 
 
     componentWillReceiveProps(nextProps) {        
-        common.datatableUpdate(this,nextProps)
-        common.formResize(this)        
+        common.datatableUpdate(this,nextProps)   
     }
 
     componentWillUnmount(){
@@ -82,6 +81,6 @@ export default class ComponentForestry extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
 }
