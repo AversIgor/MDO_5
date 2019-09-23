@@ -377,19 +377,14 @@ export default class Overlay extends Component {
    
 
     render() {
-
-        let left_menu   = $('[view_id="left_menu"]');
-        
+       
         return (
             <div
                 ref="root"
                 id="overlay"
                 style={                {
-                    top:    '50px',
-                    left:   left_menu.width(),
-                    height: (document.body.clientHeight-50)+"px",
-                    width:  (document.body.clientWidth-left_menu.width())+"px",
-                    position: 'absolute',
+                    height: "100%",
+                    width:  "100%",
                 }}
             >
                 {this.props.children}

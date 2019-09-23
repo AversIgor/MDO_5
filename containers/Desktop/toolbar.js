@@ -13,11 +13,12 @@ class Toolbar extends Component {
     }
 
     render() {
+
         return (
             <ComponentToolbar
                 openProject = {this.props.openProject}
                 newProject = {this.props.newProject}
-                saveProject = {this.props.saveProject}              
+                saveProject = {this.props.saveProject}       
             ComponentToolbar/>
         )
     }

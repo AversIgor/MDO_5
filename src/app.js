@@ -20,13 +20,14 @@ export const store = configureStore();
 
 
 render(<Provider store={store}>
-        <div>
-            <TypeORM />
-            <Desktop />
-            <Update />
-        </div>
-        </Provider>,
-    document.getElementById('box'))
+    <div style={{height:"100%",width:"100%"}}>
+        <TypeORM />
+        <Desktop />
+        <Update />
+    </div>
+    </Provider>,
+    document.getElementById('box')
+)
 
 
 if(NODE_ENV == 'node-webkit'){

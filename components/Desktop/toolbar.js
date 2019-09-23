@@ -21,9 +21,6 @@ export default class ComponentToolbar extends Component {
 
     componentDidMount(){
         var props = this.props;  
-        
-        console.log(this)
-
 
         const projectMenu = { 
             view:'menu', 
@@ -75,7 +72,9 @@ export default class ComponentToolbar extends Component {
         };
 
         const toolbar = { 
-            view: "toolbar", 
+            view: "toolbar",
+            id: "toolbar",
+            container:ReactDOM.findDOMNode(this.refs.root), 
             css:css_toolbar, 
             height:50,
             type: "clean",
@@ -93,7 +92,7 @@ export default class ComponentToolbar extends Component {
 
 
     shouldComponentUpdate(){
-        return false;
+        return true;
     }
 
     componentWillUnmount(){
@@ -103,6 +102,8 @@ export default class ComponentToolbar extends Component {
 
 
     render() {
-        return  null        
+        return (
+            <div ref="root"></div>
+          );        
     }
 }

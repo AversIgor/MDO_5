@@ -5,32 +5,23 @@ export default class ComponentLeftMenu extends Component {
 
     constructor(props) {
         super(props);
-    }
-
-    resize = () => {
-        let toolbar     = $('[view_id="toolbar"]');
-        $('#div_left_menu').css({
-            "height"            : $(window).height()-toolbar.height() + "px",
-        })
-        $$("container_left_menu").adjust()
+        this.ui = null;
     }
 
     componentDidMount(){
-        var self    = this
-
+        var self    = this;
         var menu = {
             container:ReactDOM.findDOMNode(this.refs.root),
             id:'container_left_menu',
             rows:[
             {
-                css: "menu",
-                padding: 2,
+                //css: "menu",
+                //padding: 2,
                 view: "form",
                 cols:[
-                    { view: "button", type: "icon", icon: "bars", inputWidth: 37, align: "left", css: "app_button menu",
+                    { view: "button", type: "icon", icon: "bars", inputWidth: 37, align: "left",
                         click: function(){
                             $$("left_menu").toggle()
-                            self.props.resize()
                         }
                     }
                 ]
@@ -38,36 +29,20 @@ export default class ComponentLeftMenu extends Component {
             {
                 view: "sidebar",
                 id:'left_menu',
-                data: [],
-                
+                data: self.props.data,  
+                autoheight:true,              
                 on:{
                     onAfterSelect: function(id){
-                        self.props.handlerItemClick(id);
+                        self.props.clickMenu(id);
                     }
                 }
             }
         ]}
-
         this.ui = window.webix.ui(menu);
-        window.webix.event(window, "resize", function(){
-            self.resize()
-        })
     }
 
-    
-
-
-    
-    componentWillReceiveProps(nextProps) {
-        $$("left_menu").clearAll();
-        $$("left_menu").define("data",nextProps.data);
-        $$('left_menu').refresh();
-        this.resize()
-        $$('left_menu').expand();
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return false;
+    componentDidUpdate(prevProps, prevState){
+        $$("container_left_menu").adjust() 
     }
 
     componentWillUnmount(){
@@ -77,16 +52,7 @@ export default class ComponentLeftMenu extends Component {
 
     render() {
         return(
-            <div ref="root"
-                 id="div_left_menu"
-                 style={{
-                    position: 'absolute',
-                    top: '50px',
-                    left: '0px',
-                    zIndex: '50'
-                  }}>
-
-            </div>
+            <div ref="root" style={{height: "100%"}}></div>
         )
     }
 }

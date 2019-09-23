@@ -139,8 +139,7 @@
 .abris_overlay_allactions{
     z-index: 20;
     position: absolute;
-    //position: absolute;
-    //margin-left: 170px!important;
+    margin-top: 25px !important;
 }
 
 

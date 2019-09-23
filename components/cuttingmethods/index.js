@@ -70,7 +70,6 @@ export default class Cuttingmethods extends Component {
 
     componentWillReceiveProps(nextProps) {
         common.datatableUpdate(this,nextProps)
-        common.formResize(this)
     }
 
     componentWillUnmount(){
@@ -82,6 +81,6 @@ export default class Cuttingmethods extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
 }
