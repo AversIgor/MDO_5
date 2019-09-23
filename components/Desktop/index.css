@@ -1,13 +1,7 @@
-.toolbar {
-    position: absolute;
-    top: 0px;
-    width: 100%!important;
-    left: 0px;
-    z-index: 40;
-    height: 50px!important;
-    background: #545454!important;
+.logo {
+    padding-top: 4px;
+    padding-left: 10px;
 }
-
 .mdo_subsystem_toolbar_button {
      position: absolute;
      top: 0px;

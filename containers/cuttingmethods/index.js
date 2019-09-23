@@ -9,18 +9,12 @@ class Cuttingmethods extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            resize: false
-        };
         this.showAllStatus = false
     }
 
     componentDidMount() {
         let self = this;
         this.props.fill_data({status:0});
-        webix.event(window, "resize", function(){
-            self.setState({resize: !self.state.resize})
-        })
     }
 
     handlerShowAllStatus = () => {

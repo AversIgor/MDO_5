@@ -7,32 +7,16 @@ export default class ComponentOldContent extends Component {
         super(props);
     }
 
-    setSize = () => {
-        let toolbar     = $('[view_id="toolbar"]');
-        let left_menu   = $('#div_left_menu');
-        let content     = $('#content');
-        content.css({
-            "left"           : left_menu.width() + "px",
-            "height"         : left_menu.height() + "px",
-            "width"          : (toolbar.width()-left_menu.width()) + "px",
-        })
-    }
 
     componentDidMount(){        
-        this.setSize();
         this.props.module.init()
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setSize();
     }
 
     shouldComponentUpdate(){
         return false;
     }
 
-
     render() {
-        return (<div id="content" className="content"></div>)
+        return (<div id="content" className="content" style={{"height":"100%","width":"100%",}}></div>)
     }
 }

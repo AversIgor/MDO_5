@@ -2,7 +2,7 @@ import React, { Component, PropTypes, Fragment } from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {creatLeftMenu,clickLeftMenu} from '../../actions/MdoSubsystem';
+
 import Forestry from '../forestry';
 import Subforestry from '../subforestry';
 import Tract from '../tract';
@@ -33,12 +33,8 @@ class MDOSubsystem extends Component {
         super(props);
     }
 
-    componentDidMount(){
-        this.props.creatLeftMenu(this.props.clickLeftMenu)
-    }
 
     render() {
-
         
         let FormContent = () => {
             switch(this.props.leftMenu.id) {
@@ -99,7 +95,7 @@ class MDOSubsystem extends Component {
             }
         };
 
-        return (<FormContent/>)
+        return (<div style={this.props.size}><FormContent/></div>)
     }
 }
 
@@ -111,8 +107,6 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        creatLeftMenu: bindActionCreators(creatLeftMenu, dispatch),
-        clickLeftMenu: bindActionCreators(clickLeftMenu, dispatch),
     }
 }
 
