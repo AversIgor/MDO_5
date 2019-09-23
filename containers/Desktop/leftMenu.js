@@ -18,6 +18,7 @@ class LeftMenu extends Component {
                     data = {this.props.data}
                     size = {this.props.size}
                     clickMenu={this.props.clickMenu}
+                    resizeLeftMenu={this.props.resizeLeftMenu}                    
                 />
         )
     }
