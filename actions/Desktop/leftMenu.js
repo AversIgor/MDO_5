@@ -1,13 +1,13 @@
 import {
-    LEFTMENU_RESIZE,
+    LEFTMENU_ID,
 } from '../../constants/decktop/leftMenu'
 
-export function resize(id) {
+export function clickMenu(id) {
 
     return (dispatch,getState) => {
         dispatch({
-            type: LEFTMENU_RESIZE,
-            resize: !getState().leftMenu.resize,
+            type: LEFTMENU_ID,
+            id: id,
         })
     }
 
