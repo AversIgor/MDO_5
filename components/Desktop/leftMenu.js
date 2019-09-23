@@ -15,13 +15,14 @@ export default class ComponentLeftMenu extends Component {
             id:'container_left_menu',
             rows:[
             {
-                //css: "menu",
-                //padding: 2,
+                css: "menu",
+                padding: 2,
                 view: "form",
                 cols:[
-                    { view: "button", type: "icon", icon: "bars", inputWidth: 37, align: "left",
+                    { view: "button", type: "icon", icon: "bars", inputWidth: 37, align: "left",css: "app_button menu",
                         click: function(){
                             $$("left_menu").toggle()
+                            self.props.resizeLeftMenu($$("left_menu").$width)
                         }
                     }
                 ]
@@ -39,10 +40,11 @@ export default class ComponentLeftMenu extends Component {
             }
         ]}
         this.ui = window.webix.ui(menu);
+        this.props.resizeLeftMenu($$("left_menu").$width)
     }
 
     componentDidUpdate(prevProps, prevState){
-        $$("container_left_menu").adjust() 
+        $$("container_left_menu").adjust()         
     }
 
     componentWillUnmount(){

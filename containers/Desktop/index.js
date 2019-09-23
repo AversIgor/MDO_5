@@ -16,36 +16,44 @@ class Desktop extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            resize: false
+            resize: false,
+            widthLeftMenu:0
         };
     }
 
 
+    resizeFromWindow = () => {
+        this.setState({resize: !this.state.resize})
+    }
+
+    resizeLeftMenu = (width) => {
+        this.setState({widthLeftMenu: width+2})//двойка из за границы компонента        
+    }
+
     componentDidMount() {
         let self = this;
         webix.event(window, "resize", function(){
-            self.setState({resize: !self.state.resize})
+            self.resizeFromWindow()
         })
     }
 
     render() {  
 
-        let sizeLefyMenu = {
+        let sizeLeftMenu = {
             height:($(window).height()-50)+"px",
-            width:"252px",
+            width:this.state.widthLeftMenu+"px",
         }
 
-        let positionMdoSubsystem = {
-            height:($(window).height()-50)+"px",
-            width:($(window).width()-252)+"px",
-            position:'absolute',
-            top:"52px",
-            left:"252px"
-        }
 
         let sizeMdoSubsystem = {
             height:($(window).height()-50)+"px",
-            width:($(window).width()-252)+"px",
+            width:($(window).width()-this.state.widthLeftMenu)+"px",
+        }
+
+        let positionMdoSubsystem = {...sizeMdoSubsystem,
+            position:'absolute',
+            top:"52px",
+            left:this.state.widthLeftMenu+"px",
         }
  
         return (
@@ -58,9 +66,10 @@ class Desktop extends Component {
                     <Toolbar/>
                 </div>
                 <div 
-                    style={sizeLefyMenu}>
+                    style={sizeLeftMenu}>
                     <LeftMenu
-                        size = {sizeLefyMenu}
+                        size = {sizeLeftMenu}
+                        resizeLeftMenu = {this.resizeLeftMenu}
                     />
                 </div>
                 <div 

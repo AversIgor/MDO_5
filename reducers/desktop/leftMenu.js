@@ -3,7 +3,7 @@ import {
 } from '../../constants/decktop/leftMenu'
 
 const initialState = {
-    data: [
+    data: [        
         {id: "mdo", icon: "calculator",value:"Расчет МДО"},
         {id: "abrisv2", icon: "map-o",value:"Абрис (схема)"},
         {id: "parameters_mdo",icon: "sliders", value:"Параметры расчета МДО", data:[

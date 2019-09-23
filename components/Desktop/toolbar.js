@@ -3,12 +3,20 @@ import ReactDOM from 'react-dom';
 
 import logo from '../../img/logo-w-big.png'
 
+
+const css_logo = {
+    'padding-top': '5px',
+}
+
+
 const css_toolbar = {
-    'background': '#545454ad!important'
+    'background': '#545454ad!important',
+    'border-width': '0px!important',
 }
 
 const css_projectMenu = {
     'padding-top': '10px',
+    'border-width': '0px!important',
     'background': '#54545400!important'
 }
 
@@ -21,6 +29,15 @@ export default class ComponentToolbar extends Component {
 
     componentDidMount(){
         var props = this.props;  
+
+        const questionToolbarButton = {
+            view:"icon",
+            id: "question_toolbar_button",
+            icon: "question-circle-o",
+            height:50,
+            popup: "questionPopup",
+        }
+
 
         const projectMenu = { 
             view:'menu', 
@@ -79,9 +96,10 @@ export default class ComponentToolbar extends Component {
             height:50,
             type: "clean",
             elements: [
-                {view: "label", label: "<img class='logo' src="+logo+" />", width:180},
+                {view: "label", label: "<img src="+logo+" />", width:180, css:css_logo},
                 projectMenu,
                 {},
+                questionToolbarButton,
                 { view: "button", type: "icon", width: 45, css: "app_button", icon: "mdi mdi-comment",  badge:4},
                 { view: "button", type: "icon", width: 45, css: "app_button", icon: "mdi mdi-bell",  badge:10}
             ]
