@@ -1,31 +1,9 @@
-import {
-    QUESTIONBATTON_FILL_SUCCESS,
-} from '../../constants/decktop/questionButton'
-
 import {ABOUT} from "../../js/about";
 import {MASTER} from "../../js/master";
 import {ALLCONSTANT} from "../../js/allconstant";
 import {INFOMSGS} from "../../js/infomsg";
 
-export function creatRightMenu() {
-
-    var data =[
-        {id: "about", value: "О программе/лицензия",},
-        {id: "site", value: "Сайт программы",},
-        {id: "question", value: "Задать вопрос",},
-        {id: "infomsg", value: "Информационные сообщения",},
-    ];
-
-    return (dispatch,getState) => {
-        dispatch({
-            type: QUESTIONBATTON_FILL_SUCCESS,
-            data: data,
-        })
-    }
-
-}
-
-export function clickMenu(id) {
+export function clickQuestionMenu(id) {
 
     if(id == "about"){
         ABOUT.init();
@@ -55,7 +33,6 @@ export function clickMenu(id) {
         INFOMSGS.init(true);
     }
 
-    return (dispatch,getState) => {
+    return (dispatch,getState) => {}
 
-    }
 }

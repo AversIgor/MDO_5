@@ -28,15 +28,37 @@ export default class ComponentToolbar extends Component {
     }
 
     componentDidMount(){
-        var props = this.props;  
+       var props = this.props;  
 
-        const questionToolbarButton = {
-            view:"icon",
-            id: "question_toolbar_button",
-            icon: "question-circle-o",
-            height:50,
-            popup: "questionPopup",
-        }
+       const questionMenu = { 
+            view:'menu', 
+            id: 'questionMenu', 
+            css: css_projectMenu, 
+            type:{
+                subsign:false
+            }, 
+            width:48,
+            align:"right",
+            submenuConfig:{
+                width:240,
+            },
+            data:[
+                {
+                    id: 'actions', icon: "question-circle-o", value:'',width:25, height:50,$css:{ "color": "#ffffff!important;" },
+                    submenu:[
+                        {id: "about", value: "О программе/лицензия",},
+                        {id: "site",  value: "Сайт программы"},
+                        {id: "question", value: "Задать вопрос",},
+                        {id: "infomsg", value: "Информационные сообщения",},
+                    ]
+                }
+            ],
+            on:{
+                onMenuItemClick:function(id){
+                    props.clickQuestionMenu(id)                    
+                }
+            },
+        };
 
 
         const projectMenu = { 
@@ -99,9 +121,7 @@ export default class ComponentToolbar extends Component {
                 {view: "label", label: "<img src="+logo+" />", width:180, css:css_logo},
                 projectMenu,
                 {},
-                questionToolbarButton,
-                { view: "button", type: "icon", width: 45, css: "app_button", icon: "mdi mdi-comment",  badge:4},
-                { view: "button", type: "icon", width: 45, css: "app_button", icon: "mdi mdi-bell",  badge:10}
+                questionMenu,
             ]
         }
 

@@ -3,7 +3,6 @@ import typeORM from './TypeORM'
 
 //Рабочий стол
 import infoButton from './desktop/infoButton'
-import questionButton from './desktop/questionButton'
 import leftMenu from './desktop/leftMenu'
 
 //Подсистемы
@@ -33,7 +32,6 @@ export default combineReducers({
     typeORM:typeORM,
     update:update,
     infoButton:infoButton,
-    questionButton:questionButton,
     leftMenu:leftMenu,
     polygons:polygons,
     background:background,

@@ -3,8 +3,6 @@ import * as APP from "../../src/app";
 import * as MDO from "../../js/mdo";
 import {BD} from "../../js/dao";
 import {ENUMERATIONS} from "../../js/enumerations";
-//import * as DECLARATION from "../../js/declaration/declaration";
-//import * as USAGEREPORT from "../../js/usagereport/usagereport";
 import {RECOUNTLAYOUT} from "../../js/recountlayout";
 
 

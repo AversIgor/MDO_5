@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 
 import Toolbar from "./toolbar";
 import InfoButton from "./infoButton";
-import QuestionButton from "./questionButton";
 import LeftMenu from "./leftMenu";
 
 import MdoSubsystem from "../MdoSubsystem";
@@ -83,16 +82,8 @@ class Desktop extends Component {
     }
 }
 
+//<InfoButton/>
 
-/*<ProjectMenu/>
-<Toolbar/>
-<MdoSubsystem
-
-/>
-<InfoButton/>
-<QuestionButton/>
-
-<LeftMenu/>*/
 
 
 function mapStateToProps (state) {
