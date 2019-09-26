@@ -5,6 +5,8 @@ import {
 } from '../../constants/TypeORM'
 import * as defaultMigration from "./migrations/Migration_5_1_0_0";
 import {Migration_5_2_0_4} from "./migrations/Migration_5_2_0_4";
+import {Migration_5_2_1_0} from "./migrations/Migration_5_2_1_0";
+
 import {GlobalParameters} from "./entity/globalParameters";
 import {Methodscleanings} from "./entity/methodscleanings";
 import {Styles} from "./entity/styles";
@@ -17,6 +19,7 @@ import {Publications} from "./entity/publications";
 import {Tables} from "./entity/tables";
 import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
+import {Constants} from "./entity/constants";
 
 
 import {fill_data} from '../../actions/Abris/settings';
@@ -46,7 +49,8 @@ export function init() {
                 Publications,
                 Tables,
                 Breed,
-                Abrisprintforms
+                Abrisprintforms,
+                Constants,
             ]
     }
 
@@ -77,6 +81,10 @@ export function init() {
                 await Migration_5_2_0_4(options);
             }
 
+            if(isNewVersions(oldVersion,"5.2.1.0")){
+                await Migration_5_2_1_0(options);
+            }
+
             //Блок конвертации отдельных сборок - конец
 
             //Блок конвертации для всех сборок
@@ -93,6 +101,7 @@ export function init() {
                 await defaultMigration.creatCuttingmethods(options);
                 await defaultMigration.publicationsConvert(options);
                 await defaultMigration.breedsConvert(options);
+                await defaultMigration.constantsConvert(options);
             }
             //Блок конвертации для всех сборок - конец           
             
@@ -102,10 +111,7 @@ export function init() {
                 let connection = await createConnection(options);
                 let repository = getRepository(GlobalParameters);
                 await repository.updateById(1,{versionDB:newVersion});
-
-
-                await updatePredefinedAbrisPrintForms();//обновление печатных форм
-                
+                await updatePredefinedAbrisPrintForms();//обновление печатных форм                
                 await connection.close();
             }
             return isUpdate;

@@ -11,7 +11,7 @@ class ProjectMenu extends Component {
         super(props);
     }
 
-    render() {
+    render() {        
         return (
             <ComponentProjectMenu
                 openProject = {this.props.openProject}
@@ -24,7 +24,7 @@ class ProjectMenu extends Component {
 
 function mapStateToProps (state) {
     return {
-
+        
     }
 }
 

@@ -133,6 +133,10 @@ export default class ComponentToolbar extends Component {
         return true;
     }
 
+    componentDidUpdate(prevProps, prevState){
+        this.toolbar.adjust()         
+    }
+
     componentWillUnmount(){
         this.toolbar.destructor();
         this.toolbar = null;

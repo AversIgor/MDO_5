@@ -33,7 +33,7 @@ import * as FileSaver from "file-saver";
 
 //БАЗА ДАННЫХ
 export var BD = {	
-	curentVersion: '5.2.0.10',
+	curentVersion: '5.2.1.4',
 
 	db: {},
 	createTextQuery: function(){

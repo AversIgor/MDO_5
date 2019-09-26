@@ -366,37 +366,39 @@ class Plot {
         }
 
         if(this.typeangle == "Координаты") {
-            let start_polygon   = undefined;
-            for (let i = 0; i < this.contour.length; i++) {
-                //пересчет в азимуты из gps
-                start_polygon = this.contour[0]; 
-                let curentRow = this.contour[i]; 
-                if((curentRow.gpsX == 0) || (curentRow.gpsY == 0)) {
-                    continue
+            if(gps_binding){
+                let start_polygon   = undefined;
+                for (let i = 0; i < this.contour.length; i++) {
+                    //пересчет в азимуты из gps
+                    start_polygon = this.contour[0]; 
+                    let curentRow = this.contour[i]; 
+                    if((curentRow.gpsX == 0) || (curentRow.gpsY == 0)) {
+                        continue
+                    }
+                    let x_y = coord_from_gps({
+                        x:curentRow.gpsX,
+                        y:curentRow.gpsY
+                    },gps_binding)
+                    curentRow.x = x_y.x
+                    curentRow.y = x_y.y               
                 }
-                let x_y = coord_from_gps({
-                    x:curentRow.gpsX,
-                    y:curentRow.gpsY
-                },gps_binding)
-                curentRow.x = x_y.x
-                curentRow.y = x_y.y               
-            }
-            for (let i = 0; i < this.contour.length; i++) {
-                //пересчет в азимуты из координат                               
-                let curentRow = this.contour[i]; 
-                if (curentRow.start_polygon) {
-                    start_polygon = curentRow
+                for (let i = 0; i < this.contour.length; i++) {
+                    //пересчет в азимуты из координат                               
+                    let curentRow = this.contour[i]; 
+                    if (curentRow.start_polygon) {
+                        start_polygon = curentRow
+                    }
+                    if (i != this.contour.length-1){
+                        let next = this.contour[i + 1];
+                        curentRow.xc = next.x
+                        curentRow.yc = next.y
+                    }else{                    
+                        curentRow.xc = start_polygon.x
+                        curentRow.yc = start_polygon.y
+                    }
+                    this.edit_Rhumb_Azimut(curentRow,magneticdeclination)                
                 }
-                if (i != this.contour.length-1){
-                    let next = this.contour[i + 1];
-                    curentRow.xc = next.x
-                    curentRow.yc = next.y
-                }else{                    
-                    curentRow.xc = start_polygon.x
-                    curentRow.yc = start_polygon.y
-                }
-                this.edit_Rhumb_Azimut(curentRow,magneticdeclination)                
-            }
+            }            
         }
         this.contourResidual()
         this.contourRecount()

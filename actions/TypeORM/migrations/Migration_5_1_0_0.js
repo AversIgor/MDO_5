@@ -11,6 +11,7 @@ import {Breed} from "../entity/breed";
 import {defaultStyle} from "../../reference/styles";
 import {defaultSettings} from "../../Abris/settings";
 import {defaultCuttingMethods} from "../../reference/cuttingmethods";
+import {Constants} from "../entity/constants";
 
 
 import {store} from "../../../src/app";
@@ -318,6 +319,34 @@ export function creatCuttingmethods(conectionOption) {
         }
         await connection.close();
     }
+    return asyncProcess();
+}
+
+export function constantsConvert(conectionOption) {
+
+    const asyncProcess = async () => {
+        conectionOption.synchronize = false;
+        let connection      = await createConnection(conectionOption);
+        let entityManager   = getManager();
+
+        let result = await entityManager.query('SELECT count(*) FROM sqlite_master WHERE type="table" AND name="constants"');
+        if(result[0]['count(*)']){
+            let repository      = getRepository(Constants);
+            let rows = await repository.find();
+            if(!rows.length){
+                const rawData = await entityManager.query('SELECT * FROM constants');
+                for (var i = 0; i < rawData.length; i++) {
+                    let newObject   = repository.create({...rawData[i]});
+                    newObject.id = rawData[i].recid;
+                    newObject.contacts = JSON.parse(rawData[i].contacts);
+                    await repository.save(newObject);
+                }
+            }
+        }
+
+        await connection.close();
+    }
+
     return asyncProcess();
 }
 

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import typeORM from './TypeORM'
 
 //Рабочий стол
-import infoButton from './desktop/infoButton'
+import toolbar from './desktop/toolbar'
 import leftMenu from './desktop/leftMenu'
 
 //Подсистемы
@@ -31,7 +31,7 @@ import update from './update'
 export default combineReducers({
     typeORM:typeORM,
     update:update,
-    infoButton:infoButton,
+    toolbar:toolbar,
     leftMenu:leftMenu,
     polygons:polygons,
     background:background,
