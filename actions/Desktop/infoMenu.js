@@ -1,6 +1,6 @@
 import {
     INFOBUTTON_SET_BADGE
-} from '../../constants/decktop/infoButton'
+} from '../../constants/decktop/toolbar'
 
 
 export function statusBadge() {

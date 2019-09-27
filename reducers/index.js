@@ -23,6 +23,7 @@ import abrisprintforms from './reference/abrisprintforms'
 
 //настройки
 import abris_settings from './settings/abris_settings'
+import contactinformation from './settings/contactinformation'
 
 //обновление
 
@@ -46,6 +47,7 @@ export default combineReducers({
     breed:breed,
     abris_settings:abris_settings,
     abrisprintforms:abrisprintforms,
+    contactinformation:contactinformation,
 })
 
 

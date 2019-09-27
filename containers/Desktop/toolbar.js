@@ -3,7 +3,7 @@ import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
 import {openProject,newProject,saveProject} from '../../actions/Desktop/projectMeny';
-import {clickQuestionMenu} from '../../actions/Desktop/questionButton';
+import {clickQuestionMenu} from '../../actions/Desktop/questionMenu';
 
 import ComponentToolbar from "../../components/Desktop/toolbar";
 import ComponentAbout from "../../components/Desktop/about";

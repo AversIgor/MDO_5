@@ -1,5 +1,5 @@
 import {createConnection, getManager, TableColumn} from "typeorm";
-import {Constants} from "../entity/constants"
+import {Contactinformation} from "../entity/contactinformation"
 
 export function Migration_5_2_1_0(conectionOption) {
     const asyncProcess = async (conectionOption) => {
@@ -7,7 +7,7 @@ export function Migration_5_2_1_0(conectionOption) {
         newOption.synchronize = true;        
         try {
             newOption.entities = [
-                Constants
+                Contactinformation
             ]
             let connection      = await createConnection(newOption);
             await connection.close();

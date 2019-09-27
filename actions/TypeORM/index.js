@@ -19,7 +19,7 @@ import {Publications} from "./entity/publications";
 import {Tables} from "./entity/tables";
 import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
-import {Constants} from "./entity/constants";
+import {Contactinformation} from "./entity/contactinformation";
 
 
 import {fill_data} from '../../actions/Abris/settings';
@@ -50,7 +50,7 @@ export function init() {
                 Tables,
                 Breed,
                 Abrisprintforms,
-                Constants,
+                Contactinformation,
             ]
     }
 
@@ -81,7 +81,7 @@ export function init() {
                 await Migration_5_2_0_4(options);
             }
 
-            if(isNewVersions(oldVersion,"5.2.1.0")){
+            if(isNewVersions(oldVersion,"5.2.1.6")){
                 await Migration_5_2_1_0(options);
             }
 
@@ -101,7 +101,7 @@ export function init() {
                 await defaultMigration.creatCuttingmethods(options);
                 await defaultMigration.publicationsConvert(options);
                 await defaultMigration.breedsConvert(options);
-                await defaultMigration.constantsConvert(options);
+                await defaultMigration.ContactinformationConvert(options);
             }
             //Блок конвертации для всех сборок - конец           
             
