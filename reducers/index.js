@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import typeORM from './TypeORM'
 
 //Рабочий стол
-import infoButton from './desktop/infoButton'
+import toolbar from './desktop/toolbar'
 import leftMenu from './desktop/leftMenu'
 
 //Подсистемы
@@ -23,6 +23,7 @@ import abrisprintforms from './reference/abrisprintforms'
 
 //настройки
 import abris_settings from './settings/abris_settings'
+import contactinformation from './settings/contactinformation'
 
 //обновление
 
@@ -31,7 +32,7 @@ import update from './update'
 export default combineReducers({
     typeORM:typeORM,
     update:update,
-    infoButton:infoButton,
+    toolbar:toolbar,
     leftMenu:leftMenu,
     polygons:polygons,
     background:background,
@@ -46,6 +47,7 @@ export default combineReducers({
     breed:breed,
     abris_settings:abris_settings,
     abrisprintforms:abrisprintforms,
+    contactinformation:contactinformation,
 })
 
 

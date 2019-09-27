@@ -20,8 +20,6 @@ export function newProject() {
         APP.confirmSave(function () {
             MDO.newMDO();
             MDO.objectMDO.startMDO();
-            //DECLARATION.newDECLARATION();
-            //DECLARATION.objectDECLARATION.start();
             RECOUNTLAYOUT.whenOpening();
             dispatch(background.reset());
             dispatch(objects.reset());

@@ -14,6 +14,7 @@ import Abris from '../Abris';
 import Styles from '../styles';
 import AbrisSettings from '../AbrisSettings';
 import Abrisprintforms from '../abrisprintforms';
+import Contactinformation from '../Contactinformation';
 
 
 import Oldcontent from '../Desktop/oldcontent';
@@ -82,10 +83,8 @@ class MDOSubsystem extends Component {
                     return <Oldcontent
                         module = {COEFFICIENTSDAMAGE}
                     />;
-                case "constants":
-                    return <Oldcontent
-                        module = {CONSTANTS}
-                    />;
+                case "contactinformation":
+                    return <Contactinformation/>;
                 case "master":
                     return <Oldcontent
                         module = {MASTER}

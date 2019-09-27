@@ -30,6 +30,7 @@ const initialState = {
             { id: "methodscleanings", value: "Способы очистки"},
         ]},
         {id: "servise",icon: "cogs", value:"Сервис", data:[
+            {id: "contactinformation", value:"Контактная информация"},
             {id: "master", value:"Стартовый помощник"},
         ]},
     ],

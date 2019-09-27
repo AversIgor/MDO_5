@@ -1,3 +1,7 @@
+import {
+    TOOLBAR_QUESTIONMENU_ID
+} from '../../constants/decktop/toolbar'
+
 import {ABOUT} from "../../js/about";
 import {MASTER} from "../../js/master";
 import {ALLCONSTANT} from "../../js/allconstant";
@@ -5,9 +9,6 @@ import {INFOMSGS} from "../../js/infomsg";
 
 export function clickQuestionMenu(id) {
 
-    if(id == "about"){
-        ABOUT.init();
-    }
     if(id == "site"){
         if(NODE_ENV == 'node-webkit'){
             require('child_process').exec('explorer http://mdoles.ru/');
@@ -33,6 +34,12 @@ export function clickQuestionMenu(id) {
         INFOMSGS.init(true);
     }
 
-    return (dispatch,getState) => {}
+    return (dispatch,getState) => {
+        dispatch({
+            type: TOOLBAR_QUESTIONMENU_ID,
+            id: id,
+        })
+    }
+
 
 }

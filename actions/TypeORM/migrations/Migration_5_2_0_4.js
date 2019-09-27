@@ -114,6 +114,7 @@ export function Migration_5_2_0_4(conectionOption) {
 
         }
 
+
     }
     return asyncProcess(conectionOption);
 }

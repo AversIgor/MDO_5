@@ -62,7 +62,9 @@ class Desktop extends Component {
                             height:"50px",
                             width:"100%",
                         }}>
-                    <Toolbar/>
+                    <Toolbar
+                        resize={this.state.resize}
+                    />
                 </div>
                 <div 
                     style={sizeLeftMenu}>
