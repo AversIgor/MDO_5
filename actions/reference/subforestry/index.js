@@ -10,14 +10,26 @@ import {getRepository} from "typeorm";
 import {Subforestry} from "../../TypeORM/entity/subforestry";
 import {Forestry} from "../../TypeORM/entity/forestry";
 
-export function getData(getState,repository) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
-        let where = getState().subforestry.where;
+         if(!where){
+            where = getState().subforestry.where;
+        }
         let data =  await repository.find({
-            relations: ["forestry","tracts"],
+            relations: ["forestry"],
             where: where,
         });
-        return data
+        let options = [];
+        for (let i = 0; i < data.length; i++) {
+            options.push({
+                id:data[i].id,
+                value:data[i].name
+            })
+        }
+        return {
+            data:data,
+            options:options
+        }
     }
     return asyncProcess()
 }
@@ -26,13 +38,11 @@ export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository = getRepository(Subforestry);
-            let data = await repository.find({
-                relations: ["forestry","tracts"],
-                where: where,
-            });
+            let data = await getData(getState,repository,where);
             dispatch({
                 type: SUBFORESTRY_FILL_SUCCESS,
-                data: data,
+                data: data.data,
+                options: data.options,
                 where: where,
             })
         }
@@ -49,7 +59,8 @@ export function add() {
             let data = await getData(getState,repository);
             dispatch({
                 type: SUBFORESTRY_ADD,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -68,7 +79,8 @@ export function del() {
             data = await getData(getState,repository);
             dispatch({
                 type: SUBFORESTRY_DEL,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -101,7 +113,8 @@ export function edit(obj,values) {
             dispatch({
                 type: SUBFORESTRY_EDIT,
                 currentId: obj.id,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()

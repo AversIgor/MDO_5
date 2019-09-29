@@ -51,7 +51,7 @@ class Desktop extends Component {
 
         let positionMdoSubsystem = {...sizeMdoSubsystem,
             position:'absolute',
-            top:"52px",
+            top:"50px",
             left:this.state.widthLeftMenu+"px",
         }
  

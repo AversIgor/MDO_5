@@ -9,6 +9,7 @@ import {
 const initialState = {
     currentId:undefined,
     data:[],
+    options:[],
     sort: {
         by:'id',
         dir:'asc',
@@ -24,22 +25,26 @@ export default function subforestry(state = initialState, action) {
         case SUBFORESTRY_FILL_SUCCESS:
             return { ...state,
                 data: action.data,
+                options:action.options,
                 where: action.where
             }
         case SUBFORESTRY_ADD:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
+                options:action.options,
             }
         case SUBFORESTRY_DEL:
             return { ...state,
                 currentId: undefined,
                 data: action.data,
+                options:action.options,
             }
         case SUBFORESTRY_EDIT:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
+                options:action.options,
             }
         case SUBFORESTRY_SORT:
             return { ...state,

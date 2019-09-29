@@ -9,14 +9,26 @@ import {getRepository} from "typeorm";
 import {Tract} from "../../TypeORM/entity/tract";
 import {Subforestry} from "../../TypeORM/entity/subforestry";
 
-export function getData(getState,repository) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
-        let where = getState().tract.where;
+        if(!where){
+            where = getState().subforestry.where;
+        }
         let data =  await repository.find({
             relations: ["subforestry"],
             where: where,
         });
-        return data
+        let options = [];
+        for (let i = 0; i < data.length; i++) {
+            options.push({
+                id:data[i].id,
+                value:data[i].name
+            })
+        }
+        return {
+            data:data,
+            options:options
+        }
     }
     return asyncProcess()
 }
@@ -25,13 +37,11 @@ export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository = getRepository(Tract);
-            let data = await repository.find({
-                relations: ["subforestry"],
-                where: where,
-            });
+            let data = await getData(getState,repository,where);
             dispatch({
                 type: TRACT_FILL_SUCCESS,
-                data: data,
+                data: data.data,
+                options: data.options,
                 where: where,
             })
         }
@@ -48,7 +58,8 @@ export function add() {
             let data = await getData(getState,repository);
             dispatch({
                 type: TRACT_ADD,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -67,7 +78,8 @@ export function del(ids) {
             data = await getData(getState,repository);
             dispatch({
                 type: TRACT_DEL,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -101,7 +113,8 @@ export function edit(obj,values) {
             dispatch({
                 type: TRACT_EDIT,
                 currentId: obj.id,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()

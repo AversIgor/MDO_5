@@ -301,7 +301,7 @@ PARAMETERS.beforeOpening = function () {
 		}
 		BD.fillList(TYPESRATES, PARAMETERS.typesrates, ['recid', 'name', 'orderroundingrates', 'predefined', 'coefficientsindexing'],PARAMETERS.whenOpening);
 	}
-	asyncProcess(methodscleanings,forestry);
+	//asyncProcess(methodscleanings,forestry);
 
 }  
 

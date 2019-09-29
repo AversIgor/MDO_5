@@ -2,7 +2,6 @@ import {
     TOOLBAR_QUESTIONMENU_ID
 } from '../../constants/decktop/toolbar'
 
-import {ABOUT} from "../../js/about";
 import {MASTER} from "../../js/master";
 import {ALLCONSTANT} from "../../js/allconstant";
 import {INFOMSGS} from "../../js/infomsg";

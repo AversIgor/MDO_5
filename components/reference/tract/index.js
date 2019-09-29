@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
-export default class ComponentSubforestry extends Component {
+export default class ComponentTract extends Component {
 
     constructor(props) {
         super(props);
@@ -10,38 +10,28 @@ export default class ComponentSubforestry extends Component {
             selected:   {},
         };
         this.sort   = props.sort;
-        this.id     = 'subforestry';
+        this.id     = 'tract';
         this.ui     = []
         this.menu   = [
             {id: "showDel", value: "Показать (скрыть) помеченные на удаление"},
             {id: "deleteComplite", value: "Удалить помеченные на удаление"},
         ]
         this.rules   = {
-            "forestry": webix.rules.isNotEmpty,
+            "subforestry": webix.rules.isNotEmpty,
         }
-        this.search     = ["forestry","name","fullname"]
+        this.search     = ["subforestry","name","fullname"]
         this.editable = true;
         this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
-        this.forestry   = [];
         this.columns    = []
     }
 
     updateColumns = (props) => {
-        this.forestry.splice(0, this.forestry.length);
-        for (let i = 0; i < props.forestry.length; i++) {
-            let item = {
-                id:props.forestry[i].id,
-                value:props.forestry[i].name
-            }
-            this.forestry.push(item)
-        }
-
         this.columns =  [
             common.datatableFieldID(),
-            { id:"forestry",	header:"Лесничество", options:this.forestry, editor:"select", fillspace:true,
+            { id:"subforestry",	header:"Участковое лесничество", options:props.subforestry, editor:"select", fillspace:true,
                 template:function(obj){
-                    if(typeof(obj.forestry) == "object"){
-                        return obj.forestry.name;
+                    if(typeof(obj.subforestry) == "object"){
+                        return obj.subforestry.name;
                     }else {
                         return '';
                     }
@@ -51,7 +41,6 @@ export default class ComponentSubforestry extends Component {
             { id:"fullname",header:"Полное наименование",  editor:"text", sort:"string", fillspace:true},
             { id:"cod",header:"Идентификатор",  editor:"text", sort:"string", fillspace:true},
         ]
-
     }
 
     componentDidMount(){
@@ -71,7 +60,7 @@ export default class ComponentSubforestry extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Участковые лесничества"),
+                common.header("Урочища"),
                 {
                     padding:10,
                     borderless:true,
@@ -87,13 +76,16 @@ export default class ComponentSubforestry extends Component {
         this.ui.push(window.webix.ui(common.settingsMenu(this)))
 
         common.searchBind(this)
+
+        this.updateColumns(this.props)
+        common.datatableUpdate(this,this.props)
+        common.datatableRefreshColumns(this)
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {        
         this.updateColumns(nextProps)
         common.datatableUpdate(this,nextProps)
         common.datatableRefreshColumns(this)
-        common.formResize(this)
     }
 
     componentWillUnmount(){
@@ -105,7 +97,7 @@ export default class ComponentSubforestry extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
 
 }
