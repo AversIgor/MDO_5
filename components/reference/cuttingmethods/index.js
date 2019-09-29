@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
 export default class Cuttingmethods extends Component {
 
@@ -20,8 +20,8 @@ export default class Cuttingmethods extends Component {
             common.datatableFieldID(),
             { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
             { id:"cod",header:"Идентификатор",  editor:"text", sort:"string", fillspace:true},
-            { id:"formCutting", header:["Форма рубки", {content:"selectFilter"}],  editor:"select", options:props.getFormCutting(), fillspace:true},
-            { id:"groupCutting", header:["Группа рубки", {content:"selectFilter"}],  editor:"select", options:props.getGroupCutting(), fillspace:true}
+            { id:"formCutting", header:["Форма рубки", {content:"selectFilter"}],  editor:"select", options:props.formCutting, fillspace:true},
+            { id:"groupCutting", header:["Группа рубки", {content:"selectFilter"}],  editor:"select", options:props.groupCutting, fillspace:true}
         ]
         this.rules   = {
             "name": webix.rules.isNotEmpty,

@@ -8,22 +8,6 @@ import {
 import {getRepository} from "typeorm";
 import {Cuttingmethods} from "../../TypeORM/entity/cuttingmethods";
 
-export function getFormCutting() {
-    return [
-        {id:1,value:'Сплошная рубка',text:'Сплошная рубка'},
-        {id:2,value:'Выборочная рубка',text:'Выборочная рубка'}
-    ]
-}
-
-export function getGroupCutting() {
-    return [
-        {id:1,value:'Рубки в спелых насаждениях',text:'Рубки в спелых насаждениях'},
-        {id:2,value:'Рубки ухода за насаждениями',text:'Рубки ухода за насаждениями'},
-        {id:3,value:'Санитарные рубки',text:'Санитарные рубки'},
-        {id:4,value:'Прочие рубки',text:'Прочие рубки'}
-    ]
-}
-
 export function defaultCuttingMethods() {
 
     let struct = [
@@ -54,13 +38,25 @@ export function defaultCuttingMethods() {
 }
 
 
-export function getData(getState,repository) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
-        let where = getState().cuttingmethods.where;
+        if(!where){
+            where = getState().forestry.where;
+        }
         let data =  await repository.find({
             where: where,
         });
-        return data
+        let options = [];
+            for (let i = 0; i < data.length; i++) {
+                options.push({
+                    id:data[i].id,
+                    value:data[i].name
+                })
+            }
+        return {
+            data:data,
+            options:options
+        }
     }
     return asyncProcess()
 }
@@ -69,12 +65,11 @@ export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository = getRepository(Cuttingmethods);
-            let data = await repository.find({
-                where: where,
-            });
+            let data = await getData(getState,repository,where);
             dispatch({
                 type: CUTTINGMETHODS_FILL_SUCCESS,
-                data: data,
+                data: data.data,
+                options: data.options,
                 where: where
             })
         }
@@ -91,7 +86,8 @@ export function add() {
             let data = await getData(getState,repository);
             dispatch({
                 type: CUTTINGMETHODS_ADD,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -110,7 +106,8 @@ export function del(ids) {
             data = await getData(getState,repository);
             dispatch({
                 type: CUTTINGMETHODS_DEL,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -131,7 +128,8 @@ export function edit(obj,values) {
             dispatch({
                 type: CUTTINGMETHODS_EDIT,
                 currentId: obj.id,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()

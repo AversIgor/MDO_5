@@ -7,7 +7,7 @@ import Forestry from '../reference/forestry';
 import Subforestry from '../reference/subforestry';
 import Tract from '../reference/tract';
 import Methodscleanings from '../reference/methodscleanings';
-import Cuttingmethods from '../cuttingmethods';
+import Cuttingmethods from '../reference/cuttingmethods';
 import Publication from '../publication';
 import Breed from '../breed';
 import Abris from '../Abris';
@@ -23,10 +23,7 @@ import {TYPESRATES} from "../../js/typesrates";
 import {COEFFICIENTSFORMCUTTING} from "../../js/coefficientsformcutting";
 import {COEFFICIENTSRANGESLIQUIDATION} from "../../js/coefficientsrangesliquidation";
 import {COEFFICIENTSDAMAGE} from "../../js/coefficientsdamage";
-import {CONSTANTS} from "../../js/constants";
 import {MASTER} from "../../js/master";
-
-
 
 class MDOSubsystem extends Component {
 

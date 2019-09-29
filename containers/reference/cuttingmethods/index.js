@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentCuttingmethods from "../../components/cuttingmethods";
-import {fill_data,add,del,edit,sorting,getFormCutting,getGroupCutting} from "../../actions/reference/cuttingmethods";
+import ComponentCuttingmethods from "../../../components/reference/cuttingmethods";
+import {fill_data,add,del,edit,sorting} from "../../../actions/reference/cuttingmethods";
 
 class Cuttingmethods extends Component {
 
@@ -13,7 +13,6 @@ class Cuttingmethods extends Component {
     }
 
     componentDidMount() {
-        let self = this;
         this.props.fill_data({status:0});
     }
 
@@ -26,32 +25,18 @@ class Cuttingmethods extends Component {
         }
     }
 
-    handlerAdd = () => {
-        this.props.add();
-    }
-    handlerDel = (ids) => {
-        this.props.del(ids);
-    }
-    handlerEdit = (obj,values) => {
-        this.props.edit(obj,values);
-    }
-    handlerSorting = (by,dir,as,id) => {
-        this.props.sorting(by,dir,as,id);
-    }
-
-
     render() {        
         return <ComponentCuttingmethods
             data = {this.props.data}
             sort = {this.props.sort}
             currentId = {this.props.currentId}
-            handlerAdd = {this.handlerAdd}
-            handlerDel = {this.handlerDel}
-            handlerEdit = {this.handlerEdit}
-            handlerSorting = {this.handlerSorting}
+            handlerAdd = {this.props.add}
+            handlerDel = {this.props.del}
+            handlerEdit = {this.props.edit}
+            handlerSorting = {this.props.sorting}
             handlerShowAllStatus = {this.handlerShowAllStatus}
-            getFormCutting = {getFormCutting}
-            getGroupCutting = {getGroupCutting}            
+            formCutting = {this.props.formCutting}
+            groupCutting = {this.props.groupCutting}            
         />
     }    
 }
@@ -60,7 +45,9 @@ function mapStateToProps (state) {
     return {
         data: state.cuttingmethods.data,
         sort: state.cuttingmethods.sort,
-        currentId: state.cuttingmethods.currentId
+        currentId: state.cuttingmethods.currentId,
+        formCutting: state.enumerations.formCutting,
+        groupCutting: state.enumerations.groupCutting
     }
 }
 

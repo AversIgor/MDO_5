@@ -35,9 +35,7 @@ export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository = getRepository(Methodscleanings);
-            let data = await repository.find({
-                where: where,
-            });
+            let data = await getData(getState,repository);
             dispatch({
                 type: METHODSCLEANINGS_FILL_SUCCESS,
                 data: data.data,

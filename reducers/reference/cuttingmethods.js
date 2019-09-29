@@ -9,6 +9,7 @@ import {
 const initialState = {
     currentId:undefined,
     data:[],
+    options:[],
     sort: {
         by:'id',
         dir:'asc',
@@ -24,22 +25,26 @@ export default function cuttingmethods(state = initialState, action) {
         case CUTTINGMETHODS_FILL_SUCCESS:
             return { ...state,
                 data: action.data,
+                options:action.options,
                 where: action.where
             }
         case CUTTINGMETHODS_ADD:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
+                options:action.options,
             }
         case CUTTINGMETHODS_DEL:
             return { ...state,
                 currentId: undefined,
                 data: action.data,
+                options:action.options,
             }
         case CUTTINGMETHODS_EDIT:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
+                options:action.options,
             }
         case CUTTINGMETHODS_SORT:
             return { ...state,
