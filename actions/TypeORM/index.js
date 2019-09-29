@@ -21,10 +21,6 @@ import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
 
-
-import * as forestry from '../../actions/reference/forestry';
-import * as subforestry from '../../actions/reference/subforestry';
-
 import * as settings from '../../actions/Abris/settings';
 import * as contactinformation from '../../actions/reference/contactinformation';
 
@@ -124,14 +120,12 @@ export function init() {
         return asyncProcess();
     }
 
-    //стартовая инициализация всех моделей БД
+    //стартовая инициализация основных настроек
     const initModels = function (dispatch) {
         const asyncProcess = async () => {
             console.log('initModels')
             await dispatch(settings.fill_data());//инициализация настроек абриса
             await dispatch(contactinformation.fill_data());//инициализация контактной информации            
-            await dispatch(forestry.fill_data({status:0}));//инициализация лесничеств 
-            await dispatch(subforestry.fill_data({status:0}));//инициализация участковых лесничеств 
         }
         return asyncProcess();
     }

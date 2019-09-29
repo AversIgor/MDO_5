@@ -4,12 +4,19 @@ import { connect } from 'react-redux'
 
 import ComponentSubforestry from "../../../components/reference/subforestry";
 import * as subforestry from "../../../actions/reference/subforestry";
+import * as forestry from "../../../actions/reference/forestry";
 
 class Subforestry extends Component {
 
     constructor(props) {
         super(props);
         this.showAllStatus = false
+    }
+
+    componentDidMount() {
+        let self = this;
+        this.props.fill_data({status:0});
+        this.props.fill_data_forestry({status:0})
     }
 
     handlerShowAllStatus = () => {
@@ -47,6 +54,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        fill_data: bindActionCreators(subforestry.fill_data, dispatch),
+        fill_data_forestry: bindActionCreators(forestry.fill_data, dispatch),
         add: bindActionCreators(subforestry.add, dispatch),
         del: bindActionCreators(subforestry.del, dispatch),
         edit: bindActionCreators(subforestry.edit, dispatch),

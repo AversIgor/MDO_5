@@ -16,7 +16,7 @@ export function getData(getState,repository,where) {
             where = getState().subforestry.where;
         }
         let data =  await repository.find({
-            relations: ["forestry"],
+            relations: ["forestry","tracts"],
             where: where,
         });
         let options = [];

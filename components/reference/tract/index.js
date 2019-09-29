@@ -76,10 +76,6 @@ export default class ComponentTract extends Component {
         this.ui.push(window.webix.ui(common.settingsMenu(this)))
 
         common.searchBind(this)
-
-        this.updateColumns(this.props)
-        common.datatableUpdate(this,this.props)
-        common.datatableRefreshColumns(this)
     }
 
     componentWillReceiveProps(nextProps) {        

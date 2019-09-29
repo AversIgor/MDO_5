@@ -3,13 +3,17 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import ComponentForestry from "../../../components/reference/forestry";
-import {add,del,edit,sorting} from "../../../actions/reference/forestry";
+import {fill_data,add,del,edit,sorting} from "../../../actions/reference/forestry";
 
 class Forestry extends Component {
 
     constructor(props) {
         super(props);
         this.showAllStatus = false
+    }
+
+    componentDidMount() {
+        this.props.fill_data({status:0});
     }
 
 
@@ -46,6 +50,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        fill_data: bindActionCreators(fill_data, dispatch),
         add: bindActionCreators(add, dispatch),
         del: bindActionCreators(del, dispatch),
         edit: bindActionCreators(edit, dispatch),

@@ -8,13 +8,25 @@ import {
 import {getRepository} from "typeorm";
 import {Methodscleanings} from "../../TypeORM/entity/methodscleanings";
 
-export function getData(getState,repository) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
-        let where = getState().methodscleanings.where;
+        if(!where){
+            where = getState().methodscleanings.where;
+        }
         let data =  await repository.find({
             where: where,
         });
-        return data
+        let options = [];
+            for (let i = 0; i < data.length; i++) {
+                options.push({
+                    id:data[i].id,
+                    value:data[i].name
+                })
+            }
+        return {
+            data:data,
+            options:options
+        }
     }
     return asyncProcess()
 }
@@ -28,7 +40,8 @@ export function fill_data(where = {}) {
             });
             dispatch({
                 type: METHODSCLEANINGS_FILL_SUCCESS,
-                data: data,
+                data: data.data,
+                options: data.options,
                 where: where
             })
         }
@@ -45,7 +58,8 @@ export function add() {
             let data = await getData(getState,repository);
             dispatch({
                 type: METHODSCLEANINGS_ADD,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -64,7 +78,8 @@ export function del(ids) {
             data = await getData(getState,repository);
             dispatch({
                 type: METHODSCLEANINGS_DEL,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -85,7 +100,8 @@ export function edit(obj,values) {
             dispatch({
                 type: METHODSCLEANINGS_EDIT,
                 currentId: obj.id,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()

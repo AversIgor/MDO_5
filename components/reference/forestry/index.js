@@ -65,8 +65,6 @@ export default class ComponentForestry extends Component {
         this.ui.push(window.webix.ui(common.settingsMenu(this)))
 
         common.searchBind(this)
-
-        common.datatableUpdate(this,this.props)
     }
 
 

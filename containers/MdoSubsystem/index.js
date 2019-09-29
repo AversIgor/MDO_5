@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import Forestry from '../reference/forestry';
 import Subforestry from '../reference/subforestry';
 import Tract from '../reference/tract';
-import Methodscleanings from '../methodscleanings';
+import Methodscleanings from '../reference/methodscleanings';
 import Cuttingmethods from '../cuttingmethods';
 import Publication from '../publication';
 import Breed from '../breed';

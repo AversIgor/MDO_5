@@ -4,12 +4,19 @@ import { connect } from 'react-redux'
 
 import ComponentTract from "../../../components/reference/tract";
 import * as tract from "../../../actions/reference/tract";
+import * as subforestry from "../../../actions/reference/subforestry";
 
 class Tract extends Component {
 
     constructor(props) {
         super(props);
         this.showAllStatus = false
+    }
+
+    componentDidMount() {
+        let self = this;
+        this.props.fill_data({status:0});
+        this.props.fill_data_subforestry({status:0})
     }
 
     handlerShowAllStatus = () => {
@@ -22,7 +29,6 @@ class Tract extends Component {
     }
 
     render() {
-        console.log(this.props.data)
         return <ComponentTract
             subforestry = {this.props.options}
             data = {this.props.data}
@@ -49,6 +55,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps(dispatch) {
     return {
         fill_data: bindActionCreators(tract.fill_data, dispatch),
+        fill_data_subforestry: bindActionCreators(subforestry.fill_data, dispatch),
         add: bindActionCreators(tract.add, dispatch),
         del: bindActionCreators(tract.del, dispatch),
         edit: bindActionCreators(tract.edit, dispatch),

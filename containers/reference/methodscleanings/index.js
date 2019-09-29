@@ -2,25 +2,19 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentMethodsCleanings from "../../components/methodscleanings";
-import {fill_data,add,del,edit,sorting} from "../../actions/reference/methodscleanings";
+import ComponentMethodsCleanings from "../../../components/reference/methodscleanings";
+import {fill_data,add,del,edit,sorting} from "../../../actions/reference/methodscleanings";
 
 class MethodsCleanings extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            resize: false
-        };
         this.showAllStatus = false
     }
 
     componentDidMount() {
         let self = this;
         this.props.fill_data({status:0});
-        webix.event(window, "resize", function(){
-            self.setState({resize: !self.state.resize})
-        })
     }
 
     handlerShowAllStatus = () => {
@@ -32,29 +26,15 @@ class MethodsCleanings extends Component {
         }
     }
 
-    handlerAdd = () => {
-        this.props.add();
-    }
-    handlerDel = (ids) => {
-        this.props.del(ids);
-    }
-    handlerEdit = (obj,values) => {
-        this.props.edit(obj,values);
-    }
-    handlerSorting = (by,dir,as,id) => {
-        this.props.sorting(by,dir,as,id);
-    }
-
-
     render() {        
         return <ComponentMethodsCleanings
             data = {this.props.data}
             sort = {this.props.sort}
             currentId = {this.props.currentId}
-            handlerAdd = {this.handlerAdd}
-            handlerDel = {this.handlerDel}
-            handlerEdit = {this.handlerEdit}
-            handlerSorting = {this.handlerSorting}
+            handlerAdd = {this.props.add}
+            handlerDel = {this.props.del}
+            handlerEdit = {this.props.edit}
+            handlerSorting = {this.props.sorting}
             handlerShowAllStatus = {this.handlerShowAllStatus}
         />
     }    

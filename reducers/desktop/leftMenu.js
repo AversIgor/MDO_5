@@ -5,32 +5,36 @@ import {
 const initialState = {
     data: [        
         {id: "mdo", icon: "calculator",value:"Расчет МДО"},
-        {id: "abrisv2", icon: "map-o",value:"Абрис (схема)"},
-        {id: "parameters_mdo",icon: "sliders", value:"Параметры расчета МДО", data:[
-            { id: "constants", value: "Настройки расчета МДО"},
-            { id: "breed", value: "Породы"},
-            { id: "publications", value: "Сортиментные таблицы"},
-            { id: "typesrates", value: "Ставки платы"},
+        {id: "abrisv2", icon: "map-o",value:"Абрис (схема)"},        
+        {id: "nsi",icon: "sliders", value:"НСИ", data:[
             { id: "coefficients", value:"Коэффициенты", data:[
                 { id: "coefficientsformcutting", value: "на форму рубки"},
                 { id: "coefficientsrangesliquidation", value: "на ликвидный запас"},
                 { id: "coefficientsdamage", value: "на степень повреждения"},
+            ]},              
+            {id: "reference", value:"Справочники (базовые)", data:[
+                { id: "forestry", value: "Лесничества"},
+                { id: "subforestry", value: "Участковые лесничества"},
+                { id: "tract", value: "Урочища"},
+                { id: "breed", value: "Породы"},
+                { id: "cuttingmethods", value: "Способы рубки"},
+                { id: "methodscleanings", value: "Способы очистки"},
+            ]}, 
+            {id: "mdoreference", value:"Справочники (МДО)", data:[
+                { id: "publications", value: "Сортиментные таблицы"},
+                { id: "typesrates", value: "Ставки платы"},
+            ]}, 
+            {id: "abrisreference", value:"Справочники (Абрис)", data:[
+                { id: "styles", value: "Стили отображения абриса"},
+                { id: "abrisprintforms", value: "Печатные формы"},
             ]},
         ]},
-        {id: "parameters_abris",icon: "sliders", value:"Параметры абриса", data:[
-            { id: "abrissettings", value: "Настройки абриса"},
-            { id: "styles", value: "Стили отображения абриса"},
-            { id: "abrisprintforms", value: "Печатные формы"},
-        ]},
-        {id: "reference",icon: "list-ul", value:"Справочники", data:[
-            { id: "forestry", value: "Лесничества"},
-            { id: "subforestry", value: "Участковые лесничества"},
-            { id: "tract", value: "Урочища"},
-            { id: "cuttingmethods", value: "Способы рубки"},
-            { id: "methodscleanings", value: "Способы очистки"},
-        ]},
         {id: "servise",icon: "cogs", value:"Сервис", data:[
-            {id: "contactinformation", value:"Контактная информация"},
+            {id: "allconstants", value:"Константы", data:[
+                {id: "contactinformation", value:"Контактная информация"},
+                { id: "constants", value: "Настройки расчета МДО"},
+                { id: "abrissettings", value: "Настройки абриса"},                
+            ]},              
             {id: "master", value:"Стартовый помощник"},
         ]},
     ],
