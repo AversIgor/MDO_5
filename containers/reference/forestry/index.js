@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentForestry from "../../components/forestry";
-import {fill_data,add,del,edit,sorting} from "../../actions/reference/forestry";
+import ComponentForestry from "../../../components/reference/forestry";
+import {fill_data,add,del,edit,sorting} from "../../../actions/reference/forestry";
 
 class Forestry extends Component {
 
@@ -13,9 +13,9 @@ class Forestry extends Component {
     }
 
     componentDidMount() {
-        let self = this;
         this.props.fill_data({status:0});
     }
+
 
     handlerShowAllStatus = () => {
         this.showAllStatus = !this.showAllStatus
@@ -26,29 +26,15 @@ class Forestry extends Component {
         }
     }
 
-    handlerAdd = () => {
-        this.props.add();
-    }
-    handlerDel = () => {
-        this.props.del();
-    }
-    handlerEdit = (obj,values) => {
-        this.props.edit(obj,values);
-    }
-    handlerSorting = (by,dir,as,id) => {
-        this.props.sorting(by,dir,as,id);
-    }
-
-
     render() {        
         return <ComponentForestry
             data = {this.props.data}
             sort = {this.props.sort}
             currentId = {this.props.currentId}
-            handlerAdd = {this.handlerAdd}
-            handlerDel = {this.handlerDel}
-            handlerEdit = {this.handlerEdit}
-            handlerSorting = {this.handlerSorting}
+            handlerAdd = {this.props.add}
+            handlerDel = {this.props.del}
+            handlerEdit = {this.props.edit}
+            handlerSorting = {this.props.sorting}
             handlerShowAllStatus = {this.handlerShowAllStatus}
         />
     }    

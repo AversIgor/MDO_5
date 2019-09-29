@@ -15,7 +15,6 @@ import {PROTECTIONCATEGORY} from "./protectioncategory";
 import {ACTIONUSAGEKIND} from "./actionusagekind";
 import {USAGEKIND} from "./usageKind";
 import {RESOURCEKIND} from "./resourcekind";
-import {SORTIMENT} from "./sortiment";
 
 
 import {store} from "../src/app";
@@ -52,7 +51,7 @@ export var BD = {
 		TextQuery.push(ACTIONUSAGEKIND.textQuery);
 		TextQuery.push(USAGEKIND.textQuery);
 		TextQuery.push(RESOURCEKIND.textQuery);
-		TextQuery.push(SORTIMENT.textQuery);
+
 
 		///////////////////////
 		//ТРИГГЕРЫ	

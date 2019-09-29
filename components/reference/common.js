@@ -253,31 +253,25 @@ let datatableUpdate = function(context,props){
     table.define("data",props.data);
     table.refresh();
 
-    //позиционирование
-    let lastId = props.currentId;
-    try {
-        table.select(lastId);
-    } catch (err) {
-        lastId = table.getLastId();
-        if(lastId){
-            table.select(lastId);
-        }
-    }
-
     //сортировка
     if(context.sort){
         context.sort = props.sort;
         table.sort(props.sort.by,props.sort.dir,props.sort.as);
-        table.markSorting(props.sort.by,props.sort.dir);
-
-        if(lastId){
-            try {
-                table.showItem(lastId);
-            } catch (err) {
-
-            }
-        }
+        table.markSorting(props.sort.by,props.sort.dir);       
     }
+
+    //позиционирование
+    let lastId = props.currentId;
+    if(!lastId){
+        lastId = table.getLastId();
+    }
+    try {
+        table.select(lastId);
+        table.showItem(lastId);
+    } catch (err) {
+
+    }
+  
 
     //фильтрация
     table.eachColumn(
@@ -338,8 +332,5 @@ let formResize = function(context){
 
     layout.resize(true);    
 }
-
-
-
 
 export {header,addButton,copyButton,deleteButton,search,settingsButton,settingsMenu,datatable,datatableUpdate,datatableRefreshColumns,datatableFieldID,searchBind,uiDestructor,formResize,menuButton,popupMenu,menuUpdate};

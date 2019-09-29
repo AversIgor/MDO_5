@@ -3,6 +3,8 @@ import {BD} from "./dao";
 import {PRINT} from "./print";
 import * as FileSaver from "file-saver";
 
+import {store} from "../src/app";
+
 var LAYOUTstyle = 'border: 1px solid #dfdfdf; padding: 3px; overflow: hidden;border-radius: 3px;';
 
 //ПЕЧАТЬ МДО ВЕДОМОСТИ
@@ -230,9 +232,7 @@ export var MDOPRINT = {
 		PRINT.add_section("section_bootom", "row", params);
 
 
-		if('contacts' in MDO.objectMDO.parameters){
-			var contacts = JSON.parse(MDO.objectMDO.parameters.contacts);
-		}
+		let contacts = store.getState().contactinformation.data;
 
 		if(contacts != null){
 			var params = {};

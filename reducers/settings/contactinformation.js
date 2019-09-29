@@ -3,6 +3,7 @@ import {
     CONTACTINFORMATION_EDIT,
 } from '../../constants/settings/contactinformation'
 
+
 const initialState = {
     data:{
         adress:'',
@@ -12,7 +13,8 @@ const initialState = {
     }
 }
 
-export default function contactinformation (state = initialState, action) {
+
+export default function contactinformation (state = initialState, action) {    
     switch(action.type) {
         case CONTACTINFORMATION_FILL_SUCCESS:
             return { ...state,
@@ -26,4 +28,3 @@ export default function contactinformation (state = initialState, action) {
             return state
     }
 }
-

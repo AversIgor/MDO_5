@@ -19,6 +19,9 @@ PARAMETERS.tract = [];
 PARAMETERS.cuttingmethods = [];
 PARAMETERS.typesrates = [];
 PARAMETERS.methodscleaning = [];
+PARAMETERS.formCutting = [];
+PARAMETERS.groupCutting = [];
+
 
 PARAMETERS.config = {
     
@@ -45,8 +48,8 @@ PARAMETERS.config = {
 		fields : [
 			{ field: 'methodTaxation', type: 'list', options :{items: ENUMERATIONS.methodTaxation}, html: { caption: 'Метод таксации:', span: '8', attr: 'style="width: 100%"'}, required: true },
 			{ field: 'property', type: 'list', options :{items: ENUMERATIONS.property}, html: { caption: 'Хозяйство:', span: '8', attr: 'style="width: 100%"'}, required: true},
-			{ field: 'formCutting', type: 'list', options :{items: cuttingmethods.getFormCutting()}, html: { caption: 'Форма рубки:', span: '8', attr: 'style="width: 100%"'}, required: true},
-			{ field: 'groupCutting', type: 'list', options :{items: cuttingmethods.getGroupCutting()}, html: { caption: 'Группа рубки:', span: '8', attr: 'style="width: 100%"'}, required: false},
+			{ field: 'formCutting', type: 'list', options :{items: PARAMETERS.formCutting}, html: { caption: 'Форма рубки:', span: '8', attr: 'style="width: 100%"'}, required: true},
+			{ field: 'groupCutting', type: 'list', options :{items: PARAMETERS.groupCutting}, html: { caption: 'Группа рубки:', span: '8', attr: 'style="width: 100%"'}, required: false},
 			{ field: 'cuttingmethods', type: 'list',options :{items: PARAMETERS.cuttingmethods}, html: { caption: 'Способ рубки:', span: '8', attr: 'style="width: 100%"'} },
 			{ field: 'methodscleaning', type: 'list',options :{items: PARAMETERS.methodscleaning}, html: { caption: 'Способ очистки:', span: '8', attr: 'style="width: 100%"'}},
 			{ field: 'areacutting', type: 'float', html: { caption: 'Площадь лесосеки, га:', span: '8', attr: 'style="width: 100px"'}, required: true },
@@ -73,7 +76,7 @@ PARAMETERS.config = {
 						formCutting:[event.value_new.id],
 						groupCutting:[objectMDO.groupCutting.id]
 					};
-					PARAMETERS.fillcuttingmethods(conditions)
+					PARAMETERS.fillCuttingmethods(conditions)
 				}
 			}	
 			if(event.target == 'groupCutting'){
@@ -85,7 +88,7 @@ PARAMETERS.config = {
 						formCutting:[objectMDO.formCutting.id],
 						groupCutting:[event.value_new.id]
 					};
-					PARAMETERS.fillcuttingmethods(conditions)
+					PARAMETERS.fillCuttingmethods(conditions)
 				}
 			}
 			if(event.target == 'cuttingmethods'){
@@ -187,6 +190,28 @@ PARAMETERS.config = {
 	
 }
 
+PARAMETERS.fillForestry = function () {
+
+	PARAMETERS.foresters.splice(0,PARAMETERS.foresters.length);
+	const asyncProcess = async (subforestry) => {
+		await store.dispatch(forestry.fill_data({status:0}));
+		let data = store.getState().forestry.data;
+		for (var i = 0; i < data.length; i++) {
+			var row = {};
+			for (var property in data[i]) {
+				if (property == "name") {
+					row.text = data[i][property];
+				} else {
+					row[property] = data[i][property];
+				}
+			}
+			PARAMETERS.foresters.push(row);
+		}
+	}
+	asyncProcess(forestry);
+} 
+
+
 PARAMETERS.fillSubforestry = function (id) {
 
 	const asyncProcess = async (subforestry) => {
@@ -241,13 +266,33 @@ PARAMETERS.fillTract = function (id) {
 	asyncProcess(tract);
 }
 
-PARAMETERS.fillcuttingmethods = function (conditions) {
+PARAMETERS.fillMethodscleanings = function () {
+
+	PARAMETERS.methodscleaning.splice(0,PARAMETERS.methodscleaning.length);
+	const asyncProcess = async (methodscleanings) => {
+		await store.dispatch(methodscleanings.fill_data({status:0}));
+		let data = store.getState().methodscleanings.data;
+		for (var i = 0; i < data.length; i++) {
+			var row = {};
+			for (var property in data[i]) {
+				if (property == "name") {
+					row.text = data[i][property];
+				} else {
+					row[property] = data[i][property];
+				}
+			}
+			PARAMETERS.methodscleaning.push(row);
+		}
+	}
+	asyncProcess(methodscleanings);
+} 
+
+PARAMETERS.fillCuttingmethods = function () {
 
 	PARAMETERS.cuttingmethods.splice(0,PARAMETERS.cuttingmethods.length);
-
 	const asyncProcess = async (cuttingmethods) => {
-		await store.dispatch(cuttingmethods.fill_data(conditions));
-		var data = store.getState().cuttingmethods.data;
+		await store.dispatch(cuttingmethods.fill_data({status:0}));
+		let data = store.getState().cuttingmethods.data;
 		for (var i = 0; i < data.length; i++) {
 			var row = {};
 			for (var property in data[i]) {
@@ -258,50 +303,18 @@ PARAMETERS.fillcuttingmethods = function (conditions) {
 				}
 			}
 			PARAMETERS.cuttingmethods.push(row);
+			w2ui[PARAMETERS.config.formCutting.name].set('cuttingmethods', { options :{items: PARAMETERS.cuttingmethods} });
+			w2ui[PARAMETERS.config.formCutting.name].refresh();
 		}
-		w2ui[PARAMETERS.config.formCutting.name].set('cuttingmethods', { options :{items: PARAMETERS.cuttingmethods} });
-		w2ui[PARAMETERS.config.formCutting.name].refresh();
 	}
 	asyncProcess(cuttingmethods);
-
 } 
+
  
 PARAMETERS.beforeOpening = function () {
 
-	PARAMETERS.typesrates.splice(0,PARAMETERS.typesrates.length);
-	PARAMETERS.foresters.splice(0,PARAMETERS.foresters.length);
-	PARAMETERS.methodscleaning.splice(0,PARAMETERS.methodscleaning.length);
-
-	const asyncProcess = async (methodscleanings,forestry) => {
-		await store.dispatch(methodscleanings.fill_data({status:0}));
-		await store.dispatch(forestry.fill_data({status:0}));
-		var data = store.getState().methodscleanings.data;
-        for (var i = 0; i < data.length; i++) {
-            var row = {};
-            for (var property in data[i]) {
-                if (property == "name") {
-                    row.text = data[i][property];
-                } else {
-                    row[property] = data[i][property];
-                }
-            }
-            PARAMETERS.methodscleaning.push(row);
-        }
-		data = store.getState().forestry.data;
-		for (var i = 0; i < data.length; i++) {
-			var row = {};
-			for (var property in data[i]) {
-				if (property == "name") {
-					row.text = data[i][property];
-				} else {
-					row[property] = data[i][property];
-				}
-			}
-			PARAMETERS.foresters.push(row);
-		}
-		BD.fillList(TYPESRATES, PARAMETERS.typesrates, ['recid', 'name', 'orderroundingrates', 'predefined', 'coefficientsindexing'],PARAMETERS.whenOpening);
-	}
-	asyncProcess(methodscleanings,forestry);
+	PARAMETERS.typesrates.splice(0,PARAMETERS.typesrates.length);	
+	BD.fillList(TYPESRATES, PARAMETERS.typesrates, ['recid', 'name', 'orderroundingrates', 'predefined', 'coefficientsindexing'],PARAMETERS.whenOpening);
 
 }  
 
@@ -348,6 +361,7 @@ PARAMETERS.visibility = function () {
 }  
 
 PARAMETERS.whenOpening = function (dataSet) {
+
 	
 	if (w2ui.hasOwnProperty(PARAMETERS.config.tabsPARAMETERS.name)){
 		w2ui[PARAMETERS.config.tabsPARAMETERS.name].destroy();
@@ -396,17 +410,26 @@ PARAMETERS.whenOpening = function (dataSet) {
 		seedtrees		: objectMDO.seedtrees,
 	}
 
-	PARAMETERS.fillSubforestry(objectMDO.forestry.id)
-	PARAMETERS.fillTract(objectMDO.subforestry.id)
 
-	var conditions = {
-		status:0,
-		formCutting:[objectMDO.formCutting.id],
-		groupCutting:[ objectMDO.groupCutting.id]
-	};
-	PARAMETERS.fillcuttingmethods(conditions)
+	if(store){
+		PARAMETERS.fillForestry()
+		PARAMETERS.fillSubforestry(objectMDO.forestry.id)
+		PARAMETERS.fillTract(objectMDO.subforestry.id)
+		PARAMETERS.fillMethodscleanings()
+		PARAMETERS.fillCuttingmethods()	
+
+		w2ui[PARAMETERS.config.formCutting.name].set('formCutting', { options :{items: store.getState().enumerations.formCutting} });		
+		w2ui[PARAMETERS.config.formCutting.name].set('groupCutting', { options :{items: store.getState().enumerations.groupCutting} });
+
+		w2ui[PARAMETERS.config.formCutting.name].refresh();
+
+
+	}
+
 	
 	PARAMETERS.visibility();
+
+	
 
 }  
 

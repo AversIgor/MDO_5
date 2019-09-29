@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
-export default class ComponentTract extends Component {
+export default class ComponentMethodsCleanings extends Component {
 
     constructor(props) {
         super(props);
@@ -10,46 +10,24 @@ export default class ComponentTract extends Component {
             selected:   {},
         };
         this.sort   = props.sort;
-        this.id     = 'tract';
-        this.ui     = []
+        this.id     = 'methodscleanings';
         this.menu   = [
             {id: "showDel", value: "Показать (скрыть) помеченные на удаление"},
             {id: "deleteComplite", value: "Удалить помеченные на удаление"},
         ]
-        this.rules   = {
-            "subforestry": webix.rules.isNotEmpty,
-        }
-        this.search     = ["subforestry","name","fullname"]
-        this.editable = true;
-        this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
-        this.subforestry   = [];
-        this.columns    = []
-    }
 
-    updateColumns = (props) => {
-        this.subforestry.splice(0, this.subforestry.length);
-        for (let i = 0; i < props.subforestry.length; i++) {
-            let item = {
-                id:props.subforestry[i].id,
-                value:props.subforestry[i].name
-            }
-            this.subforestry.push(item)
-        }
-        this.columns =  [
+        this.columns = [
             common.datatableFieldID(),
-            { id:"subforestry",	header:"Участковое лесничество", options:this.subforestry, editor:"select", fillspace:true,
-                template:function(obj){
-                    if(typeof(obj.subforestry) == "object"){
-                        return obj.subforestry.name;
-                    }else {
-                        return '';
-                    }
-                }
-            },
             { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
             { id:"fullname",header:"Полное наименование",  editor:"text", sort:"string", fillspace:true},
-            { id:"cod",header:"Идентификатор",  editor:"text", sort:"string", fillspace:true},
         ]
+        this.rules   = {
+            "name": webix.rules.isNotEmpty,
+        }
+        this.editable = true;
+        this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
+        this.search     = ["name","fullname"]
+        this.ui = []
     }
 
     componentDidMount(){
@@ -69,7 +47,7 @@ export default class ComponentTract extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Урочища"),
+                common.header("Способы очистки"),
                 {
                     padding:10,
                     borderless:true,
@@ -87,10 +65,9 @@ export default class ComponentTract extends Component {
         common.searchBind(this)
     }
 
-    componentWillReceiveProps(nextProps) {        this.updateColumns(nextProps)
+
+    componentWillReceiveProps(nextProps) {
         common.datatableUpdate(this,nextProps)
-        common.datatableRefreshColumns(this)
-        common.formResize(this)
     }
 
     componentWillUnmount(){
@@ -102,7 +79,6 @@ export default class ComponentTract extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
-
 }

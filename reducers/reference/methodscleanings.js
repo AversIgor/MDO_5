@@ -9,6 +9,7 @@ import {
 const initialState = {
     currentId:undefined,
     data:[],
+    options:[],
     sort: {
         by:'id',
         dir:'asc',
@@ -24,22 +25,26 @@ export default function methodscleanings(state = initialState, action) {
         case METHODSCLEANINGS_FILL_SUCCESS:
             return { ...state,
                 data: action.data,
+                options:action.options,
                 where: action.where
             }
         case METHODSCLEANINGS_ADD:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
+                options:action.options,
             }
         case METHODSCLEANINGS_DEL:
             return { ...state,
                 currentId: undefined,
                 data: action.data,
+                options:action.options,
             }
         case METHODSCLEANINGS_EDIT:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
+                options:action.options,
             }
         case METHODSCLEANINGS_SORT:
             return { ...state,

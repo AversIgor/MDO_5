@@ -8,14 +8,26 @@ import {
 import {getRepository} from "typeorm";
 import {Forestry} from "../../TypeORM/entity/forestry";
 
-export function getData(getState,repository) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
-        let where = getState().forestry.where;
+        if(!where){
+            where = getState().forestry.where;
+        }
         let data =  await repository.find({
             relations: ["subforestrys"],
             where: where,
         });
-        return data
+        let options = [];
+            for (let i = 0; i < data.length; i++) {
+                options.push({
+                    id:data[i].id,
+                    value:data[i].name
+                })
+            }
+        return {
+            data:data,
+            options:options
+        }
     }
     return asyncProcess()
 }
@@ -24,13 +36,11 @@ export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository = getRepository(Forestry);
-            let data = await repository.find({
-                relations: ["subforestrys"],
-                where: where,
-            });
+            let data = await getData(getState,repository,where);        
             dispatch({
                 type: FORESTRY_FILL_SUCCESS,
-                data: data,
+                data: data.data,
+                options: data.options,
                 where: where
             })
         }
@@ -47,7 +57,8 @@ export function add() {
             let data = await getData(getState,repository);
             dispatch({
                 type: FORESTRY_ADD,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -66,7 +77,8 @@ export function del() {
             data = await getData(getState,repository);
             dispatch({
                 type: FORESTRY_DEL,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()    }
@@ -86,7 +98,8 @@ export function edit(obj,values) {
             dispatch({
                 type: FORESTRY_EDIT,
                 currentId: obj.id,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()

@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
-export default class ComponentForestry extends Component {
+export default class ComponentSubforestry extends Component {
 
     constructor(props) {
         super(props);
@@ -10,29 +10,41 @@ export default class ComponentForestry extends Component {
             selected:   {},
         };
         this.sort   = props.sort;
-        this.id     = 'forestry';
+        this.id     = 'subforestry';
+        this.ui     = []
         this.menu   = [
             {id: "showDel", value: "Показать (скрыть) помеченные на удаление"},
             {id: "deleteComplite", value: "Удалить помеченные на удаление"},
         ]
+        this.rules   = {
+            "forestry": webix.rules.isNotEmpty,
+        }
+        this.search     = ["forestry","name","fullname"]
+        this.editable = true;
+        this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
+        this.columns    = []
+    }
 
-        this.columns = [
+    updateColumns = (props) => {
+        this.columns =  [
             common.datatableFieldID(),
+            { id:"forestry",	header:"Лесничество", options:props.forestry, editor:"select", fillspace:true,
+                template:function(obj){
+                    if(typeof(obj.forestry) == "object"){
+                        return obj.forestry.name;
+                    }else {
+                        return '';
+                    }
+                }
+            },
             { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
             { id:"fullname",header:"Полное наименование",  editor:"text", sort:"string", fillspace:true},
             { id:"cod",header:"Идентификатор",  editor:"text", sort:"string", fillspace:true},
         ]
-        this.rules   = {
-            "name": webix.rules.isNotEmpty,
-        }
-        this.editable = true;
-        this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
-        this.search     = ["name","fullname"]
-        this.ui = []
+
     }
 
     componentDidMount(){
-
         let toolbar = {
             view:'toolbar',
             elements:[
@@ -49,7 +61,7 @@ export default class ComponentForestry extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Лесничества"),
+                common.header("Участковые лесничества"),
                 {
                     padding:10,
                     borderless:true,
@@ -67,10 +79,11 @@ export default class ComponentForestry extends Component {
         common.searchBind(this)
     }
 
-
-    componentWillReceiveProps(nextProps) {        
-        common.datatableUpdate(this,nextProps)   
-    }
+    componentWillReceiveProps(nextProps) {
+        this.updateColumns(nextProps)
+        common.datatableUpdate(this,nextProps)
+        common.datatableRefreshColumns(this)
+     }
 
     componentWillUnmount(){
         common.uiDestructor(this)

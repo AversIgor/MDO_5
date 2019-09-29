@@ -21,8 +21,9 @@ import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
 
+import * as settings from '../../actions/Abris/settings';
+import * as contactinformation from '../../actions/reference/contactinformation';
 
-import {fill_data} from '../../actions/Abris/settings';
 
 import {updatePredefinedAbrisPrintForms} from "../../actions/reference/abrisprintforms";
 
@@ -119,6 +120,16 @@ export function init() {
         return asyncProcess();
     }
 
+    //стартовая инициализация основных настроек
+    const initModels = function (dispatch) {
+        const asyncProcess = async () => {
+            console.log('initModels')
+            await dispatch(settings.fill_data());//инициализация настроек абриса
+            await dispatch(contactinformation.fill_data());//инициализация контактной информации            
+        }
+        return asyncProcess();
+    }
+
     return (dispatch,getState) => {
 
         const asyncProcess = async () => {
@@ -160,8 +171,8 @@ export function init() {
             options.synchronize     = false;
             connection = await createConnection(options);
 
-                        
-            await dispatch(fill_data());//инициализация настроек абриса
+            await initModels(dispatch);                        
+
             dispatch({
                 type: ORM_COMPLETE,
                 isUpdate: isUpdate,

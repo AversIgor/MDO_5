@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
-export default class ComponentMethodsCleanings extends Component {
+export default class Cuttingmethods extends Component {
 
     constructor(props) {
         super(props);
@@ -10,7 +10,7 @@ export default class ComponentMethodsCleanings extends Component {
             selected:   {},
         };
         this.sort   = props.sort;
-        this.id     = 'methodscleanings';
+        this.id     = 'cuttingmethods';
         this.menu   = [
             {id: "showDel", value: "Показать (скрыть) помеченные на удаление"},
             {id: "deleteComplite", value: "Удалить помеченные на удаление"},
@@ -19,14 +19,16 @@ export default class ComponentMethodsCleanings extends Component {
         this.columns = [
             common.datatableFieldID(),
             { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
-            { id:"fullname",header:"Полное наименование",  editor:"text", sort:"string", fillspace:true},
+            { id:"cod",header:"Идентификатор",  editor:"text", sort:"string", fillspace:true},
+            { id:"formCutting", header:["Форма рубки", {content:"selectFilter"}],  editor:"select", options:props.formCutting, fillspace:true},
+            { id:"groupCutting", header:["Группа рубки", {content:"selectFilter"}],  editor:"select", options:props.groupCutting, fillspace:true}
         ]
         this.rules   = {
             "name": webix.rules.isNotEmpty,
         }
         this.editable = true;
         this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
-        this.search     = ["name","fullname"]
+        this.search     = ["name","cod"]
         this.ui = []
     }
 
@@ -47,7 +49,7 @@ export default class ComponentMethodsCleanings extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Способы очистки"),
+                common.header("Способы рубки"),
                 {
                     padding:10,
                     borderless:true,
@@ -68,7 +70,6 @@ export default class ComponentMethodsCleanings extends Component {
 
     componentWillReceiveProps(nextProps) {
         common.datatableUpdate(this,nextProps)
-        common.formResize(this)
     }
 
     componentWillUnmount(){
@@ -80,6 +81,6 @@ export default class ComponentMethodsCleanings extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
 }

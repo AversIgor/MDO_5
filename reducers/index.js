@@ -26,10 +26,11 @@ import abris_settings from './settings/abris_settings'
 import contactinformation from './settings/contactinformation'
 
 //обновление
-
 import update from './update'
+import enumerations from './enumerations'
 
 export default combineReducers({
+    enumerations:enumerations,
     typeORM:typeORM,
     update:update,
     toolbar:toolbar,

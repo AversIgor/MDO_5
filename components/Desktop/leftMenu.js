@@ -31,7 +31,6 @@ export default class ComponentLeftMenu extends Component {
                 view: "sidebar",
                 id:'left_menu',
                 data: self.props.data,  
-                autoheight:true,              
                 on:{
                     onAfterSelect: function(id){
                         self.props.clickMenu(id);

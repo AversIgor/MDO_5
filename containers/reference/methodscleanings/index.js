@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentCuttingmethods from "../../components/cuttingmethods";
-import {fill_data,add,del,edit,sorting,getFormCutting,getGroupCutting} from "../../actions/reference/cuttingmethods";
+import ComponentMethodsCleanings from "../../../components/reference/methodscleanings";
+import {fill_data,add,del,edit,sorting} from "../../../actions/reference/methodscleanings";
 
-class Cuttingmethods extends Component {
+class MethodsCleanings extends Component {
 
     constructor(props) {
         super(props);
@@ -26,41 +26,25 @@ class Cuttingmethods extends Component {
         }
     }
 
-    handlerAdd = () => {
-        this.props.add();
-    }
-    handlerDel = (ids) => {
-        this.props.del(ids);
-    }
-    handlerEdit = (obj,values) => {
-        this.props.edit(obj,values);
-    }
-    handlerSorting = (by,dir,as,id) => {
-        this.props.sorting(by,dir,as,id);
-    }
-
-
     render() {        
-        return <ComponentCuttingmethods
+        return <ComponentMethodsCleanings
             data = {this.props.data}
             sort = {this.props.sort}
             currentId = {this.props.currentId}
-            handlerAdd = {this.handlerAdd}
-            handlerDel = {this.handlerDel}
-            handlerEdit = {this.handlerEdit}
-            handlerSorting = {this.handlerSorting}
+            handlerAdd = {this.props.add}
+            handlerDel = {this.props.del}
+            handlerEdit = {this.props.edit}
+            handlerSorting = {this.props.sorting}
             handlerShowAllStatus = {this.handlerShowAllStatus}
-            getFormCutting = {getFormCutting}
-            getGroupCutting = {getGroupCutting}            
         />
     }    
 }
 
 function mapStateToProps (state) {
     return {
-        data: state.cuttingmethods.data,
-        sort: state.cuttingmethods.sort,
-        currentId: state.cuttingmethods.currentId
+        data: state.methodscleanings.data,
+        sort: state.methodscleanings.sort,
+        currentId: state.methodscleanings.currentId
     }
 }
 
@@ -74,6 +58,6 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Cuttingmethods)
+export default connect(mapStateToProps, mapDispatchToProps)(MethodsCleanings)
 
 

@@ -21,7 +21,6 @@ export var MASTER = {
 		padding: 2,
 		panels: [
 			{ type: 'top', size: 180, title:'Значения по умолчанию', },
-			{ type: 'left', minSize: 400,  resizable: true, title:'Контакты организации', },
 			{ type: 'main', minSize: 450,  resizable: true, title:'Лицензирование', },
 			{ type: 'bottom', size: 70,  resizable: false, title:'Администрирование', }
 		]
@@ -35,17 +34,6 @@ export var MASTER = {
 			{ field: 'foresttax', type: 'list',options :{items: this.foresttax}, html: { caption: 'Лесотаксовый район:', span: '9', attr: 'style="width: 100%"'}, required: true},
 			{ field: 'organization', type: 'text', html: { caption: 'Организация:', span: '9', attr: 'style="width: 100%"'}, required: true },
 			{ field: 'responsible', type: 'text', html: { caption: 'Ответственный:', span: '9', attr: 'style="width: 100%"'}, required: true },	
-		]
-	},
-	formleft: { 
-		name: 'formleft',
-		style: 'border: 0px; background-color: transparent;',
-		focus  : -1,
-		fields : [
-			{ field: 'adress', type: 'text', html: { caption: 'Адрес:', span: '3', attr: 'style="width: 100%"'} },
-			{ field: 'fon', type: 'text', html: { caption: 'Телефон:', span: '3', attr: 'style="width: 100%"'} },
-			{ field: 'email', type: 'email', html: { caption: 'e-mail:', span: '3', attr: 'style="width: 100%"'} },
-			{ field: 'site', type: 'text', html: { caption: 'Веб-сайт:', span: '3', attr: 'style="width: 100%"'} },
 		]
 	},
 	formmain: { 
@@ -107,44 +95,7 @@ export var MASTER = {
 		data.first_name				= ALLCONSTANT.data.first_name;
 		data.last_name				= ALLCONSTANT.data.last_name;
 		data.patronymic_name		= ALLCONSTANT.data.patronymic_name;
-		
-		if('contacts' in ALLCONSTANT.data){
-			var contacts = JSON.parse(ALLCONSTANT.data.contacts);
-		}
-
-		if(contacts != null){
-			data.adress	= contacts.adress;
-			data.fon 	= contacts.fon;
-			data.email 	= contacts.email;
-			data.site 	= contacts.site;
-			data.inn 		= contacts.inn;
-			data.kpp 		= contacts.kpp;
-			data.ogrn 		= contacts.ogrn;
-			data.identity_document 		= contacts.identity_document;
-			data.series		= contacts.series;
-			data.number		= contacts.number;
-			data.responsible_first_name			= contacts.responsible_first_name;
-			data.responsible_last_name			= contacts.responsible_last_name;
-			data.responsible_patronymic_name	= contacts.responsible_patronymic_name;
-			data.responsible_post				= contacts.responsible_post;
-			data.responsible_charter			= contacts.responsible_charter;
-		}else{
-			data.adress 	= "";
-			data.fon 		= "";
-			data.email 		= "";
-			data.site 		= "";
-			data.inn 		= "";
-			data.kpp 		= "";
-			data.ogrn 		= "";
-			data.identity_document 		= "";
-			data.series		= "";
-			data.number		= "";
-			data.responsible_first_name			= "";
-			data.responsible_last_name			= "";
-			data.responsible_patronymic_name	= "";
-			data.responsible_post				= "";
-			data.responsible_charter			= "";
-		}
+				
 	},
 
 	readip: function () {
@@ -240,9 +191,6 @@ export var MASTER = {
 		if (!w2ui.hasOwnProperty(this.formtop.name)){
 			$().w2form(this.formtop);
 		} 
-		if (!w2ui.hasOwnProperty(this.formleft.name)){
-			$().w2form(this.formleft);
-		} 
 		if (!w2ui.hasOwnProperty(this.formmain.name)){
 			$().w2form(this.formmain);
 		} 	
@@ -268,13 +216,7 @@ export var MASTER = {
 		
 		w2ui[this.formtop.name].refresh();
 		
-		w2ui[this.formleft.name].record = { 
-			adress 			: this.data.adress,
-			fon 			: this.data.fon,
-			email 			: this.data.email,
-			site 			: this.data.site,
-		}
-		
+
 		w2ui[this.formmain.name].record = { 
 			numberlicense 	: this.data.numberlicense,
 			dateactive 		: this.data.dateactive,
@@ -303,7 +245,6 @@ export var MASTER = {
 				event.onComplete = function () {
 					$('#w2ui-popup #main').w2render('masterlayout');
 					w2ui.masterlayout.content('top', w2ui.formtop);
-					w2ui.masterlayout.content('left', w2ui.formleft);
 					w2ui.masterlayout.content('main', w2ui.formmain);
 					w2ui.masterlayout.content('bottom', w2ui.formbottom);				
 				}
@@ -319,13 +260,8 @@ export var MASTER = {
 				if(arrayError.length != 0){
 					event.preventDefault();
 					MASTER.formOpen = true;
-				}
-				
-				arrayError = w2ui['formleft'].validate(true);
-				if(arrayError.length != 0){
-					event.preventDefault();
-					MASTER.formOpen = true;
-				}
+				}				
+
 			},
 
 			buttons : 	'<button class="btn" onclick="MASTER_saverecord()">Сохранить параметры</button>',
@@ -369,17 +305,6 @@ export var MASTER = {
 			row.organization = w2ui[MASTER.formtop.name].record.organization;
 			row.responsible = w2ui[MASTER.formtop.name].record.responsible;
 
-			//обновляем контактные данные
-
-			var contacts = {};
-			contacts.adress 		= w2ui[MASTER.formleft.name].record.adress;
-			contacts.fon 			= w2ui[MASTER.formleft.name].record.fon;
-			contacts.email 			= w2ui[MASTER.formleft.name].record.email;
-			contacts.site 			= w2ui[MASTER.formleft.name].record.site;
-
-			var contactsJSON 		=  JSON.stringify(contacts, null, '\t');
-
-			row.contacts 			= contactsJSON;
 			struct.push(row);
 			//обновим константы
 			ALLCONSTANT.get();
@@ -391,10 +316,6 @@ export var MASTER = {
 			MASTER.data.organization 		= w2ui[MASTER.formtop.name].record.organization;
 			MASTER.data.responsible 		= w2ui[MASTER.formtop.name].record.responsible;
 
-			MASTER.data.adress 	= w2ui[MASTER.formleft.name].record.adress;
-			MASTER.data.fon 		= w2ui[MASTER.formleft.name].record.fon;
-			MASTER.data.email 	= w2ui[MASTER.formleft.name].record.email;
-			MASTER.data.site 		= w2ui[MASTER.formleft.name].record.site;
 			MASTER.checkData();
 
 		}
@@ -430,15 +351,16 @@ export var MASTER = {
 	
 	sendingDataServer: function () {
 		
+		let contacts = store.getState().contactinformation.data;
 
 		var all = {};
 		all.organization 	= this.data.organization;
 		all.responsible 	= this.data.responsible;
 		
-		all.adress 			= this.data.adress;
-		all.fon 			= this.data.fon;
-		all.email 			= this.data.email;
-		all.site 			= this.data.site;
+		all.adress 			= contacts.adress;
+		all.fon 			= contacts.fon;
+		all.email 			= contacts.email;
+		all.site 			= contacts.site;
 		
 		all.version			= BD.curentVersion;
 		
