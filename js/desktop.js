@@ -4,8 +4,7 @@ import {RECOUNTLAYOUT} from "./recountlayout";
 import {MASTER} from "./master";
 import {INFOMSGS} from "./infomsg";
 import * as MDO from "./mdo";
-import * as DECLARATION from "./declaration/declaration";
-import * as USAGEREPORT from "./usagereport/usagereport";
+
 
 import splashscreen from '../img/splashscreen.png'
 
@@ -121,10 +120,6 @@ DESKTOP.init = function (){
 		curentfunction : function() {
 			MDO.newMDO();
 			MDO.objectMDO.startMDO();
-			DECLARATION.newDECLARATION();
-			DECLARATION.objectDECLARATION.start();
-			USAGEREPORT.newUSAGEREPORT();
-			USAGEREPORT.objectUSAGEREPORT.start();
 			RECOUNTLAYOUT.init();
 			setTimeout(DESKTOP.serialConnectionScripts,1000);
 		},

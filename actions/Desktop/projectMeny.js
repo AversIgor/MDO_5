@@ -67,12 +67,9 @@ export function openProject() {
 
 export function saveProject() {
     return (dispatch,getState) => {
-        //DECLARATION.save()
-        //USAGEREPORT.save()
         MDO.objectMDO.background = getState().background;
         MDO.objectMDO.polygons = getState().polygons.objects;
         MDO.save();
-
         /*let objectFile = creatFileProject(MDO.objectMDO,common.getBackground(),common.getPolygons().objects)
         const asyncProcess = async () => {
             let blob = new Blob([objectFile], {type: "json;charset=utf-8"});

@@ -9,7 +9,7 @@ import Tract from '../reference/tract';
 import Methodscleanings from '../reference/methodscleanings';
 import Cuttingmethods from '../reference/cuttingmethods';
 import Publication from '../publication';
-import Breed from '../breed';
+import Breed from '../reference/breed';
 import Abris from '../Abris';
 import Styles from '../styles';
 import AbrisSettings from '../AbrisSettings';

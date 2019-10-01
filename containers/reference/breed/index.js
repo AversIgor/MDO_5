@@ -2,31 +2,26 @@ import React, { Component, Fragment  } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentBreed from "../../components/breed";
-import ComponentBreedForm from "../../components/breed/form";
-import * as breed from "../../actions/reference/breed";
-import * as publications from "../../actions/reference/publications";
-import * as tables from "../../actions/reference/tables";
+import ComponentBreed from "../../../components/reference/breed";
+import ComponentBreedForm from "../../../components/reference/breed/form";
+import * as breed from "../../../actions/reference/breed";
+import * as publications from "../../../actions/reference/publications";
+import * as tables from "../../../actions/reference/tables";
 
 class Breed extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            resize: false,
             editObject:undefined
         };
         this.showAllStatus = false
     }
 
     componentDidMount() {
-        let self = this;
         this.props.publications_fill_data({status:0});
         this.props.tables_fill_data({status:0});
         this.props.fill_data({status:0});
-        webix.event(window, "resize", function(){
-            self.setState({resize: !self.state.resize})
-        })
     }
 
     handlerShowAllStatus = () => {
@@ -38,18 +33,10 @@ class Breed extends Component {
         }
     }    
 
-    handlerAdd = () => {
-        this.props.add();
-    }
-    handlerDel = () => {
-        this.props.del();
-    }
+
     handlerEdit = (obj,values) => {
         this.props.edit(obj,values);
         this.setState({editObject: undefined})
-    }
-    handlerSorting = (by,dir,as,id) => {
-        this.props.sorting(by,dir,as,id);
     }
 
     handlerEditForm = (obj = undefined) => {
@@ -64,11 +51,11 @@ class Breed extends Component {
                 data = {this.props.data}
                 sort = {this.props.sort}
                 currentId = {this.props.currentId}
-                handlerAdd = {this.handlerAdd}
-                handlerDel = {this.handlerDel}
+                handlerAdd = {this.props.add}
+                handlerDel = {this.props.del}
                 handlerEdit = {this.handlerEdit}
                 handlerEditForm = {this.handlerEditForm}
-                handlerSorting = {this.handlerSorting}
+                handlerSorting = {this.props.sorting}
                 handlerShowAllStatus = {this.handlerShowAllStatus}
             />
             <ComponentBreedForm
