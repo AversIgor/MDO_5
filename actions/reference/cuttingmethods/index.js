@@ -41,7 +41,7 @@ export function defaultCuttingMethods() {
 export function getData(getState,repository,where) {
     const asyncProcess = async () => {
         if(!where){
-            where = getState().forestry.where;
+            where = getState().cuttingmethods.where;
         }
         let data =  await repository.find({
             where: where,

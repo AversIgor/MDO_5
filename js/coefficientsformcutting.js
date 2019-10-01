@@ -15,6 +15,7 @@ COEFFICIENTSFORMCUTTING.textQuery = "CREATE TABLE [coefficientsformcutting] (" +
 
 COEFFICIENTSFORMCUTTING.typesrates = [];
 
+
 //Структура полей
 COEFFICIENTSFORMCUTTING.structFields = function () {
     

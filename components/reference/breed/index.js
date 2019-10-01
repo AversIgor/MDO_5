@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
 export default class ComponentBreed extends Component {
 
@@ -83,8 +83,6 @@ export default class ComponentBreed extends Component {
 
     componentWillReceiveProps(nextProps) {
         common.datatableUpdate(this,nextProps)
-
-        common.formResize(this)
     }
 
     componentWillUnmount(){
@@ -96,7 +94,7 @@ export default class ComponentBreed extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
 
 }

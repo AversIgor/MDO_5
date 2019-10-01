@@ -11,13 +11,25 @@ import {Breed} from "../../TypeORM/entity/breed";
 import {Publications} from "../../TypeORM/entity/publications";
 import {Tables} from "../../TypeORM/entity/tables";
 
-export function getData(getState,repository) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
-        let where = getState().subforestry.where;
+        if(!where){
+            where = getState().breed.where;
+        }
         let data =  await repository.find({
             where: where,
         });
-        return data
+        let options = [];
+        for (let i = 0; i < data.length; i++) {
+            options.push({
+                id:data[i].id,
+                value:data[i].name
+            })
+        }
+        return {
+            data:data,
+            options:options
+        }
     }
     return asyncProcess()
 }
@@ -26,12 +38,11 @@ export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository = getRepository(Breed);
-            let data = await repository.find({
-                where: where,
-            });
+            let data = await getData(getState,repository,where);
             dispatch({
                 type: BREED_FILL_SUCCESS,
-                data: data,
+                data: data.data,
+                options: data.options,
                 where: where,
             })
         }
@@ -48,7 +59,8 @@ export function add(values = {}) {
             let data = await getData(getState,repository);
             dispatch({
                 type: BREED_ADD,
-                data: data,
+                data: data.data,
+                options: data.options,
                 currentObject: currentObject
             })
         }
@@ -68,7 +80,8 @@ export function del() {
             data = await getData(getState,repository);
             dispatch({
                 type: BREED_DEL,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         asyncProcess()
@@ -120,7 +133,8 @@ export function edit(obj,values) {
                 type: BREED_EDIT,
                 currentId: obj.id,
                 currentObject: obj,
-                data: data
+                data: data.data,
+                options: data.options,
             })
         }
         return asyncProcess()

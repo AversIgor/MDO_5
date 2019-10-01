@@ -12,7 +12,7 @@ import {Subforestry} from "../../TypeORM/entity/subforestry";
 export function getData(getState,repository,where) {
     const asyncProcess = async () => {
         if(!where){
-            where = getState().subforestry.where;
+            where = getState().tract.where;
         }
         let data =  await repository.find({
             relations: ["subforestry"],

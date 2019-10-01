@@ -78,30 +78,12 @@ export function classMDO() {
 	this.arrayOptionsplots = []; //параметры делянки
 	this.arrayOptionbreeds = []; //параметры попородно
 
-	//лесная декларация
-	//this.declaration = {};
-	
-	//использование лесов
-	//this.usagereport = {};
-
 	//Абрис v2
 	this.background = {};
 	this.polygons = {};
 	
 }
 
-classMDO.prototype.saveUserParameters = function() {
-	
-	var userParameters = {};
-	for (var key in objectMDO) {
-		if (key == 'coefficients' || key == 'arrayObjectsTaxation') {
-			continue;
-		}
-		userParameters[key] = objectMDO[key];
-	}				
-	localStorage.setItem('UserParameters', JSON.stringify(userParameters, '\t')); 		
-	
-};
 
 //заполним поля пустыми значениями
 classMDO.prototype.startMDO = function() {
@@ -116,7 +98,7 @@ classMDO.prototype.startMDO = function() {
 
 	this.methodTaxation = ENUMERATIONS.methodTaxation[0];
 	this.property 		= ENUMERATIONS.property[0];
-	this.formCutting 	= ENUMERATIONS.formCutting[0];
+	this.formCutting 	= store.getState().enumerations.formCutting;
 	this.rankTax 		= ENUMERATIONS.rankTax[0];
 	this.areacutting	= 1;
 	this.releasedate	= date+'.'+ month+'.' + year;
@@ -473,8 +455,6 @@ export function calculation() {
 		return;
 	}
 	
-	objectMDO.saveUserParameters();
-
 	allQuery = 6;
 	
 	//запросим все учетные настройки
