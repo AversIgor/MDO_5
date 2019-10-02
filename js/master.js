@@ -5,6 +5,7 @@ import {FEEDRATES} from "./feedrates";
 
 
 import {store} from "../src/app";
+
 import * as publications from "../actions/reference/publications";
 
 var btnStyle 	=		'width: 80px; margin:0 10px; padding: 5px; border-radius: 4px; border: 1px solid #B6B6B6;';
@@ -357,10 +358,13 @@ export var MASTER = {
 		all.organization 	= this.data.organization;
 		all.responsible 	= this.data.responsible;
 		
-		all.adress 			= contacts.adress;
-		all.fon 			= contacts.fon;
-		all.email 			= contacts.email;
-		all.site 			= contacts.site;
+		let contacts = store.getState().contactinformation.data;
+		if(contacts){
+			all.adress 			= contacts.adress;
+			all.fon 			= contacts.fon;
+			all.email 			= contacts.email;
+			all.site 			= contacts.site;
+		}
 		
 		all.version			= BD.curentVersion;
 		
