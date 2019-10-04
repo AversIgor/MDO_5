@@ -49,7 +49,6 @@ export default class ComponentToolbar extends Component {
                         {id: "about", value: "О программе/лицензия",},
                         {id: "site",  value: "Сайт программы"},
                         {id: "question", value: "Задать вопрос",},
-                        {id: "infomsg", value: "Информационные сообщения",},
                     ]
                 }
             ],

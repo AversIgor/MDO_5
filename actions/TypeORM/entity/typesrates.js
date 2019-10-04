@@ -3,8 +3,9 @@ import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 @Entity()
 export class Typesrates {
 
-    @PrimaryGeneratedColumn("uuid")
-    id = '';
+
+    @PrimaryGeneratedColumn()
+    id = undefined;
 
     @Column({ type: "int", nullable: true })
     status = 0;

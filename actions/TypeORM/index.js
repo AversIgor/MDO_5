@@ -78,35 +78,39 @@ export function init() {
             
             let isUpdate = false;
 
-            //Блок конвертации отдельных сборок
-            if(isNewVersions(oldVersion,"5.2.0.10")){
-                await Migration_5_2_0_10.creatEntities(options);
-                await Migration_5_2_0_10.renameTable(options);
-                await Migration_5_2_0_10.methodscleaningConvert(options);
-                await Migration_5_2_0_10.forestryConvert(options),
-                await Migration_5_2_0_10.subforestryConvert(options),
-                await Migration_5_2_0_10.tractConvert(options),
-                await Migration_5_2_0_10.cuttingmethodsConvert(options),
-                await Migration_5_2_0_10.publicationsConvert(options);
-                await Migration_5_2_0_10.breedsConvert(options);
+            console.log(oldVersion,newVersion)
+            if(oldVersion != '0.0.0.0'){
+                //Блок конвертации отдельных сборок
+                if(isNewVersions(oldVersion,"5.2.0.10")){
+                    await Migration_5_2_0_10.creatEntities(options);
+                    await Migration_5_2_0_10.renameTable(options);
+                    await Migration_5_2_0_10.methodscleaningConvert(options);
+                    await Migration_5_2_0_10.forestryConvert(options),
+                    await Migration_5_2_0_10.subforestryConvert(options),
+                    await Migration_5_2_0_10.tractConvert(options),
+                    await Migration_5_2_0_10.cuttingmethodsConvert(options),
+                    await Migration_5_2_0_10.publicationsConvert(options);
+                    await Migration_5_2_0_10.breedsConvert(options);
+                }
+
+                if(isNewVersions(oldVersion,"5.2.1.7")){
+                    //конвертация контактной информации
+                    await Migration_5_2_1_0.creatEntities(options);
+                    await Migration_5_2_1_0.ContactinformationConvert(options);
+                    await Migration_5_2_1_0.TypesratesConvert(options);
+                }
+                //Блок конвертации отдельных сборок - конец
             }
 
-            if(isNewVersions(oldVersion,"5.2.1.6")){
-                //конвертация контактной информации
-                await Migration_5_2_1_0.creatEntities(options);
-                await Migration_5_2_1_0.ContactinformationConvert(options);
-            }
-            //Блок конвертации отдельных сборок - конец
-
-            
+                        
             //Блок конвертации для всех сборок
             //для всех релизов - функции этих обработчиков безопасно запускать всегда
-            console.log(oldVersion,newVersion)
             if(isNewVersions(oldVersion,newVersion)){
                 await InitialData.creatMainStyle(options);
                 await InitialData.creatAbrisSettings(options);
                 await InitialData.creatCuttingmethods(options);
-                await InitialData.creatAbrisPrintForms(); 
+                await InitialData.creatTypesrates(options);
+                await InitialData.updateAbrisPrintForms(); 
                 isUpdate = true;
                 options.synchronize = false;
                 let connection = await createConnection(options); 
@@ -150,7 +154,7 @@ export function init() {
                     globalParameters = arrayGlobalParameters[0];
                 }
             } catch (error) {
-                //это обновление на 5.1.1.0 или первый старт
+                //это первый старт
                 //закроем существующее соединение
                 await connection.close();
                 //откроем соединение на создание таблицы globalParameters

@@ -2,7 +2,6 @@ import {BD} from "./dao";
 import {RESOURCES} from "./resources";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {MASTER} from "./master";
-import {INFOMSGS} from "./infomsg";
 import * as MDO from "./mdo";
 
 

@@ -41,6 +41,15 @@ let deleteButton = function(context){
         on:{
             'onItemClick': function(id){
                 if(context.state.selected){
+                    if(context.state.selected.predefined){
+                        window.webix.message({
+                            text:"Нельзя удалять предопределенные элементы!",
+                            type:"error", 
+                            expire: 3000,
+                            id:"message_error"
+                        });
+                        return
+                    }
                     let text    = "Пометить выбранный элемент справочника на удаление?"
                     let status  = 1
                     if(context.state.selected.status){

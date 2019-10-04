@@ -8,10 +8,12 @@ import Subforestry from '../reference/subforestry';
 import Tract from '../reference/tract';
 import Methodscleanings from '../reference/methodscleanings';
 import Cuttingmethods from '../reference/cuttingmethods';
+import Typesrates from '../reference/typesrates';
 import Publication from '../publication';
 import Breed from '../reference/breed';
 import Abris from '../Abris';
 import Styles from '../styles';
+
 import AbrisSettings from '../AbrisSettings';
 import Abrisprintforms from '../abrisprintforms';
 import Contactinformation from '../Contactinformation';
@@ -19,7 +21,6 @@ import Contactinformation from '../Contactinformation';
 
 import Oldcontent from '../Desktop/oldcontent';
 import {RECOUNTLAYOUT} from "../../js/recountlayout";
-import {TYPESRATES} from "../../js/typesrates";
 import {COEFFICIENTSFORMCUTTING} from "../../js/coefficientsformcutting";
 import {COEFFICIENTSRANGESLIQUIDATION} from "../../js/coefficientsrangesliquidation";
 import {COEFFICIENTSDAMAGE} from "../../js/coefficientsdamage";
@@ -65,9 +66,7 @@ class MDOSubsystem extends Component {
                 case "publications":
                     return <Publication/>;
                 case "typesrates":
-                    return <Oldcontent
-                        module = {TYPESRATES}
-                    />;
+                    return <Typesrates/>;
                 case "coefficientsformcutting":
                     return <Oldcontent
                         module = {COEFFICIENTSFORMCUTTING}

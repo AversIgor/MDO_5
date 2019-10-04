@@ -1,7 +1,6 @@
 import {DESKTOP} from "./desktop";
 import {CONSTANTS} from "./constants";
 import {FORESTTAX} from "./foresttax";
-import {INFOMSGS} from "./infomsg";
 import {TYPESRATES} from "./typesrates";
 import {FEEDRATES} from "./feedrates";
 import {TYPESCOEFFICIENTS} from "./typescoefficients";
@@ -9,12 +8,6 @@ import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
 import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
 import {COEFFICIENTSDAMAGE} from "./coefficientsdamage";
 import {ALLCONSTANT} from "./allconstant";
-
-
-import {PROTECTIONCATEGORY} from "./protectioncategory";
-import {ACTIONUSAGEKIND} from "./actionusagekind";
-import {USAGEKIND} from "./usageKind";
-import {RESOURCEKIND} from "./resourcekind";
 
 
 import {store} from "../src/app";
@@ -32,14 +25,13 @@ import * as FileSaver from "file-saver";
 
 //БАЗА ДАННЫХ
 export var BD = {	
-	curentVersion: '5.2.1.6',
+	curentVersion: '5.2.1.7',
 
 	db: {},
 	createTextQuery: function(){
 		//запросы на первоначальное создание БД
 		var TextQuery = [];
 		TextQuery.push(CONSTANTS.textQuery);
-		TextQuery.push(INFOMSGS.textQuery);
 		TextQuery.push(FORESTTAX.textQuery);
 		TextQuery.push(TYPESRATES.textQuery);
 		TextQuery.push(FEEDRATES.textQuery);
@@ -47,15 +39,6 @@ export var BD = {
 		TextQuery.push(COEFFICIENTSFORMCUTTING.textQuery);
 		TextQuery.push(COEFFICIENTSRANGESLIQUIDATION.textQuery);
 		TextQuery.push(COEFFICIENTSDAMAGE.textQuery);
-		TextQuery.push(PROTECTIONCATEGORY.textQuery);
-		TextQuery.push(ACTIONUSAGEKIND.textQuery);
-		TextQuery.push(USAGEKIND.textQuery);
-		TextQuery.push(RESOURCEKIND.textQuery);
-
-
-		///////////////////////
-		//ТРИГГЕРЫ	
-		///////////////////////
 
 		return TextQuery
 

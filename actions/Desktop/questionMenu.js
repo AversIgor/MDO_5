@@ -4,7 +4,6 @@ import {
 
 import {MASTER} from "../../js/master";
 import {ALLCONSTANT} from "../../js/allconstant";
-import {INFOMSGS} from "../../js/infomsg";
 
 export function clickQuestionMenu(id) {
 
@@ -28,9 +27,6 @@ export function clickQuestionMenu(id) {
             }
         }
         window.open( exec,"feedback", "width='450',height='250'" );
-    }
-    if(id == "infomsg"){
-        INFOMSGS.init(true);
     }
 
     return (dispatch,getState) => {

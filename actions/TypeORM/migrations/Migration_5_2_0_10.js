@@ -52,7 +52,6 @@ export function renameTable(conectionOption) {
         if(result[0]['count(*)']){
             await entityManager.query('ALTER TABLE methodscleaning RENAME TO old_methodscleaning');
         }
-
         result = await entityManager.query('SELECT count(*) FROM sqlite_master WHERE type="table" AND name="global_parameters"');
         if(result[0]['count(*)']){
             await entityManager.query('ALTER TABLE global_parameters RENAME TO old_global_parameters');
@@ -60,7 +59,6 @@ export function renameTable(conectionOption) {
 
         await connection.close();
     }
-
     return asyncProcess();
 }
 

@@ -350,20 +350,19 @@ export var MASTER = {
 		}
 	},
 	
-	sendingDataServer: function () {
-		
-		let contacts = store.getState().contactinformation.data;
+	sendingDataServer: function () {		
 
 		var all = {};
 		all.organization 	= this.data.organization;
 		all.responsible 	= this.data.responsible;
-		
-		let contacts = store.getState().contactinformation.data;
-		if(contacts){
-			all.adress 			= contacts.adress;
-			all.fon 			= contacts.fon;
-			all.email 			= contacts.email;
-			all.site 			= contacts.site;
+		if(store){
+			let contacts = store.getState().contactinformation.data;
+			if(contacts){
+				all.adress 			= contacts.adress;
+				all.fon 			= contacts.fon;
+				all.email 			= contacts.email;
+				all.site 			= contacts.site;
+			}
 		}
 		
 		all.version			= BD.curentVersion;

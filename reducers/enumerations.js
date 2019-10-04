@@ -9,6 +9,11 @@ const initialState = {
         {id:3,value:'Санитарные рубки',text:'Санитарные рубки'},
         {id:4,value:'Прочие рубки',text:'Прочие рубки'}
     ],
+    orderRoundingRates: [
+		{'id':1,'value':'До целых рублей'},
+		{'id':2,'value':'До десятков копеек'},
+		{'id':3,'value':'До копеек'},
+	],
 }
 
 
