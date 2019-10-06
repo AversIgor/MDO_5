@@ -21,7 +21,7 @@ import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
 import {Typesrates} from "./entity/typesrates";
-import {Foresttax} from "./entity/foresttax";
+import {Feedrates} from "./entity/feedrates";
 
 import * as settings from '../../actions/Abris/settings';
 import * as contactinformation from '../../actions/reference/contactinformation';
@@ -54,7 +54,7 @@ export function init() {
                 Abrisprintforms,
                 Contactinformation,
                 Typesrates,
-                Foresttax,
+                Feedrates,
             ]
     }
 
@@ -95,12 +95,12 @@ export function init() {
                     await Migration_5_2_0_10.breedsConvert(options);
                 }
 
-                if(isNewVersions(oldVersion,"5.2.1.8")){
+                if(isNewVersions(oldVersion,"5.2.1.9")){
                     //конвертация контактной информации
                     await Migration_5_2_1_0.creatEntities(options);
                     await Migration_5_2_1_0.ContactinformationConvert(options);
                     await Migration_5_2_1_0.TypesratesConvert(options);
-                    await Migration_5_2_1_0.ForesttaxConvert(options);
+                    await Migration_5_2_1_0.FeedratesConvert(options);
                 }
                 //Блок конвертации отдельных сборок - конец
             }
@@ -113,7 +113,6 @@ export function init() {
                 await InitialData.creatAbrisSettings(options);
                 await InitialData.creatCuttingmethods(options);
                 await InitialData.creatTypesrates(options);
-                await InitialData.creatForesttax(options);
                 await InitialData.updateAbrisPrintForms(); 
                 isUpdate = true;
                 options.synchronize = false;

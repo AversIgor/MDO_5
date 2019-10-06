@@ -12,7 +12,7 @@ import {Abrisprintforms} from "../entity/abrisprintforms"
 import {Methodscleanings} from "../entity/methodscleanings";
 
 import {store} from "../../../src/app";
-import * as publications_actions from "../../../actions/reference/publications";
+import * as publications_actions from "../../../actions/mdo/publications";
 
 export function creatEntities(conectionOption) {
     const asyncProcess = async (conectionOption) => {

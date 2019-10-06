@@ -17,13 +17,13 @@ import {Tract} from "../actions/TypeORM/entity/tract";
 import {Publications} from "../actions/TypeORM/entity/publications";
 import {Tables} from "../actions/TypeORM/entity/tables";
 import {Breed} from "../actions/TypeORM/entity/breed";
-import {add} from "../actions/reference/publications";
+import {add} from "../actions/mdo/publications";
 import * as FileSaver from "file-saver";
 
 
 //БАЗА ДАННЫХ
 export var BD = {	
-	curentVersion: '5.2.1.8',
+	curentVersion: '5.2.1.9',
 
 	db: {},
 	createTextQuery: function(){

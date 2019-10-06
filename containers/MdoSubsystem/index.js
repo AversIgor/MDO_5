@@ -9,7 +9,7 @@ import Tract from '../reference/tract';
 import Methodscleanings from '../reference/methodscleanings';
 import Cuttingmethods from '../reference/cuttingmethods';
 import Typesrates from '../reference/typesrates';
-import Publication from '../publication';
+import Publication from '../mdo/publication';
 import Breed from '../reference/breed';
 import Abris from '../Abris';
 import Styles from '../styles';

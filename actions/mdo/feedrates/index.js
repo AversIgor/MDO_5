@@ -1,15 +1,15 @@
 import {
-    CUTTINGMETHODS_FILL_SUCCESS,
-    CUTTINGMETHODS_ADD,
-    CUTTINGMETHODS_DEL,
-    CUTTINGMETHODS_EDIT,
-    CUTTINGMETHODS_SORT
-} from '../../../constants/reference/cuttingmethods'
+    FEEDRATES_FILL_SUCCESS,
+    FEEDRATES_ADD,
+    FEEDRATES_DEL,
+    FEEDRATES_EDIT,
+    FEEDRATES_SORT
+} from '../../../constants/mdo/feedrates'
 import {getRepository} from "typeorm";
-import {Foresttax} from "../../TypeORM/entity/foresttax";
+import {Feedrates} from "../../TypeORM/entity/feedrates";
 
 let resources = '../../../resources/'
-export function defaultForesttax() {
+export function getForesttax() {
 
     const asyncProcess = async () => {
         let payment_rates = await $.ajax(resources+'Payment_rates.xml');
@@ -31,10 +31,10 @@ export function defaultForesttax() {
 }
 
 
-/*export function getData(getState,repository,where) {
+export function getData(getState,repository,where) {
     const asyncProcess = async () => {
         if(!where){
-            where = getState().cuttingmethods.where;
+            where = getState().feedrates.where;
         }
         let data =  await repository.find({
             where: where,
@@ -57,10 +57,10 @@ export function defaultForesttax() {
 export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository = getRepository(Cuttingmethods);
+            let repository = getRepository(Feedrates);
             let data = await getData(getState,repository,where);
             dispatch({
-                type: CUTTINGMETHODS_FILL_SUCCESS,
+                type: FEEDRATES_FILL_SUCCESS,
                 data: data.data,
                 options: data.options,
                 where: where
@@ -73,12 +73,12 @@ export function fill_data(where = {}) {
 export function add() {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository      = getRepository(Cuttingmethods);
+            let repository      = getRepository(Feedrates);
             let currentObject   = repository.create();
             await repository.save(currentObject);
             let data = await getData(getState,repository);
             dispatch({
-                type: CUTTINGMETHODS_ADD,
+                type: FEEDRATES_ADD,
                 data: data.data,
                 options: data.options,
             })
@@ -90,7 +90,7 @@ export function add() {
 export function del(ids) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository      = getRepository(Cuttingmethods);
+            let repository      = getRepository(Feedrates);
             let data = await repository.find({
                 where: {status:1},
             });
@@ -98,7 +98,7 @@ export function del(ids) {
             webix.message({ type:"info", text:'Удалено '+data.length+' элементов'});
             data = await getData(getState,repository);
             dispatch({
-                type: CUTTINGMETHODS_DEL,
+                type: FEEDRATES_DEL,
                 data: data.data,
                 options: data.options,
             })
@@ -110,7 +110,7 @@ export function del(ids) {
 export function edit(obj,values) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository      = getRepository(Cuttingmethods);
+            let repository      = getRepository(Feedrates);
             if(obj){
                 for (var property in values) {
                     obj[property] = values[property]
@@ -119,7 +119,7 @@ export function edit(obj,values) {
             }
             let data = await getData(getState,repository);
             dispatch({
-                type: CUTTINGMETHODS_EDIT,
+                type: FEEDRATES_EDIT,
                 currentId: obj.id,
                 data: data.data,
                 options: data.options,
@@ -132,7 +132,7 @@ export function edit(obj,values) {
 export function sorting(by,dir,as,id) {
     return (dispatch,getState) => {
         dispatch({
-            type: CUTTINGMETHODS_SORT,
+            type: FEEDRATES_SORT,
             currentId: id,
             sort: {
                 by:by,

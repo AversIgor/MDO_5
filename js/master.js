@@ -6,7 +6,7 @@ import {FEEDRATES} from "./feedrates";
 
 import {store} from "../src/app";
 
-import * as publications from "../actions/reference/publications";
+import * as publications from "../actions/mdo/publications";
 
 var btnStyle 	=		'width: 80px; margin:0 10px; padding: 5px; border-radius: 4px; border: 1px solid #B6B6B6;';
 
@@ -32,7 +32,7 @@ export var MASTER = {
 		focus  : -1,
 		fields : [
 			{ field: 'publication', type: 'list',options :{items: this.publication}, html: { caption: 'Сортиментная таблица:', span: '9', attr: 'style="width: 100%"'}, required: true},
-			{ field: 'foresttax', type: 'list',options :{items: this.foresttax}, html: { caption: 'Лесотаксовый район:', span: '9', attr: 'style="width: 100%"'}, required: true},
+			{ field: 'foresttax', type: 'list',options :{items: this.foresttax}, html: { caption: 'Лесотаксовый район:', span: '9', attr: 'style="width: 100%"'}},
 			{ field: 'organization', type: 'text', html: { caption: 'Организация:', span: '9', attr: 'style="width: 100%"'}, required: true },
 			{ field: 'responsible', type: 'text', html: { caption: 'Ответственный:', span: '9', attr: 'style="width: 100%"'}, required: true },	
 		]
@@ -276,17 +276,17 @@ export var MASTER = {
 			return;
 		}
 
-		//w2popup.close();заблокируем форму
-
 		w2popup.lock('Запись...', true);
 
 		const asyncProcess = async (publications) => {
 
-			if(w2ui[MASTER.formtop.name].record.publication.id != MASTER.data.curentpublication.id){
-				await store.dispatch(publications.add(w2ui[MASTER.formtop.name].record.publication.id));
+			if(this.data.curentpublication != undefined){
+				if(w2ui[MASTER.formtop.name].record.publication.id != MASTER.data.curentpublication.id){
+					await store.dispatch(publications.add(w2ui[MASTER.formtop.name].record.publication.id));
+				}
 			}
 
-			if(w2ui[MASTER.formtop.name].record.foresttax.id != MASTER.data.curentforesttax.id){
+			/*if(w2ui[MASTER.formtop.name].record.foresttax.id != MASTER.data.curentforesttax.id){
 				FEEDRATES.foresttax_Name = w2ui[MASTER.formtop.name].record.foresttax.text;
 				FEEDRATES.ratesArray.splice(0, FEEDRATES.ratesArray.length);
 				await FEEDRATES.fillbreeds()
@@ -297,7 +297,7 @@ export var MASTER = {
 				row.foresttax = w2ui[MASTER.formtop.name].record.foresttax.id;
 				struct.push(row);
 				BD.edit(CONSTANTS, struct, ALLCONSTANT.get);
-			}
+			}*/
 
 			//обновляем организацию и ответственного в константе
 			var struct = [];
@@ -326,14 +326,8 @@ export var MASTER = {
 
 	checkData: function () {
 
-		var isValidData = false;
+		var isValidData = true;
 		
-		if(this.data.curentpublication != undefined && this.data.curentforesttax != undefined) {
-			if(this.data.curentpublication.hasOwnProperty('id') && this.data.curentforesttax.hasOwnProperty('id') && this.data.organization != null && this.data.responsible != null){
-				isValidData = true;
-			}
-		}
-
 		if(this.formOpen == false){
 			if(isValidData == true){
 				this.sendingDataServer();
