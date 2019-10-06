@@ -2,7 +2,6 @@ import {BD} from "./dao";
 import {RESOURCES} from "./resources";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {MASTER} from "./master";
-import {INFOMSGS} from "./infomsg";
 import * as MDO from "./mdo";
 
 
@@ -51,20 +50,7 @@ DESKTOP.init = function (){
 		}
 		scriptsarray.push(script);
 
-		var script = {
-			curentfunction : function() {
-				RESOURCES.foresttaxGet();
-			},
-			description: 'Обновление лесотаксовых районов...'
-		}
-		scriptsarray.push(script);
-		var script = {
-			curentfunction : function() {
-				RESOURCES.typesratesCheck();
-			},
-			description: 'Обновление видов ставок платы...'
-		}
-		scriptsarray.push(script);
+
 		 var script = {
 			curentfunction : function() {
 				RESOURCES.typescoefficientsLoad();

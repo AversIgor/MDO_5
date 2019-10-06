@@ -1,22 +1,45 @@
-import {createConnection,getManager,getConnection,getRepository} from "typeorm";
-import {Methodscleanings} from "../entity/methodscleanings";
-import {Styles} from "../entity/styles";
-import {Abrissettings} from "../entity/abrissettings";
-import {Forestry} from "../entity/forestry";
-import {Subforestry} from "../entity/subforestry";
-import {Tract} from "../entity/tract";
-import {Cuttingmethods} from "../entity/cuttingmethods";
-import {Publications} from "../entity/publications";
+import {createConnection, getManager, TableColumn} from "typeorm";
+import {Styles} from "../entity/styles"
+import {Abrissettings} from "../entity/abrissettings"
+import {Forestry} from "../entity/forestry"
+import {Subforestry} from "../entity/subforestry"
+import {Tract} from "../entity/tract"
+import {Cuttingmethods} from "../entity/cuttingmethods"
+import {Publications} from "../entity/publications"
+import {Tables} from "../entity/tables";
 import {Breed} from "../entity/breed";
-import {defaultStyle} from "../../reference/styles";
-import {defaultSettings} from "../../Abris/settings";
-import {defaultCuttingMethods} from "../../reference/cuttingmethods";
-import {Contactinformation} from "../entity/contactinformation";
-
+import {Abrisprintforms} from "../entity/abrisprintforms"
+import {Methodscleanings} from "../entity/methodscleanings";
 
 import {store} from "../../../src/app";
-import * as publications from "../../../actions/reference/publications";
+import * as publications_actions from "../../../actions/mdo/publications";
 
+export function creatEntities(conectionOption) {
+    const asyncProcess = async (conectionOption) => {
+        let newOption = {...conectionOption}
+        newOption.synchronize = true;
+        try {
+            newOption.entities = [
+                Styles,
+                Abrissettings,
+                Forestry,
+                Subforestry,
+                Tract,
+                Cuttingmethods,
+                Publications,
+                Tables,
+                Breed,
+                Abrisprintforms,
+            ]
+            let connection      = await createConnection(newOption);
+            await connection.close();
+        } catch (error) {
+
+        }
+
+    }
+    return asyncProcess(conectionOption);
+}
 
 export function renameTable(conectionOption) {
 
@@ -29,7 +52,6 @@ export function renameTable(conectionOption) {
         if(result[0]['count(*)']){
             await entityManager.query('ALTER TABLE methodscleaning RENAME TO old_methodscleaning');
         }
-
         result = await entityManager.query('SELECT count(*) FROM sqlite_master WHERE type="table" AND name="global_parameters"');
         if(result[0]['count(*)']){
             await entityManager.query('ALTER TABLE global_parameters RENAME TO old_global_parameters');
@@ -37,7 +59,6 @@ export function renameTable(conectionOption) {
 
         await connection.close();
     }
-
     return asyncProcess();
 }
 
@@ -223,7 +244,7 @@ export function publicationsConvert(conectionOption) {
                         load:rawData[i].load,                        
                     });
                     await repository.save(newObject);                    
-                    await store.dispatch(publications.add(rawData[i].id));
+                    await store.dispatch(publications_actions.add(rawData[i].id));
                 }
             }
         }
@@ -263,91 +284,3 @@ export function breedsConvert(conectionOption) {
 
     return asyncProcess();
 }
-
-export function creatMainStyle(conectionOption) {
-
-    const asyncProcess = async () => {
-        conectionOption.synchronize = false;
-        let connection      = await createConnection(conectionOption);
-        let repository = getRepository(Styles);
-        let styles =  await repository.find({ main: 1});
-        if(styles.length == 0){
-            let newObject   = repository.create({
-                name:'Основной стиль',
-                main:true,
-                style:JSON.stringify(defaultStyle())
-                
-            })
-            await repository.save(newObject);            
-        }  
-        await connection.close();
-    }
-    return asyncProcess();
-}
-
-export function creatAbrisSettings(conectionOption) {
-
-    const asyncProcess = async () => {
-        conectionOption.synchronize = false;
-        let connection      = await createConnection(conectionOption);
-        let repository = getRepository(Abrissettings);
-        let styles =  await repository.find();
-        if(styles.length == 0){
-            let newObject   = repository.create({
-                settings:JSON.stringify(defaultSettings())
-            })
-            await repository.save(newObject);
-        }
-        await connection.close();
-    }
-    return asyncProcess();
-}
-
-export function creatCuttingmethods(conectionOption) {
-
-    const asyncProcess = async () => {
-        conectionOption.synchronize = false;
-        let connection      = await createConnection(conectionOption);
-        let repository = getRepository(Cuttingmethods);
-        let cuttingmethods =  await repository.find();
-        if(cuttingmethods.length == 0){
-            let arrayCuttingMethods = defaultCuttingMethods()
-            for (var i = 0; i < arrayCuttingMethods.length; i++) {
-                let newObject   = repository.create(arrayCuttingMethods[i])
-                await repository.save(newObject);                
-            }
-        }
-        await connection.close();
-    }
-    return asyncProcess();
-}
-
-export function ContactinformationConvert(conectionOption) {
-
-    const asyncProcess = async () => {
-        conectionOption.synchronize = false;
-        let connection      = await createConnection(conectionOption);
-        let entityManager   = getManager();
-
-        let result = await entityManager.query('SELECT count(*) FROM sqlite_master WHERE type="table" AND name="constants"');
-        if(result[0]['count(*)']){
-            let repository      = getRepository(Contactinformation);
-            let rows = await repository.find();
-            if(!rows.length){
-                const rawData = await entityManager.query('SELECT * FROM constants');
-                for (var i = 0; i < rawData.length; i++) {
-                    let newObject   = {
-                        id:rawData[i].recid,
-                        contacts:JSON.parse(rawData[i].contacts),
-                    };
-                    await repository.save(newObject);
-                }
-            }
-        }
-
-        await connection.close();
-    }
-
-    return asyncProcess();
-}
-

@@ -1,5 +1,4 @@
 import {ENUMERATIONS} from "./enumerations";
-import {TYPESRATES} from "./typesrates";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {BD} from "./dao";
 
@@ -9,6 +8,7 @@ import * as forestry from "../actions/reference/forestry";
 import * as subforestry from "../actions/reference/subforestry";
 import * as tract from "../actions/reference/tract";
 import * as cuttingmethods from "../actions/reference/cuttingmethods";
+import * as typesrates from "../actions/reference/typesrates";
 
 var objectMDO;
 
@@ -287,6 +287,27 @@ PARAMETERS.fillMethodscleanings = function () {
 	asyncProcess(methodscleanings);
 } 
 
+PARAMETERS.fillTypesrates = function () {
+
+	PARAMETERS.typesrates.splice(0,PARAMETERS.typesrates.length);
+	const asyncProcess = async (typesrates) => {
+		await store.dispatch(typesrates.fill_data({status:0}));
+		let data = store.getState().typesrates.data;
+		for (var i = 0; i < data.length; i++) {
+			var row = {};
+			for (var property in data[i]) {
+				if (property == "name") {
+					row.text = data[i][property];
+				} else {
+					row[property] = data[i][property];
+				}
+			}
+			PARAMETERS.typesrates.push(row);
+		}
+	}
+	asyncProcess(typesrates);
+} 
+
 PARAMETERS.fillCuttingmethods = function () {
 
 	PARAMETERS.cuttingmethods.splice(0,PARAMETERS.cuttingmethods.length);
@@ -312,10 +333,7 @@ PARAMETERS.fillCuttingmethods = function () {
 
  
 PARAMETERS.beforeOpening = function () {
-
-	PARAMETERS.typesrates.splice(0,PARAMETERS.typesrates.length);	
-	BD.fillList(TYPESRATES, PARAMETERS.typesrates, ['recid', 'name', 'orderroundingrates', 'predefined', 'coefficientsindexing'],PARAMETERS.whenOpening);
-
+	PARAMETERS.whenOpening()
 }  
 
 PARAMETERS.visibility = function () {
@@ -416,7 +434,10 @@ PARAMETERS.whenOpening = function (dataSet) {
 		PARAMETERS.fillSubforestry(objectMDO.forestry.id)
 		PARAMETERS.fillTract(objectMDO.subforestry.id)
 		PARAMETERS.fillMethodscleanings()
-		PARAMETERS.fillCuttingmethods()	
+		PARAMETERS.fillCuttingmethods()
+		PARAMETERS.fillTypesrates()
+		
+	
 
 		w2ui[PARAMETERS.config.formCutting.name].set('formCutting', { options :{items: store.getState().enumerations.formCutting} });		
 		w2ui[PARAMETERS.config.formCutting.name].set('groupCutting', { options :{items: store.getState().enumerations.groupCutting} });

@@ -1,7 +1,7 @@
 import {BD} from "./dao";
 import {GRIDFORM} from "./gridform";
 import {ENUMERATIONS} from "./enumerations";
-import {TYPESRATES} from "./typesrates";
+
 
 
 //КОЭФФИЦИЕНТЫ НА ФОРМУ РУБКИ

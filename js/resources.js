@@ -1,7 +1,5 @@
 import {DESKTOP} from "./desktop";
 import {BD} from "./dao";
-import {FORESTTAX} from "./foresttax";
-import {TYPESRATES} from "./typesrates";
 import {TYPESCOEFFICIENTS} from "./typescoefficients";
 import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
 import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
@@ -18,59 +16,6 @@ RESOURCES.allQueryComplit = function (xml) {
 
 //БЛОК ЗАГРУЗКИ ЛЕСОТАКСОВЫХ РАЙОНОВ
 
-RESOURCES.foresttaxGet = function () {
-	
-	jQuery.get('resources/Payment_rates.xml', {},function(temp){
-		RESOURCES.foresttaxParser(temp);
-	}, 'xml')
-}
-
-RESOURCES.foresttaxParser = function (xml) {
-
-	var recid = 0;
-	var struct = [];
-    $(xml).find("Description").children().each(function () {
-		recid = recid+1;
-		var data = {};
-		data.name = $(this).attr("Name");
-		data.recid = recid;
-		struct.push(data);	
-    });
-	
-	BD.addArray(FORESTTAX, struct, RESOURCES.foresttaxComplit);
-	
-
-}
-
-RESOURCES.foresttaxComplit = function () {
-   
-	RESOURCES.allQueryComplit();
-	
-}
-//БЛОК ЗАГРУЗКИ ЛЕСОТАКСОВЫХ РАЙОНОВ - КОНЕЦ
-
-//БЛОК ЗАГРУЗКИ ПРЕДОПРЕДЕЛЕННЫХ ВИДОВ СТАВОК
-RESOURCES.typesratesCheck = function () {
-
-	var struct = [];
-	var row = {};
-	row.recid = 1;
-	row.orderroundingrates = 2;
-	row.predefined = 1;
-	row.name = "Ставки Федерального уровня";
-	row.coefficientsindexing = 1.43;
-	struct.push(row);	
-	BD.addArray(TYPESRATES, struct, RESOURCES.typesratesComplit);
-
-}
-
-RESOURCES.typesratesComplit = function () {
-
-	RESOURCES.allQueryComplit();
-
-}
-
-//БЛОК ЗАГРУЗКИ ПРЕДОПРЕДЕЛЕННЫХ ВИДОВ СТАВОК - КОНЕЦ
 
 //БЛОК ЗАГРУЗКИ ПРЕДОПРЕДЕЛЕННЫХ КОЭФФИЦИЕНТОВ
 RESOURCES.typescoefficientsLoad = function () {    

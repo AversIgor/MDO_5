@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentPublications from "../../components/publications";
-import {fill_data,add,del,edit,sorting,fill_listPublication} from "../../actions/reference/publications";
+import ComponentPublications from "../../../components/publications";
+import {fill_data,add,del,edit,sorting,fill_listPublication} from "../../../actions/mdo/publications";
 
 class Publications extends Component {
 

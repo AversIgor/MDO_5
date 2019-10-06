@@ -3,9 +3,9 @@ import {
     ORM_COMPLETE,
     ORM_INIT
 } from '../../constants/TypeORM'
-import * as defaultMigration from "./migrations/Migration_5_1_0_0";
-import {Migration_5_2_0_4} from "./migrations/Migration_5_2_0_4";
-import {Migration_5_2_1_0} from "./migrations/Migration_5_2_1_0";
+import * as InitialData from "./InitialData";
+import * as Migration_5_2_0_10 from "./migrations/Migration_5_2_0_10";
+import * as Migration_5_2_1_0 from "./migrations/Migration_5_2_1_0";
 
 import {GlobalParameters} from "./entity/globalParameters";
 import {Methodscleanings} from "./entity/methodscleanings";
@@ -20,12 +20,13 @@ import {Tables} from "./entity/tables";
 import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
+import {Typesrates} from "./entity/typesrates";
+import {Feedrates} from "./entity/feedrates";
 
 import * as settings from '../../actions/Abris/settings';
 import * as contactinformation from '../../actions/reference/contactinformation';
 
 
-import {updatePredefinedAbrisPrintForms} from "../../actions/reference/abrisprintforms";
 
 
 export function init() {
@@ -52,6 +53,8 @@ export function init() {
                 Breed,
                 Abrisprintforms,
                 Contactinformation,
+                Typesrates,
+                Feedrates,
             ]
     }
 
@@ -77,44 +80,48 @@ export function init() {
             
             let isUpdate = false;
 
-            //Блок конвертации отдельных сборок
-            if(isNewVersions(oldVersion,"5.2.0.10")){
-                await Migration_5_2_0_4(options);
+            console.log(oldVersion,newVersion)
+            if(oldVersion != '0.0.0.0'){
+                //Блок конвертации отдельных сборок
+                if(isNewVersions(oldVersion,"5.2.0.10")){
+                    await Migration_5_2_0_10.creatEntities(options);
+                    await Migration_5_2_0_10.renameTable(options);
+                    await Migration_5_2_0_10.methodscleaningConvert(options);
+                    await Migration_5_2_0_10.forestryConvert(options),
+                    await Migration_5_2_0_10.subforestryConvert(options),
+                    await Migration_5_2_0_10.tractConvert(options),
+                    await Migration_5_2_0_10.cuttingmethodsConvert(options),
+                    await Migration_5_2_0_10.publicationsConvert(options);
+                    await Migration_5_2_0_10.breedsConvert(options);
+                }
+
+                if(isNewVersions(oldVersion,"5.2.1.9")){
+                    //конвертация контактной информации
+                    await Migration_5_2_1_0.creatEntities(options);
+                    await Migration_5_2_1_0.ContactinformationConvert(options);
+                    await Migration_5_2_1_0.TypesratesConvert(options);
+                    await Migration_5_2_1_0.FeedratesConvert(options);
+                }
+                //Блок конвертации отдельных сборок - конец
             }
 
-            if(isNewVersions(oldVersion,"5.2.1.6")){
-                await Migration_5_2_1_0(options);
-            }
-
-            //Блок конвертации отдельных сборок - конец
-
+                        
             //Блок конвертации для всех сборок
             //для всех релизов - функции этих обработчиков безопасно запускать всегда
             if(isNewVersions(oldVersion,newVersion)){
-                await defaultMigration.renameTable(options);
-                await defaultMigration.methodscleaningConvert(options);
-                await defaultMigration.forestryConvert(options),
-                await defaultMigration.subforestryConvert(options),
-                await defaultMigration.tractConvert(options),
-                await defaultMigration.cuttingmethodsConvert(options),
-                await defaultMigration.creatMainStyle(options);
-                await defaultMigration.creatAbrisSettings(options);
-                await defaultMigration.creatCuttingmethods(options);
-                await defaultMigration.publicationsConvert(options);
-                await defaultMigration.breedsConvert(options);
-                await defaultMigration.ContactinformationConvert(options);
-            }
-            //Блок конвертации для всех сборок - конец           
-            
-            if(isNewVersions(oldVersion,newVersion)){
+                await InitialData.creatMainStyle(options);
+                await InitialData.creatAbrisSettings(options);
+                await InitialData.creatCuttingmethods(options);
+                await InitialData.creatTypesrates(options);
+                await InitialData.updateAbrisPrintForms(); 
                 isUpdate = true;
                 options.synchronize = false;
-                let connection = await createConnection(options);
-                let repository = getRepository(GlobalParameters);
-                await repository.updateById(1,{versionDB:newVersion});
-                await updatePredefinedAbrisPrintForms();//обновление печатных форм                
+                let connection = await createConnection(options); 
+                let repository = getRepository(GlobalParameters);              
+                await repository.updateById(1,{versionDB:newVersion});                     
                 await connection.close();
             }
+            //Блок конвертации для всех сборок - конец
             return isUpdate;
         }
         return asyncProcess();
@@ -123,7 +130,6 @@ export function init() {
     //стартовая инициализация основных настроек
     const initModels = function (dispatch) {
         const asyncProcess = async () => {
-            console.log('initModels')
             await dispatch(settings.fill_data());//инициализация настроек абриса
             await dispatch(contactinformation.fill_data());//инициализация контактной информации            
         }
@@ -151,7 +157,7 @@ export function init() {
                     globalParameters = arrayGlobalParameters[0];
                 }
             } catch (error) {
-                //это обновление на 5.1.1.0 или первый старт
+                //это первый старт
                 //закроем существующее соединение
                 await connection.close();
                 //откроем соединение на создание таблицы globalParameters

@@ -14,8 +14,8 @@ import {getRepository,getConnection} from "typeorm";
 
 import {Publications} from "../../TypeORM/entity/publications";
 import {Tables} from "../../TypeORM/entity/tables";
-import * as tables from "../tables";
-import * as breed from "../breed";
+import * as tables from "../../reference/tables";
+import * as breed from "../../reference/breed";
 
 let publicationsResources = '../../../resources/'
 

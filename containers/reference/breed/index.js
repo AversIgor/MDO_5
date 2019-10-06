@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import ComponentBreed from "../../../components/reference/breed";
 import ComponentBreedForm from "../../../components/reference/breed/form";
 import * as breed from "../../../actions/reference/breed";
-import * as publications from "../../../actions/reference/publications";
+import * as publications from "../../../actions/mdo/publications";
 import * as tables from "../../../actions/reference/tables";
 
 class Breed extends Component {
