@@ -13,8 +13,9 @@ export default class ComponentLeftMenu extends Component {
         var menu = {
             container:ReactDOM.findDOMNode(this.refs.root),
             id:'container_left_menu',
-            rows:[
-            {
+            width:220,
+             rows:[
+            /*{
                 css: "menu",
                 padding: 2,
                 view: "form",
@@ -26,8 +27,8 @@ export default class ComponentLeftMenu extends Component {
                         }
                     }
                 ]
-            },
-            {
+            },*/
+           /* {
                 view: "sidebar",
                 id:'left_menu',
                 data: self.props.data,  
@@ -36,10 +37,22 @@ export default class ComponentLeftMenu extends Component {
                         self.props.clickMenu(id);
                     }
                 }
+            }*/
+            
+            {
+                view:"grouplist",
+                id:"left_menu",
+                select:true,
+                data:self.props.data,
+                on:{
+                    onAfterSelect: function(id){
+                        self.props.clickMenu(id);
+                    }
+                }
             }
         ]}
         this.ui = window.webix.ui(menu);
-        this.props.resizeLeftMenu($$("left_menu").$width)
+        this.props.resizeLeftMenu($$("left_menu").$width+17)
     }
 
     componentDidUpdate(prevProps, prevState){

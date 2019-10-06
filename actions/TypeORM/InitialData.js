@@ -3,11 +3,13 @@ import {Styles} from "../TypeORM/entity/styles"
 import {Abrissettings} from "../TypeORM/entity/abrissettings"
 import {Cuttingmethods} from "../TypeORM/entity/cuttingmethods"
 import {Typesrates} from "../TypeORM/entity/typesrates"
+import {Foresttax} from "../TypeORM/entity/foresttax"
 
 import {defaultStyle} from "../reference/styles";
 import {defaultSettings} from "../Abris/settings";
 import {defaultCuttingMethods} from "../reference/cuttingmethods";
 import {defaultTypesrates} from "../reference/typesrates";
+import {defaultForesttax} from "../reference/foresttax";
 
 import {updatePredefinedAbrisPrintForms} from "../../actions/reference/abrisprintforms";
 
@@ -79,6 +81,25 @@ export function creatTypesrates(conectionOption) {
             let arrayTypesrates = defaultTypesrates()
             for (var i = 0; i < arrayTypesrates.length; i++) {
                 let newObject   = repository.create(arrayTypesrates[i])
+                await repository.save(newObject);                
+            }
+        }
+        await connection.close();
+    }
+    return asyncProcess();
+}
+
+export function creatForesttax(conectionOption) {
+
+    const asyncProcess = async () => {
+        conectionOption.synchronize = false;
+        let connection      = await createConnection(conectionOption);
+        let repository = getRepository(Foresttax);
+        let foresttax =  await repository.find();
+        if(foresttax.length == 0){
+            let arrayForesttax = await defaultForesttax()
+            for (var i = 0; i < arrayForesttax.length; i++) {
+                let newObject   = repository.create(arrayForesttax[i])
                 await repository.save(newObject);                
             }
         }

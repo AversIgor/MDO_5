@@ -50,20 +50,7 @@ DESKTOP.init = function (){
 		}
 		scriptsarray.push(script);
 
-		var script = {
-			curentfunction : function() {
-				RESOURCES.foresttaxGet();
-			},
-			description: 'Обновление лесотаксовых районов...'
-		}
-		scriptsarray.push(script);
-		var script = {
-			curentfunction : function() {
-				RESOURCES.typesratesCheck();
-			},
-			description: 'Обновление видов ставок платы...'
-		}
-		scriptsarray.push(script);
+
 		 var script = {
 			curentfunction : function() {
 				RESOURCES.typescoefficientsLoad();

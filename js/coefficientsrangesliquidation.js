@@ -2,7 +2,7 @@ import {BD} from "./dao";
 import {GRIDFORM} from "./gridform";
 import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
 import {ENUMERATIONS} from "./enumerations";
-import {TYPESRATES} from "./typesrates";
+
 
 
 //КОЭФФИЦИЕНТЫ НА ЛИКВИДНЫЙ ЗАПАС

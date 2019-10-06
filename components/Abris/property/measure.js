@@ -51,7 +51,7 @@ let ui = function(setSelected,contourDelete,contourAdd,props){
                 id:'plot_circuit',
                 select:"row",
                 editable:true,
-                editaction:"dblclick",
+                editaction:"click",
                 columns:[],
                 data: [],
                 on:{

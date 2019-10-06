@@ -1,7 +1,5 @@
 import {DESKTOP} from "./desktop";
 import {CONSTANTS} from "./constants";
-import {FORESTTAX} from "./foresttax";
-import {TYPESRATES} from "./typesrates";
 import {FEEDRATES} from "./feedrates";
 import {TYPESCOEFFICIENTS} from "./typescoefficients";
 import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
@@ -25,15 +23,13 @@ import * as FileSaver from "file-saver";
 
 //БАЗА ДАННЫХ
 export var BD = {	
-	curentVersion: '5.2.1.7',
+	curentVersion: '5.2.1.8',
 
 	db: {},
 	createTextQuery: function(){
 		//запросы на первоначальное создание БД
 		var TextQuery = [];
 		TextQuery.push(CONSTANTS.textQuery);
-		TextQuery.push(FORESTTAX.textQuery);
-		TextQuery.push(TYPESRATES.textQuery);
 		TextQuery.push(FEEDRATES.textQuery);
 		TextQuery.push(TYPESCOEFFICIENTS.textQuery);
 		TextQuery.push(COEFFICIENTSFORMCUTTING.textQuery);
@@ -711,26 +707,7 @@ export var BD = {
 		BD.edit(CONSTANTS, struct, ALLCONSTANT.get);
 	},
 
-	fillRatesTypes: function (data){
-		const asyncProcess = async () => {
-			let entityManager = getManager();
-			await entityManager.query('DELETE FROM typesrates');
-			var struct = [];
-			for (var i = 0; i < data.length; i++) {
-				let row = {
-					recid:data[i].id,
-					predefined:data[i].predefined,
-					name:data[i].name,
-					orderroundingrates:data[i].orderroundingrates,
-					coefficientsindexing:data[i].coefficientsindexing,
-				};
-				struct.push(row);
-			}
-			BD.addArray(TYPESRATES, struct);
-		}
-		return asyncProcess()
-
-	},
+	
 
 	fillFeeds: function (data){
 		const asyncProcess = async () => {

@@ -1,6 +1,7 @@
 import {createConnection, getManager, TableColumn,getRepository} from "typeorm";
 import {Contactinformation} from "../entity/contactinformation"
 import {Typesrates} from "../entity/typesrates"
+import {Foresttax} from "../entity/foresttax"
 
 export function creatEntities(conectionOption) {
     const asyncProcess = async (conectionOption) => {
@@ -9,7 +10,8 @@ export function creatEntities(conectionOption) {
         try {
             newOption.entities = [
                 Contactinformation,
-                Typesrates
+                Typesrates,
+                Foresttax,
             ]
             let connection      = await createConnection(newOption);
             await connection.close();
@@ -81,3 +83,33 @@ export function TypesratesConvert(conectionOption) {
 
     return asyncProcess();
 }
+
+export function ForesttaxConvert(conectionOption) {
+
+    const asyncProcess = async () => {
+        conectionOption.synchronize = false;
+        let connection      = await createConnection(conectionOption);
+        let entityManager   = getManager();        
+
+        let result = await entityManager.query('SELECT count(*) FROM sqlite_master WHERE type="table" AND name="foresttax"');
+        if(result[0]['count(*)']){
+            let repository     = getRepository(Foresttax);
+            let rows = await repository.find();
+            if(!rows.length){
+                const rawData = await entityManager.query('SELECT * FROM foresttax');
+                for (var i = 0; i < rawData.length; i++) {
+                    let newObject   = {
+                        id:rawData[i].recid,
+                        name:rawData[i].name,
+                    };
+                    await repository.save(newObject);
+                }
+            }
+        }
+
+        await connection.close();
+    }
+
+    return asyncProcess();
+}
+

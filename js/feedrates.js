@@ -1,8 +1,6 @@
 import {BD} from "./dao";
 import {GRIDFORM} from "./gridform";
-import {TYPESRATES} from "./typesrates";
 import {CONSTANTS} from "./constants";
-import {FORESTTAX} from "./foresttax";
 import {ENUMERATIONS} from "./enumerations";
 
 
@@ -222,7 +220,7 @@ FEEDRATES.beforeOpening = function () {
 	FEEDRATES.foresttax.splice(0, FEEDRATES.foresttax.length);
 	FEEDRATES.fillbreeds();
     BD.fillList(TYPESRATES, this.typesrates, ['recid', 'name']);
-	BD.fillList(FORESTTAX, this.foresttax, ['recid', 'name']);
+	//BD.fillList(FORESTTAX, this.foresttax, ['recid', 'name']);
 
     BD.filldata(this, this.whenOpening);
 

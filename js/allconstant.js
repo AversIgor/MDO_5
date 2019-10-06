@@ -1,5 +1,4 @@
 import {BD} from "./dao";
-import {FORESTTAX} from "./foresttax";
 import {CONSTANTS} from "./constants";
 import {ENUMERATIONS} from "./enumerations";
 
@@ -36,7 +35,7 @@ ALLCONSTANT.fillpublication = function (data) {
 
 	var conditions = {};
 	
-	BD.fillListWithConditions(FORESTTAX,['recid', 'name'],conditions,ALLCONSTANT.fillforesttax);	
+	//BD.fillListWithConditions(FORESTTAX,['recid', 'name'],conditions,ALLCONSTANT.fillforesttax);	
 
 } 
 

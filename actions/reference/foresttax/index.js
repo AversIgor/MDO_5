@@ -1,27 +1,40 @@
 import {
-    TYPESRATES_FILL_SUCCESS,
-    TYPESRATES_ADD,
-    TYPESRATES_DEL,
-    TYPESRATES_EDIT,
-    TYPESRATES_SORT
-} from '../../../constants/reference/typesrates'
+    CUTTINGMETHODS_FILL_SUCCESS,
+    CUTTINGMETHODS_ADD,
+    CUTTINGMETHODS_DEL,
+    CUTTINGMETHODS_EDIT,
+    CUTTINGMETHODS_SORT
+} from '../../../constants/reference/cuttingmethods'
 import {getRepository} from "typeorm";
-import {Typesrates} from "../../TypeORM/entity/typesrates";
+import {Foresttax} from "../../TypeORM/entity/foresttax";
 
-export function defaultTypesrates() {
+let resources = '../../../resources/'
+export function defaultForesttax() {
 
-    let struct = [
-        {'id':1,'status':0,'orderroundingrates':2,'predefined':true,'coefficientsindexing':1.43,'name':'Ставки Федерального уровня'},        
-    ]
-
-    return struct
+    const asyncProcess = async () => {
+        let payment_rates = await $.ajax(resources+'Payment_rates.xml');
+        if(typeof (payment_rates) == 'string'){
+            payment_rates = $.parseXML(payment_rates)
+        }
+        let struct = [];
+        let id = 0;
+        $(payment_rates).find("Description").children().each(function () {
+            id = id+1;
+            struct.push({
+                name:$(this).attr("Name"),
+                id:id               
+            });	
+        });
+        return  struct
+    }
+    return asyncProcess()
 }
 
 
-export function getData(getState,repository,where) {
+/*export function getData(getState,repository,where) {
     const asyncProcess = async () => {
         if(!where){
-            where = getState().typesrates.where;
+            where = getState().cuttingmethods.where;
         }
         let data =  await repository.find({
             where: where,
@@ -44,10 +57,10 @@ export function getData(getState,repository,where) {
 export function fill_data(where = {}) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository = getRepository(Typesrates);
+            let repository = getRepository(Cuttingmethods);
             let data = await getData(getState,repository,where);
             dispatch({
-                type: TYPESRATES_FILL_SUCCESS,
+                type: CUTTINGMETHODS_FILL_SUCCESS,
                 data: data.data,
                 options: data.options,
                 where: where
@@ -60,12 +73,12 @@ export function fill_data(where = {}) {
 export function add() {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository      = getRepository(Typesrates);
+            let repository      = getRepository(Cuttingmethods);
             let currentObject   = repository.create();
             await repository.save(currentObject);
             let data = await getData(getState,repository);
             dispatch({
-                type: TYPESRATES_ADD,
+                type: CUTTINGMETHODS_ADD,
                 data: data.data,
                 options: data.options,
             })
@@ -77,7 +90,7 @@ export function add() {
 export function del(ids) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository      = getRepository(Typesrates);
+            let repository      = getRepository(Cuttingmethods);
             let data = await repository.find({
                 where: {status:1},
             });
@@ -85,7 +98,7 @@ export function del(ids) {
             webix.message({ type:"info", text:'Удалено '+data.length+' элементов'});
             data = await getData(getState,repository);
             dispatch({
-                type: TYPESRATES_DEL,
+                type: CUTTINGMETHODS_DEL,
                 data: data.data,
                 options: data.options,
             })
@@ -97,21 +110,16 @@ export function del(ids) {
 export function edit(obj,values) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let repository      = getRepository(Typesrates);
+            let repository      = getRepository(Cuttingmethods);
             if(obj){
                 for (var property in values) {
-                    console.log(property)
-                    if(property == 'coefficientsindexing'){
-                        obj[property] = parseFloat(values[property].replace(',','.').replace(' ',''))
-                    }else{
-                        obj[property] = values[property]
-                    }
+                    obj[property] = values[property]
                 }
                 await repository.save(obj)
             }
             let data = await getData(getState,repository);
             dispatch({
-                type: TYPESRATES_EDIT,
+                type: CUTTINGMETHODS_EDIT,
                 currentId: obj.id,
                 data: data.data,
                 options: data.options,
@@ -124,7 +132,7 @@ export function edit(obj,values) {
 export function sorting(by,dir,as,id) {
     return (dispatch,getState) => {
         dispatch({
-            type: TYPESRATES_SORT,
+            type: CUTTINGMETHODS_SORT,
             currentId: id,
             sort: {
                 by:by,
@@ -133,4 +141,4 @@ export function sorting(by,dir,as,id) {
             },
         })
     }
-}
+}*/
