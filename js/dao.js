@@ -17,7 +17,7 @@ import {Tract} from "../actions/TypeORM/entity/tract";
 import {Publications} from "../actions/TypeORM/entity/publications";
 import {Tables} from "../actions/TypeORM/entity/tables";
 import {Breed} from "../actions/TypeORM/entity/breed";
-import {add} from "../actions/mdo/publications";
+import {add} from "../actions/reference/publications";
 import * as FileSaver from "file-saver";
 
 

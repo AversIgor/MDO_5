@@ -26,9 +26,6 @@ import {Feedrates} from "./entity/feedrates";
 import * as settings from '../../actions/Abris/settings';
 import * as contactinformation from '../../actions/reference/contactinformation';
 
-
-
-
 export function init() {
 
     var options = {
@@ -188,6 +185,3 @@ export function init() {
     }
 
 }
-
-
-

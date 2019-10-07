@@ -4,7 +4,7 @@ import {
     FEEDRATES_DEL,
     FEEDRATES_EDIT,
     FEEDRATES_SORT
-} from '../../../constants/mdo/feedrates'
+} from '../../../constants/reference/feedrates'
 import {getRepository} from "typeorm";
 import {Feedrates} from "../../TypeORM/entity/feedrates";
 
@@ -141,4 +141,4 @@ export function sorting(by,dir,as,id) {
             },
         })
     }
-}*/
+}

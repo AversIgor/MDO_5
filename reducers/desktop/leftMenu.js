@@ -23,6 +23,7 @@ const initialState = {
             ]}, 
             {id: "mdoreference", value:"Справочники (МДО)", data:[
                 { id: "publications", value: "Сортиментные таблицы"}, 
+                { id: "feedrates", value: "Установка ставок платы"},
             ]}, 
             {id: "abrisreference", value:"Справочники (Абрис)", data:[
                 { id: "styles", value: "Стили отображения абриса"},

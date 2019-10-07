@@ -4,7 +4,7 @@ import {
     FEEDRATES_DEL,
     FEEDRATES_EDIT,
     FEEDRATES_SORT
-} from '../../constants/mdo/feedrates'
+} from '../../constants/reference/feedrates'
 
 const initialState = {
     currentId:undefined,

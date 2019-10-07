@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
 export default class Publications extends Component {
 

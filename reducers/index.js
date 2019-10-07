@@ -23,7 +23,7 @@ import abrisprintforms from './reference/abrisprintforms'
 import typesrates from './reference/typesrates'
 
 //Настройки МДО
-import feedrates from './mdo/feedrates'
+import feedrates from './reference/feedrates'
 
 //настройки
 import abris_settings from './settings/abris_settings'
