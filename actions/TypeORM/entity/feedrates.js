@@ -1,6 +1,7 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, AfterUpdate} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
 import {getRepository} from "typeorm";
 
+import {Typesrates} from "./typesrates";
 
 @Entity()
 export class Feedrates {
@@ -12,13 +13,10 @@ export class Feedrates {
     status = 0;
 
     @Column({ type: "int", nullable: true })
-    typesrates_id = 0;
+    breed = 0;
 
     @Column({ type: "int", nullable: true })
-    breeds_id = 0;
-
-    @Column({ type: "int", nullable: true })
-    ranktax_id = 0;
+    ranktax = 0;
 
     @Column({ type: "float", nullable: true })
     large = 0;
@@ -33,8 +31,6 @@ export class Feedrates {
     firewood = 0;
 
 
-
-    
 
 }
 

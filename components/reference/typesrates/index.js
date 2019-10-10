@@ -19,8 +19,9 @@ export default class Typesrates extends Component {
         this.columns = [
             common.datatableFieldID(),
             { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
-            { id:"orderroundingrates", header:["Порядок округления", {content:"selectFilter"}],  editor:"select", options:props.orderRoundingRates, fillspace:true},
-            { id:"coefficientsindexing", header:"Коэффициент индексации",  editor:"text", numberFormat:"1.111,00"}
+            { id:"orderroundingrates", header:["Порядок округления"],  editor:"select", options:props.orderRoundingRates, fillspace:true},
+            { id:"coefficientsindexing", header:{text:"Коэффициент индексации",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+            { id:"feedrate", header:["Ставки платы"], template: "{common.buttonFeedrates()}",fillspace:true }
         ]
         this.rules   = {
             "name": webix.rules.isNotEmpty,
@@ -32,6 +33,9 @@ export default class Typesrates extends Component {
     }
 
     componentDidMount(){
+
+        let self = this;
+        
         let toolbar = {
             view:'toolbar',
             elements:[
@@ -43,6 +47,38 @@ export default class Typesrates extends Component {
             ]
         }
 
+        window.webix.protoUI({ name:'activeTable'}, window.webix.ui.datatable, window.webix.ActiveContent );
+
+        let activeTable = {
+            view:"activeTable",
+            id:this.id+'_datatable',
+            select:"cell",
+            multiselect:false,
+            editable:true,
+            editaction:"click",
+            css:'box_shadow',
+            borderless:true,
+            columns:this.columns,
+            on:common.creatOn(this),
+            data: [],
+            rules:this.rules,
+            activeContent: {
+                buttonFeedrates: { 
+                    id:"buttonfeedrates",
+                    view:"button", 
+                    label:"Открыть", 
+                    width: 70,           
+                    height:35,          
+                    click:function(id, e){
+                        let selectedItem = ($$(self.id+'_datatable').getSelectedItem())
+                        self.props.openEditFeedrates(selectedItem)
+                    }
+                },
+            },    
+        }
+    
+
+        
         let layout = {
             id:this.id+'_layout',
             container:ReactDOM.findDOMNode(this.refs.root),
@@ -54,12 +90,13 @@ export default class Typesrates extends Component {
                     borderless:true,
                     rows:[
                         toolbar,
-                        common.datatable(this)
+                        activeTable
                     ]
                 },
             ]
         }
 
+        
         this.ui.push(window.webix.ui(layout))
         this.ui.push(window.webix.ui(common.settingsMenu(this)))
 

@@ -12,12 +12,45 @@ class Feedrates extends Component {
     constructor(props) {
         super(props);
         this.showAllStatus = false
+        this.update = {
+            breed:true,
+            typesrates:true,
+            data:true,
+        };
+        this.state = {
+            curent_typesrate:1 //id ставки федерального уровня
+        }
     }
 
     componentDidMount() {
+         this.update = {
+            breed:false,
+            typesrates:false,
+            data:false,
+        };
         this.props.breed_fill_data({status:0});
         this.props.typesrates_fill_data({status:0});
         this.props.fill_data({status:0});
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+
+        let update = false
+        
+        if(nextProps.breed != this.props.breed){
+            this.update.breed = true
+        }
+        if(nextProps.typesrates != this.props.typesrates){
+            this.update.typesrates = true
+        }
+        if(nextProps.data != this.props.data){
+            this.update.data = true
+        }
+
+        if((this.update.breed == true) && (this.update.typesrates == true) && (this.update.data == true)){
+            update = true
+        }
+        return update
     }
 
     handlerShowAllStatus = () => {
@@ -29,10 +62,10 @@ class Feedrates extends Component {
         }
     }
 
-    render() {   
-        console.log(this.props.data,this.props.typesrates,this.props.breed)
 
-        
+
+    render() {   
+
         return null    
        /* return <ComponentCuttingmethods
             data = {this.props.data}
@@ -44,6 +77,7 @@ class Feedrates extends Component {
             handlerSorting = {this.props.sorting}
             handlerShowAllStatus = {this.handlerShowAllStatus}
             typesrates = {this.props.typesrates}
+            curent_typesrate = {this.state.curent_typesrate}
             breed = {this.props.breed}   
             rankTax = {this.props.rankTax}          
         />*/

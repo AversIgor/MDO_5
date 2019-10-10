@@ -15,13 +15,43 @@ class Breed extends Component {
         this.state = {
             editObject:undefined
         };
+        this.update = {
+            publications:true,
+            tables:true,
+            data:true,
+        };
         this.showAllStatus = false
     }
 
     componentDidMount() {
+        this.update = {
+            publications:false,
+            tables:false,
+            data:false,
+        };
         this.props.publications_fill_data({status:0});
         this.props.tables_fill_data({status:0});
         this.props.fill_data({status:0});
+    }
+
+    shouldComponentUpdate(nextProps, nextState){
+
+        let update = false
+        
+        if(nextProps.publications != this.props.publications){
+            this.update.publications = true
+        }
+        if(nextProps.tables != this.props.tables){
+            this.update.tables = true
+        }
+        if(nextProps.data != this.props.data){
+            this.update.data = true
+        }
+
+        if((this.update.publications == true) && (this.update.tables == true) && (this.update.data == true)){
+            update = true
+        }
+        return update
     }
 
     handlerShowAllStatus = () => {

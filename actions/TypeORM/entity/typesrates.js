@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+
+import {Feedrates} from "./feedrates";
 
 @Entity()
 export class Typesrates {
@@ -21,6 +23,10 @@ export class Typesrates {
 
     @Column({ type: "float", nullable: true })
     coefficientsindexing= 0.00;
+
+    @Column({ type: "simple-json", nullable: true  })
+    feedrates = {}
+
     
 }
 

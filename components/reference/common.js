@@ -342,4 +342,4 @@ let formResize = function(context){
     layout.resize(true);    
 }
 
-export {header,addButton,copyButton,deleteButton,search,settingsButton,settingsMenu,datatable,datatableUpdate,datatableRefreshColumns,datatableFieldID,searchBind,uiDestructor,formResize,menuButton,popupMenu,menuUpdate};
+export {header,addButton,copyButton,deleteButton,search,settingsButton,settingsMenu,datatable,datatableUpdate,datatableRefreshColumns,datatableFieldID,searchBind,uiDestructor,formResize,menuButton,popupMenu,menuUpdate,creatOn};
