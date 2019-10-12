@@ -40,6 +40,12 @@ class Typesrates extends Component {
         })       
     }
 
+    seve = (row,value) => {
+        this.props.edit(row,value)
+        this.setState({
+            feedrates: undefined})       
+    }
+
     render() {        
         return (
             <Fragment>
@@ -58,7 +64,7 @@ class Typesrates extends Component {
                     feedrates = {this.state.feedrates}
                     breed = {this.props.breed}
                     rankTax = {this.props.rankTax}
-                    handlerEdit = {this.handlerEdit}
+                    seve = {this.seve}
                 />
             </Fragment>
         )

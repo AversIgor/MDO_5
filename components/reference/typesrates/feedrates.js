@@ -29,6 +29,8 @@ export default class ComponentFeedrates extends Component {
 
     componentDidMount(){
 
+        let self = this
+
         let table = {
             view:"datatable",
             id:'feedrates_datatable',
@@ -39,8 +41,8 @@ export default class ComponentFeedrates extends Component {
             css:'box_shadow',
             borderless:true,
             columns:[
-                { id:"breed", header:["Порода"],  editor:"combo", options:this.props.breed, fillspace:true},
-                { id:"ranktax", header:{text:"Разряд такс",}, editor:"combo", options:this.props.rankTax,fillspace:true},
+                { id:"breed", header:["Порода"],  editor:"combo", options:this.props.breed, fillspace:true,sort:"string"},
+                { id:"ranktax", header:{text:"Разряд такс",}, editor:"combo", options:this.props.rankTax,fillspace:true,sort:"string"},
                 { id:"large", header:{text:"Крупная",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
                 { id:"average", header:{text:"Средняя",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
                 { id:"small", header:{text:"Мелкая",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
@@ -51,7 +53,8 @@ export default class ComponentFeedrates extends Component {
             rules:{
                 "breed": webix.rules.isNotEmpty,
                 "ranktax": webix.rules.isNotEmpty,
-            },           
+            },  
+                     
         }
 
         let head = {
@@ -60,6 +63,7 @@ export default class ComponentFeedrates extends Component {
             cols:[
                 {
                     view:"button",
+                    id:'feedrates_window_icon_edit',
                     type:"icon",
                     tooltip:"Сохранить и закрыть",
                     icon: "edit",
@@ -68,8 +72,10 @@ export default class ComponentFeedrates extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            let values = $$("breed_form").getValues()
-                            //self.props.handlerEdit(self.props.editObject,values);
+                            let values = {
+                                feedrates:$$("feedrates_datatable").serialize(),
+                            }
+                            self.props.seve(self.props.feedrates,values);
                         }
                     }
                 },
@@ -121,10 +127,10 @@ export default class ComponentFeedrates extends Component {
                 {},
                 {
                     view:"icon",
-                    id:conteiner+"_icon_close",
+                    id:"feedrates_window_icon_close",
                     tooltip:"Закрыть",
                     icon: "times",
-                    click: "$$('"+conteiner+"_icon_close').getParentView().getParentView().hide()"
+                    click: "$$('feedrates_window_icon_close').getParentView().getParentView().hide()"
                 }
             ]
         }
@@ -134,7 +140,9 @@ export default class ComponentFeedrates extends Component {
             id:"feedrates_window",
             move:true,
             zIndex:100,
-            width: 600,
+            width: 800,
+            height: 400,
+            resize: true,
             move:true,
             head:head,
             position:"center",
@@ -146,38 +154,25 @@ export default class ComponentFeedrates extends Component {
     }
 
 
+
+    sortbBreedRanktax() {
+        $$("feedrates_datatable").markSorting("breed", "asc");
+        $$("feedrates_datatable").sort(function(a,b){
+            if (a.breed == b.breed)
+                return (a.ranktax>b.ranktax)?1:-1;
+            else
+                return (a.breed>b.breed)?1:-1;
+        });
+        
+    }
+
     componentWillReceiveProps(nextProps) {
         if(nextProps.feedrates){
+            $$("feedrates_datatable").clearAll();
+            $$("feedrates_datatable").define("data",nextProps.feedrates.feedrates);
+            $$("feedrates_datatable").refresh();
+            this.sortbBreedRanktax();    
             this.ui.show();
-
-            /*let publication_options = []
-            for (var i = 0; i < nextProps.publications.length; i++) {
-                publication_options.push({
-                    id:nextProps.publications[i].id,
-                    value:nextProps.publications[i].name
-                })
-            }
-            $$("publication").define("options",publication_options)
-            $$("publication").refresh();
-
-
-            let values = {
-                name: nextProps.editObject.name,
-                kodGulf: nextProps.editObject.kodGulf,
-            }
-
-            if(nextProps.editObject.publication){
-                values.publication = nextProps.editObject.publication.id
-            }
-            if(nextProps.editObject.table){
-                values.table = nextProps.editObject.table.id
-            }
-            if(nextProps.editObject.tablefirewood){
-                values.tablefirewood = nextProps.editObject.tablefirewood.id
-            }
-            $$("breed_form").setValues(values);*/
-
-
         }else{
             this.ui.hide();
         }
