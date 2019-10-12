@@ -35,12 +35,16 @@ export default class ComponentFeedrates extends Component {
             select:"cell",
             multiselect:false,
             editable:true,
-            editaction:"click",
+            editaction:"dblclick",
             css:'box_shadow',
             borderless:true,
             columns:[
                 { id:"breed", header:["Порода"],  editor:"combo", options:this.props.breed, fillspace:true},
                 { id:"ranktax", header:{text:"Разряд такс",}, editor:"combo", options:this.props.rankTax,fillspace:true},
+                { id:"large", header:{text:"Крупная",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"average", header:{text:"Средняя",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"small", header:{text:"Мелкая",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"firewood", header:{text:"Дрова",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             //on:common.creatOn(this),
             data: [],
@@ -56,7 +60,10 @@ export default class ComponentFeedrates extends Component {
             cols:[
                 {
                     view:"button",
-                    value:"Сохранить",
+                    type:"icon",
+                    tooltip:"Сохранить и закрыть",
+                    icon: "edit",
+                    label:"Сохранить",
                     width:100,
                     align:"center",
                     on:{
@@ -68,16 +75,57 @@ export default class ComponentFeedrates extends Component {
                 },
                 {
                     view:"button",
-                    value:"Добавить",
-                    width:100,
+                    type:"icon",
+                    tooltip:"Добавить строку",
+                    icon: "plus",
+                    width:30,
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            let rowid = $$("feedrates_datatable").add({});
+                            $$("feedrates_datatable").add({});
                         }
                     }
                 },
+                {
+                    view:"button",
+                    type:"icon",
+                    tooltip:"Скопировать строку",
+                    icon: "copy",
+                    width:30,
+                    align:"center",
+                    on:{
+                        'onItemClick': function(id){
+                            if($$("feedrates_datatable").getSelectedItem()){
+                                let copy = window.webix.copy($$("feedrates_datatable").getSelectedItem());
+                                delete copy.id;
+                                $$("feedrates_datatable").add(copy)                             
+                            }                            
+                        }
+                    }
+                },
+                {
+                    view:"button",
+                    type:"icon",
+                    tooltip:"Удалить строку",
+                    icon: "cut",
+                    width:30,
+                    align:"center",
+                    on:{
+                        'onItemClick': function(id){
+                            if($$("feedrates_datatable").getSelectedId()){
+                                $$("feedrates_datatable").remove($$("feedrates_datatable").getSelectedId());
+                            }                            
+                        }
+                    }
+                },                
                 {},
+                {
+                    view:"icon",
+                    id:conteiner+"_icon_close",
+                    tooltip:"Закрыть",
+                    icon: "times",
+                    click: "$$('"+conteiner+"_icon_close').getParentView().getParentView().hide()"
+                }
             ]
         }
 
