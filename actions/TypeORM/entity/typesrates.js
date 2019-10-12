@@ -1,6 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 
-import {Feedrates} from "./feedrates";
 
 @Entity()
 export class Typesrates {

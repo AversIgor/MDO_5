@@ -34,7 +34,6 @@ export default class ComponentContactinformation extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                { view:"template",css:"headerref", template:"Контактная информация", type:"header" },
                 {cols:[
                     {
                         padding:10,

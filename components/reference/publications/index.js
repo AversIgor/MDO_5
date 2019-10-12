@@ -81,7 +81,6 @@ export default class Publications extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Издания сортиментных таблиц"),
                 {
                     padding:10,
                     borderless:true,

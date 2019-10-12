@@ -1,6 +1,3 @@
-let header = function(template){
-    return { view:"template",css:"headerref", template:template, type:"header" }
-}
 
 let addButton = function(context){
     return {
@@ -342,4 +339,4 @@ let formResize = function(context){
     layout.resize(true);    
 }
 
-export {header,addButton,copyButton,deleteButton,search,settingsButton,settingsMenu,datatable,datatableUpdate,datatableRefreshColumns,datatableFieldID,searchBind,uiDestructor,formResize,menuButton,popupMenu,menuUpdate,creatOn};
+export {addButton,copyButton,deleteButton,search,settingsButton,settingsMenu,datatable,datatableUpdate,datatableRefreshColumns,datatableFieldID,searchBind,uiDestructor,formResize,menuButton,popupMenu,menuUpdate,creatOn};

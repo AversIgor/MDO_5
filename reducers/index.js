@@ -22,8 +22,7 @@ import breed from './reference/breed'
 import abrisprintforms from './reference/abrisprintforms'
 import typesrates from './reference/typesrates'
 
-//Настройки МДО
-import feedrates from './reference/feedrates'
+
 
 //настройки
 import abris_settings from './settings/abris_settings'
@@ -54,7 +53,6 @@ export default combineReducers({
     abris_settings:abris_settings,
     abrisprintforms:abrisprintforms,
     contactinformation:contactinformation,
-    feedrates:feedrates,
 })
 
 

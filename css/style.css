@@ -7,18 +7,11 @@ body {
   margin: 0px!important;
 }
 
-.app_button button{
+/*.app_button button{
   padding:0;
   text-align: center;
-}
+}*/
 
-.headerref{
-  height: 40px!important;
-  font-family: Roboto, Arial!important;
-  font-style: normal!important;
-  color: #000000!important;
-  font-size: 18px!important;
-}
 
 .status {
   padding: 2px 5px;
@@ -56,16 +49,16 @@ body {
 
 /*ЭТО ПЕРЕОПРЕДЕЛЕНИЕ СТИЛЕЙ WEBIX*/
 
-.webix_sidebar{
+/*.webix_sidebar{
   background: #FFFFFF!important;
-}
+}*/
 
 
-.webix_icon_button .webix_icon {
+/*.webix_icon_button .webix_icon {
   color: #000000;
-}
+}*/
 
-.webix_header > div {
+/*.webix_header > div {
   font-family: Roboto, Arial!important;
   font-style: normal!important;
   color: #000000!important;
@@ -106,4 +99,4 @@ body {
 
 .webix_ss_filter select, .webix_ss_filter input {
   margin-top: 0px!important;
-}
+}*/

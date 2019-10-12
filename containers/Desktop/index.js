@@ -61,6 +61,8 @@ class Desktop extends Component {
                     style={{
                             height:"50px",
                             width:"100%",
+                            position: 'relative',
+                            zIndex: '20',
                         }}>
                     <Toolbar
                         resize={this.state.resize}

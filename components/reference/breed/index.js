@@ -63,8 +63,7 @@ export default class ComponentBreed extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Породы"),
-                {
+                    {
                     padding:10,
                     borderless:true,
                     rows:[

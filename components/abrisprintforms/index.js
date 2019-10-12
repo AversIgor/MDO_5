@@ -63,7 +63,6 @@ export default class ComponentAbrisprintforms extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Печатные формы"),
                 {
                     padding:10,
                     borderless:true,

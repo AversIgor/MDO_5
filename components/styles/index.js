@@ -63,7 +63,6 @@ export default class ComponentStyles extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Стили абриса"),
                 {
                     padding:10,
                     borderless:true,

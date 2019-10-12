@@ -31,7 +31,7 @@ class Typesrates extends Component {
         }
     }
 
-    openEditFeedrates = (curentrow) => {
+    openFeedrates = (curentrow) => {
         this.setState({
             feedrates: {
             id:curentrow.id,
@@ -40,11 +40,16 @@ class Typesrates extends Component {
         })       
     }
 
-    seve = (row,value) => {
+    saveFeedrates = (row,value) => {
         this.props.edit(row,value)
         this.setState({
             feedrates: undefined})       
     }
+
+    closeFeedrates = () => {
+        this.setState({ feedrates: undefined})       
+    }
+
 
     render() {        
         return (
@@ -58,13 +63,14 @@ class Typesrates extends Component {
                     handlerSorting = {this.props.sorting}
                     handlerShowAllStatus = {this.handlerShowAllStatus}
                     orderRoundingRates = {this.props.orderRoundingRates}
-                    openEditFeedrates = {this.openEditFeedrates}
+                    openFeedrates = {this.openFeedrates}
                 />
                 <ComponentFeedratesForm
                     feedrates = {this.state.feedrates}
                     breed = {this.props.breed}
                     rankTax = {this.props.rankTax}
-                    seve = {this.seve}
+                    saveFeedrates = {this.saveFeedrates}
+                    closeFeedrates = {this.closeFeedrates}
                 />
             </Fragment>
         )

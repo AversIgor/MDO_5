@@ -49,7 +49,6 @@ export default class ComponentForestry extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Лесничества"),
                 {
                     padding:10,
                     borderless:true,

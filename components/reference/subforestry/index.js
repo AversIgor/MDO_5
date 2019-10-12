@@ -61,7 +61,6 @@ export default class ComponentSubforestry extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Участковые лесничества"),
                 {
                     padding:10,
                     borderless:true,

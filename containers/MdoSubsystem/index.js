@@ -11,7 +11,6 @@ import Cuttingmethods from '../reference/cuttingmethods';
 import Typesrates from '../reference/typesrates';
 import Publication from '../reference/publication';
 import Breed from '../reference/breed';
-import Feedrates from '../reference/feedrates';
 import Abris from '../Abris';
 import Styles from '../styles';
 
@@ -68,8 +67,6 @@ class MDOSubsystem extends Component {
                     return <Publication/>;
                 case "typesrates":
                     return <Typesrates/>;
-                 case "feedrates":
-                        return <Feedrates/>;
                 case "coefficientsformcutting":
                     return <Oldcontent
                         module = {COEFFICIENTSFORMCUTTING}

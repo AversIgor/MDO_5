@@ -52,7 +52,7 @@ export default class Typesrates extends Component {
         let activeTable = {
             view:"activeTable",
             id:this.id+'_datatable',
-            select:"cell",
+            select:"row",
             multiselect:false,
             editable:true,
             editaction:"click",
@@ -68,10 +68,10 @@ export default class Typesrates extends Component {
                     view:"button", 
                     label:"Открыть", 
                     width: 70,           
-                    height:35,          
+                    height:30,          
                     click:function(id, e){
                         let selectedItem = ($$(self.id+'_datatable').getSelectedItem())
-                        self.props.openEditFeedrates(selectedItem)
+                        self.props.openFeedrates(selectedItem)
                     }
                 },
             },    
@@ -84,7 +84,6 @@ export default class Typesrates extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Виды ставок платы"),
                 {
                     padding:10,
                     borderless:true,

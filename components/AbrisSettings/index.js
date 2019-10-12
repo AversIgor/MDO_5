@@ -17,7 +17,6 @@ export default class ComponentAbrisSettings extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                { view:"template",css:"headerref", template:"Настройки абриса", type:"header" },
                 {cols:[
                     {
                         padding:10,

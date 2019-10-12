@@ -18,12 +18,11 @@ const initialState = {
                 { id: "tract", value: "Урочища"},
                 { id: "breed", value: "Породы"},
                 { id: "cuttingmethods", value: "Способы рубки"},                
-                { id: "methodscleanings", value: "Способы очистки"},
-                { id: "typesrates", value: "Виды ставок платы"},
             ]}, 
             {id: "mdoreference", value:"Справочники (МДО)", data:[
                 { id: "publications", value: "Сортиментные таблицы"}, 
-                { id: "feedrates", value: "Установка ставок платы"},
+                { id: "typesrates", value: "Cтавки платы и коэффициенты"},
+                { id: "methodscleanings", value: "Способы очистки"},
             ]}, 
             {id: "abrisreference", value:"Справочники (Абрис)", data:[
                 { id: "styles", value: "Стили отображения абриса"},

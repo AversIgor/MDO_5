@@ -49,7 +49,6 @@ export default class Cuttingmethods extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Способы рубки"),
                 {
                     padding:10,
                     borderless:true,

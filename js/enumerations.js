@@ -1,14 +1,5 @@
 //ПЕРЕЧИСЛЕНИЯ
 export var ENUMERATIONS = {
-	rankTax: [
-		{ 'id': 1, 'text': '1' },
-		{ 'id': 2, 'text': '2' },
-		{ 'id': 3, 'text': '3' },
-		{ 'id': 4, 'text': '4' },
-		{ 'id': 5, 'text': '5' },
-		{ 'id': 6, 'text': '6' },
-		{ 'id': 7, 'text': '7' }
-	],
 	methodTaxation: [
 		{ 'id': 1, 'text': 'Сплошной перечет' },
 		{ 'id': 2, 'text': 'Ленточный перечет' }
@@ -35,10 +26,6 @@ export var ENUMERATIONS = {
 		{ 'id': 5, 'text': 'Ленты перечета' },
 		{ 'id': 6, 'text': 'Прочие объекты' }
 	],
-	formCutting: [
-		{'id':1,'text':'Сплошная рубка'},
-		{'id':2,'text':'Выборочная рубка'}
-	],
 	damage: [
 		{'id':1,'text':'до 10 %'},
 		{'id':2,'text':'до 20 %'},
@@ -51,21 +38,10 @@ export var ENUMERATIONS = {
 		{'id':9,'text':'до 90 %'},
 		{'id':10,'text':'до 100 %'}
 	],
-	groupCutting: [
-		{'id':1,'text':'Рубки в спелых насаждениях'},
-		{'id':2,'text':'Рубки ухода за насаждениями'},
-		{'id':3,'text':'Санитарные рубки'},
-		{'id':4,'text':'Прочие рубки'}
-	],
 	rangesLiquidation: [
 		{'id':1,'text':'от 0 до 100 м.куб'},
 		{'id':2,'text':'от 100.01 до 150 м.куб'},
 		{'id':3,'text':'более 150 м.куб'}
-	],
-	orderRoundingRates: [
-		{'id':1,'text':'До целых рублей'},
-		{'id':2,'text':'До десятков копеек'},
-		{'id':3,'text':'До копеек'},
 	],
 	orderRoundingValues: [
 		{'id':1,'text':'До целых куб.м.'},

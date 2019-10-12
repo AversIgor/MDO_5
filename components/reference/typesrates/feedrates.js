@@ -75,7 +75,7 @@ export default class ComponentFeedrates extends Component {
                             let values = {
                                 feedrates:$$("feedrates_datatable").serialize(),
                             }
-                            self.props.seve(self.props.feedrates,values);
+                            self.props.saveFeedrates(self.props.feedrates,values);
                         }
                     }
                 },
@@ -130,7 +130,11 @@ export default class ComponentFeedrates extends Component {
                     id:"feedrates_window_icon_close",
                     tooltip:"Закрыть",
                     icon: "times",
-                    click: "$$('feedrates_window_icon_close').getParentView().getParentView().hide()"
+                    on:{
+                        'onItemClick': function(id){
+                            self.props.closeFeedrates();                           
+                        }
+                    }
                 }
             ]
         }
@@ -148,7 +152,6 @@ export default class ComponentFeedrates extends Component {
             position:"center",
             body: table,
         };
-
         this.ui = window.webix.ui(conteiner);
 
     }

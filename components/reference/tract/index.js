@@ -60,7 +60,6 @@ export default class ComponentTract extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
             rows:[
-                common.header("Урочища"),
                 {
                     padding:10,
                     borderless:true,

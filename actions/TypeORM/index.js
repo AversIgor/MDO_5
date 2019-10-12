@@ -21,7 +21,6 @@ import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
 import {Typesrates} from "./entity/typesrates";
-import {Feedrates} from "./entity/feedrates";
 
 import * as settings from '../../actions/Abris/settings';
 import * as contactinformation from '../../actions/reference/contactinformation';
@@ -51,8 +50,7 @@ export function init() {
                 Abrisprintforms,
                 Contactinformation,
                 Typesrates,
-                Feedrates,
-            ]
+             ]
     }
 
 
@@ -97,8 +95,7 @@ export function init() {
                     await Migration_5_2_1_0.creatEntities(options);
                     await Migration_5_2_1_0.ContactinformationConvert(options);
                     await Migration_5_2_1_0.TypesratesConvert(options);
-                    await Migration_5_2_1_0.FeedratesConvert(options);
-                }
+                  }
                 //Блок конвертации отдельных сборок - конец
             }
 
