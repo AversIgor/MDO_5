@@ -28,13 +28,13 @@ export default class Typesrates extends Component {
     updateColumns = (props) => {
         this.columns = [
             common.datatableFieldID(),
-            { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
+            { id:"name",	header:"Наименование",  template:"{common.subrow()} #name#", editor:"text", sort:"string", fillspace:true },
             { id:"region",	header:"Лесотаксовый район", editor:"combo", options:props.regions, fillspace:true },
             { id:"orderroundingrates", header:["Порядок округления"],  editor:"combo", options:props.orderRoundingRates, fillspace:true},
             { id:"coefficientsindexing", header:{text:"Коэффициент индексации",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
-            { id:"feedrate", header:["Ставки платы"], template: "{common.buttonFeedrates()}",fillspace:true }
         ]
     }
+    
 
     componentDidMount(){
 
@@ -51,22 +51,35 @@ export default class Typesrates extends Component {
             ]
         }
 
-        window.webix.protoUI({ name:'activeTable'}, window.webix.ui.datatable, window.webix.ActiveContent );
-
-        let activeTable = {
-            view:"activeTable",
+ 
+        let datatable = {
+            view:"datatable",
             id:this.id+'_datatable',
             select:"row",
             multiselect:false,
             editable:true,
             editaction:"click",
             css:'box_shadow',
-            borderless:true,
+            borderless:true,            
             columns:this.columns,
             on:common.creatOn(this),
             data: [],
             rules:this.rules,
-            activeContent: {
+            subview:{
+                borderless:true,
+                view:"form",
+                elements:[
+                    //{ view:"text", name:"title", label:"Title"},
+                    //{ view:"text", name:"year", label:"Year"},
+                    { cols:[
+                        { view:"button", value:"Ставки платы", click:function(){
+                            let selectedItem = ($$(self.id+'_datatable').getSelectedItem())
+                            self.props.openFeedrates(selectedItem)
+                        }}
+                    ]}
+                ]
+            },
+            /*activeContent: {
                 buttonFeedrates: { 
                     id:"buttonfeedrates",
                     view:"button", 
@@ -78,7 +91,7 @@ export default class Typesrates extends Component {
                         self.props.openFeedrates(selectedItem)
                     }
                 },
-            },    
+            }, */   
         }
     
 
@@ -93,7 +106,7 @@ export default class Typesrates extends Component {
                     borderless:true,
                     rows:[
                         toolbar,
-                        activeTable
+                        datatable
                     ]
                 },
             ]

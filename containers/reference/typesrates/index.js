@@ -69,7 +69,7 @@ class Typesrates extends Component {
                     handlerShowAllStatus = {this.handlerShowAllStatus}
                     orderRoundingRates = {this.props.orderRoundingRates}
                     openFeedrates = {this.openFeedrates}
-                />
+                /> 
                 <ComponentFeedratesForm
                     feedrates = {this.state.feedrates}
                     breed = {this.props.breed}
@@ -78,12 +78,13 @@ class Typesrates extends Component {
                     saveFeedrates = {this.saveFeedrates}
                     closeFeedrates = {this.closeFeedrates}
                     fillFeedrates = {this.props.fillFeedrates}
-                />
+                    />
             </Fragment>
         )
     }
 
 }
+
 
 function mapStateToProps (state) {
     return {
