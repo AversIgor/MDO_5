@@ -7,26 +7,6 @@ export default class ComponentFeedrates extends Component {
         super(props);
     }
 
-    /*filterTables = (publicationID) => {
-
-        let table_options = [{id:'',value:''}]
-        for (var i = 0; i < this.props.tables.length; i++) {
-            if(this.props.tables[i].publication.id == publicationID){
-                table_options.push({
-                    id:this.props.tables[i].id,
-                    value:this.props.tables[i].name
-                })
-            }
-        }
-        $$("table").define("options",table_options)
-        $$("table").refresh();
-
-        $$("tablefirewood").define("options",table_options)
-        $$("tablefirewood").refresh();
-
-    }*/
-
-
     componentDidMount(){
 
         let self = this
@@ -48,7 +28,6 @@ export default class ComponentFeedrates extends Component {
                 { id:"small", header:{text:"Мелкая",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
                 { id:"firewood", header:{text:"Дрова",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
-            //on:common.creatOn(this),
             data: [],
             rules:{
                 "breed": webix.rules.isNotEmpty,
@@ -123,7 +102,22 @@ export default class ComponentFeedrates extends Component {
                             }                            
                         }
                     }
-                },                
+                },  
+                {
+                    view:"button",
+                    id:'feedrates_window_icon_fill',
+                    type:"icon",
+                    tooltip:"Заполнить ставки платы по лесотаксовому району",
+                    icon: "fill",
+                    label:"Заполнить",
+                    width:100,
+                    align:"center",
+                    on:{
+                        'onItemClick': function(id){
+                            self.props.fillFeedrates(self.props.feedrates,self.props.breed);
+                        }
+                    }
+                },              
                 {},
                 {
                     view:"icon",

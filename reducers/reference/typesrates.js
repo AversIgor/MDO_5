@@ -3,13 +3,15 @@ import {
     TYPESRATES_ADD,
     TYPESRATES_EDIT,
     TYPESRATES_DEL,
-    TYPESRATES_SORT
+    TYPESRATES_SORT,
+    TYPESRATES_FILL_REGIONS
 } from '../../constants/reference/typesrates'
 
 const initialState = {
     currentId:undefined,
     data:[],
     options:[],
+    regions:[],
     sort: {
         by:'id',
         dir:'asc',
@@ -50,6 +52,10 @@ export default function typesrates(state = initialState, action) {
             return { ...state,
                 currentId: action.currentId,
                 sort: action.sort,
+            }
+        case TYPESRATES_FILL_REGIONS:
+            return { ...state,
+                regions: action.regions,
             }
         default:
             return state

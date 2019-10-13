@@ -75,7 +75,6 @@ export function init() {
             
             let isUpdate = false;
 
-            console.log(oldVersion,newVersion)
             if(oldVersion != '0.0.0.0'){
                 //Блок конвертации отдельных сборок
                 if(isNewVersions(oldVersion,"5.2.0.10")){

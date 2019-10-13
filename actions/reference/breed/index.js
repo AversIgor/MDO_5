@@ -19,17 +19,10 @@ export function getData(getState,repository,where) {
         let data =  await repository.find({
             where: where,
         });
-        let options = [];
         for (let i = 0; i < data.length; i++) {
-            options.push({
-                id:data[i].id,
-                value:data[i].name
-            })
+            data[i].value = data[i].name
         }
-        return {
-            data:data,
-            options:options
-        }
+        return data       
     }
     return asyncProcess()
 }
@@ -41,8 +34,7 @@ export function fill_data(where = {}) {
             let data = await getData(getState,repository,where);
             dispatch({
                 type: BREED_FILL_SUCCESS,
-                data: data.data,
-                options: data.options,
+                data: data,
                 where: where,
             })
         }
@@ -59,8 +51,7 @@ export function add(values = {}) {
             let data = await getData(getState,repository);
             dispatch({
                 type: BREED_ADD,
-                data: data.data,
-                options: data.options,
+                data: data,
                 currentObject: currentObject
             })
         }
@@ -80,8 +71,7 @@ export function del() {
             data = await getData(getState,repository);
             dispatch({
                 type: BREED_DEL,
-                data: data.data,
-                options: data.options,
+                data: data,
             })
         }
         asyncProcess()
@@ -133,8 +123,7 @@ export function edit(obj,values) {
                 type: BREED_EDIT,
                 currentId: obj.id,
                 currentObject: obj,
-                data: data.data,
-                options: data.options,
+                data: data,
             })
         }
         return asyncProcess()

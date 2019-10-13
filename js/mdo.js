@@ -99,7 +99,7 @@ classMDO.prototype.startMDO = function() {
 	this.methodTaxation = ENUMERATIONS.methodTaxation[0];
 	this.property 		= ENUMERATIONS.property[0];
 	this.formCutting 	= store.getState().enumerations.formCutting;
-	this.rankTax 		= ENUMERATIONS.rankTax[0];
+	this.rankTax 		= store.getState().enumerations.rankTax[0];
 	this.areacutting	= 1;
 	this.releasedate	= date+'.'+ month+'.' + year;
 	this.valuationdate	= date+'.'+ month+'.' + year;
@@ -1115,7 +1115,6 @@ function fillStepFromSortTablesAndSettings(objBreed,objStep,totalStep) {
 	var rowSortTable 			= null;
 	var rowSortFirewoodTable 	= null; //сортиментная таблица для дровяных стволов
 	for (var i = 0; i < breeds.length; i++) {
-		//console.log(breeds[i].table.id,objBreed.tables_id)
 		if(breeds[i].table){
 			if(breeds[i].table.id == objBreed.tables_id){
 				rowSortTable = breeds[i].table.sorttables[objBreed.rank][objStep.step];

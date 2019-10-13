@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import ComponentTypesrates from "../../../components/reference/typesrates";
 import ComponentFeedratesForm from "../../../components/reference/typesrates/feedrates";
-import {fill_data,add,del,edit,sorting} from "../../../actions/reference/typesrates";
+import {fill_data,add,del,edit,sorting,fill_regions,fillFeedrates} from "../../../actions/reference/typesrates";
 import * as breed from "../../../actions/reference/breed";
 
 class Typesrates extends Component {
@@ -15,12 +15,15 @@ class Typesrates extends Component {
         this.state = {
             feedrates:undefined
         };
-    }
+   }
 
     componentDidMount() {
         this.props.fill_data({status:0});
         this.props.breed_fill_data({status:0});
+        this.props.fill_regions();
     }
+
+
 
     handlerShowAllStatus = () => {
         this.showAllStatus = !this.showAllStatus
@@ -35,6 +38,7 @@ class Typesrates extends Component {
         this.setState({
             feedrates: {
             id:curentrow.id,
+            region:curentrow.region,
             feedrates:curentrow.feedrates
             }
         })       
@@ -51,11 +55,12 @@ class Typesrates extends Component {
     }
 
 
-    render() {        
+    render() {      
         return (
             <Fragment>
                 <ComponentTypesrates
                     data = {this.props.data}
+                    regions = {this.props.regions}
                     sort = {this.props.sort}
                     handlerAdd = {this.props.add}
                     handlerDel = {this.props.del}
@@ -68,9 +73,11 @@ class Typesrates extends Component {
                 <ComponentFeedratesForm
                     feedrates = {this.state.feedrates}
                     breed = {this.props.breed}
+                    regions = {this.props.regions}
                     rankTax = {this.props.rankTax}
                     saveFeedrates = {this.saveFeedrates}
                     closeFeedrates = {this.closeFeedrates}
+                    fillFeedrates = {this.props.fillFeedrates}
                 />
             </Fragment>
         )
@@ -81,8 +88,9 @@ class Typesrates extends Component {
 function mapStateToProps (state) {
     return {
         data: state.typesrates.data,
+        regions: state.typesrates.regions,
         sort: state.typesrates.sort,
-        breed: state.breed.options,
+        breed: state.breed.data,
         rankTax: state.enumerations.rankTax,        
         orderRoundingRates: state.enumerations.orderRoundingRates,
     }
@@ -91,6 +99,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps(dispatch) {
     return {
         fill_data: bindActionCreators(fill_data, dispatch),
+        fill_regions:bindActionCreators(fill_regions, dispatch),
+        fillFeedrates:bindActionCreators(fillFeedrates, dispatch),
         breed_fill_data: bindActionCreators(breed.fill_data, dispatch),
         add: bindActionCreators(add, dispatch),
         del: bindActionCreators(del, dispatch),

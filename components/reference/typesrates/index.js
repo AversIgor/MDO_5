@@ -15,14 +15,7 @@ export default class Typesrates extends Component {
             {id: "showDel", value: "Показать (скрыть) помеченные на удаление"},
             {id: "deleteComplite", value: "Удалить помеченные на удаление"},
         ]
-
-        this.columns = [
-            common.datatableFieldID(),
-            { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
-            { id:"orderroundingrates", header:["Порядок округления"],  editor:"select", options:props.orderRoundingRates, fillspace:true},
-            { id:"coefficientsindexing", header:{text:"Коэффициент индексации",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
-            { id:"feedrate", header:["Ставки платы"], template: "{common.buttonFeedrates()}",fillspace:true }
-        ]
+        this.columns = []
         this.rules   = {
             "name": webix.rules.isNotEmpty,
         }
@@ -30,6 +23,17 @@ export default class Typesrates extends Component {
         this.on = ["onAfterEditStop","onSelectChange","onAfterSort"],
         this.search     = ["name"]
         this.ui = []
+    }
+
+    updateColumns = (props) => {
+        this.columns = [
+            common.datatableFieldID(),
+            { id:"name",	header:"Наименование", editor:"text", sort:"string", fillspace:true },
+            { id:"region",	header:"Лесотаксовый район", editor:"combo", options:props.regions, fillspace:true },
+            { id:"orderroundingrates", header:["Порядок округления"],  editor:"combo", options:props.orderRoundingRates, fillspace:true},
+            { id:"coefficientsindexing", header:{text:"Коэффициент индексации",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+            { id:"feedrate", header:["Ставки платы"], template: "{common.buttonFeedrates()}",fillspace:true }
+        ]
     }
 
     componentDidMount(){
@@ -104,7 +108,9 @@ export default class Typesrates extends Component {
 
 
     componentWillReceiveProps(nextProps) {
+        this.updateColumns(nextProps)
         common.datatableUpdate(this,nextProps)
+        common.datatableRefreshColumns(this)
     }
 
     componentWillUnmount(){

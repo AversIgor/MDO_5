@@ -3,7 +3,8 @@ import {
     TYPESRATES_ADD,
     TYPESRATES_DEL,
     TYPESRATES_EDIT,
-    TYPESRATES_SORT
+    TYPESRATES_SORT,
+    TYPESRATES_FILL_REGIONS
 } from '../../../constants/reference/typesrates'
 import {getRepository} from "typeorm";
 import {Typesrates} from "../../TypeORM/entity/typesrates";
@@ -15,6 +16,72 @@ export function defaultTypesrates() {
     ]
 
     return struct
+}
+let resources = '../../../resources/'
+
+export function fill_regions() {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            let payment_rates = await $.ajax(resources+'Payment_rates.xml');
+            if(typeof (payment_rates) == 'string'){
+                payment_rates = $.parseXML(payment_rates)
+            }
+            let regions = []
+            $(payment_rates).find("Description").children().each(function () {
+                regions.push($(this).attr("Name"))
+            });            
+            dispatch({
+                type: TYPESRATES_FILL_REGIONS,
+                regions: regions,
+            })
+        }
+        return asyncProcess()
+    }
+}
+
+export function fillFeedrates(paramFeedrate,breeds) {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            let payment_rates = await $.ajax(resources+'Payment_rates.xml');
+            if(typeof (payment_rates) == 'string'){
+                payment_rates = $.parseXML(payment_rates)
+            }
+            let feedrates = []
+            $(payment_rates).find("Description").children().each(function () {
+                
+                if($(this).attr("Name") == paramFeedrate.region){
+			
+                    $(this).children().each(function () {                        
+                        var breeds_id = null;
+                        for (var i = 0; i < breeds.length; i++) {
+                            if(breeds[i].kodGulf == $(this).attr("ID")){
+                                breeds_id = breeds[i].id;
+                                break;
+                            }
+                        }
+                        if(breeds_id != null){
+                            $(this).children().each(function () {
+                                var data = {};
+                                data.breed = breeds_id;
+                                data.ranktax = parseFloat($(this).attr("Category"));
+                                data.large = parseFloat($(this).attr("Large").replace(",","."));
+                                data.average = parseFloat($(this).attr("Average").replace(",","."));
+                                data.small = parseFloat($(this).attr("Small").replace(",","."));
+                                data.firewood = parseFloat($(this).attr("Firewood").replace(",","."));
+                                feedrates.push(data);
+                            })
+                        }
+                    })
+                }
+            });
+            let values = {
+                feedrates:feedrates,
+            }
+            dispatch(edit(paramFeedrate,values));
+           
+        }
+        return asyncProcess()
+    }
 }
 
 
@@ -100,7 +167,6 @@ export function edit(obj,values) {
             let repository      = getRepository(Typesrates);
             if(obj){
                 for (var property in values) {
-                    console.log(property)
                     if(property == 'coefficientsindexing'){
                         obj[property] = parseFloat(values[property].replace(',','.').replace(' ',''))
                     }else{

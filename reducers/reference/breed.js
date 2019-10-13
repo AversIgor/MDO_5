@@ -10,7 +10,6 @@ const initialState = {
     currentId:undefined,
     currentObject:undefined,
     data:[],
-    options:[],
     sort: {
         by:'id',
         dir:'asc',
@@ -26,7 +25,6 @@ export default function breed (state = initialState, action) {
         case BREED_FILL_SUCCESS:
             return { ...state,
                 data: action.data,
-                options:action.options,
                 where: action.where
             }
         case BREED_ADD:
@@ -34,7 +32,6 @@ export default function breed (state = initialState, action) {
                 currentId: action.currentId,
                 currentObject: action.currentObject,
                 data: action.data,
-                options:action.options,
             }
         
         case BREED_DEL:
@@ -42,14 +39,12 @@ export default function breed (state = initialState, action) {
                 currentId: undefined,
                 currentObject: undefined,
                 data: action.data,
-                options:action.options,
             }
         case BREED_EDIT:
             return { ...state,
                 currentId: action.currentId,
                 currentObject: action.currentObject,
                 data: action.data,
-                options:action.options,
             }
         case BREED_SORT:
             return { ...state,

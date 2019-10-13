@@ -381,7 +381,6 @@ export var MASTER = {
 			if (xhr.readyState != 4) return;
 
 			if (xhr.status != 200) {
-				//console.log(xhr.status + ': ' + xhr.statusText);
 			} else {
 				//проверим в переменной состояние активации лицензии
 				if(w2utils.isDate(MASTER.data.dateactive,'dd.mm.yyyy') == false){

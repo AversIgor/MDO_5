@@ -20,6 +20,9 @@ export class Typesrates {
     @Column({ type: "text", nullable: true })
     name = '';
 
+    @Column({ type: "text", nullable: true })
+    region = '';
+
     @Column({ type: "float", nullable: true })
     coefficientsindexing= 0.00;
 
