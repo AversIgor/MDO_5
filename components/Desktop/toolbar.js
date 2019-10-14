@@ -4,20 +4,10 @@ import ReactDOM from 'react-dom';
 import logo from '../../img/logo-w-big.png'
 
 
-const css_logo = {
-    'padding-top': '5px',
-}
-
-
-const css_toolbar = {
-    'background': '#545454ad!important',
-    'border-width': '0px!important',
-}
-
-const css_projectMenu = {
-    'padding-top': '10px',
-    'border-width': '0px!important',
-    'background': '#54545400!important'
+const cssMenu = {
+    'background': '#00000000!important',
+    'height':'48px!important',
+    'line-height':'36px!important',
 }
 
 export default class ComponentToolbar extends Component {
@@ -33,18 +23,14 @@ export default class ComponentToolbar extends Component {
        const questionMenu = { 
             view:'menu', 
             id: 'questionMenu', 
-            css: css_projectMenu, 
             type:{
                 subsign:false
             }, 
             width:48,
             align:"right",
-            submenuConfig:{
-                width:240,
-            },
             data:[
                 {
-                    id: 'actions', icon: "question-circle-o", value:'',width:25, height:50,$css:{ "color": "#ffffff!important;" },
+                    id: 'actions', icon: "far fa-cog", width:48, value:'',$css: cssMenu,
                     submenu:[
                         {id: "about", value: "О программе/лицензия",},
                         {id: "site",  value: "Сайт программы"},
@@ -63,17 +49,14 @@ export default class ComponentToolbar extends Component {
         const projectMenu = { 
             view:'menu', 
             id: 'projectMenu', 
-            css: css_projectMenu, 
             type:{
                 subsign:true
             },    
             data:[
                 {
-                    id: 'actions', value:'Проект',height:50,$css:{ "color": "#ffffff!important;" },
+                    id: 'actions', value:'Проект',$css: cssMenu,
                     submenu:[
-                        {id: "new", icon: "file-o", value: "Новый",config:{
-                            height:36,}
-                        },
+                        {id: "new", icon: "file-o", value: "Новый"},
                         {id: "open", icon: "folder-open-o", value: "Открыть"},
                         { $template:"Separator" },
                         {id: "save", icon: "save", value: "Сохранить"}
@@ -113,11 +96,12 @@ export default class ComponentToolbar extends Component {
             view: "toolbar",
             id: "toolbar",
             container:ReactDOM.findDOMNode(this.refs.root), 
-            css:css_toolbar, 
+            //css:css_toolbar,
+            css:"webix_dark",  
             height:50,
             type: "clean",
             elements: [
-                {view: "label", label: "<img src="+logo+" />", width:180, css:css_logo},
+                {view: "label", label: "<img src="+logo+" />", width:180,},
                 projectMenu,
                 {},
                 questionMenu,
