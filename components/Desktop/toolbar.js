@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-
 import logo from '../../img/logo-w-big.png'
+
 
 
 const cssMenu = {
     'background': '#00000000!important',
     'height':'48px!important',
+    'width':'48px!important',
     'line-height':'36px!important',
 }
 
@@ -30,7 +31,7 @@ export default class ComponentToolbar extends Component {
             align:"right",
             data:[
                 {
-                    id: 'actions', icon: "far fa-cog", width:48, value:'',$css: cssMenu,
+                    id: 'actions',  icon:"mdi mdi-help", width:48, value:'',$css: cssMenu,
                     submenu:[
                         {id: "about", value: "О программе/лицензия",},
                         {id: "site",  value: "Сайт программы"},
@@ -109,6 +110,7 @@ export default class ComponentToolbar extends Component {
         }
 
         this.toolbar = window.webix.ui(toolbar);
+
     }
 
 
