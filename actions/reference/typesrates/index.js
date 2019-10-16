@@ -4,7 +4,8 @@ import {
     TYPESRATES_DEL,
     TYPESRATES_EDIT,
     TYPESRATES_SORT,
-    TYPESRATES_FILL_REGIONS
+    TYPESRATES_FILL_REGIONS,
+    TYPESRATES_FILL_FEEDRATES,
 } from '../../../constants/reference/typesrates'
 import {getRepository} from "typeorm";
 import {Typesrates} from "../../TypeORM/entity/typesrates";
@@ -39,7 +40,7 @@ export function fill_regions() {
     }
 }
 
-export function fillFeedrates(paramFeedrate,breeds) {
+export function fillFeedrates(region,breeds) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let payment_rates = await $.ajax(resources+'Payment_rates.xml');
@@ -49,7 +50,7 @@ export function fillFeedrates(paramFeedrate,breeds) {
             let feedrates = []
             $(payment_rates).find("Description").children().each(function () {
                 
-                if($(this).attr("Name") == paramFeedrate.region){
+                if($(this).attr("Name") == region){
 			
                     $(this).children().each(function () {                        
                         var breeds_id = null;
@@ -74,11 +75,11 @@ export function fillFeedrates(paramFeedrate,breeds) {
                     })
                 }
             });
-            let values = {
-                feedrates:feedrates,
-            }
-            dispatch(edit(paramFeedrate,values));
-           
+            dispatch({
+                type: TYPESRATES_FILL_FEEDRATES,
+                feedrates: feedrates,
+            })
+       
         }
         return asyncProcess()
     }
@@ -167,11 +168,11 @@ export function edit(obj,values) {
             let repository      = getRepository(Typesrates);
             if(obj){
                 for (var property in values) {
-                    if(property == 'coefficientsindexing'){
-                        obj[property] = parseFloat(values[property].replace(',','.').replace(' ',''))
-                    }else{
+                   //if(property == 'coefficientsindexing'){
+                    //    obj[property] = parseFloat(values[property].replace(',','.').replace(' ',''))
+                   // }else{
                         obj[property] = values[property]
-                    }
+                   // }
                 }
                 await repository.save(obj)
             }

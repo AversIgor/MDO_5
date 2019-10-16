@@ -13,7 +13,9 @@ class Typesrates extends Component {
         super(props);
         this.showAllStatus = false;
         this.state = {
-            feedrates:undefined
+            feedrates:[],
+            id:undefined,
+            region:undefined,
         };
    }
 
@@ -23,7 +25,12 @@ class Typesrates extends Component {
         this.props.fill_regions();
     }
 
-
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.feedrates != this.state.feedrates){
+            this.setState({feedrates: nextProps.feedrates}) 
+        }
+        
+    }
 
     handlerShowAllStatus = () => {
         this.showAllStatus = !this.showAllStatus
@@ -35,23 +42,21 @@ class Typesrates extends Component {
     }
 
     openFeedrates = (curentrow) => {
+
         this.setState({
-            feedrates: {
             id:curentrow.id,
             region:curentrow.region,
-            feedrates:curentrow.feedrates
-            }
+            feedrates:curentrow.feedrates            
         })       
     }
 
-    saveFeedrates = (row,value) => {
-        this.props.edit(row,value)
-        this.setState({
-            feedrates: undefined})       
+    saveFeedrates = (value) => {
+        this.props.edit({id:this.state.id},value)
+        this.setState({id: undefined})       
     }
 
     closeFeedrates = () => {
-        this.setState({ feedrates: undefined})       
+        this.setState({ id: undefined})       
     }
 
 
@@ -60,6 +65,7 @@ class Typesrates extends Component {
             <Fragment>
                 <ComponentTypesrates
                     data = {this.props.data}
+                    currentId = {this.props.currentId}
                     regions = {this.props.regions}
                     sort = {this.props.sort}
                     handlerAdd = {this.props.add}
@@ -71,9 +77,10 @@ class Typesrates extends Component {
                     openFeedrates = {this.openFeedrates}
                 /> 
                 <ComponentFeedratesForm
+                    id = {this.state.id}
                     feedrates = {this.state.feedrates}
                     breed = {this.props.breed}
-                    regions = {this.props.regions}
+                    region = {this.state.region}
                     rankTax = {this.props.rankTax}
                     saveFeedrates = {this.saveFeedrates}
                     closeFeedrates = {this.closeFeedrates}
@@ -90,6 +97,8 @@ function mapStateToProps (state) {
     return {
         data: state.typesrates.data,
         regions: state.typesrates.regions,
+        feedrates: state.typesrates.feedrates,
+        currentId: state.typesrates.currentId,
         sort: state.typesrates.sort,
         breed: state.breed.data,
         rankTax: state.enumerations.rankTax,        

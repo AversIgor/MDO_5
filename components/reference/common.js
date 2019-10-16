@@ -271,13 +271,10 @@ let datatableUpdate = function(context,props){
     if(!lastId){
         lastId = table.getLastId();
     }
-    try {
+    if(lastId){
         table.select(lastId);
         table.showItem(lastId);
-    } catch (err) {
-
     }
-  
 
     //фильтрация
     table.eachColumn(

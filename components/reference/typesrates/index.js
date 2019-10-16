@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 import * as common from '../common';
 
-export default class Typesrates extends Component {
+export default class sTypesrates extends Component {
 
     constructor(props) {
         super(props);
@@ -69,29 +69,15 @@ export default class Typesrates extends Component {
                 borderless:true,
                 view:"form",
                 elements:[
-                    //{ view:"text", name:"title", label:"Title"},
-                    //{ view:"text", name:"year", label:"Year"},
                     { cols:[
                         { view:"button", value:"Ставки платы", click:function(){
                             let selectedItem = ($$(self.id+'_datatable').getSelectedItem())
+                            console.log(selectedItem)
                             self.props.openFeedrates(selectedItem)
                         }}
                     ]}
                 ]
-            },
-            /*activeContent: {
-                buttonFeedrates: { 
-                    id:"buttonfeedrates",
-                    view:"button", 
-                    label:"Открыть", 
-                    width: 70,           
-                    height:30,          
-                    click:function(id, e){
-                        let selectedItem = ($$(self.id+'_datatable').getSelectedItem())
-                        self.props.openFeedrates(selectedItem)
-                    }
-                },
-            }, */   
+            }, 
         }
     
 

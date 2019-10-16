@@ -13,7 +13,7 @@ export default class ComponentLeftMenu extends Component {
         var menu = {
             container:ReactDOM.findDOMNode(this.refs.root),
             id:'container_left_menu',
-            width:220,
+            width:230,
             rows:[
                 {
                     view:"grouplist",

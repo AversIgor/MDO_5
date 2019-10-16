@@ -47,14 +47,14 @@ export default class ComponentFeedrates extends Component {
                     tooltip:"Сохранить и закрыть",
                     icon: "edit",
                     label:"Сохранить",
-                    width:100,
+                    width:110,
                     align:"center",
                     on:{
                         'onItemClick': function(id){
                             let values = {
                                 feedrates:$$("feedrates_datatable").serialize(),
                             }
-                            self.props.saveFeedrates(self.props.feedrates,values);
+                            self.props.saveFeedrates(values);
                         }
                     }
                 },
@@ -110,11 +110,11 @@ export default class ComponentFeedrates extends Component {
                     tooltip:"Заполнить ставки платы по лесотаксовому району",
                     icon: "fill",
                     label:"Заполнить",
-                    width:100,
+                    width:110,
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            self.props.fillFeedrates(self.props.feedrates,self.props.breed);
+                            self.props.fillFeedrates(self.props.region,self.props.breed);
                         }
                     }
                 },              
@@ -164,9 +164,9 @@ export default class ComponentFeedrates extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.feedrates){
+        if(nextProps.id){
             $$("feedrates_datatable").clearAll();
-            $$("feedrates_datatable").define("data",nextProps.feedrates.feedrates);
+            $$("feedrates_datatable").define("data",nextProps.feedrates);
             $$("feedrates_datatable").refresh();
             this.sortbBreedRanktax();    
             this.ui.show();

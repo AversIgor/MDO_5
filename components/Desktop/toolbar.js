@@ -6,9 +6,7 @@ import logo from '../../img/logo-w-big.png'
 
 const cssMenu = {
     'background': '#00000000!important',
-    'height':'48px!important',
-    'width':'48px!important',
-    'line-height':'36px!important',
+    'padding-top': '10px',
 }
 
 export default class ComponentToolbar extends Component {
@@ -57,10 +55,10 @@ export default class ComponentToolbar extends Component {
                 {
                     id: 'actions', value:'Проект',$css: cssMenu,
                     submenu:[
-                        {id: "new", icon: "file-o", value: "Новый"},
-                        {id: "open", icon: "folder-open-o", value: "Открыть"},
+                        {id: "new", icon: "mdi mdi-folder-plus", value: "Новый"},
+                        {id: "open", icon: "mdi mdi-folder-open", value: "Открыть"},
                         { $template:"Separator" },
-                        {id: "save", icon: "save", value: "Сохранить"}
+                        {id: "save", icon: "mdi mdi-content-save", value: "Сохранить"}
                     ]
                 }
             ],
