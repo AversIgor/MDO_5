@@ -1,6 +1,5 @@
 import {DESKTOP} from "./desktop";
 import {BD} from "./dao";
-import {TYPESCOEFFICIENTS} from "./typescoefficients";
 import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
 import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
 import {COEFFICIENTSDAMAGE} from "./coefficientsdamage";
@@ -14,48 +13,7 @@ RESOURCES.allQueryComplit = function (xml) {
 	DESKTOP.serialConnectionScripts();
 }
 
-//БЛОК ЗАГРУЗКИ ЛЕСОТАКСОВЫХ РАЙОНОВ
 
-
-//БЛОК ЗАГРУЗКИ ПРЕДОПРЕДЕЛЕННЫХ КОЭФФИЦИЕНТОВ
-RESOURCES.typescoefficientsLoad = function () {    
-	
-	var struct = [];
-	
-	var row = {};
-	row.recid = 1;
-	row.predefined = 1;
-	row.name = "Коэффициент индексации ставок платы";
-	struct.push(row);	
-	
-	var row = {};
-	row.recid = 2;
-	row.predefined = 1;
-	row.name = "Коэффициент на форму рубки";
-	struct.push(row);
-	
-	var row = {};
-	row.recid = 3;
-	row.predefined = 1;
-	row.name = "Коэффициент на ликвидный запас";
-	struct.push(row);	
-	
-	var row = {};
-	row.recid = 4;
-	row.predefined = 1;
-	row.name = "Коэффициент на степень поврежденности насаждения";
-	struct.push(row);	
-
-	BD.addArray(TYPESCOEFFICIENTS, struct, RESOURCES.typescoefficientsComplit);
-	
-
-}
-
-RESOURCES.typescoefficientsComplit = function () {
-   
-	RESOURCES.allQueryComplit();
-	
-}
 //БЛОК ЗАГРУЗКИ ПРЕДОПРЕДЕЛЕННЫХ КОЭФФИЦИЕНТОВ - КОНЕЦ
 
 //БЛОК ЗАГРУЗКИ КОЭФФИЦИЕНТОВ НА ФОРМУ РУБКИ

@@ -51,13 +51,7 @@ DESKTOP.init = function (){
 		scriptsarray.push(script);
 
 
-		 var script = {
-			curentfunction : function() {
-				RESOURCES.typescoefficientsLoad();
-			},
-		 	description: 'Обновление видов коэффициентов на ставки платы...'
-		}
-		scriptsarray.push(script);
+
 		var script = {
 			curentfunction : function() {
 				RESOURCES.coefficientsformcuttingLoad();

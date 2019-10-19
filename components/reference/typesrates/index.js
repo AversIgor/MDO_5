@@ -92,7 +92,7 @@ export default class sTypesrates extends Component {
                             },
                             { view:"button", value:"на ликвидный запас", click:function(){
                                 let selectedItem = this.getFormView().getMasterView().getSelectedItem()
-                                self.props.openFeedrates(selectedItem)
+                                self.props.openCoefficientsrangesliquidation(selectedItem)
                                 }
                             },
                             { view:"button", value:"на степень поврежденности", click:function(){

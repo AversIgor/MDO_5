@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 
-export default class ComponentFeedrates extends Component {
+export default class ComponentCoefficientsrangesliquidation extends Component {
 
     constructor(props) {
         super(props);
+        this.tableid = 'coefficientsrangesliquidation_datatable';
     }
 
     componentDidMount(){
@@ -13,21 +14,21 @@ export default class ComponentFeedrates extends Component {
 
         let table = {
             view:"datatable",
-            id:'feedrates_datatable',
+            id:self.tableid,
             select:"cell",
             multiselect:false,
             editable:true,
             editaction:"dblclick",
             css:'box_shadow',
             borderless:true,
-            columns:[
+            /*columns:[
                 { id:"breed", header:["Порода"],  editor:"combo", options:this.props.breed, fillspace:true,sort:"string"},
                 { id:"ranktax", header:{text:"Разряд такс",}, editor:"combo", options:this.props.rankTax,fillspace:true,sort:"string"},
                 { id:"large", header:{text:"Крупная",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
                 { id:"average", header:{text:"Средняя",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
                 { id:"small", header:{text:"Мелкая",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
                 { id:"firewood", header:{text:"Дрова",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
-            ],
+            ],*/
             data: [],
             rules:{
                 "breed": webix.rules.isNotEmpty,
@@ -42,7 +43,6 @@ export default class ComponentFeedrates extends Component {
             cols:[
                 {
                     view:"button",
-                    id:'feedrates_window_icon_edit',
                     type:"icon",
                     tooltip:"Сохранить и закрыть",
                     icon: "mdi mdi-pencil",
@@ -52,7 +52,7 @@ export default class ComponentFeedrates extends Component {
                     on:{
                         'onItemClick': function(id){
                             let values = {
-                                feedrates:$$("feedrates_datatable").serialize(),
+                                feedrates:$$(self.tableid).serialize(),
                             }
                             self.props.saveFeedrates(values);
                         }
@@ -67,7 +67,7 @@ export default class ComponentFeedrates extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            $$("feedrates_datatable").add({});
+                            $$(self.tableid).add({});
                         }
                     }
                 },
@@ -80,10 +80,10 @@ export default class ComponentFeedrates extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            if($$("feedrates_datatable").getSelectedItem()){
-                                let copy = window.webix.copy($$("feedrates_datatable").getSelectedItem());
+                            if($$(self.tableid).getSelectedItem()){
+                                let copy = window.webix.copy($$(self.tableid).getSelectedItem());
                                 delete copy.id;
-                                $$("feedrates_datatable").add(copy)                             
+                                $$(self.tableid).add(copy)                             
                             }                            
                         }
                     }
@@ -97,15 +97,14 @@ export default class ComponentFeedrates extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            if($$("feedrates_datatable").getSelectedId()){
-                                $$("feedrates_datatable").remove($$("feedrates_datatable").getSelectedId());
+                            if($$(self.tableid).getSelectedId()){
+                                $$(self.tableid).remove($$(self.tableid).getSelectedId());
                             }                            
                         }
                     }
                 },  
                 {
                     view:"button",
-                    id:'feedrates_window_icon_fill',
                     type:"icon",
                     tooltip:"Заполнить ставки платы по лесотаксовому району",
                     icon: "mdi mdi-cloud-download-outline",
@@ -121,7 +120,6 @@ export default class ComponentFeedrates extends Component {
                 {},
                 {
                     view:"icon",
-                    id:"feedrates_window_icon_close",
                     tooltip:"Закрыть",
                     icon: "mdi mdi-close",
                     on:{
@@ -135,7 +133,7 @@ export default class ComponentFeedrates extends Component {
 
         var conteiner = {
             view:"window",
-            id:"feedrates_window",
+            id:"rangesLiquidation_window",
             move:true,
             zIndex:100,
             width: 800,
@@ -150,25 +148,11 @@ export default class ComponentFeedrates extends Component {
 
     }
 
-
-
-    sortbBreedRanktax() {
-        $$("feedrates_datatable").markSorting("breed", "asc");
-        $$("feedrates_datatable").sort(function(a,b){
-            if (a.breed == b.breed)
-                return (a.ranktax>b.ranktax)?1:-1;
-            else
-                return (a.breed>b.breed)?1:-1;
-        });
-        
-    }
-
     componentWillReceiveProps(nextProps) {
-        if(nextProps.openfeedrates){
-            $$("feedrates_datatable").clearAll();
-            $$("feedrates_datatable").define("data",nextProps.feedrates);
-            $$("feedrates_datatable").refresh();
-            this.sortbBreedRanktax();    
+        if(nextProps.opencoefficientsrangesliquidation){
+            $$(this.tableid).clearAll();
+            $$(this.tableid).define("data",nextProps.rangesLiquidation);
+            $$(this.tableid).refresh();
             this.ui.show();
         }else{
             this.ui.hide();

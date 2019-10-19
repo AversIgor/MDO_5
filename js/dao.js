@@ -1,7 +1,5 @@
 import {DESKTOP} from "./desktop";
 import {CONSTANTS} from "./constants";
-import {FEEDRATES} from "./feedrates";
-import {TYPESCOEFFICIENTS} from "./typescoefficients";
 import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
 import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
 import {COEFFICIENTSDAMAGE} from "./coefficientsdamage";
@@ -17,6 +15,8 @@ import {Tract} from "../actions/TypeORM/entity/tract";
 import {Publications} from "../actions/TypeORM/entity/publications";
 import {Tables} from "../actions/TypeORM/entity/tables";
 import {Breed} from "../actions/TypeORM/entity/breed";
+import {Typesrates} from "../actions/TypeORM/entity/typesrates";
+
 import {add} from "../actions/reference/publications";
 import * as FileSaver from "file-saver";
 
@@ -30,8 +30,6 @@ export var BD = {
 		//запросы на первоначальное создание БД
 		var TextQuery = [];
 		TextQuery.push(CONSTANTS.textQuery);
-		TextQuery.push(FEEDRATES.textQuery);
-		TextQuery.push(TYPESCOEFFICIENTS.textQuery);
 		TextQuery.push(COEFFICIENTSFORMCUTTING.textQuery);
 		TextQuery.push(COEFFICIENTSRANGESLIQUIDATION.textQuery);
 		TextQuery.push(COEFFICIENTSDAMAGE.textQuery);
@@ -372,85 +370,30 @@ export var BD = {
 					publications:[],
 				},
 				settingsMDO:{},
-				rates:{
-					types:[],
-					feeds:[]
-				},
+				typesrates:[]
 			}
 
-			let forestry = []
 			//лесничества
 			let repository 	= getRepository(Forestry);
-			let rawData 	= await repository.find();
+			data.reference.forestry = await repository.find()
 
-			for (var i = 0; i < rawData.length; i++) {
-				let newObject = {
-					id:rawData[i].id,
-					name:rawData[i].name,
-					fullname:rawData[i].fullname,
-					cod:rawData[i].cod,
-				};
-				forestry.push(newObject)
-			}
-			data.reference.forestry = forestry
-
-			let subforestry = []
 			//участковые лесничества
-			repository 	= getRepository(Subforestry);
-			rawData 	= await repository.find({
-				relations: ["forestry"],
-				}
-			);
-			for (var i = 0; i < rawData.length; i++) {
-				let newObject = {
-					id:rawData[i].id,
-					forestry_id:rawData[i].forestry.id,
-					name:rawData[i].name,
-					fullname:rawData[i].fullname,
-					cod:rawData[i].cod,
-				};
-				subforestry.push(newObject)
-			}
-			data.reference.subforestry = subforestry
+			data.reference.subforestry = await repository.query(`SELECT * FROM avers_subforestry`);
 
-			let tract = []
 			//урочища
-			repository 	= getRepository(Tract);
-			rawData 	= await repository.find({
-					relations: ["subforestry"],
-				}
-			);
-			for (var i = 0; i < rawData.length; i++) {
-				let newObject = {
-					id:rawData[i].id,
-					subforestry_id:rawData[i].subforestry.id,
-					name:rawData[i].name,
-					fullname:rawData[i].fullname,
-					cod:rawData[i].cod,
-				};
-				tract.push(newObject)
-			}
-			data.reference.tract = tract
+			data.reference.tract = await repository.query(`SELECT * FROM avers_tract`);
 
-			let publications = []
 			//Издания
 			repository 	= getRepository(Publications);
-			rawData 	= await repository.find();
-			for (var i = 0; i < rawData.length; i++) {
-				let newObject = {
-					id:rawData[i].id,
-					name:rawData[i].name,
-					fullname:rawData[i].fullname,
-					official:rawData[i].official,
-					developer:rawData[i].developer,
-				};
-				publications.push(newObject)
-			}
-			data.reference.publications = publications
+			data.reference.publications = await repository.find();
+
+		   //Ставки платы
+		   repository 	= getRepository(Typesrates);
+		   data.typesrates = await repository.find()
 
            let settingsMDO = {}
            //Настройки МДО
-           rawData = await entityManager.query('SELECT * FROM constants');
+           let rawData = await entityManager.query('SELECT * FROM constants');
            for (var i = 0; i < rawData.length; i++) {
                settingsMDO = {
                    orderRoundingValues:rawData[i].orderRoundingValues,
@@ -466,45 +409,11 @@ export var BD = {
            }
            data.settingsMDO = settingsMDO
 
-
-			let types = []
-           //Виды ставок
-           rawData = await entityManager.query('SELECT * FROM typesrates');
-           for (var i = 0; i < rawData.length; i++) {
-               let newObject = {
-                   id:rawData[i].recid,
-                   name:rawData[i].name,
-                   orderroundingrates:rawData[i].orderroundingrates,
-                   predefined:rawData[i].predefined,
-                   coefficientsindexing:rawData[i].coefficientsindexing,
-               };
-               types.push(newObject)
-           }
-           data.rates.types = types
-
-           let feeds = []
-           //значения ставок
-           rawData = await entityManager.query('SELECT * FROM feedrates');
-           for (var i = 0; i < rawData.length; i++) {
-               let newObject = {
-                   id:rawData[i].recid,
-                   typesrates_id:rawData[i].typesrates_id,
-                   breeds_id:rawData[i].breeds_id,
-                   ranktax_id:rawData[i].ranktax_id,
-                   large:rawData[i].large,
-                   average:rawData[i].average,
-                   small:rawData[i].small,
-                   firewood:rawData[i].firewood,
-               };
-               feeds.push(newObject)
-           }
-           data.rates.feeds = feeds
-
            let JSONdata = JSON.stringify(data, null, '\t');
 
            var blob = new Blob([JSONdata], {type: "json;charset=utf-8"});
            FileSaver.saveAs(blob, 'dump_'+BD.curentVersion+'.json');
-           await connection.close();
+
 		}
 		return asyncProcess();
 	},
@@ -557,13 +466,9 @@ export var BD = {
 				await BD.fillSettingsMDO(data.settingsMDO)
 				webix.message({ type:"info", text:'Обновлены настройки параметров МДО'});
 			}
-			if(data.rates.types){
-				await BD.fillRatesTypes(data.rates.types)
-				webix.message({ type:"info", text:'Обновлен справочник "Виды ставок"'});
-			}
-			if(data.rates.feeds){
-				await BD.fillFeeds(data.rates.feeds)
-				webix.message({ type:"info", text:'Обновлены ставки платы'});
+			if(data.typesrates){
+				await BD.fillTypesRates(data.typesrates)
+				webix.message({ type:"info", text:'Обновлен справочник "Ставки платы"'});
 			}
 			webix.message({ type:"error", text:'Обновление данных завершено!'});
 		}
@@ -589,17 +494,7 @@ export var BD = {
 		const asyncProcess = async () => {
 			let repository      = getRepository(Forestry);
 			await repository.clear();
-			let array = []
-			for (var i = 0; i < data.length; i++) {
-				const element = repository.create({
-					id: data[i].id,
-					name: data[i].name,
-					fullname: data[i].fullname,
-					cod: data[i].cod,
-				})
-				array.push(element)
-			}
-			await repository.save(array);
+			await repository.save(data);
 		}
 		return asyncProcess()
 	},
@@ -615,7 +510,7 @@ export var BD = {
 				await this.insert(Subforestry,array)
 				array.splice(0,array.length);
 			}
-			const forestry = await repositoryForestry.findByIds([data[i].forestry_id]);
+			const forestry = await repositoryForestry.findByIds([data[i].forestryId]);
 			if(forestry.length>0){
 				const element = repository.create({
 					id: data[i].id,
@@ -643,7 +538,7 @@ export var BD = {
 					await this.insert(Tract,array)
 					array.splice(0,array.length);
 				}
-				const subforestry = await repositorySubforestry.findByIds([data[i].subforestry_id]);
+				const subforestry = await repositorySubforestry.findByIds([data[i].subforestryId]);
 				if(subforestry.length>0){
 					const element = repository.create({
 						id: data[i].id,
@@ -663,16 +558,7 @@ export var BD = {
 		const asyncProcess = async () => {
 			let repository      	= getRepository(Breed);
 			await repository.clear();
-			let array = []
-			for (var i = 0; i < data.length; i++) {
-				const element = repository.create({
-					id: data[i].id,
-					name: data[i].name,
-					kodGulf: data[i].kodGulf,
-				})
-				array.push(element)
-			}
-			await repository.save(array);
+			await repository.save(data);
 		}
 		return asyncProcess()
 	},
@@ -707,29 +593,12 @@ export var BD = {
 		BD.edit(CONSTANTS, struct, ALLCONSTANT.get);
 	},
 
-	
-
-	fillFeeds: function (data){
+	fillTypesRates: function (data){
 		const asyncProcess = async () => {
-			let entityManager = getManager();
-			await entityManager.query('DELETE FROM feedrates');
-			var struct = [];
-			for (var i = 0; i < data.length; i++) {
-				let row = {
-					typesrates_id:data[i].typesrates_id,
-					breeds_id:data[i].breeds_id,
-					ranktax_id:data[i].ranktax_id,
-					large:data[i].large,
-					average:data[i].average,
-					small:data[i].small,
-					firewood:data[i].firewood,
-				};
-				struct.push(row);
-			}
-			BD.addArray(FEEDRATES, struct);
+			let repository      	= getRepository(Typesrates);
+			await repository.clear();
+			await repository.save(data);
 		}
 		return asyncProcess()
-
 	},
-
 };

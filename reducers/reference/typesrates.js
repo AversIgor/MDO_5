@@ -14,6 +14,7 @@ const initialState = {
     options:[],
     regions:[],
     feedrates:[],
+    coefficientsrangesliquidation:[],
     sort: {
         by:'id',
         dir:'asc',
@@ -59,10 +60,10 @@ export default function typesrates(state = initialState, action) {
             return { ...state,
                 regions: action.regions,
             }
-            case TYPESRATES_FILL_FEEDRATES:
-                return { ...state,
-                    feedrates: action.feedrates,
-                }
+        case TYPESRATES_FILL_FEEDRATES:
+            return { ...state,
+                feedrates: action.feedrates,
+            }
         default:
             return state
     }

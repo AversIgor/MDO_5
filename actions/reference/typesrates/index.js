@@ -168,11 +168,7 @@ export function edit(obj,values) {
             let repository      = getRepository(Typesrates);
             if(obj){
                 for (var property in values) {
-                   //if(property == 'coefficientsindexing'){
-                    //    obj[property] = parseFloat(values[property].replace(',','.').replace(' ',''))
-                   // }else{
-                        obj[property] = values[property]
-                   // }
+                    obj[property] = values[property]
                 }
                 await repository.save(obj)
             }

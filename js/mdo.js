@@ -5,7 +5,6 @@ import {PARAMETERS} from "./parameters";
 import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
 import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
 import {COEFFICIENTSDAMAGE} from "./coefficientsdamage";
-import {FEEDRATES} from "./feedrates";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {CONSTANTS} from "./constants";
 import {MDOPRINT} from "./mdoprint";
@@ -484,7 +483,7 @@ export function calculation() {
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	conditions.ranktax_id = [objectMDO.rankTax.id];
 	var arrayField 	= ['breeds_id','large','average','small','firewood'];
-	BD.fillListWithConditions(FEEDRATES,arrayField,conditions,fillFeedrates);
+	//BD.fillListWithConditions(FEEDRATES,arrayField,conditions,fillFeedrates);
  
 }
 

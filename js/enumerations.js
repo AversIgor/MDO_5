@@ -38,11 +38,6 @@ export var ENUMERATIONS = {
 		{'id':9,'text':'до 90 %'},
 		{'id':10,'text':'до 100 %'}
 	],
-	rangesLiquidation: [
-		{'id':1,'text':'от 0 до 100 м.куб'},
-		{'id':2,'text':'от 100.01 до 150 м.куб'},
-		{'id':3,'text':'более 150 м.куб'}
-	],
 	orderRoundingValues: [
 		{'id':1,'text':'До целых куб.м.'},
 		{'id':2,'text':'До десятых долей куб.м.'},

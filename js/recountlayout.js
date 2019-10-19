@@ -1,7 +1,6 @@
 import * as MDO from "./mdo";
 import {ENUMERATIONS} from "./enumerations";
 import {BD} from "./dao";
-import {TYPESCOEFFICIENTS} from "./typescoefficients";
 import {PARAMETERS} from "./parameters";
 
 import {store} from "../src/app";
@@ -9,9 +8,8 @@ import * as breed from "../actions/reference/breed";
 
 export var RECOUNTLAYOUT = {};
 
-
+RECOUNTLAYOUT.typescoefficients = []
 RECOUNTLAYOUT.breeds = [];
-RECOUNTLAYOUT.typescoefficients = [];
 var LAYOUTstyle = 'border: 1px solid #dfdfdf; padding: 1px; overflow: hidden;border-radius: 1px;';
 
 RECOUNTLAYOUT.config = {
@@ -585,11 +583,10 @@ RECOUNTLAYOUT.fillbreeds = function () {
 	asyncProcess(breed);
 }
 
-RECOUNTLAYOUT.filltypescoefficients = function () {	
-	
+RECOUNTLAYOUT.filltypescoefficients = function () {
+	let data 	= store.getState().enumerations.typesCoefficients;	
 	RECOUNTLAYOUT.typescoefficients.splice(0,RECOUNTLAYOUT.typescoefficients.length);
-	BD.fillList(TYPESCOEFFICIENTS, this.typescoefficients, ['recid', 'name', 'predefined']);
-	
+	RECOUNTLAYOUT.typescoefficients.push(...data);
 }
 
 RECOUNTLAYOUT.beforeOpening = function () {

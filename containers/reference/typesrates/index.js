@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import ComponentTypesrates from "../../../components/reference/typesrates";
 import ComponentFeedratesForm from "../../../components/reference/typesrates/feedrates";
+import ComponentCoefficientsrangesliquidationForm from "../../../components/reference/typesrates/coefficientsrangesliquidation";
 import {fill_data,add,del,edit,sorting,fill_regions,fillFeedrates} from "../../../actions/reference/typesrates";
 import * as breed from "../../../actions/reference/breed";
 
@@ -13,7 +14,10 @@ class Typesrates extends Component {
         super(props);
         this.showAllStatus = false;
         this.state = {
+            openfeedrates:false,
             feedrates:[],
+            opencoefficientsrangesliquidation:false,
+            coefficientsrangesliquidation:[],
             id:undefined,
             region:undefined,
         };
@@ -42,23 +46,30 @@ class Typesrates extends Component {
     }
 
     openFeedrates = (curentrow) => {
-
         this.setState({
+            openfeedrates:true,
             id:curentrow.id,
             region:curentrow.region,
             feedrates:curentrow.feedrates            
         })       
     }
-
     saveFeedrates = (value) => {
         this.props.edit({id:this.state.id},value)
-        this.setState({id: undefined})       
+        this.setState({openfeedrates: false})       
     }
 
     closeFeedrates = () => {
-        this.setState({ id: undefined})       
+        this.setState({ openfeedrates: false})       
     }
 
+    openCoefficientsrangesliquidation = (curentrow) => {
+        this.setState({
+            opencoefficientsrangesliquidation:true,
+            id:curentrow.id,
+            region:curentrow.region,
+            coefficientsrangesliquidation:curentrow.coefficientsrangesliquidation            
+        })       
+    }
 
     render() {      
         return (
@@ -75,8 +86,10 @@ class Typesrates extends Component {
                     handlerShowAllStatus = {this.handlerShowAllStatus}
                     orderRoundingRates = {this.props.orderRoundingRates}
                     openFeedrates = {this.openFeedrates}
+                    openCoefficientsrangesliquidation = {this.openCoefficientsrangesliquidation}
                 /> 
                 <ComponentFeedratesForm
+                    openfeedrates = {this.state.openfeedrates}
                     id = {this.state.id}
                     feedrates = {this.state.feedrates}
                     breed = {this.props.breed}
@@ -85,7 +98,15 @@ class Typesrates extends Component {
                     saveFeedrates = {this.saveFeedrates}
                     closeFeedrates = {this.closeFeedrates}
                     fillFeedrates = {this.props.fillFeedrates}
-                    />
+                />
+                <ComponentCoefficientsrangesliquidationForm
+                    opencoefficientsrangesliquidation = {this.state.opencoefficientsrangesliquidation}
+                    openfeedrates = {this.state.openfeedrates}
+                    coefficientsrangesliquidation = {this.state.coefficientsrangesliquidation}
+                    rangesLiquidation = {this.props.rangesLiquidation}
+                    //saveFeedrates = {this.saveFeedrates}
+                    //closeFeedrates = {this.closeFeedrates}
+                />
             </Fragment>
         )
     }
@@ -103,6 +124,7 @@ function mapStateToProps (state) {
         breed: state.breed.data,
         rankTax: state.enumerations.rankTax,        
         orderRoundingRates: state.enumerations.orderRoundingRates,
+        rangesLiquidation: state.enumerations.rangesLiquidation,
     }
 }
 

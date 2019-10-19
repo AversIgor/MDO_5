@@ -4,7 +4,6 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
 @Entity()
 export class Typesrates {
 
-
     @PrimaryGeneratedColumn()
     id = undefined;
 
@@ -26,8 +25,13 @@ export class Typesrates {
     @Column({ type: "float", nullable: true })
     coefficientsindexing= 0.00;
 
+    //СТАВКИ ПЛАТЫ
     @Column({ type: "simple-json", nullable: true  })
     feedrates = {}
+
+    //КОЭФФИЦИЕНТЫ НА ЛИКВИДНЫЙ ЗАПАС
+    @Column({ type: "simple-json", nullable: true  })
+    coefficientsrangesliquidation = {}
 
     
 }
