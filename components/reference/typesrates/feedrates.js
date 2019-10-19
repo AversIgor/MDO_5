@@ -45,7 +45,7 @@ export default class ComponentFeedrates extends Component {
                     id:'feedrates_window_icon_edit',
                     type:"icon",
                     tooltip:"Сохранить и закрыть",
-                    icon: "edit",
+                    icon: "mdi mdi-pencil",
                     label:"Сохранить",
                     width:110,
                     align:"center",
@@ -62,8 +62,8 @@ export default class ComponentFeedrates extends Component {
                     view:"button",
                     type:"icon",
                     tooltip:"Добавить строку",
-                    icon: "plus",
-                    width:30,
+                    icon: "mdi mdi-plus",
+                    width:24,
                     align:"center",
                     on:{
                         'onItemClick': function(id){
@@ -75,8 +75,8 @@ export default class ComponentFeedrates extends Component {
                     view:"button",
                     type:"icon",
                     tooltip:"Скопировать строку",
-                    icon: "copy",
-                    width:30,
+                    icon: "mdi mdi-content-copy",
+                    width:24,
                     align:"center",
                     on:{
                         'onItemClick': function(id){
@@ -92,8 +92,8 @@ export default class ComponentFeedrates extends Component {
                     view:"button",
                     type:"icon",
                     tooltip:"Удалить строку",
-                    icon: "cut",
-                    width:30,
+                    icon: "mdi mdi-delete",
+                    width:24,
                     align:"center",
                     on:{
                         'onItemClick': function(id){
@@ -108,7 +108,7 @@ export default class ComponentFeedrates extends Component {
                     id:'feedrates_window_icon_fill',
                     type:"icon",
                     tooltip:"Заполнить ставки платы по лесотаксовому району",
-                    icon: "fill",
+                    icon: "mdi mdi-cloud-download-outline",
                     label:"Заполнить",
                     width:110,
                     align:"center",
@@ -123,7 +123,7 @@ export default class ComponentFeedrates extends Component {
                     view:"icon",
                     id:"feedrates_window_icon_close",
                     tooltip:"Закрыть",
-                    icon: "times",
+                    icon: "mdi mdi-close",
                     on:{
                         'onItemClick': function(id){
                             self.props.closeFeedrates();                           

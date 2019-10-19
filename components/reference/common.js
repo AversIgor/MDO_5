@@ -104,7 +104,7 @@ let searchBind = function(context){
 let settingsButton = function(context){    
     return {
         view:"icon",
-        icon: "cog",
+        icon: "mdi mdi-cogs",
         click: function(){
             $$(context.id+"_settings").show(this.getNode(), {pos:"bottom"});
         }
@@ -272,8 +272,11 @@ let datatableUpdate = function(context,props){
         lastId = table.getLastId();
     }
     if(lastId){
-        table.select(lastId);
-        table.showItem(lastId);
+        try{            
+            table.select(lastId);
+            table.showItem(lastId);
+        }
+        catch(err){}
     }
 
     //фильтрация
@@ -310,9 +313,21 @@ let datatableFieldID = function(){
         id:"id",	    
         header:"Код", 
         sort:"int", 
-        template:"<span>#id#</span><div class='status status#predefined#'></div><i class='material-icons statusdel statusdel#status#'>clear</i>"	
+    
+        template:function(obj){
+            let style = " style='";
+            if(obj.predefined){
+                style = style+"color: red; "
+            }
+            if(obj.status){
+                style = style+"text-decoration: line-through; "
+            }
+            style = style+"'"
+            return "<span"+style+">"+obj.id+"</span>";
+        }	
     }
 }
+
 
 let uiDestructor = function(context){
     for (var i = 0; i < context.ui.length; i++) {

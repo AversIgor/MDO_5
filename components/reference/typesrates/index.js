@@ -62,22 +62,48 @@ export default class sTypesrates extends Component {
             css:'box_shadow',
             borderless:true,            
             columns:this.columns,
-            on:common.creatOn(this),
+            on:{...common.creatOn(this),
+                onSubViewOpen:function(id){
+                    if(id){
+                        this.select(id);
+                    }
+                }            
+            },
             data: [],
             rules:this.rules,
             subview:{
                 borderless:true,
                 view:"form",
-                elements:[
-                    { cols:[
-                        { view:"button", value:"Ставки платы", click:function(){
-                            let selectedItem = ($$(self.id+'_datatable').getSelectedItem())
-                            console.log(selectedItem)
-                            self.props.openFeedrates(selectedItem)
-                        }}
-                    ]}
+                width:250,
+                elements:[  
+                        {
+                        rows:[
+                            { view:"button", value:"Ставки платы",css:'webix_primary', click:function(){
+                                let selectedItem = this.getFormView().getMasterView().getSelectedItem()
+                                self.props.openFeedrates(selectedItem)
+                                }
+                            },
+                            
+                            { template:"Коэффициенты", type:"section"},
+                            { view:"button", value:"на форму рубки", click:function(){
+                                let selectedItem = this.getFormView().getMasterView().getSelectedItem()
+                                self.props.openFeedrates(selectedItem)
+                                }
+                            },
+                            { view:"button", value:"на ликвидный запас", click:function(){
+                                let selectedItem = this.getFormView().getMasterView().getSelectedItem()
+                                self.props.openFeedrates(selectedItem)
+                                }
+                            },
+                            { view:"button", value:"на степень поврежденности", click:function(){
+                                let selectedItem = this.getFormView().getMasterView().getSelectedItem()
+                                self.props.openFeedrates(selectedItem)
+                                }
+                            }
+                        ]
+                    }                        
                 ]
-            }, 
+            },   
         }
     
 
