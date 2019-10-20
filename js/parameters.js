@@ -1,6 +1,4 @@
-import {ENUMERATIONS} from "./enumerations";
 import {RECOUNTLAYOUT} from "./recountlayout";
-import {BD} from "./dao";
 
 import {store} from "../src/app";
 import * as methodscleanings from "../actions/reference/methodscleanings";
@@ -18,9 +16,13 @@ PARAMETERS.subforestry = [];
 PARAMETERS.tract = [];
 PARAMETERS.cuttingmethods = [];
 PARAMETERS.typesrates = [];
+PARAMETERS.methodTaxation = [];
 PARAMETERS.methodscleaning = [];
 PARAMETERS.formCutting = [];
 PARAMETERS.groupCutting = [];
+PARAMETERS.property = [];
+PARAMETERS.rankTax = [];
+PARAMETERS.purposeForests = [];
 
 
 PARAMETERS.config = {
@@ -46,15 +48,15 @@ PARAMETERS.config = {
 		style: 'border: 0px;',
 		focus  : -1,
 		fields : [
-			{ field: 'methodTaxation', type: 'list', options :{items: ENUMERATIONS.methodTaxation}, html: { caption: 'Метод таксации:', span: '8', attr: 'style="width: 100%"'}, required: true },
-			{ field: 'property', type: 'list', options :{items: ENUMERATIONS.property}, html: { caption: 'Хозяйство:', span: '8', attr: 'style="width: 100%"'}, required: true},
+			{ field: 'methodTaxation', type: 'list', options :{items: PARAMETERS.methodTaxation}, html: { caption: 'Метод таксации:', span: '8', attr: 'style="width: 100%"'}, required: true },
+			{ field: 'property', type: 'list', options :{items: PARAMETERS.property}, html: { caption: 'Хозяйство:', span: '8', attr: 'style="width: 100%"'}, required: true},
 			{ field: 'formCutting', type: 'list', options :{items: PARAMETERS.formCutting}, html: { caption: 'Форма рубки:', span: '8', attr: 'style="width: 100%"'}, required: true},
 			{ field: 'groupCutting', type: 'list', options :{items: PARAMETERS.groupCutting}, html: { caption: 'Группа рубки:', span: '8', attr: 'style="width: 100%"'}, required: false},
 			{ field: 'cuttingmethods', type: 'list',options :{items: PARAMETERS.cuttingmethods}, html: { caption: 'Способ рубки:', span: '8', attr: 'style="width: 100%"'} },
 			{ field: 'methodscleaning', type: 'list',options :{items: PARAMETERS.methodscleaning}, html: { caption: 'Способ очистки:', span: '8', attr: 'style="width: 100%"'}},
 			{ field: 'areacutting', type: 'float', html: { caption: 'Площадь лесосеки, га:', span: '8', attr: 'style="width: 100px"'}, required: true },
 			{ field: 'typesrates', type: 'list',options :{items: PARAMETERS.typesrates}, html: { caption: 'Вид ставки:', span: '8', attr: 'style="width: 100%"'}, required: true },
-			{ field: 'rankTax', type: 'list', options :{items: ENUMERATIONS.rankTax}, html: { caption: 'Разряд такс:', span: '8', attr: 'style="width: 100px"'}, required: true },
+			{ field: 'rankTax', type: 'list', options :{items: PARAMETERS.rankTax}, html: { caption: 'Разряд такс:', span: '8', attr: 'style="width: 100px"'}, required: true },
 			{ field: 'releasedate', type: 'date', options :{ format: 'dd.mm.yyyy' }, html: { caption: 'Дата отвода:', span: '8', attr: 'style="width: 100px"'} },
 			{ field: 'valuationdate', type: 'date', options :{ format: 'dd.mm.yyyy' }, html: { caption: 'Дата оценки:', span: '8', attr: 'style="width: 100px"'} },
 			{ field: 'estimator', type: 'textarea',  html: { caption: 'Расчет произвел:', span: '8', attr: 'style="width: 100%"'} },
@@ -132,7 +134,7 @@ PARAMETERS.config = {
 			{ field: 'quarter', type: 'int', html: { caption: 'Квартал:', span: '8', attr: 'style="width: 50px"'} },
 			{ field: 'isolated', type: 'text', html: { caption: 'Выделы:', span: '8', attr: 'style="width: 100%"'} },
 			{ field: 'cuttingarea', type: 'text', html: { caption: '№ лесосеки (делянки):', span: '8', attr: 'style="width: 100%"'} },
-			{ field: 'purposeForests', type: 'list', options :{items: ENUMERATIONS.purposeForests}, html: { caption: 'Целевое назначение:', span: '8', attr: 'style="width: 100%"'} },
+			{ field: 'purposeForests', type: 'list', options :{items: PARAMETERS.purposeForests}, html: { caption: 'Целевое назначение:', span: '8', attr: 'style="width: 100%"'} },
 			{ field: 'undergrowth', type: 'textarea',  html: { caption: 'Подрост:', span: '8', attr: 'style="width: 100%"'} },
 			{ field: 'seedtrees', type: 'textarea',  html: { caption: 'Семменники:', span: '8', attr: 'style="width: 100%"'} },
 
@@ -338,20 +340,20 @@ PARAMETERS.beforeOpening = function () {
 
 PARAMETERS.visibility = function () {
 
- 	for (var i = 0; i < ENUMERATIONS.objectTaxation.length; i++) {
+ 	for (var i = 0; i < store.getState().enumerations.objectTaxation.length; i++) {
 		if(objectMDO.methodTaxation.id == 1){
-			if(ENUMERATIONS.objectTaxation[i].id == 5){
-				ENUMERATIONS.objectTaxation[i].disabled = true;
+			if(store.getState().enumerations.objectTaxation[i].id == 5){
+				store.getState().enumerations.objectTaxation[i].disabled = true;
 			}else{
-				ENUMERATIONS.objectTaxation[i].disabled = false;			
+				store.getState().enumerations.objectTaxation[i].disabled = false;			
 			}		
 		}else
 		{		
-			if(ENUMERATIONS.objectTaxation[i].id == 5){
-				ENUMERATIONS.objectTaxation[i].disabled = false;
+			if(store.getState().enumerations.objectTaxation[i].id == 5){
+				store.getState().enumerations.objectTaxation[i].disabled = false;
 			}else
 			{
-				ENUMERATIONS.objectTaxation[i].disabled = true;
+				store.getState().enumerations.objectTaxation[i].disabled = true;
 			}
 		}	
 	} 
@@ -436,8 +438,17 @@ PARAMETERS.whenOpening = function (dataSet) {
 		PARAMETERS.fillMethodscleanings()
 		PARAMETERS.fillCuttingmethods()
 		PARAMETERS.fillTypesrates()
+
+		PARAMETERS.methodTaxation.splice(0,PARAMETERS.methodTaxation.length);
+		PARAMETERS.methodTaxation.push(...store.getState().enumerations.methodTaxation);
+		PARAMETERS.property.splice(0,PARAMETERS.property.length);
+		PARAMETERS.property.push(...store.getState().enumerations.property);
+		PARAMETERS.rankTax.splice(0,PARAMETERS.rankTax.length);
+		PARAMETERS.rankTax.push(...store.getState().enumerations.rankTax);
+		PARAMETERS.purposeForests.splice(0,PARAMETERS.purposeForests.length);
+		PARAMETERS.purposeForests.push(...store.getState().enumerations.purposeForests);
+
 		
-	
 
 		w2ui[PARAMETERS.config.formCutting.name].set('formCutting', { options :{items: store.getState().enumerations.formCutting} });		
 		w2ui[PARAMETERS.config.formCutting.name].set('groupCutting', { options :{items: store.getState().enumerations.groupCutting} });

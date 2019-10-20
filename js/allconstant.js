@@ -1,6 +1,6 @@
 import {BD} from "./dao";
 import {CONSTANTS} from "./constants";
-import {ENUMERATIONS} from "./enumerations";
+
 
 export var ALLCONSTANT = {};
 	ALLCONSTANT.data = {};
@@ -64,25 +64,25 @@ ALLCONSTANT.fillConstants = function (dataSet) {
 		}
 		
 		var curentdistributionhalfbusiness = {};
-		for (var i = 0; i < ENUMERATIONS.distributionhalfbusiness.length; i++) {				
+		/*for (var i = 0; i < ENUMERATIONS.distributionhalfbusiness.length; i++) {				
 			if (ENUMERATIONS.distributionhalfbusiness[i].id == dataSet[0].distributionhalfbusiness){
 				curentdistributionhalfbusiness  = ENUMERATIONS.distributionhalfbusiness[i];	
 			} 
-		}
+		}*/
 		
-		var curentorderRoundingRates = {};
+		/*var curentorderRoundingRates = {};
 		for (var i = 0; i < ENUMERATIONS.orderRoundingRates.length; i++) {				
 			if (ENUMERATIONS.orderRoundingRates[i].id == dataSet[0].orderRoundingRates){
 				curentorderRoundingRates  = ENUMERATIONS.orderRoundingRates[i];	
 			} 
-		}
+		}*/
 		
-		var curentorderRoundingValues = {};
+	/*	var curentorderRoundingValues = {};
 		for (var i = 0; i < ENUMERATIONS.orderRoundingValues.length; i++) {				
 			if (ENUMERATIONS.orderRoundingValues[i].id == dataSet[0].orderRoundingValues){
 				curentorderRoundingValues  = ENUMERATIONS.orderRoundingValues[i];	
 			} 
-		}
+		}*/
 		
 		ALLCONSTANT.data.distributionhalfbusiness    		= dataSet[0].distributionhalfbusiness;
 		ALLCONSTANT.data.assessfirewoodcommonstock   		= dataSet[0].assessfirewoodcommonstock;

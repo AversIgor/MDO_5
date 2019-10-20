@@ -4,9 +4,6 @@ import {
     UPDATE_COMPLETE
 } from '../../constants/update'
 
-import {BD} from "../../js/dao";
-
-
 async function getCurentversion(args) {
     let result;
     let url = 'http://update.theforest.ru/update/configs/mdo5/5.2/curentversion.txt';
@@ -23,22 +20,21 @@ async function getCurentversion(args) {
     }
 }
 
-function checkVersion(obj) {
+function checkVersion(obj,curentVersion) {
 
     let result = false 
 
-    let str_oldversion = BD.curentVersion;
     let str_newversion = obj;
 
-    let str_oldversionformat = '';
-    let arrayoldversio = str_oldversion.split('.');
+    let curentVersionformat = '';
+    let arraycurentVersion = curentVersion.split('.');
 
-    for (var i = 0; i < arrayoldversio.length; i++) {
-        let podstr = arrayoldversio[i];
+    for (var i = 0; i < arraycurentVersion.length; i++) {
+        let podstr = arraycurentVersion[i];
         while (podstr.length < 3) {
             podstr = '0'+podstr;
         }
-        str_oldversionformat = str_oldversionformat+podstr;
+        curentVersionformat = curentVersionformat+podstr;
     }
 
     let str_newversionformat = '';
@@ -52,9 +48,9 @@ function checkVersion(obj) {
         str_newversionformat = str_newversionformat+podstr;
     }
 
-    let number_oldversion = parseFloat(str_oldversionformat);
+    let number_curentVersion = parseFloat(curentVersionformat);
     let number_newversion = parseFloat(str_newversionformat);
-    if(number_oldversion < number_newversion){
+    if(number_curentVersion < number_newversion){
         result = true;
     }
 
@@ -68,7 +64,8 @@ export function check() {
         const asyncProcess = async () => {
             let newversion = await getCurentversion()
             if(! newversion) return
-            if(checkVersion(newversion)){
+            let curentVersion = getState().typeORM.curentVersion;
+            if(checkVersion(newversion,curentVersion)){
                 dispatch({
                     type: UPDATE_CHECK,
                     isUpdate: true,

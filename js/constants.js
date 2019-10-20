@@ -1,5 +1,4 @@
 import {ALLCONSTANT} from "./allconstant";
-import {ENUMERATIONS} from "./enumerations";
 import {BD} from "./dao";
 
 /*КОНСТАНТЫ
@@ -48,7 +47,7 @@ export var CONSTANTS =  {
 			name    : 'constants',
 			style	: 'width: 100%;',
 			focus  : -1,
-			fields: [
+			/*fields: [
 				{ field: 'orderRoundingValues', type: 'list', html: { caption : 'Округление объема древесины:', span:'15',},
 					options: { items: ENUMERATIONS.orderRoundingValues }},		
 				{ field: 'orderRoundingRates', type: 'list', html: { caption : 'Округление денежных сумм:', span:'15',},
@@ -60,7 +59,7 @@ export var CONSTANTS =  {
 				{ field: 'firewoodtrunkslindencountedinbark', type: 'checkbox', html: { caption : 'Дровяные стволы липы учитывать в коре:', span:'15',}},
 				{ field: 'barklindenindividualreserves', type: 'checkbox', html: { caption : 'Кора липы в сортиментных таблицах отдельным параметром:', span:'15',}},
 			
-			],
+			],*/
 			onChange: function (event) {			
 				var struct = [];
 				var row = {};

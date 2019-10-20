@@ -1,6 +1,7 @@
 import {createConnection, getManager, TableColumn,getRepository} from "typeorm";
 import {Contactinformation} from "../entity/contactinformation"
 import {Typesrates} from "../entity/typesrates"
+import {Mdosettings} from "../entity/mdosettings"
 
 export function creatEntities(conectionOption) {
     const asyncProcess = async (conectionOption) => {
@@ -10,6 +11,7 @@ export function creatEntities(conectionOption) {
             newOption.entities = [
                 Contactinformation,
                 Typesrates,
+                Mdosettings,
             ]
             let connection      = await createConnection(newOption);
             await connection.close();

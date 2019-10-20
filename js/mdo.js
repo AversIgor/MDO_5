@@ -1,6 +1,5 @@
 import {BD} from "./dao";
 import {ALLCONSTANT} from "./allconstant";
-import {ENUMERATIONS} from "./enumerations";
 import {PARAMETERS} from "./parameters";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {CONSTANTS} from "./constants";
@@ -92,8 +91,8 @@ classMDO.prototype.startMDO = function() {
 	if (month<10) month = "0"+month;
 	var year  = (new Date()).getFullYear();
 
-	this.methodTaxation = ENUMERATIONS.methodTaxation[0];
-	this.property 		= ENUMERATIONS.property[0];
+	this.methodTaxation = store.getState().enumerations.methodTaxation[0];
+	this.property 		= store.getState().enumerations.property[0];
 	this.formCutting 	= store.getState().enumerations.formCutting;
 	this.rankTax 		= store.getState().enumerations.rankTax[0];
 	this.areacutting	= 1;

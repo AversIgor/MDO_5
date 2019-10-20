@@ -21,6 +21,7 @@ import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
 import {Typesrates} from "./entity/typesrates";
+import {Mdosettings} from "./entity/mdosettings";
 
 import * as settings from '../../actions/Abris/settings';
 import * as contactinformation from '../../actions/reference/contactinformation';
@@ -50,6 +51,7 @@ export function init() {
                 Abrisprintforms,
                 Contactinformation,
                 Typesrates,
+                Mdosettings,
              ]
     }
 
@@ -89,7 +91,7 @@ export function init() {
                     await Migration_5_2_0_10.breedsConvert(options);
                 }
 
-                if(isNewVersions(oldVersion,"5.2.1.9")){
+                if(isNewVersions(oldVersion,"5.2.1.11")){
                     //конвертация контактной информации
                     await Migration_5_2_1_0.creatEntities(options);
                     await Migration_5_2_1_0.ContactinformationConvert(options);

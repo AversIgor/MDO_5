@@ -1,5 +1,4 @@
 import * as MDO from "./mdo";
-import {ENUMERATIONS} from "./enumerations";
 import {PARAMETERS} from "./parameters";
 
 import {store} from "../src/app";
@@ -218,7 +217,7 @@ window.RECOUNTLAYOUT_addObjectTaxation = function addObjectTaxation() {
 	$('#addObjectTaxation').w2menu({
 		align: 'left',
 		name:'ObjectTaxation',
-		items: ENUMERATIONS.objectTaxation,
+		items: store.getState().enumerations.objectTaxation,
 		onSelect: function (event) { 
 			var options = {	'uid':			'objTaxation'+(MDO.objectMDO.arrayObjectsTaxation.length+1),
 							'name':			event.item.text,

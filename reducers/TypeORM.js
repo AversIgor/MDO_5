@@ -1,11 +1,10 @@
-import {BD} from "../js/dao";
 import {
     ORM_COMPLETE,
     ORM_INIT
 } from '../constants/TypeORM'
 
 const initialState = {
-    curentVersion: BD.curentVersion,
+    curentVersion: '5.2.1.11',
     isUpdate: false,
 }
 

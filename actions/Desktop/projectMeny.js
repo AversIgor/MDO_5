@@ -2,7 +2,6 @@
 import * as APP from "../../src/app";
 import * as MDO from "../../js/mdo";
 import {BD} from "../../js/dao";
-import {ENUMERATIONS} from "../../js/enumerations";
 import {RECOUNTLAYOUT} from "../../js/recountlayout";
 
 
@@ -13,7 +12,6 @@ import base64_arraybuffer from "base64-arraybuffer";
 
 import * as background from "../Abris/background";
 import * as objects from "../Abris/objects";
-import * as common from "../Abris/common";
 
 export function newProject() {
     return (dispatch,getState) => {
@@ -264,14 +262,14 @@ function creatFileProject(objectMDO,background,polygons) {
     plot.arrayObjectsTaxation = arrayObjectsTaxation;
     for(let i = 0; i < objectMDO.arrayObjectsTaxation.length; i++){
         let elementObjectsTaxation = objectMDO.arrayObjectsTaxation[i];
-        let typeObjectTaxation = ENUMERATIONS.objectTaxation.find(x => x.id === elementObjectsTaxation.id);
+       /* let typeObjectTaxation = ENUMERATIONS.objectTaxation.find(x => x.id === elementObjectsTaxation.id);
         let objectTaxation = {
             id : elementObjectsTaxation.uid,
             name : elementObjectsTaxation.name,            
             type : typeObjectTaxation.id,
             areacutting : elementObjectsTaxation.areacutting,
         }
-        arrayObjectsTaxation.push(objectTaxation)
+        arrayObjectsTaxation.push(objectTaxation)*/
         //описание таксируемых пород в объекте таксации
         let arrayBreed = []
         objectTaxation.arrayBreed = arrayBreed;
