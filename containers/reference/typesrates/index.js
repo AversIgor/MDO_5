@@ -5,6 +5,9 @@ import { connect } from 'react-redux'
 import ComponentTypesrates from "../../../components/reference/typesrates";
 import ComponentFeedratesForm from "../../../components/reference/typesrates/feedrates";
 import ComponentCoefficientsrangesliquidationForm from "../../../components/reference/typesrates/coefficientsrangesliquidation";
+import ComponentCoefficientsformcuttingForm from "../../../components/reference/typesrates/coefficientsformcutting";
+import ComponentCoefficientsdamageForm from "../../../components/reference/typesrates/coefficientsdamage";
+
 import {fill_data,add,del,edit,sorting,fill_regions,fillFeedrates} from "../../../actions/reference/typesrates";
 import * as breed from "../../../actions/reference/breed";
 
@@ -14,10 +17,8 @@ class Typesrates extends Component {
         super(props);
         this.showAllStatus = false;
         this.state = {
-            openfeedrates:false,
-            feedrates:[],
-            opencoefficientsrangesliquidation:false,
-            coefficientsrangesliquidation:[],
+            openNameTable:"",
+            table:[],
             id:undefined,
             region:undefined,
         };
@@ -30,10 +31,9 @@ class Typesrates extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.feedrates != this.state.feedrates){
-            this.setState({feedrates: nextProps.feedrates}) 
-        }
-        
+        if(nextProps.feedrates != this.state.table){
+            this.setState({table: nextProps.feedrates}) 
+        }        
     }
 
     handlerShowAllStatus = () => {
@@ -45,30 +45,23 @@ class Typesrates extends Component {
         }
     }
 
-    openFeedrates = (curentrow) => {
+
+    openTable = (curentrow,nameTable) => {
         this.setState({
-            openfeedrates:true,
+            openNameTable:nameTable,
             id:curentrow.id,
             region:curentrow.region,
-            feedrates:curentrow.feedrates            
-        })       
-    }
-    saveFeedrates = (value) => {
+            table:curentrow[nameTable]            
+        })  
+    }     
+
+    saveTable = (value) => {
         this.props.edit({id:this.state.id},value)
-        this.setState({openfeedrates: false})       
+        this.setState({openNameTable: ''})       
     }
 
-    closeFeedrates = () => {
-        this.setState({ openfeedrates: false})       
-    }
-
-    openCoefficientsrangesliquidation = (curentrow) => {
-        this.setState({
-            opencoefficientsrangesliquidation:true,
-            id:curentrow.id,
-            region:curentrow.region,
-            coefficientsrangesliquidation:curentrow.coefficientsrangesliquidation            
-        })       
+    closeTable = () => {
+        this.setState({openNameTable: ''})       
     }
 
     render() {      
@@ -85,33 +78,45 @@ class Typesrates extends Component {
                     handlerSorting = {this.props.sorting}
                     handlerShowAllStatus = {this.handlerShowAllStatus}
                     orderRoundingRates = {this.props.orderRoundingRates}
-                    openFeedrates = {this.openFeedrates}
-                    openCoefficientsrangesliquidation = {this.openCoefficientsrangesliquidation}
+                    openTable = {this.openTable}
                 /> 
                 <ComponentFeedratesForm
-                    openfeedrates = {this.state.openfeedrates}
-                    id = {this.state.id}
-                    feedrates = {this.state.feedrates}
+                    openNameTable = {this.state.openNameTable}
+                    table = {this.state.table}
                     breed = {this.props.breed}
                     region = {this.state.region}
                     rankTax = {this.props.rankTax}
-                    saveFeedrates = {this.saveFeedrates}
-                    closeFeedrates = {this.closeFeedrates}
+                    saveTable = {this.saveTable}
+                    closeTable = {this.closeTable}
                     fillFeedrates = {this.props.fillFeedrates}
                 />
-                <ComponentCoefficientsrangesliquidationForm
-                    opencoefficientsrangesliquidation = {this.state.opencoefficientsrangesliquidation}
-                    openfeedrates = {this.state.openfeedrates}
-                    coefficientsrangesliquidation = {this.state.coefficientsrangesliquidation}
-                    rangesLiquidation = {this.props.rangesLiquidation}
-                    //saveFeedrates = {this.saveFeedrates}
-                    //closeFeedrates = {this.closeFeedrates}
+               <ComponentCoefficientsrangesliquidationForm
+                    openNameTable = {this.state.openNameTable}
+                    table = {this.state.table}
+                    rangesLiquidation = {this.props.rangesLiquidation}                    
+                    saveTable = {this.saveTable}
+                    closeTable = {this.closeTable}
+                />
+                <ComponentCoefficientsformcuttingForm
+                    openNameTable = {this.state.openNameTable}
+                    table = {this.state.table}
+                    formCutting = {this.props.formCutting}                    
+                    saveTable = {this.saveTable}
+                    closeTable = {this.closeTable}
+                />
+                <ComponentCoefficientsdamageForm
+                    openNameTable = {this.state.openNameTable}
+                    table = {this.state.table}
+                    damage = {this.props.damage}                    
+                    saveTable = {this.saveTable}
+                    closeTable = {this.closeTable}
                 />
             </Fragment>
         )
     }
 
 }
+
 
 
 function mapStateToProps (state) {
@@ -125,6 +130,8 @@ function mapStateToProps (state) {
         rankTax: state.enumerations.rankTax,        
         orderRoundingRates: state.enumerations.orderRoundingRates,
         rangesLiquidation: state.enumerations.rangesLiquidation,
+        formCutting: state.enumerations.formCutting,
+        damage: state.enumerations.damage,
     }
 }
 

@@ -21,9 +21,6 @@ import Contactinformation from '../Contactinformation';
 
 import Oldcontent from '../Desktop/oldcontent';
 import {RECOUNTLAYOUT} from "../../js/recountlayout";
-import {COEFFICIENTSFORMCUTTING} from "../../js/coefficientsformcutting";
-import {COEFFICIENTSRANGESLIQUIDATION} from "../../js/coefficientsrangesliquidation";
-import {COEFFICIENTSDAMAGE} from "../../js/coefficientsdamage";
 import {MASTER} from "../../js/master";
 
 class MDOSubsystem extends Component {
@@ -67,18 +64,6 @@ class MDOSubsystem extends Component {
                     return <Publication/>;
                 case "typesrates":
                     return <Typesrates/>;
-                case "coefficientsformcutting":
-                    return <Oldcontent
-                        module = {COEFFICIENTSFORMCUTTING}
-                    />;
-                case "coefficientsrangesliquidation":
-                    return <Oldcontent
-                        module = {COEFFICIENTSRANGESLIQUIDATION}
-                    />;
-                case "coefficientsdamage":
-                    return <Oldcontent
-                        module = {COEFFICIENTSDAMAGE}
-                    />;
                 case "contactinformation":
                     return <Contactinformation/>;
                 case "master":

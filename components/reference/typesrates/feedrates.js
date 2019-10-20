@@ -42,7 +42,6 @@ export default class ComponentFeedrates extends Component {
             cols:[
                 {
                     view:"button",
-                    id:'feedrates_window_icon_edit',
                     type:"icon",
                     tooltip:"Сохранить и закрыть",
                     icon: "mdi mdi-pencil",
@@ -54,7 +53,7 @@ export default class ComponentFeedrates extends Component {
                             let values = {
                                 feedrates:$$("feedrates_datatable").serialize(),
                             }
-                            self.props.saveFeedrates(values);
+                            self.props.saveTable(values);
                         }
                     }
                 },
@@ -105,7 +104,6 @@ export default class ComponentFeedrates extends Component {
                 },  
                 {
                     view:"button",
-                    id:'feedrates_window_icon_fill',
                     type:"icon",
                     tooltip:"Заполнить ставки платы по лесотаксовому району",
                     icon: "mdi mdi-cloud-download-outline",
@@ -126,7 +124,7 @@ export default class ComponentFeedrates extends Component {
                     icon: "mdi mdi-close",
                     on:{
                         'onItemClick': function(id){
-                            self.props.closeFeedrates();                           
+                            self.props.closeTable();                           
                         }
                     }
                 }
@@ -164,9 +162,9 @@ export default class ComponentFeedrates extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.openfeedrates){
+        if(nextProps.openNameTable == 'feedrates'){
             $$("feedrates_datatable").clearAll();
-            $$("feedrates_datatable").define("data",nextProps.feedrates);
+            $$("feedrates_datatable").define("data",nextProps.table);
             $$("feedrates_datatable").refresh();
             this.sortbBreedRanktax();    
             this.ui.show();

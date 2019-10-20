@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 
-export default class ComponentCoefficientsrangesliquidation extends Component {
+export default class ComponentСoefficientsdamage extends Component {
 
     constructor(props) {
         super(props);
-        this.tableid = 'coefficientsrangesliquidation_datatable';
+        this.tableid = 'coefficientsdamage_datatable';
     }
 
     componentDidMount(){
@@ -22,12 +22,12 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
             css:'box_shadow',
             borderless:true,
             columns:[
-                { id:"rangesLiquidation", header:["Выход ликвидного запаса"],  editor:"combo", options:this.props.rangesLiquidation, fillspace:true,sort:"string"},
+                { id:"damage", header:["Степень поврежденности'"],  editor:"combo", options:this.props.damage, fillspace:true,sort:"string"},
                 { id:"value", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             data: [],
             rules:{
-                "rangesLiquidation": webix.rules.isNotEmpty,
+                "damage": webix.rules.isNotEmpty,
             },  
                      
         }
@@ -47,7 +47,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
                     on:{
                         'onItemClick': function(id){
                             let values = {
-                                coefficientsrangesliquidation:$$(self.tableid).serialize(),
+                                coefficientsdamage:$$(self.tableid).serialize(),
                             }
                             self.props.saveTable(values);
                         }
@@ -114,7 +114,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
 
         var conteiner = {
             view:"window",
-            id:"rangesLiquidation_window",
+            id:"coefficientsdamage_window",
             move:true,
             zIndex:100,
             width: 800,
@@ -130,7 +130,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.openNameTable == 'coefficientsrangesliquidation'){
+        if(nextProps.openNameTable == 'coefficientsdamage'){
             $$(this.tableid).clearAll();
             $$(this.tableid).define("data",nextProps.table);
             $$(this.tableid).refresh();

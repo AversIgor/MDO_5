@@ -1,8 +1,5 @@
 import {DESKTOP} from "./desktop";
 import {CONSTANTS} from "./constants";
-import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
-import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
-import {COEFFICIENTSDAMAGE} from "./coefficientsdamage";
 import {ALLCONSTANT} from "./allconstant";
 
 
@@ -30,9 +27,6 @@ export var BD = {
 		//запросы на первоначальное создание БД
 		var TextQuery = [];
 		TextQuery.push(CONSTANTS.textQuery);
-		TextQuery.push(COEFFICIENTSFORMCUTTING.textQuery);
-		TextQuery.push(COEFFICIENTSRANGESLIQUIDATION.textQuery);
-		TextQuery.push(COEFFICIENTSDAMAGE.textQuery);
 
 		return TextQuery
 

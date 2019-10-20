@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 
-export default class ComponentCoefficientsrangesliquidation extends Component {
+export default class ComponentCoefficientsformcutting extends Component {
 
     constructor(props) {
         super(props);
-        this.tableid = 'coefficientsrangesliquidation_datatable';
+        this.tableid = 'coefficientsformcutting_datatable';
     }
 
     componentDidMount(){
@@ -22,7 +22,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
             css:'box_shadow',
             borderless:true,
             columns:[
-                { id:"rangesLiquidation", header:["Выход ликвидного запаса"],  editor:"combo", options:this.props.rangesLiquidation, fillspace:true,sort:"string"},
+                { id:"formCutting", header:["Форма рубки"],  editor:"combo", options:this.props.formCutting, fillspace:true,sort:"string"},
                 { id:"value", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             data: [],
@@ -47,7 +47,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
                     on:{
                         'onItemClick': function(id){
                             let values = {
-                                coefficientsrangesliquidation:$$(self.tableid).serialize(),
+                                coefficientsformcutting:$$(self.tableid).serialize(),
                             }
                             self.props.saveTable(values);
                         }
@@ -114,7 +114,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
 
         var conteiner = {
             view:"window",
-            id:"rangesLiquidation_window",
+            id:"coefficientsformcutting_window",
             move:true,
             zIndex:100,
             width: 800,
@@ -130,7 +130,7 @@ export default class ComponentCoefficientsrangesliquidation extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.openNameTable == 'coefficientsrangesliquidation'){
+        if(nextProps.openNameTable == 'coefficientsformcutting'){
             $$(this.tableid).clearAll();
             $$(this.tableid).define("data",nextProps.table);
             $$(this.tableid).refresh();

@@ -80,24 +80,24 @@ export default class sTypesrates extends Component {
                         rows:[
                             { view:"button", value:"Ставки платы",css:'webix_primary', click:function(){
                                 let selectedItem = this.getFormView().getMasterView().getSelectedItem()
-                                self.props.openFeedrates(selectedItem)
+                                self.props.openTable(selectedItem,'feedrates')
                                 }
                             },
                             
                             { template:"Коэффициенты", type:"section"},
                             { view:"button", value:"на форму рубки", click:function(){
                                 let selectedItem = this.getFormView().getMasterView().getSelectedItem()
-                                self.props.openFeedrates(selectedItem)
+                                self.props.openTable(selectedItem,'coefficientsformcutting')
                                 }
                             },
                             { view:"button", value:"на ликвидный запас", click:function(){
                                 let selectedItem = this.getFormView().getMasterView().getSelectedItem()
-                                self.props.openCoefficientsrangesliquidation(selectedItem)
+                                self.props.openTable(selectedItem,'coefficientsrangesliquidation')
                                 }
                             },
                             { view:"button", value:"на степень поврежденности", click:function(){
                                 let selectedItem = this.getFormView().getMasterView().getSelectedItem()
-                                self.props.openFeedrates(selectedItem)
+                                self.props.openTable(selectedItem,'coefficientsdamage')
                                 }
                             }
                         ]

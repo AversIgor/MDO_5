@@ -13,11 +13,41 @@ import {Typesrates} from "../../TypeORM/entity/typesrates";
 export function defaultTypesrates() {
 
     let struct = [
-        {'id':1,'status':0,'orderroundingrates':2,'predefined':true,'coefficientsindexing':1.43,'name':'Ставки Федерального уровня'},        
+        {
+            id:1,
+            status:0,
+            orderroundingrates:2,
+            predefined:true,
+            coefficientsindexing:1.43,
+            name:'Ставки Федерального уровня',
+            coefficientsrangesliquidation:[
+                {rangesLiquidation:1,value:0.9},
+                {rangesLiquidation:2,value:1.0},
+                {rangesLiquidation:3,value:1.05},
+            ], 
+            coefficientsformcutting:[
+                {formCutting:1,value:0.5} 
+            ], 
+            coefficientsdamage:[
+                {damage:1,value:0.9},
+                {damage:2,value:0.8},
+                {damage:3,value:0.7},
+                {damage:4,value:0.6},
+                {damage:5,value:0.5},
+                {damage:6,value:0.4},
+                {damage:7,value:0.3},
+                {damage:8,value:0.2},
+                {damage:9,value:0.1},
+                {damage:10,value:0.0},
+            ],    
+        },        
     ]
 
     return struct
 }
+
+
+
 let resources = '../../../resources/'
 
 export function fill_regions() {
@@ -40,7 +70,7 @@ export function fill_regions() {
     }
 }
 
-export function fillFeedrates(region,breeds) {
+export function fillFeedrates(region,breeds) {  
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let payment_rates = await $.ajax(resources+'Payment_rates.xml');

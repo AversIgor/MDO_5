@@ -2,9 +2,6 @@ import {BD} from "./dao";
 import {ALLCONSTANT} from "./allconstant";
 import {ENUMERATIONS} from "./enumerations";
 import {PARAMETERS} from "./parameters";
-import {COEFFICIENTSRANGESLIQUIDATION} from "./coefficientsrangesliquidation";
-import {COEFFICIENTSFORMCUTTING} from "./coefficientsformcutting";
-import {COEFFICIENTSDAMAGE} from "./coefficientsdamage";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {CONSTANTS} from "./constants";
 import {MDOPRINT} from "./mdoprint";
@@ -467,17 +464,17 @@ export function calculation() {
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	conditions.formCutting = [objectMDO.formCutting.id];
 	var arrayField 	= ['value'];
-	BD.fillListWithConditions(COEFFICIENTSFORMCUTTING,arrayField,conditions,fillCoefficientsformcutting);
+	//BD.fillListWithConditions(COEFFICIENTSFORMCUTTING,arrayField,conditions,fillCoefficientsformcutting);
 	
 	var conditions 	= {};
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	var arrayField 	= ['rangesLiquidation','value'];
-	BD.fillListWithConditions(COEFFICIENTSRANGESLIQUIDATION,arrayField,conditions,fillCoefficientsrangesliquidation);
+	//BD.fillListWithConditions(COEFFICIENTSRANGESLIQUIDATION,arrayField,conditions,fillCoefficientsrangesliquidation);
 	
 	var conditions 	= {};
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	var arrayField 	= ['damage','value'];
-	BD.fillListWithConditions(COEFFICIENTSDAMAGE,arrayField,conditions,fillСoefficientsdamage);
+	//BD.fillListWithConditions(COEFFICIENTSDAMAGE,arrayField,conditions,fillСoefficientsdamage);
 	
 	var conditions 	= {};
 	conditions.typesrates_id = [objectMDO.typesrates.id];

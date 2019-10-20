@@ -33,6 +33,13 @@ export class Typesrates {
     @Column({ type: "simple-json", nullable: true  })
     coefficientsrangesliquidation = {}
 
+    //КОЭФФИЦИЕНТЫ НА ФОРМУ РУБКИ
+    @Column({ type: "simple-json", nullable: true  })
+    coefficientsformcutting = {}
+
+    //КОЭФФИЦИЕНТЫ НА СТЕПЕНЬ ПОВРЕЖДЕНИЯ НАСАЖДЕИЯ
+    @Column({ type: "simple-json", nullable: true  })
+    coefficientsdamage = {}
     
 }
 

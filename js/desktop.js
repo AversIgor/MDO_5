@@ -34,6 +34,7 @@ DESKTOP.serialConnectionScripts = function (){
 
 
 	scriptsarray.splice(0, 1);
+
 	curentfunction();
 
 }
@@ -49,30 +50,7 @@ DESKTOP.init = function (){
 			description: 'Инициализация базы данных...'
 		}
 		scriptsarray.push(script);
-
-
-
-		var script = {
-			curentfunction : function() {
-				RESOURCES.coefficientsformcuttingLoad();
-			},
-			description: 'Обновление коэффициентов на форму рубки...'
-		}
-		scriptsarray.push(script);
-		var script = {
-			curentfunction : function() {
-				RESOURCES.coefficientsrangesliquidationLoad();
-			},
-			description: 'Обновление коэффициентов на ликвидный запас...'
-		}
-		scriptsarray.push(script);
-		var script = {
-			curentfunction : function() {
-				RESOURCES.coefficientsdamageLoad();
-			},
-			description: 'Обновление коэффициентов на степень поврежденности насаждения...'
-		}
-		scriptsarray.push(script);
+		
 		var script = {
 			curentfunction : function() {
 				RESOURCES.constantsCheck();
@@ -101,7 +79,7 @@ DESKTOP.init = function (){
 			MDO.newMDO();
 			MDO.objectMDO.startMDO();
 			RECOUNTLAYOUT.init();
-			setTimeout(DESKTOP.serialConnectionScripts,1000);
+			setTimeout(DESKTOP.serialConnectionScripts,2000);
 		},
 		description: 'Инициализация интерфейса...'
 	}

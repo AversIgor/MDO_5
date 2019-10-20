@@ -37,6 +37,7 @@ const fieldsname = {
 
 export function getPublication(id) {
 
+
     const asyncProcess = async () => {
         let data_publications = await $.ajax(publicationsResources+'publications.xml');
         if(typeof (data_publications) == 'string'){
@@ -249,6 +250,7 @@ export function add(id) {
             BD.edit(CONSTANTS, struct,function (data){});
 
             let data = await getData(getState,publicationsRepository);
+            await dispatch(breed.fill_data({status:0}));
             dispatch({
                 type: PUBLICATIONS_ADD,
                 data: data

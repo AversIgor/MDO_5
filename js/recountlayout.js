@@ -1,6 +1,5 @@
 import * as MDO from "./mdo";
 import {ENUMERATIONS} from "./enumerations";
-import {BD} from "./dao";
 import {PARAMETERS} from "./parameters";
 
 import {store} from "../src/app";
