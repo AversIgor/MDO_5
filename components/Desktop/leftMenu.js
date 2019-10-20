@@ -19,6 +19,7 @@ export default class ComponentLeftMenu extends Component {
                     view:"grouplist",
                     id:"left_menu",
                     select:true,
+                    scroll:"auto",
                     data:self.props.data,
                     on:{
                         onAfterSelect: function(id){
@@ -29,7 +30,7 @@ export default class ComponentLeftMenu extends Component {
             ]
         }
         this.ui = window.webix.ui(menu);
-        this.props.resizeLeftMenu($$("left_menu").$width+17)
+        this.props.resizeLeftMenu($$("left_menu").$width)
     }
 
     componentDidUpdate(prevProps, prevState){
