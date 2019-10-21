@@ -203,11 +203,11 @@ class Printform extends Component {
         return newRow
     }
 
-    updateStates = () => {
+    updateStates = (editor) => {
         this.calculateArea()
         const asyncProcess = async () => {
 
-            let contents = $('iframe#webix_mce_printform_ifr').contents()
+            let contents = jQuery(editor.contentDocument).contents()
             let html = contents.find('body').html()
 
             //замена всех возможных переменных
@@ -241,6 +241,7 @@ class Printform extends Component {
             html = html.replace(/~Масштаб~/g, "1:"+this.props.scale)
             html = html.replace(/~ПлощадьВсехОбъектов~/g, this.area)
             contents.find('body').html(html)
+            
 
             //работа с абрисом
             let abris = contents.find('img[src="~Абрис~"]')
@@ -299,7 +300,7 @@ class Printform extends Component {
 
                     }
                 }
-            }
+            }            
             return
         }
         asyncProcess()

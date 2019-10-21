@@ -127,7 +127,7 @@ export default class PlotProperty extends Component {
         //оформления
         decor.update(this.curentObject,props)
 
-        head.update(props)
+        head.update(props,"window_property")
 
         //доступность
        $$('tabview_property').define('disabled',props.mode)
@@ -140,7 +140,7 @@ export default class PlotProperty extends Component {
         let self    = this;
         this.curentObject = this.props.curentObject;        
      
-        var conteiner = {
+         var conteiner = {
             view:"window",
             id:"window_property",
             zIndex:100,

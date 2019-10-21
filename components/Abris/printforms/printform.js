@@ -104,29 +104,16 @@ export default class Printform extends Component {
         this.ui = window.webix.ui(this.modalbox);
         this.ui.show();
 
+        $$("printform").getEditor(true).then(function(editor){
+            $$("printform").setValue(self.props.data.printform);            
+            editor.on('SetContent', function (e) {
+                self.props.updateStates(editor);
+            });
+        });
+
         $$("printform_label").define('label',this.props.data.name);
         $$("printform_label").refresh()
-
-        var timerId = setInterval(function() {
-            var iframe = document.querySelector('iframe#webix_mce_printform_ifr');
-            if(iframe){
-                var iframeDocument = iframe.contentWindow.document;
-                if(iframeDocument.readyState === 'complete') {
-                    self.props.updateStates();
-                } else {
-                    iframe.load(function() {
-                        var i = setInterval(function() {
-                            if(iframeDocument.readyState === 'complete') {
-                                self.props.updateStates();
-                                clearInterval(i);
-                            }
-                        }, 10);
-                    });
-                }                
-                clearInterval(timerId);
-            }
-        }, 10);
-        $$("printform").setValue(this.props.data.printform);
+        
     }
 
 

@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom';
 
 
 import Toolbar from "./toolbar";
-import InfoButton from "./infoButton";
 import LeftMenu from "./leftMenu";
 
 import MdoSubsystem from "../MdoSubsystem";
@@ -19,7 +18,6 @@ class Desktop extends Component {
             widthLeftMenu:0
         };
     }
-
 
     resizeFromWindow = () => {
         this.setState({resize: !this.state.resize})

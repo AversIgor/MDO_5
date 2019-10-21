@@ -11,7 +11,7 @@ export default class ComponentToolbar extends Component {
     }
 
     componentDidMount(){
-       var props = this.props;  
+       var props = this.props; 
 
         const projectMenu = {
             view: "submenu",
@@ -80,7 +80,6 @@ export default class ComponentToolbar extends Component {
             borderless:true,
             elements: [
                 {view: "label", label: "<img src="+logo+" />", width:180,},
-                projectMenu,
                 { 
                     view:"button", 
                     type:"button", 

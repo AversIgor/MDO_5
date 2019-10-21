@@ -7,19 +7,11 @@ let ui = function(context,conteiner){
 
     return {
         view:"toolbar",
-        //width:24,
         css:"property_toolbar_head",
         cols:[
-            /*{
-                view: "switch",
-                id:"property_switch_head",
-                onLabel: "Редактрование",
-                offLabel:"Перемещение",
-                click: handlerswitch
-            },*/
             {
                 view:"checkbox",
-                id:"property_switch_head",
+                id:conteiner+"_property_switch_head",
                 label  :"Редактировать:",
                 tooltip:"Смена режима (редактирование/перемещение)",
                 labelWidth:120,
@@ -38,8 +30,8 @@ let ui = function(context,conteiner){
     }
 }
 
-let update = function(props){
-    let _switch = $$("property_switch_head")
+let update = function(props,conteiner){
+    let _switch = $$(conteiner+"_property_switch_head")
     if(props.mode == 0){
         _switch.define("value",1);
     }else {

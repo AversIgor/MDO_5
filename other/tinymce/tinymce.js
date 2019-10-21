@@ -30,21 +30,20 @@ webix.protoUI({
     
     cdn = "other/tinymce";
 
-		//path to tinymce codebase
-		window.tinyMCEPreInit = { 
-			query:"", 
-      base: cdn,       
-			suffix:".min" 
-		};
+	//path to tinymce codebase
+	window.tinyMCEPreInit = { 
+		query:"", 
+	base: cdn,       
+		suffix:".min" 
+	};
 
-    console.log(cdn)
-		webix.require([
-      cdn+"/tinymce.min.js"
-		])
-			.then( webix.bind(this._init_tinymce_once, this) )
-			.catch(function(e){
-				console.log(e);
-			});
+	webix.require([
+		cdn+"/tinymce.min.js"
+	])
+	.then( webix.bind(this._init_tinymce_once, this) )
+	.catch(function(e){
+		console.log(e);
+	});
 	},
 	_init_tinymce_once:function(){	
 		if (!tinymce.dom.Event.domLoaded){
