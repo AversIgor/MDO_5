@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import {openProject,newProject,saveProject} from '../../actions/Desktop/projectMeny';
 import {clickQuestionMenu} from '../../actions/Desktop/questionMenu';
+import {clickMenu} from '../../actions/Desktop/leftMenu';
 
 import ComponentToolbar from "../../components/Desktop/toolbar";
 import ComponentAbout from "../../components/Desktop/about";
@@ -31,10 +32,12 @@ class Toolbar extends Component {
             <Fragment>
                 <ComponentToolbar
                     resize = {this.props.resize}
+                    leftMenuData = {this.props.leftMenuData}
                     openProject = {this.props.openProject}
                     newProject = {this.props.newProject}
                     saveProject = {this.props.saveProject} 
-                    clickQuestionMenu = {this.props.clickQuestionMenu}      
+                    clickQuestionMenu = {this.props.clickQuestionMenu}  
+                    clickMenu = {this.props.clickMenu}    
                 ComponentToolbar/>
                 <About/>
             </Fragment>
@@ -45,6 +48,7 @@ class Toolbar extends Component {
 function mapStateToProps (state) {
     return {
         questionId: state.toolbar.questionId, 
+        leftMenuData: state.leftMenu.data,
         curentVersion: state.typeORM.curentVersion,    
 
     }
@@ -55,7 +59,8 @@ function mapDispatchToProps(dispatch) {
         openProject: bindActionCreators(openProject, dispatch),
         newProject: bindActionCreators(newProject, dispatch),
         saveProject: bindActionCreators(saveProject, dispatch),
-        clickQuestionMenu: bindActionCreators(clickQuestionMenu, dispatch)
+        clickQuestionMenu: bindActionCreators(clickQuestionMenu, dispatch),
+        clickMenu: bindActionCreators(clickMenu, dispatch)        
     }
 }
 

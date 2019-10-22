@@ -36,21 +36,23 @@ class Desktop extends Component {
 
     render() {  
 
-        let sizeLeftMenu = {
+        /*let sizeLeftMenu = {
             height:($(window).height()-50)+"px",
             width:this.state.widthLeftMenu+"px",
-        }
+        }*/
 
 
-        let sizeMdoSubsystem = {
+        let styleMdoSubsystem = {
             height:($(window).height()-50)+"px",
-            width:($(window).width()-this.state.widthLeftMenu)+"px",
+            width:($(window).width())+"px",
         }
 
-        let positionMdoSubsystem = {...sizeMdoSubsystem,
+        let positionMdoSubsystem = {
+            height:styleMdoSubsystem.height,
+            width:styleMdoSubsystem.width,
             position:'absolute',
             top:"50px",
-            left:this.state.widthLeftMenu+"px",
+            left:this.state.widthLeftMenu+"px",            
         }
  
         return (
@@ -67,16 +69,9 @@ class Desktop extends Component {
                     />
                 </div>
                 <div 
-                    style={sizeLeftMenu}>
-                    <LeftMenu
-                        size = {sizeLeftMenu}
-                        resizeLeftMenu = {this.resizeLeftMenu}
-                    />
-                </div>
-                <div 
                     style={positionMdoSubsystem}>
                     <MdoSubsystem
-                        size = {sizeMdoSubsystem}
+                        style = {styleMdoSubsystem}
                     />
                 </div>
             </Fragment>                  
@@ -84,7 +79,13 @@ class Desktop extends Component {
     }
 }
 
-//<InfoButton/>
+/*<div 
+style={sizeLeftMenu}>
+<LeftMenu
+    size = {sizeLeftMenu}
+    resizeLeftMenu = {this.resizeLeftMenu}
+/>
+</div>*/
 
 
 

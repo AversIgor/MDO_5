@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import logo from '../../img/logo-w-big.png'
 
 
 export default class ComponentToolbar extends Component {
@@ -70,6 +69,30 @@ export default class ComponentToolbar extends Component {
             },
         }
 
+        const leftMenu = {
+			view: "sidemenu",
+			id: "leftMenu",
+			width: 230,
+			position: "left",
+			state:function(state){
+				var toolbarHeight = $$("toolbar").$height;
+				state.top = toolbarHeight;
+                state.height -= toolbarHeight;
+            },
+            zIndex:120,
+			body:{
+                view:"grouplist",
+                select:true,
+                scroll:"auto",
+                data:props.leftMenuData,
+                on:{
+                    onAfterSelect: function(id){
+                        props.clickMenu(id);
+                    }
+                }
+            }
+		}
+
         const toolbar = { 
             view: "toolbar",
             id: "toolbar",
@@ -79,7 +102,23 @@ export default class ComponentToolbar extends Component {
             type: "clean",
             borderless:true,
             elements: [
-                {view: "label", label: "<img src="+logo+" />", width:180,},
+                { 
+                    view:"button", 
+                    type:"htmlbutton", 
+                    width:48,
+                    label:'<span class="mdi mdi mdi-menu" style="font-size: 24px;"></span>',
+                    css:"webix_transparent",
+                    on:{
+                        onItemClick:function(id){
+                            if( $$("leftMenu").config.hidden){
+                                $$("leftMenu").show();
+                            }
+                            else{
+                                $$("leftMenu").hide();
+                            }                           
+                        }
+                    },
+                },
                 { 
                     view:"button", 
                     type:"button", 
@@ -111,6 +150,7 @@ export default class ComponentToolbar extends Component {
         this.toolbar = window.webix.ui(toolbar);
         window.webix.ui(projectMenu);
         window.webix.ui(questionMenu);
+        window.webix.ui(leftMenu);      
 
 
     }

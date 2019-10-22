@@ -2,6 +2,8 @@ import React, { Component, PropTypes, Fragment } from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
+import logo from '../../img/logo-w-big.png'
+
 
 import Forestry from '../reference/forestry';
 import Subforestry from '../reference/subforestry';
@@ -71,11 +73,16 @@ class MDOSubsystem extends Component {
                         module = {MASTER}
                     />;
                 default:
-                    return null;
+                    return <div style={{...this.props.style,
+                        backgroundColor: "darkgray",
+                        textAlign: "center",
+                        display: "table-cell",
+                        verticalAlign: "middle"                    
+                    }}><img src={logo} /></div>;
             }
         };
 
-        return (<div style={this.props.size}><FormContent/></div>)
+        return (<div style={this.props.style}><FormContent/></div>)
     }
 }
 
