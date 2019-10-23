@@ -1,12 +1,13 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity()
-export class Mdosettings {
+export class Settings {
 
     @PrimaryGeneratedColumn()
     id = undefined;
-    
-    @Column({ type: "simple-json", nullable: true })
-    settings = {};
+
+    @Column({ type: "text", nullable: true })
+    data = '';
 
 }
+

@@ -10,7 +10,7 @@ import * as Migration_5_2_1_0 from "./migrations/Migration_5_2_1_0";
 import {GlobalParameters} from "./entity/globalParameters";
 import {Methodscleanings} from "./entity/methodscleanings";
 import {Styles} from "./entity/styles";
-import {Abrissettings} from "./entity/abrissettings";
+import {Settings} from "./entity/settings";
 import {Forestry} from "./entity/forestry";
 import {Subforestry} from "./entity/subforestry";
 import {Tract} from "./entity/tract";
@@ -21,10 +21,7 @@ import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Contactinformation} from "./entity/contactinformation";
 import {Typesrates} from "./entity/typesrates";
-import {Mdosettings} from "./entity/mdosettings";
 
-import * as settings from '../../actions/Abris/settings';
-import * as contactinformation from '../../actions/reference/contactinformation';
 
 export function init() {
 
@@ -40,7 +37,7 @@ export function init() {
                 GlobalParameters,
                 Methodscleanings,
                 Styles,
-                Abrissettings,
+                Settings,
                 Forestry,
                 Subforestry,
                 Tract,
@@ -51,7 +48,6 @@ export function init() {
                 Abrisprintforms,
                 Contactinformation,
                 Typesrates,
-                Mdosettings,
              ]
     }
 
@@ -105,7 +101,6 @@ export function init() {
             //для всех релизов - функции этих обработчиков безопасно запускать всегда
             if(isNewVersions(oldVersion,newVersion)){
                 await InitialData.creatMainStyle(options);
-                await InitialData.creatAbrisSettings(options);
                 await InitialData.creatCuttingmethods(options);
                 await InitialData.creatTypesrates(options);
                 await InitialData.updateAbrisPrintForms(); 
@@ -118,15 +113,6 @@ export function init() {
             }
             //Блок конвертации для всех сборок - конец
             return isUpdate;
-        }
-        return asyncProcess();
-    }
-
-    //стартовая инициализация основных настроек
-    const initModels = function (dispatch) {
-        const asyncProcess = async () => {
-            await dispatch(settings.fill_data());//инициализация настроек абриса
-            await dispatch(contactinformation.fill_data());//инициализация контактной информации            
         }
         return asyncProcess();
     }
@@ -171,8 +157,6 @@ export function init() {
 
             options.synchronize     = false;
             connection = await createConnection(options);
-
-            await initModels(dispatch);                        
 
             dispatch({
                 type: ORM_COMPLETE,

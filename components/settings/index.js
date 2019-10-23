@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 import * as common from '../reference/common';
 
-export default class ComponentAbrisSettings extends Component {
+export default class ComponentSettings extends Component {
 
     constructor(props) {
         super(props);
-        this.id     = 'abrissettings';
+        this.id     = 'Settings';
         this.ui     = []
     }
 
@@ -51,14 +51,14 @@ export default class ComponentAbrisSettings extends Component {
                                 borderless:true,
                                 elements:[
                                     { label:"Основные", type:"label"},
-									{ label:"Формат данных", type:"select", id:"main.typeangle",options:this.props.getTypeangle()},
+									{ label:"Формат данных", type:"select", id:"abris.main.typeangle",options:this.props.enumerations.typesAngle},
                                     { label:"Округления", type:"label"},
-                                    { label:"Площади", type:"select", id:"rounding.square",options:this.props.getRoundingSquare()},
-                                    { label:"Углов", type:"select", id:"rounding.angle", options:this.props.getRoundingAngle()},
-                                    { label:"Промеров", type:"select", id:"rounding.lengths", options:this.props.getRoundingLengths()},
+                                    { label:"Площади", type:"select", id:"abris.rounding.square",options:this.props.enumerations.roundingSquar},
+                                    { label:"Углов", type:"select", id:"abris.rounding.angle", options:this.props.enumerations.roundingAngle},
+                                    { label:"Промеров", type:"select", id:"abris.rounding.lengths", options:this.props.enumerations.roundingLength},
                                     { label:"Допустимые невязки", type:"label"},
-                                    { label:"Угловая, минут", type:"text", id:"residual.angle",},
-                                    { label:"Линейная, м./300 м.", type:"text", id:"residual.linear",},
+                                    { label:"Угловая, минут", type:"text", id:"abris.residual.angle",},
+                                    { label:"Линейная, м./300 м.", type:"text", id:"abris.residual.linear",},
                                 ],
                                 on:{
                                     "onAfterEditStop":function(state, editor, ignoreUpdate){
@@ -77,14 +77,12 @@ export default class ComponentAbrisSettings extends Component {
             ]
         }
         this.ui.push(window.webix.ui(layout))
+        $$(this.id+'_decor').setValues(this.props.settings);
     }
 
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.data.length>0){
-            $$(this.id+'_decor').setValues(JSON.parse(nextProps.data[0].settings));
-        }
-        common.formResize(this)
+        $$(this.id+'_decor').setValues(nextProps.settings);
     }
 
     componentWillUnmount(){

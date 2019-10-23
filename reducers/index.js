@@ -23,10 +23,8 @@ import abrisprintforms from './reference/abrisprintforms'
 import typesrates from './reference/typesrates'
 
 
-
 //настройки
-import abris_settings from './settings/abris_settings'
-import contactinformation from './settings/contactinformation'
+import settings from './settings/index'
 
 //обновление
 import update from './update'
@@ -50,9 +48,8 @@ export default combineReducers({
     tables:tables,
     breed:breed,
     typesrates:typesrates,
-    abris_settings:abris_settings,
+    settings:settings,
     abrisprintforms:abrisprintforms,
-    contactinformation:contactinformation,
 })
 
 

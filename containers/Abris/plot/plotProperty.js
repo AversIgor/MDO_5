@@ -3,9 +3,8 @@ import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 import PlotPropertyComponent from "../../../components/Abris/property/plotPropertry";
 import {editContourFromTable,contourDelete,contourAdd,chengeTypeangle,clearCurentObject,changeMode,contourCorrect,contourUnite,editStyle,nameCorrect,nonexploitationareaCorrect,ctrl_z} from '../../../actions/Abris/objects';
-import {getTypeangle,getDirect} from '../../../actions/Abris/objects';
 import {fill_data,edit} from '../../../actions/reference/styles';
-import * as settings from '../../../actions/Abris/settings';
+import * as settings from '../../../actions/settings';
 
 
 
@@ -108,8 +107,8 @@ class PlotProperty extends Component {
                     changeMode={this.props.changeMode}
                     curentObject={this.props.curentObject}
                     mode={this.props.mode}
-                    getTypeangle={getTypeangle}
-                    getDirect={getDirect}
+                    typesAngle={this.props.typesAngle}
+                    directs={this.props.directs}
                     ctrl_z={this.props.ctrl_z}
                     styles={this.props.styles}
                 />
@@ -122,7 +121,9 @@ function mapStateToProps (state) {
     return {
         curentObject: state.polygons.curentObject,
         mode: state.polygons.mode,
-		styles: state.styles.data,
+        styles: state.styles.data,
+        typesAngle: state.enumerations.typesAngle,
+        directs: state.enumerations.directs,
     }
 }
 

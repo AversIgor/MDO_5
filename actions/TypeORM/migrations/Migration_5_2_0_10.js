@@ -1,6 +1,5 @@
 import {createConnection, getManager, TableColumn} from "typeorm";
 import {Styles} from "../entity/styles"
-import {Abrissettings} from "../entity/abrissettings"
 import {Forestry} from "../entity/forestry"
 import {Subforestry} from "../entity/subforestry"
 import {Tract} from "../entity/tract"
@@ -21,7 +20,6 @@ export function creatEntities(conectionOption) {
         try {
             newOption.entities = [
                 Styles,
-                Abrissettings,
                 Forestry,
                 Subforestry,
                 Tract,

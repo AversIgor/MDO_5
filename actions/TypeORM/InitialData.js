@@ -1,11 +1,9 @@
 import {createConnection, getManager, TableColumn,getRepository} from "typeorm";
 import {Styles} from "../TypeORM/entity/styles"
-import {Abrissettings} from "../TypeORM/entity/abrissettings"
 import {Cuttingmethods} from "../TypeORM/entity/cuttingmethods"
 import {Typesrates} from "../TypeORM/entity/typesrates"
 
 import {defaultStyle} from "../reference/styles";
-import {defaultSettings} from "../Abris/settings";
 import {defaultCuttingMethods} from "../reference/cuttingmethods";
 import {defaultTypesrates} from "../reference/typesrates";
 
@@ -26,24 +24,6 @@ export function creatMainStyle(conectionOption) {
             })
             await repository.save(newObject);            
         }  
-        await connection.close();
-    }
-    return asyncProcess();
-}
-
-export function creatAbrisSettings(conectionOption) {
-
-    const asyncProcess = async () => {
-        conectionOption.synchronize = false;
-        let connection      = await createConnection(conectionOption);
-        let repository = getRepository(Abrissettings);
-        let styles =  await repository.find();
-        if(styles.length == 0){
-            let newObject   = repository.create({
-                settings:JSON.stringify(defaultSettings())
-            })
-            await repository.save(newObject);
-        }
         await connection.close();
     }
     return asyncProcess();

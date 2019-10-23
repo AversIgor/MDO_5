@@ -1,7 +1,7 @@
 import {createConnection, getManager, TableColumn,getRepository} from "typeorm";
 import {Contactinformation} from "../entity/contactinformation"
 import {Typesrates} from "../entity/typesrates"
-import {Mdosettings} from "../entity/mdosettings"
+import {Settings} from "../entity/settings"
 
 export function creatEntities(conectionOption) {
     const asyncProcess = async (conectionOption) => {
@@ -11,7 +11,7 @@ export function creatEntities(conectionOption) {
             newOption.entities = [
                 Contactinformation,
                 Typesrates,
-                Mdosettings,
+                Settings,
             ]
             let connection      = await createConnection(newOption);
             await connection.close();
@@ -24,7 +24,7 @@ export function creatEntities(conectionOption) {
 
 export function ContactinformationConvert(conectionOption) {
 
-    const asyncProcess = async () => {
+    /*const asyncProcess = async () => {
         conectionOption.synchronize = false;
         let connection      = await createConnection(conectionOption);
         let entityManager   = getManager();        
@@ -48,7 +48,7 @@ export function ContactinformationConvert(conectionOption) {
         await connection.close();
     }
 
-    return asyncProcess();
+    return asyncProcess();*/
 }
 
 export function TypesratesConvert(conectionOption) {

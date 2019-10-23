@@ -24,14 +24,7 @@ const initialState = {
                 { id: "abrisprintforms", value: "Печатные формы"},
             ]},
         ]},
-        {id: "servise",icon: "cogs", value:"Сервис", data:[
-            {id: "allconstants", value:"Константы", data:[
-                {id: "contactinformation", value:"Контактная информация"},
-                { id: "constants", value: "Настройки расчета МДО"},
-                { id: "abrissettings", value: "Настройки абриса"},                
-            ]},              
-            {id: "master", value:"Стартовый помощник"},
-        ]},
+        { id: "settings", value: "Настройка программы"},         
     ],
     id: "",
 }

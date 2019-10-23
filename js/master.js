@@ -350,12 +350,12 @@ export var MASTER = {
 		all.organization 	= this.data.organization;
 		all.responsible 	= this.data.responsible;
 		if(store){
-			let contacts = store.getState().contactinformation.data;
-			if(contacts){
-				all.adress 			= contacts.adress;
-				all.fon 			= contacts.fon;
-				all.email 			= contacts.email;
-				all.site 			= contacts.site;
+			let settings_data = store.getState().settings.data;
+			if(settings_data){
+				all.adress 			= settings_data.contacts.adress;
+				all.fon 			= settings_data.contacts.fon;
+				all.email 			= settings_data.contacts.email;
+				all.site 			= settings_data.contacts.site;
 			}
 		}
 		

@@ -610,13 +610,6 @@ class Plot {
 
 }
 
-export function getTypeangle() {
-    return ["Румбы", "Азимуты", "Координаты"]
-}
-
-export function getDirect() {
-    return ["СВ", "ЮВ", "ЮЗ", "СЗ"]
-}
 
 export function restoring(data) {
     return (dispatch, getState) => {

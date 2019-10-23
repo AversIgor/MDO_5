@@ -16,9 +16,9 @@ import Breed from '../reference/breed';
 import Abris from '../Abris';
 import Styles from '../styles';
 
-import AbrisSettings from '../AbrisSettings';
+import Settings from '../settings';
 import Abrisprintforms from '../abrisprintforms';
-import Contactinformation from '../Contactinformation';
+
 
 
 import Oldcontent from '../Desktop/oldcontent';
@@ -44,8 +44,8 @@ class MDOSubsystem extends Component {
                     return <Styles/>
                 case "abrisprintforms":
                     return <Abrisprintforms/>                    
-                case "abrissettings":
-                    return <AbrisSettings/>
+                case "settings":
+                    return <Settings/>
                 case "mdo":
                     return <Fragment>
                         <Oldcontent
@@ -66,8 +66,6 @@ class MDOSubsystem extends Component {
                     return <Publication/>;
                 case "typesrates":
                     return <Typesrates/>;
-                case "contactinformation":
-                    return <Contactinformation/>;
                 case "master":
                     return <Oldcontent
                         module = {MASTER}

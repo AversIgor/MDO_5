@@ -33,7 +33,7 @@ let ui = function(setSelected,contourDelete,contourAdd,props){
                     {
                         view:"select",
                         id:'select_angle',
-                        options:props.getTypeangle(),
+                        options:props.typesAngle,
                         width:100,
                         on:{
                             onChange:function(newv, oldv){
@@ -111,7 +111,7 @@ let updateColumns = function(typeangle,props){
             { id:"id",	    header:"id", hidden:true},
             { id:"position",	            header:"№",        width:60,},
             { id:"start_polygon",header:"*",             width:40, template: "{common.checkbox()}",checkValue:1, uncheckValue:0, tooltip:"Отметка начала полигона",},
-            { id:"direct",	        header:[{ text:"Румб,&deg;", colspan:2 }],   editor:"select",	options:props.getDirect(),  fillspace:true },
+            { id:"direct",	        header:[{ text:"Румб,&deg;", colspan:2 }],   editor:"select",	options:props.directs,  fillspace:true },
             { id:"rhumb",
                 editor:"rhumbeditor",
                 fillspace:true,

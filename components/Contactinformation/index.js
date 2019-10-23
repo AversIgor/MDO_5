@@ -14,20 +14,31 @@ export default class ComponentContactinformation extends Component {
        
         let self = this;
 
-        var elements = [
-            { view:"text", label:"Адрес", name:"adress"},
-            { view:"text",  label:"Телефон", name:"fon"},
-            { view:"text",  label:"E-mail", name:"email"},
-            { view:"text",  label:"Веб-сайт", name:"site"},
-        ];
-
-        let form =  {
-            view:"form",
+        let form =   {
+            view:"property",
             id:this.id+'_form',
-            width:300, 
-            scroll:false, 
-            elements:elements
-        };
+            complexData:true,
+            autoheight:true,
+            autowidth:true,
+            nameWidth:150,
+            css:'box_shadow',
+            borderless:true,
+            elements:[
+                { label:"Контакты организации", type:"label"},
+                { label:"Адрес", type:"text", id:"adress",},
+                { label:"Телефон", type:"text", id:"fon",},
+                { label:"E-mail", type:"text", id:"email",},
+                { label:"Веб-сайт", type:"text", id:"site",},
+            ],
+            on:{
+                "onAfterEditStop":function(state, editor, ignoreUpdate){
+                    self.props.handlerEdit(this.getValues())
+                },
+                "onCheck":function(id,state){
+                    self.props.handlerEdit(this.getValues())
+                },
+            }
+        }
 
        let layout = {
             id:this.id+'_layout',
