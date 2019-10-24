@@ -16,13 +16,15 @@ class Settings extends Component {
         this.props.fill_data();
     }
 
-    handlerEdit = (value) => {
+    handlerEdit = (fields,value) => {
+        let neValue = {...this.props.settings,
+            fields:value            
+        }
         this.props.edit(value);            
     }
 
 
-    render() {  
-        console.log(this.props.settings)      
+    render() {
         return(
            <ComponentSettings
                 settings = {this.props.settings}
@@ -35,7 +37,7 @@ class Settings extends Component {
 
 function mapStateToProps (state) {
     return {
-        settings: state.settings,
+        settings: state.settings.data,
         enumerations: state.enumerations,
     }
 }

@@ -15,7 +15,7 @@ export function fill_data() {
             if(data.length != 0){
                 dispatch({
                     type: SETTINGS_FILL_SUCCESS,
-                    data: data[0].data
+                    data: JSON.parse(data[0].data)
                 })
             }
         }
@@ -33,10 +33,13 @@ export function edit(value) {
                 data:JSON.stringify(value)
             });
             let data            = await repository.find();
-            dispatch({
-                type: SETTINGS_EDIT,
-                data: data[0].data
-            })
+            if(data.length != 0){
+                dispatch({
+                    type: SETTINGS_EDIT,
+                    data: JSON.parse(data[0].data)
+                })
+            }
+
         }
         asyncProcess()
     }
