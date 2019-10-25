@@ -1,7 +1,3 @@
-import {BD} from "../../../js/dao";
-import {CONSTANTS} from "../../../js/constants";
-
-
 import {
     PUBLICATIONS_FILL_SUCCESS,
     PUBLICATIONS_ADD,
@@ -36,7 +32,6 @@ const fieldsname = {
 };
 
 export function getPublication(id) {
-
 
     const asyncProcess = async () => {
         let data_publications = await $.ajax(publicationsResources+'publications.xml');
@@ -241,13 +236,6 @@ export function add(id) {
                 }
             }
             await procesbreed(requisites_sorttables)
-
-            //4
-            let struct = [{
-                recid:1,
-                publication:publicationsObject.id,
-            }];
-            BD.edit(CONSTANTS, struct,function (data){});
 
             let data = await getData(getState,publicationsRepository);
             await dispatch(breed.fill_data({status:0}));

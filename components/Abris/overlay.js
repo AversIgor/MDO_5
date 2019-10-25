@@ -81,7 +81,7 @@ export default class Overlay extends Component {
 
     getCreat = (props) => {
 
-        let label   = '<div class="webix_icon"><i class="material-icons" style="color: black;">add</i></div><div class="text" style="color: black;float: right;padding-top: 4px;padding-right: 10px;">Создать</div>'
+        let label   = '<div class="webix_icon"><i class="material-icons">add</i></div><div class="text" style="color: black;float: right;padding-top: 4px;padding-right: 10px;">Создать</div>'
         let tooltip = 'Создание нового объекта'
         let creat   = $$('abris_overlay_creat')
         creat.define("label",label);
@@ -103,7 +103,7 @@ export default class Overlay extends Component {
 
     getList = (props) => {
 
-        let label   = '<div class="webix_icon"><i class="material-icons" style="color: black;">list</i></div><div class="text" style="color: black;float: right;padding-top: 4px;padding-right: 10px;">Список объектов</div>'
+        let label   = '<div class="webix_icon"><i class="material-icons">list</i></div><div class="text" style="color: black;float: right;padding-top: 4px;padding-right: 10px;">Список объектов</div>'
 
         let tooltip = 'Список объектов'
         let list   = $$('abris_overlay_list')
@@ -287,7 +287,7 @@ export default class Overlay extends Component {
                             id:"abris_overlay_creat",
                             type:"htmlbutton",
                             css:"abris_overlay_creat",
-                            width:120,
+                            width:140,
                             height:55,
                         },
                         {

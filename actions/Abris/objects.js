@@ -671,7 +671,7 @@ export function creatObject(parentID = undefined) {
 
     return (dispatch, getState) => {
         let objects = getState().polygons.objects
-        let abris_settings = JSON.parse(getState().abris_settings.data[0].settings)
+        let abris_settings = getState().settings.data.abris
         const asyncProcess = async () => {
             let repository = getRepository(Styles);
             let styles = await repository.find({ main: 1 });
@@ -981,7 +981,7 @@ export function loadGeoJson() {
                     var data = JSON.parse(e.target.result);
 
                     let objects = getState().polygons.objects
-                    let abris_settings = JSON.parse(getState().abris_settings.data[0].settings)
+                    let abris_settings = getState().settings.data.abris
                     const asyncProcess = async () => {
                         let repository = getRepository(Styles);
                         let styles = await repository.find({ main: 1 });

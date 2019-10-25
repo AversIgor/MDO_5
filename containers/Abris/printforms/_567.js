@@ -4,8 +4,6 @@ import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
 import * as MDO from "../../../js/mdo";
-import {BD} from "../../../js/dao";
-
 import Component_567 from "../../../components/Abris/printforms/_567";
 import {thumb_azimut_format,roundingLengths} from "../../../actions/Abris/common";
 
@@ -417,7 +415,7 @@ class _567 extends Component {
             footer: {
                 columns: [
                     {
-                        text: 'Подготовлено в системе "АВЕРС: МДО лесосек #5.1". Сайт: http://mdoles.ru. Версия релиза ' + BD.curentVersion,
+                        text: 'Подготовлено в системе "АВЕРС: МДО лесосек #5.1". Сайт: http://mdoles.ru. Версия релиза ',// + curentVersion,
                         style: 'footer',
                         alignment: 'center'
                     }

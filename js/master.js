@@ -1,8 +1,4 @@
-﻿import {BD} from "./dao";
-import {ALLCONSTANT} from "./allconstant";
-import {CONSTANTS} from "./constants";
-
-
+﻿import * as MDO from "./mdo";
 
 import {store} from "../src/app";
 
@@ -70,12 +66,11 @@ export var MASTER = {
 	
 	init: function () {
 		if(MASTER.formOpen) w2popup.clear();
-		this.readCredential(this.data);
 		this.readip();
 		this.readlicense();
-		window.beforeRestoreDB = this.beforeRestoreDB;
-		window.dumpData = BD.dumpData.bind(BD);
-		window.restoreDB = BD.restoreDB.bind(BD);
+
+		MDO.newMDO();
+		MDO.objectMDO.startMDO();
 	},
 	
 	initConfirm: function () {
@@ -84,20 +79,6 @@ export var MASTER = {
 		}			
 	},
 	
-	readCredential: function (data) {
-		data.curentpublication 		= ALLCONSTANT.data.curentpublication;
-		data.curentforesttax 		= ALLCONSTANT.data.curentforesttax;
-		data.organization    		= ALLCONSTANT.data.organization;
-		data.responsible			= ALLCONSTANT.data.responsible;
-		data.id_db					= ALLCONSTANT.data.id_db;
-		data.state					= ALLCONSTANT.data.state;
-		data.public_authority		= ALLCONSTANT.data.public_authority;
-		data.individual				= ALLCONSTANT.data.individual;
-		data.first_name				= ALLCONSTANT.data.first_name;
-		data.last_name				= ALLCONSTANT.data.last_name;
-		data.patronymic_name		= ALLCONSTANT.data.patronymic_name;
-				
-	},
 
 	readip: function () {
 		this.data.ip = '';
@@ -168,7 +149,7 @@ export var MASTER = {
 			row.recid = 1;
 			row.id_db = MASTER.data.id_db;
 			struct.push(row);	
-			BD.edit(CONSTANTS, struct, MASTER.readidDB);			
+			//edit(CONSTANTS, struct, MASTER.readidDB);			
 		}else{	
 			MASTER.readidDBConfirm();		
 		}			
@@ -199,14 +180,6 @@ export var MASTER = {
 			$().w2form(this.formbottom);
 		}
 
-		if('publication' in ALLCONSTANT){
-
-			w2ui[this.formtop.name].set('publication', { options :{items: ALLCONSTANT.publication}}); 
-		}	
-		
-		if('foresttax' in ALLCONSTANT){
-			w2ui[this.formtop.name].set('foresttax', { options :{items: ALLCONSTANT.foresttax} }); 
-		}
 		
 		w2ui[this.formtop.name].record = { 
 			publication 			: this.data.curentpublication,
@@ -286,18 +259,6 @@ export var MASTER = {
 				}
 			}
 
-			/*if(w2ui[MASTER.formtop.name].record.foresttax.id != MASTER.data.curentforesttax.id){
-				FEEDRATES.foresttax_Name = w2ui[MASTER.formtop.name].record.foresttax.text;
-				FEEDRATES.ratesArray.splice(0, FEEDRATES.ratesArray.length);
-				await FEEDRATES.fillbreeds()
-				FEEDRATES.updateRates();
-				var struct = [];
-				var row = {};
-				row.recid = 1;
-				row.foresttax = w2ui[MASTER.formtop.name].record.foresttax.id;
-				struct.push(row);
-				BD.edit(CONSTANTS, struct, ALLCONSTANT.get);
-			}*/
 
 			//обновляем организацию и ответственного в константе
 			var struct = [];
@@ -307,9 +268,6 @@ export var MASTER = {
 			row.responsible = w2ui[MASTER.formtop.name].record.responsible;
 
 			struct.push(row);
-			//обновим константы
-			ALLCONSTANT.get();
-			BD.edit(CONSTANTS, struct, ALLCONSTANT.get);
 
 			//заполним данные формы для проверки и отправки на сервер
 			MASTER.data.curentpublication 	= w2ui[MASTER.formtop.name].record.publication;
@@ -359,7 +317,7 @@ export var MASTER = {
 			}
 		}
 		
-		all.version			= BD.curentVersion;
+		//all.version			= curentVersion;
 		
 		all.numberlicense	= this.data.numberlicense;
 		all.dateactive		= this.data.dateactive;

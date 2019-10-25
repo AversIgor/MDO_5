@@ -8,8 +8,7 @@ import Desktop from '../containers/Desktop';
 import TypeORM from '../containers/TypeORM';
 import Update from '../containers/update';
 
-import {BD} from "../js/dao";
-import {DESKTOP} from "../js/desktop";
+import {MASTER} from "../js/master";
 import * as MDO from "../js/mdo";
 w2utils.locale('other/ru-ru.json');
 import materialIcons from 'material-design-icons/iconfont/material-icons.css'
@@ -80,6 +79,4 @@ export function confirmSave(callback) {
     }
 }
 
-
-BD.open();
-DESKTOP.init();
+MASTER.init();

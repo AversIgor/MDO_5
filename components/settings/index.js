@@ -13,6 +13,34 @@ export default class ComponentSettings extends Component {
     componentDidMount(){
         let self = this;
 
+        let settingsMDO = {
+            view:"property",
+            id:this.id+'_MDO',
+            complexData:true,
+            autoheight:true,
+            autowidth:true,
+            nameWidth:350,
+            css:'webix_dark',
+            borderless:true,
+            elements:[
+                { label:"Оценивать дровяную древесину по общему запасу", type:"checkbox", id:"mdo.assessfirewoodcommonstock",},
+                { label:"Оценивать отходы от дровяных стволов", type:"checkbox", id:"mdo.assesswastefirewood",},
+                { label:"Дровяные стволы липы учитывать в коре", type:"checkbox", id:"mdo.firewoodtrunkslindencountedinbark",},
+                { label:"Распределение полуделовых", type:"select", id:"mdo.distributionhalfbusiness",options:this.props.enumerations.distributionhalfbusiness},
+                { label:"Округления", type:"label"},
+                { label:"Сумм", type:"select", id:"mdo.orderRoundingRates",options:this.props.enumerations.orderRoundingRates},
+                { label:"Объема", type:"select", id:"mdo.orderRoundingValues",options:this.props.enumerations.orderRoundingValues},                
+            ],
+            on:{
+                "onAfterEditStop":function(state, editor, ignoreUpdate){
+                    self.props.handlerEdit("mdo",this.getValues())
+                },
+                "onCheck":function(id,state){
+                    self.props.handlerEdit("mdo",this.getValues())
+                },
+            }
+        }
+
         let settingsAbris = {
             view:"property",
             id:this.id+'_abris',
@@ -88,7 +116,7 @@ export default class ComponentSettings extends Component {
                                 css:"webix_dark",
                                 type:"wide",
                                 rows:[ //or rows 
-                                    { header:"Настроки МДО", body:'settingsContacts',collapsed:true,  }, 
+                                    { header:"Настроки МДО", body:settingsMDO,collapsed:true,  }, 
                                     { header:"Настройки абриса", body:settingsAbris,collapsed:true, },
                                     { header:"Контактная информция", body:settingsContacts,collapsed:true, }
                                 ]
@@ -101,12 +129,14 @@ export default class ComponentSettings extends Component {
             ]
         }
         this.ui.push(window.webix.ui(layout))
+        $$(this.id+'_MDO').setValues(this.props.settings);
         $$(this.id+'_abris').setValues(this.props.settings);
         $$(this.id+'_contacts').setValues(this.props.settings);
     }
 
 
     componentWillReceiveProps(nextProps) {
+        $$(this.id+'_MDO').setValues(nextProps.settings);
         $$(this.id+'_abris').setValues(nextProps.settings);
         $$(this.id+'_contacts').setValues(nextProps.settings);
     }

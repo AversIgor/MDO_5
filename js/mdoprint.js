@@ -1,5 +1,4 @@
 import * as MDO from "./mdo";
-import {BD} from "./dao";
 import {PRINT} from "./print";
 import * as FileSaver from "file-saver";
 
@@ -269,7 +268,7 @@ export var MDOPRINT = {
 
 
 		var params = {};
-		params.value = 'Подготовлено в системе "АВЕРС: МДО лесосек #5". Сайт: http://mdoles.ru. Версия релиза ' + BD.curentVersion;
+		params.value = 'Подготовлено в системе "АВЕРС: МДО лесосек #5". Сайт: http://mdoles.ru. Версия релиза '// + curentVersion;
 		PRINT.add_section("section_copyright", "copyright", params);
 	},
 

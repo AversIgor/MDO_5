@@ -172,7 +172,7 @@ export function round(v, digit) {
 
 //округление площад согласно настройки
 export function roundingSquare(square) {
-	let rounding_square = JSON.parse(store.getState().abris_settings.data[0].settings).rounding.square;
+	let rounding_square = store.getState().settings.data.abris.rounding.square;
 	if (rounding_square) {
 		return Math.round((Math.round(square) / 10000) * rounding_square) / rounding_square
 	} else {
@@ -182,7 +182,7 @@ export function roundingSquare(square) {
 
 //округление прпомеров согласно настройки
 export function roundingLengths(lengths) {
-	let rounding_lengths = JSON.parse(store.getState().abris_settings.data[0].settings).rounding.lengths;
+	let rounding_lengths = store.getState().settings.data.abris.rounding.lengths;
 	if (rounding_lengths) {
 		return Math.round(lengths * rounding_lengths) / rounding_lengths
 	} else {
@@ -192,7 +192,7 @@ export function roundingLengths(lengths) {
 
 //округление углов согласно настройки
 export function roundingAngle(angle) {
-	let rounding_angle = JSON.parse(store.getState().abris_settings.data[0].settings).rounding.angle;
+	let rounding_angle = store.getState().settings.data.abris.rounding.angle;
 	let value = angle
 	if (rounding_angle) {
 		if (rounding_angle == 1) {
@@ -322,7 +322,7 @@ export function pixel_inch() {
 //#region функции работы с угловой и линейной невязкой
 
 export function residualLinearCorrect(lengths, linearResidual) {
-	let residual_linear = JSON.parse(store.getState().abris_settings.data[0].settings).residual.linear;
+	let residual_linear = store.getState().settings.data.abris.residual.linear;
 	let value = true
 	if (residual_linear) {
 		let koeff = residual_linear / 300
@@ -334,7 +334,7 @@ export function residualLinearCorrect(lengths, linearResidual) {
 }
 
 export function residualAngleCorrect(angleResidual) {
-	let residual_angle = JSON.parse(store.getState().abris_settings.data[0].settings).residual.angle;
+	let residual_angle = store.getState().settings.data.abris.residual.angle;
 	let value = true
 	if (residual_angle) {
 		if (angleToMinutes(angleResidual) > residual_angle) {

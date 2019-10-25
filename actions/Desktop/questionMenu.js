@@ -3,7 +3,6 @@ import {
 } from '../../constants/decktop/toolbar'
 
 import {MASTER} from "../../js/master";
-import {ALLCONSTANT} from "../../js/allconstant";
 
 export function clickQuestionMenu(id) {
 
@@ -13,23 +12,21 @@ export function clickQuestionMenu(id) {
         }else{
             location.href = 'http://mdoles.ru/';
         }
-    }
-    if(id == "question"){
-        var exec = 'http://mdoles.ru/'
-        exec = exec+'?lic='+MASTER.data.numberlicense;
-        exec = exec+'&name='+encodeURIComponent(ALLCONSTANT.data.responsible);
-        exec = exec+'&p=feedback';
-        if('contacts' in ALLCONSTANT.data){
-            var contacts = JSON.parse(ALLCONSTANT.data.contacts);
-            if(contacts != null){
-                exec = exec+'&email='+contacts.email;
-                exec = exec+'&fon='+contacts.fon;
-            }
-        }
-        window.open( exec,"feedback", "width='450',height='250'" );
-    }
+    }    
 
     return (dispatch,getState) => {
+
+        if(id == "question"){
+            var exec = 'http://mdoles.ru/'
+            let settings = getState().settings.data;
+            exec = exec+'?lic='+MASTER.data.numberlicense;
+            exec = exec+'&name='+encodeURIComponent(settings.contacts.responsible);
+            exec = exec+'&p=feedback';
+            exec = exec+'&email='+settings.contacts.email;
+            exec = exec+'&fon='+settings.contacts.fon;
+            window.open( exec,"feedback", "width='450',height='250'" );
+        }
+
         dispatch({
             type: TOOLBAR_QUESTIONMENU_ID,
             id: id,

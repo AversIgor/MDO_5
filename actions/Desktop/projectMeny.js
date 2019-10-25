@@ -1,7 +1,6 @@
 //устаревшие функции
 import * as APP from "../../src/app";
 import * as MDO from "../../js/mdo";
-import {BD} from "../../js/dao";
 import {RECOUNTLAYOUT} from "../../js/recountlayout";
 
 
@@ -99,7 +98,7 @@ function creatFileProject(objectMDO,background,polygons) {
     //источник данных
     let target = {
         name      : "АВЕРС: МДО#5",              //программа
-        version   : BD.curentVersion,            //Версия программы
+        //version   :            //Версия программы
     }
     objectData.target = target;   
 

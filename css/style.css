@@ -2,3 +2,7 @@ body {
   overflow: hidden;
   margin: 0px!important;
 }
+
+.webix_property_check, .webix_table_checkbox {
+  margin: 10!important;
+}

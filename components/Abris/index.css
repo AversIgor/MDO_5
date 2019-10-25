@@ -86,16 +86,16 @@
 .abris_overlay_creat{
     z-index: 20;
     position: absolute;
-    margin-left: 120px!important;
+    margin-left: 100px!important;
 }
 
 .abris_overlay_creat button{
-    background-color: #FFFFFF;
     border-radius: 20px;
     border: none;
     box-shadow: 3px 3px 10px 0px #333;
-    width: 100px;
+    width: 120px;
     height: 40px;
+    font-size: inherit;
 }
 
 .abris_overlay_creat button:active{
@@ -110,12 +110,12 @@
 }
 
 .abris_overlay_list button{
-    background-color: #FFFFFF;
     border-radius: 20px;
     border: none;
     box-shadow: 3px 3px 10px 0px #333;
     width: 180px;
     height: 40px;
+    font-size: inherit;
 }
 
 .abris_overlay_list button:active{

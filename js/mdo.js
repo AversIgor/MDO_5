@@ -1,8 +1,5 @@
-import {BD} from "./dao";
-import {ALLCONSTANT} from "./allconstant";
 import {PARAMETERS} from "./parameters";
 import {RECOUNTLAYOUT} from "./recountlayout";
-import {CONSTANTS} from "./constants";
 import {MDOPRINT} from "./mdoprint";
 import * as FileSaver from "file-saver";
 
@@ -36,8 +33,6 @@ export function classMDO() {
 	this.projectModified 	= false; //признак изменения данных объекта
 	this.filename 			= '';
 	
-	this.parameters = {}; //все константы
-
 	this.forestry = {};
 	this.subforestry = {};
 	this.tract = {};
@@ -83,7 +78,6 @@ export function classMDO() {
 //заполним поля пустыми значениями
 classMDO.prototype.startMDO = function() {
 
-	 ALLCONSTANT.get();
 	
 	var date  = (new Date()).getDate();
 	if (date<10) date = "0"+date;	
@@ -99,9 +93,8 @@ classMDO.prototype.startMDO = function() {
 	this.releasedate	= date+'.'+ month+'.' + year;
 	this.valuationdate	= date+'.'+ month+'.' + year;
 	this.typesrates		= PARAMETERS.typesrates[0];
-	this.estimator		= ALLCONSTANT.data.responsible;
+	this.estimator		= store.getState().settings.data.contacts.responsible;
 
-	this.parameters		= ALLCONSTANT.data;
 
 	this.projectModified = false;	
 	
@@ -453,7 +446,7 @@ export function calculation() {
 	allQuery = 6;
 	
 	//запросим все учетные настройки
-	BD.filldata(CONSTANTS, fillConstantValues);
+	//filldata(CONSTANTS, fillConstantValues);
 
 	//запросим все сортиментные таблицы
 	fillSortablesValuesValues()
@@ -463,23 +456,23 @@ export function calculation() {
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	conditions.formCutting = [objectMDO.formCutting.id];
 	var arrayField 	= ['value'];
-	//BD.fillListWithConditions(COEFFICIENTSFORMCUTTING,arrayField,conditions,fillCoefficientsformcutting);
+	//fillListWithConditions(COEFFICIENTSFORMCUTTING,arrayField,conditions,fillCoefficientsformcutting);
 	
 	var conditions 	= {};
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	var arrayField 	= ['rangesLiquidation','value'];
-	//BD.fillListWithConditions(COEFFICIENTSRANGESLIQUIDATION,arrayField,conditions,fillCoefficientsrangesliquidation);
+	//fillListWithConditions(COEFFICIENTSRANGESLIQUIDATION,arrayField,conditions,fillCoefficientsrangesliquidation);
 	
 	var conditions 	= {};
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	var arrayField 	= ['damage','value'];
-	//BD.fillListWithConditions(COEFFICIENTSDAMAGE,arrayField,conditions,fillСoefficientsdamage);
+	//fillListWithConditions(COEFFICIENTSDAMAGE,arrayField,conditions,fillСoefficientsdamage);
 	
 	var conditions 	= {};
 	conditions.typesrates_id = [objectMDO.typesrates.id];
 	conditions.ranktax_id = [objectMDO.rankTax.id];
 	var arrayField 	= ['breeds_id','large','average','small','firewood'];
-	//BD.fillListWithConditions(FEEDRATES,arrayField,conditions,fillFeedrates);
+	//fillListWithConditions(FEEDRATES,arrayField,conditions,fillFeedrates);
  
 }
 
@@ -558,8 +551,6 @@ function allQueryComplit() {
 	
 	if(allQuery == 0){
 
-		objectMDO.parameters		= ALLCONSTANT.data;
-		
 		//очистим все вспомогательные объекты
 		clear_arrayMDO();  
 
