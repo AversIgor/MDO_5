@@ -19,17 +19,10 @@ export function getData(getState,repository,where) {
             relations: ["forestry","tracts"],
             where: where,
         });
-        let options = [];
         for (let i = 0; i < data.length; i++) {
-            options.push({
-                id:data[i].id,
-                value:data[i].name
-            })
+            data[i].value = data[i].name
         }
-        return {
-            data:data,
-            options:options
-        }
+        return data
     }
     return asyncProcess()
 }
@@ -41,8 +34,7 @@ export function fill_data(where = {}) {
             let data = await getData(getState,repository,where);
             dispatch({
                 type: SUBFORESTRY_FILL_SUCCESS,
-                data: data.data,
-                options: data.options,
+                data: data,
                 where: where,
             })
         }
@@ -59,8 +51,7 @@ export function add() {
             let data = await getData(getState,repository);
             dispatch({
                 type: SUBFORESTRY_ADD,
-                data: data.data,
-                options: data.options,
+                data: data,
             })
         }
         asyncProcess()
@@ -79,8 +70,7 @@ export function del() {
             data = await getData(getState,repository);
             dispatch({
                 type: SUBFORESTRY_DEL,
-                data: data.data,
-                options: data.options,
+                data: data,
             })
         }
         asyncProcess()
@@ -113,8 +103,7 @@ export function edit(obj,values) {
             dispatch({
                 type: SUBFORESTRY_EDIT,
                 currentId: obj.id,
-                data: data.data,
-                options: data.options,
+                data: data,
             })
         }
         asyncProcess()

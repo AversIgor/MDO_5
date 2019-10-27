@@ -30,7 +30,7 @@ class Tract extends Component {
 
     render() {
         return <ComponentTract
-            subforestry = {this.props.options}
+            subforestry = {this.props.subforestry}
             data = {this.props.data}
             sort = {this.props.sort}
             currentId = {this.props.currentId}
@@ -45,7 +45,7 @@ class Tract extends Component {
 
 function mapStateToProps (state) {
     return {
-        options: state.subforestry.options,
+        subforestry: state.subforestry.data,
         data: state.tract.data,
         sort: state.tract.sort,
         currentId: state.tract.currentId

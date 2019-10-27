@@ -30,7 +30,7 @@ class Subforestry extends Component {
 
     render() {
         return <ComponentSubforestry
-            forestry = {this.props.options}
+            forestry = {this.props.forestry}
             data = {this.props.data}
             sort = {this.props.sort}
             currentId = {this.props.currentId}
@@ -45,7 +45,7 @@ class Subforestry extends Component {
 
 function mapStateToProps (state) {
     return {
-        options: state.forestry.options,
+        forestry: state.forestry.data,
         data: state.subforestry.data,
         sort: state.subforestry.sort,
         currentId: state.subforestry.currentId

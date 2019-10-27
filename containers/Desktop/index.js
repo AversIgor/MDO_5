@@ -3,11 +3,8 @@ import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 import ReactDOM from 'react-dom';
 
-
 import Toolbar from "./toolbar";
 import LeftMenu from "./leftMenu";
-
-import MdoSubsystem from "../MdoSubsystem";
 
 class Desktop extends Component {
 
@@ -35,11 +32,6 @@ class Desktop extends Component {
     }
 
     render() {  
-
-        /*let sizeLeftMenu = {
-            height:($(window).height()-50)+"px",
-            width:this.state.widthLeftMenu+"px",
-        }*/
 
 
         let styleMdoSubsystem = {
@@ -70,7 +62,7 @@ class Desktop extends Component {
                 </div>
                 <div 
                     style={positionMdoSubsystem}>
-                    <MdoSubsystem
+                    <LeftMenu
                         style = {styleMdoSubsystem}
                     />
                 </div>
@@ -78,15 +70,6 @@ class Desktop extends Component {
         )
     }
 }
-
-/*<div 
-style={sizeLeftMenu}>
-<LeftMenu
-    size = {sizeLeftMenu}
-    resizeLeftMenu = {this.resizeLeftMenu}
-/>
-</div>*/
-
 
 
 function mapStateToProps (state) {

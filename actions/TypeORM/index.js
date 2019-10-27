@@ -19,7 +19,6 @@ import {Publications} from "./entity/publications";
 import {Tables} from "./entity/tables";
 import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
-import {Contactinformation} from "./entity/contactinformation";
 import {Typesrates} from "./entity/typesrates";
 
 
@@ -46,7 +45,6 @@ export function init() {
                 Tables,
                 Breed,
                 Abrisprintforms,
-                Contactinformation,
                 Typesrates,
              ]
     }
@@ -90,7 +88,6 @@ export function init() {
                 if(isNewVersions(oldVersion,"5.2.1.11")){
                     //конвертация контактной информации
                     await Migration_5_2_1_0.creatEntities(options);
-                    await Migration_5_2_1_0.ContactinformationConvert(options);
                     await Migration_5_2_1_0.TypesratesConvert(options);
                   }
                 //Блок конвертации отдельных сборок - конец

@@ -1,0 +1,1 @@
+export const PLOT_FILL_SUCCESS = 'PLOT_FILL_SUCCESS';

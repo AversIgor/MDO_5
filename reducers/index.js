@@ -8,6 +8,7 @@ import leftMenu from './desktop/leftMenu'
 //Подсистемы
 import background from './abris/background'
 import polygons from './abris/polygons'
+import plot from './plot/index'
 
 //справочники
 import methodscleanings from './reference/methodscleanings'
@@ -38,6 +39,7 @@ export default combineReducers({
     leftMenu:leftMenu,
     polygons:polygons,
     background:background,
+    plot:plot,
     methodscleanings:methodscleanings,
     forestry:forestry,
     subforestry:subforestry,

@@ -5,6 +5,7 @@ import {
 const initialState = {
     data: [        
         {id: "mdo", icon: "calculator",value:"Расчет МДО"},
+        {id: "plot", icon: "calculator",value:"Расчет МДО (новый)"},
         {id: "abrisv2", icon: "map-o",value:"Абрис (схема)"},        
         {id: "nsi",icon: "sliders", value:"НСИ", data:[        
             {id: "reference", value:"Справочники (базовые)", data:[
