@@ -36,11 +36,12 @@ export default class ComponentPlot extends Component {
         let self = this;
 
         let objectsTaxation = {
-            view:"datatable", 
+            view:"datatable",
+            scroll:false,
+            header:false,
             columns:[
-                { id:"id",    header:"",              width:50},
-                { id:"name",   header:"Объект таксации",    width:200},
-                { id:"areacutting",    header:"Площадь",      width:80},
+                { id:"name",  fillspace:true},
+                { id:"areacutting",    header:"Площадь",      width:80,format:"111,0000"},
             ],
             data: [
                 { id:1, name:"Волока", areacutting:1.2, },
@@ -52,10 +53,8 @@ export default class ComponentPlot extends Component {
             view:"form",
             id:this.id+'_property',
             complexData:true,
-            autoheight:true,
-            //maxWidth:400,
             css:'webix_dark',
-            //borderless:true,
+            scroll:true,
             rules:{
                 "location.forestry":webix.rules.isNotEmpty,
                 "location.subforestry":webix.rules.isNotEmpty,
@@ -67,57 +66,81 @@ export default class ComponentPlot extends Component {
             elements:[{
                 rows:[   
                     {template:"Параметры таксации", type:"section"},
-                    {view:"select", label:"Метод таксации", name:"taxation.methodTaxation", options:self.props.enumerations.methodTaxation},
-                    {view:"select", label:"Вид ставки", name:"taxation.typesrates", options:[]},
-                    {view:"select", label:"Разряд такс", name:"taxation.rankTax", options:self.props.enumerations.rankTax},
+                    {view:"select", label:"Метод таксации", name:"taxation.methodTaxation", options:self.props.enumerations.methodTaxation,required:true,},
+                    {view:"select", label:"Вид ставки", name:"taxation.typesrates", options:[],required:true,},
+                    {view:"select", label:"Разряд такс", name:"taxation.rankTax", options:self.props.enumerations.rankTax,required:true,},
                     {cols:[
-                            {view:"datepicker",label:"Дата отвода", name:"taxation.releasedate",  stringResult:true, format:"%d  %M %Y"},
+                            {view:"datepicker",label:"Дата отвода", name:"taxation.releasedate",  stringResult:true, format:"%d  %M %Y",},
                             {view:"datepicker", label:"Дата оценки",  name:"taxation.valuationdate",  stringResult:true, format:"%d  %M %Y"},  
                         ]
                     },  
                     {view:"text",label:"Расчет произвел",  name:"taxation.estimator",},  
                     {template:"Характеристика рубки", type:"section"},
-                    {view:"select", label:"Форма", name:"felling.formCutting", options:self.props.enumerations.formCutting},
-                    {view:"select", label:"Группа", name:"felling.groupCutting", options:self.props.enumerations.groupCutting},
-                    {view:"select", label:"Способ", name:"felling.cuttingmethods", options:[]},
-                    {view:"text",label:"Площадь",  name:"felling.areacutting",},               
+                    {view:"select", label:"Форма", name:"felling.formCutting", options:self.props.enumerations.formCutting,required:true,},
+                    {view:"select", label:"Группа", name:"felling.groupCutting", options:self.props.enumerations.groupCutting,required:true,},
+                    {view:"select", label:"Способ", name:"felling.cuttingmethods", options:[],required:true,},
+                    {view:"text",label:"Площадь",  name:"felling.areacutting",required:true,format:"111,0000"},               
                     {template:"Местоположение", type:"section"},
-                    {view:"select", label:"Лесничество",name:"location.forestry", options:[] },
-                    {view:"select", label:"Участковое лесничество", name:"location.subforestry",options:[]},
-                    {view:"select", label:"Урочище",  name:"location.tract",options:[]},
+                    {view:"select", label:"Лесничество",name:"location.forestry", options:[] ,required:true,},
+                    {view:"select", label:"Участковое лесничество", name:"location.subforestry",options:[],required:true,},
+                    {view:"select", label:"Урочище",  name:"location.tract",options:[],},
                     {cols:[
-                            {view:"text",label:"№ квартала", name:"location.quarter", },
-                            {view:"text", label:"№ лесосеки",  name:"location.cuttingarea", },
-                            {view:"text",label:"№ выдела(ов)",  name:"location.isolated",},
+                            {view:"text",label:"№ квартала", name:"location.quarter",required:true,format:"111"},
+                            {view:"text", label:"№ лесосеки",  name:"location.cuttingarea",required:true,format:"111"},
+                            {view:"text",label:"№ выдела(ов)",  name:"location.isolated",required:true,},
                         ]
                     },
                     {template:"Характеристика выдела", type:"section"},
-                    {view:"select", label:"Целевое назначение лесов", name:"parameters.purposeForests", options:self.props.enumerations.purposeForests},
-                    {view:"select", label:"Хозяйство", name:"parameters.property", options:self.props.enumerations.property},
-                    {view:"select", label:"Способ очистки", name:"parameters.methodscleaning", options:[]},
+                    {view:"select", label:"Целевое назначение лесов", name:"parameters.purposeForests", options:self.props.enumerations.purposeForests,},
+                    {view:"select", label:"Хозяйство", name:"parameters.property", options:self.props.enumerations.property,},
+                    {view:"select", label:"Способ очистки", name:"parameters.methodscleaning", options:[],},
                     {view:"text", label:"Подрост", name:"parameters.undergrowth",},
-                    {view:"text", label:"Семенники", name:"parameters.seedtrees", },
+                    {view:"text", label:"Семенники", name:"parameters.seedtrees"},
                 ]
             }],
             elementsConfig:{
 				on:{
 					onChange:function(new_v,old_v){
                         //$$(self.id+'_property').validate();
-					}
-				}
+                    },                    
+                },
+                labelWidth:120,
 			}
         }        
         
         let layout = {
             id:this.id+'_layout',
             container:ReactDOM.findDOMNode(this.refs.root),
-            css:'content',
+            margin:5,
             rows:[
                 {
                     cols:[ //or rows 
                         //{ header:"Настроки МДО", body:"Объекты", }, 
                         //{ view:"resizer" },
-                        objectsTaxation,
+                        {rows:[
+                            {
+                                view:"button", 
+                                id:"my_button", 
+                                value:"Button", 
+                                css:"webix_primary", 
+                                inputWidth:100 
+                            },
+                            objectsTaxation
+                        ]},
+                        { view:"resizer" },
+                        {
+                            view:"datatable", 
+                            columns:[
+                                { id:"rank",    header:"",              width:50},
+                                { id:"title",   header:"Film title",    width:200},
+                                { id:"year",    header:"Released",      width:80},
+                                { id:"votes",   header:"Votes",         width:100}
+                            ],
+                            data: [
+                                { id:1, title:"The Shawshank Redemption", year:1994, votes:678790, rank:1},
+                                { id:2, title:"The Godfather", year:1972, votes:511495, rank:2}
+                            ]
+                        },
                         { view:"resizer" },
                         property,
                     ]
@@ -147,6 +170,17 @@ export default class ComponentPlot extends Component {
                 let arraycuttingmethods = self.filterArray(self.props.cuttingmethods,[
                     {field:'formCutting',value:newv},
                     {field:'groupCutting',value:values.felling.groupCutting}
+                ])
+                self.feelOptions('felling.cuttingmethods',arraycuttingmethods)
+            }
+        });
+        propertyForm.elements["felling.groupCutting"].attachEvent("onChange", function(newv, oldv){
+            if(newv != oldv){
+                //отфильтруем способы рубки
+                let values = propertyForm.getValues();
+                let arraycuttingmethods = self.filterArray(self.props.cuttingmethods,[
+                    {field:'formCutting',value:values.felling.formCutting},
+                    {field:'groupCutting',value:newv}
                 ])
                 self.feelOptions('felling.cuttingmethods',arraycuttingmethods)
             }
