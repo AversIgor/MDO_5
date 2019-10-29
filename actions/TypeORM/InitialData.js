@@ -3,10 +3,15 @@ import {Styles} from "../TypeORM/entity/styles"
 import {Cuttingmethods} from "../TypeORM/entity/cuttingmethods"
 import {Typesrates} from "../TypeORM/entity/typesrates"
 
+import * as forestry from "../reference/forestry";
+import * as subforestry from "../reference/subforestry";
+import * as tract from "../reference/tract";
+import * as methodscleanings from "../reference/methodscleanings";
+import * as cuttingmethods from "../reference/cuttingmethods";
+import * as typesrates from "../reference/typesrates";
 import {defaultStyle} from "../reference/styles";
 import {defaultCuttingMethods} from "../reference/cuttingmethods";
 import {defaultTypesrates} from "../reference/typesrates";
-
 import {updatePredefinedAbrisPrintForms} from "../../actions/reference/abrisprintforms";
 
 export function creatMainStyle(conectionOption) {
@@ -67,12 +72,20 @@ export function creatTypesrates(conectionOption) {
     return asyncProcess();
 }
 
-
 export function updateAbrisPrintForms() {
     const asyncProcess = async () => {
         await updatePredefinedAbrisPrintForms();
     }
     return asyncProcess();
+}
+
+export function feelAllReducers(dispatch) {
+    dispatch(forestry.fill_data({status:0}))
+    dispatch(subforestry.fill_data({status:0}))
+    dispatch(tract.fill_data({status:0}))
+    dispatch(methodscleanings.fill_data({status:0}))
+    dispatch(cuttingmethods.fill_data({status:0}))
+    dispatch(typesrates.fill_data({status:0}))    
 }
 
 

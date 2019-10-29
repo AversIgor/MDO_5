@@ -88,10 +88,11 @@ export default class ComponentToolbar extends Component {
                 on:{
                     onAfterSelect: function(id){
                         props.clickMenu(id);
+                        this.getParentView().hide();
                     }
                 }
             }
-		}
+        }
 
         const toolbar = { 
             view: "toolbar",
@@ -150,7 +151,9 @@ export default class ComponentToolbar extends Component {
         this.toolbar = window.webix.ui(toolbar);
         window.webix.ui(projectMenu);
         window.webix.ui(questionMenu);
-        window.webix.ui(leftMenu);      
+        window.webix.ui(leftMenu);   
+        
+
 
 
     }

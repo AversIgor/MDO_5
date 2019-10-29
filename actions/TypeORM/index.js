@@ -49,7 +49,6 @@ export function init() {
              ]
     }
 
-
     const isNewVersions = function (oldVersion,newVersion) {
         var arrayoldVersion = oldVersion.split('.');
         var arraynewVersion = newVersion.split('.');
@@ -91,9 +90,7 @@ export function init() {
                     await Migration_5_2_1_0.TypesratesConvert(options);
                   }
                 //Блок конвертации отдельных сборок - конец
-            }
-
-                        
+            }                        
             //Блок конвертации для всех сборок
             //для всех релизов - функции этих обработчиков безопасно запускать всегда
             if(isNewVersions(oldVersion,newVersion)){
@@ -113,6 +110,7 @@ export function init() {
         }
         return asyncProcess();
     }
+
 
     return (dispatch,getState) => {
 
@@ -154,6 +152,9 @@ export function init() {
 
             options.synchronize     = false;
             connection = await createConnection(options);
+
+            //заполним все модели
+            InitialData.feelAllReducers(dispatch); 
 
             dispatch({
                 type: ORM_COMPLETE,
