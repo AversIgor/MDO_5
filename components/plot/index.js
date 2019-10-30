@@ -35,18 +35,125 @@ export default class ComponentPlot extends Component {
     componentDidMount(){
         let self = this;
 
+        let objectsBreed = {
+            cols:[                
+                {
+                    view:"datatable",
+                    headerRowHeight:24,
+                    multiselect:false,
+                    select:"row",
+                    editable:true,
+                    editaction:"dblclick",
+                    columns:[
+                        { id:"id", header:"",hidden:true},
+                        { id:"breed", header:"Порода", editor:"combo",	options:self.props.breed,fillspace:true,required:true,},
+                        { id:"tables", header:"Таблица",hidden:true},
+                        { id:"rank",  header:"Разряд высот", editor:"combo",width:150,options:self.props.enumerations.rankTax,required:true,},
+                    ],
+                    data:[],
+                    scrollX:false,
+                    autoheight:true,
+                    on:{
+                        'onAfterEditStop': function(state, editor, ignoreUpdate){
+                            if((editor.column == 'breed') && (state.old == undefined)){
+                                this.editCell(this.getLastId(),"rank",true)
+                            }
+                        }
+                    } 
+                },
+                {                                       
+                    view:"button", 
+                    type:"icon",
+                    icon: "mdi mdi-plus",
+                    tooltip:"Добавить породу",                 
+                    width:24, 
+                    inputHeight:28,
+                    on:{
+                        'onItemClick': function(id){
+                            let curentTable = this.getParentView().getChildViews()[0];
+                            let selectedId = curentTable.add({})  
+                            curentTable.select(selectedId)                          
+                            $$(self.id+'_objectsTaxation').refresh()
+                            curentTable.editCell(selectedId,"breed",true)
+                        }
+                    }
+                },
+                {                                    
+                    view:"button", 
+                    type:"icon",
+                    icon: "mdi mdi-delete",
+                    tooltip:"Удалить породу",                 
+                    width:24, 
+                    inputHeight:28,
+                    on:{
+                        'onItemClick': function(id){
+                            let selectedId = this.getParentView().getChildViews()[0].getSelectedId()                                                
+                            if(selectedId){
+                                this.getParentView().getChildViews()[0].remove(selectedId);
+                            }  
+                            $$(self.id+'_objectsTaxation').refresh()
+                        }
+                    }
+                },
+            ]                   
+
+        }
+
         let objectsTaxation = {
-            view:"datatable",
-            scroll:false,
-            header:false,
-            columns:[
-                { id:"name",  fillspace:true},
-                { id:"areacutting",    header:"Площадь",      width:80,format:"111,0000"},
-            ],
-            data: [
-                { id:1, name:"Волока", areacutting:1.2, },
-                { id:2, name:"Пасека", year:1972, areacutting:5.2,}
-            ]
+            rows:[
+                {cols:[
+                        {
+                            view:"button", 
+                            label:"Добавить объект таксации",                   
+                            width:250, 
+                            on:{
+                                'onItemClick': function(id){
+                                    let curentTable = $$(self.id+'_objectsTaxation')
+                                    let selectedId = curentTable.add({...self.props.rows.objectTaxation});
+                                    curentTable.editCell(selectedId,"objectTaxation",true)  
+                                }
+                            }
+                        },
+                        {
+                            view:"button", 
+                            type:"icon",
+                            icon: "mdi mdi-delete",
+                            tooltip:"Удалить объект таксации",                 
+                            width:28, 
+                            on:{
+                                'onItemClick': function(id){
+                                    if($$(self.id+'_objectsTaxation').getSelectedId()){
+                                        $$(self.id+'_objectsTaxation').remove($$(self.id+'_objectsTaxation').getSelectedId());
+                                    }     
+                                }
+                            }
+                        },
+                        {}
+                    ]
+                },                
+                {
+                    view:"datatable",
+                    id:this.id+'_objectsTaxation',
+                    select:"row",
+                    multiselect:false,
+                    editable:true,
+                    editaction:"dblclick",
+                    css:'box_shadow',
+                    columns:[
+                        { id:"id", header:"",hidden:true},                        
+                        { id:"objectTaxation",header:"Объект таксации", editor:"combo",	options:self.props.enumerations.objectTaxation,  fillspace:true },
+                        { id:"areacutting",  editor:"text", header:"Площадь, га",width:100,numberFormat:"111,0000"},
+                        {template:"{common.subrow()} Породы"},
+                    ],
+                    data: [],
+                    on:{
+                        'onAfterAdd': function(id){
+                            this.openSub(id);                           
+                        },
+                    },
+                    subview:objectsBreed,   
+                }
+            ],            
         }
 
         let property = {
@@ -79,7 +186,7 @@ export default class ComponentPlot extends Component {
                     {view:"select", label:"Форма", name:"felling.formCutting", options:self.props.enumerations.formCutting,required:true,},
                     {view:"select", label:"Группа", name:"felling.groupCutting", options:self.props.enumerations.groupCutting,required:true,},
                     {view:"select", label:"Способ", name:"felling.cuttingmethods", options:[],required:true,},
-                    {view:"text",label:"Площадь",  name:"felling.areacutting",required:true,format:"111,0000"},               
+                    {view:"text",label:"Площадь, га",  name:"felling.areacutting",required:true,format:"111,0000"},               
                     {template:"Местоположение", type:"section"},
                     {view:"select", label:"Лесничество",name:"location.forestry", options:[] ,required:true,},
                     {view:"select", label:"Участковое лесничество", name:"location.subforestry",options:[],required:true,},
@@ -111,22 +218,10 @@ export default class ComponentPlot extends Component {
         let layout = {
             id:this.id+'_layout',
             container:ReactDOM.findDOMNode(this.refs.root),
-            margin:5,
             rows:[
                 {
-                    cols:[ //or rows 
-                        //{ header:"Настроки МДО", body:"Объекты", }, 
-                        //{ view:"resizer" },
-                        {rows:[
-                            {
-                                view:"button", 
-                                id:"my_button", 
-                                value:"Button", 
-                                css:"webix_primary", 
-                                inputWidth:100 
-                            },
-                            objectsTaxation
-                        ]},
+                    cols:[
+                        objectsTaxation,
                         { view:"resizer" },
                         {
                             view:"datatable", 

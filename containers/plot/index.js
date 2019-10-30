@@ -19,12 +19,14 @@ class Plot extends Component {
         return (
             <ComponentPlot
                 property = {this.props.property}
+                rows = {this.props.rows}
                 forestry = {this.props.forestry}
                 subforestry = {this.props.subforestry}
                 tract = {this.props.tract}
                 methodscleanings = {this.props.methodscleanings}
                 cuttingmethods = {this.props.cuttingmethods}
                 typesrates = {this.props.typesrates}
+                breed = {this.props.breed}
                 enumerations = {this.props.enumerations}
             />
         )
@@ -34,12 +36,14 @@ class Plot extends Component {
 function mapStateToProps (state) {
     return {
         property: state.plot.property,
+        rows: state.plot.rows,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,
         methodscleanings: state.methodscleanings.data,
         cuttingmethods: state.cuttingmethods.data,
         typesrates: state.typesrates.data,
+        breed: state.breed.data,
         enumerations: state.enumerations,
     }
 }

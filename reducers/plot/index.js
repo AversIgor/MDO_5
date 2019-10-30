@@ -35,24 +35,23 @@ const initialState = {
     coefficients:[],
     objectsTaxation:[],
     results:[],
-    objectTaxation:{
-        id:0,        
-        type:0,
-        areacutting:0,
-    },
-    objectBreed:{
-        id:0,        
-        breed:0,
-        tables:0,
-        rank:0,
-    },
-    objectStep:{
-        id:0,         
-        step:0, 
-        business:0,  
-        halfbusiness:0,
-        firewood:0,
-    },
+    rows:{
+        objectTaxation:{   
+            objectTaxation:1,
+            areacutting:0,
+        },
+        objectBreed:{    
+            breed:0,
+            tables:0,
+            rank:0,
+        },
+        objectStep:{     
+            step:0, 
+            business:0,  
+            halfbusiness:0,
+            firewood:0,
+        },
+    }   
 }
 
 export default function plot (state = initialState, action) {
