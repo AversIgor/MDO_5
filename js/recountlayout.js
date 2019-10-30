@@ -1,5 +1,5 @@
 import * as MDO from "./mdo";
-import {PARAMETERS} from "./parameters";
+
 
 import {store} from "../src/app";
 import * as breed from "../actions/reference/breed";
@@ -623,12 +623,11 @@ RECOUNTLAYOUT.whenOpening = function () {
 	
 	w2ui.recountLayout.content('right', '<style>.tabP {border: 0px;width: 100%;height: 100%;overflow: hidden;}'+
 								'.tabF {border: 0px;width: 100%;height: 100%;overflow: hidden;}</style>'+
-								'<div id="PARAMETERS">'+
 								'<div id="tabsPARAMETERS" style="width: 100%;"></div>'+
 								'<div id="cutting" class="tabP"><div id="formCutting" class="tabF"></div></div>'+
 								'<div id="location" class="tabP"><div id="locationForm"class="tabF" ></div></div>'+
 								'</div>');
-	PARAMETERS.init(MDO.objectMDO);
+	//PARAMETERS.init(MDO.objectMDO);
 	
 	RECOUNTLAYOUT.fillObjects();
 

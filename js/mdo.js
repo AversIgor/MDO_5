@@ -1,4 +1,3 @@
-import {PARAMETERS} from "./parameters";
 import {RECOUNTLAYOUT} from "./recountlayout";
 import {MDOPRINT} from "./mdoprint";
 import * as FileSaver from "file-saver";
@@ -92,7 +91,7 @@ classMDO.prototype.startMDO = function() {
 	this.areacutting	= 1;
 	this.releasedate	= date+'.'+ month+'.' + year;
 	this.valuationdate	= date+'.'+ month+'.' + year;
-	this.typesrates		= PARAMETERS.typesrates[0];
+	//this.typesrates		= PARAMETERS.typesrates[0];
 	this.estimator		= store.getState().settings.data.contacts.responsible;
 
 
