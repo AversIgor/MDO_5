@@ -31,6 +31,7 @@ export default class ComponentObjectsTaxation extends Component {
         let node_objectTaxation = this.data.find(item => item.objectTaxation == values.objectTaxation);
         if(!node_objectTaxation){
             node_objectTaxation = {
+                id: webix.uid(),
                 objectTaxation: values.objectTaxation,
                 objectsBreed:[],
             };
@@ -38,20 +39,26 @@ export default class ComponentObjectsTaxation extends Component {
         }
         node_objectTaxation.areacutting = values.areacutting;        
         //обновим породу
-        let node_breed = node_objectTaxation.objectsBreed.find(item => item.breed == values.breed);
+
+        let node_breed = node_objectTaxation.objectsBreed.find(function(item, index, array) {
+            if((item.breed == values.breed) && (item.rank == values.rank)){
+                return true
+            }
+        });
         if(!node_breed){
             node_breed = {
+                id:webix.uid(),
                 breed: values.breed,
+                rank: values.rank,
             };
             node_objectTaxation.objectsBreed.push(node_breed)
         }
-        node_breed.rank = values.rank; 
 
         let treeData = []
         for (let i = 0; i < this.data.length; i++) {            
             let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == this.data[i].objectTaxation);
             let node_OT = {
-               id:objectTaxation.id, 
+               id:this.data[i].id, 
                value:objectTaxation.value+ "  ("+this.data[i].areacutting+" га.)",
                data:[],
             }
@@ -60,7 +67,7 @@ export default class ComponentObjectsTaxation extends Component {
             for (let j = 0; j < objectsBreed.length; j++) { 
                 let objectBreed = this.props.breed.find(item => item.id == objectsBreed[j].breed);
                 let node_B = {
-                    id:objectTaxation.id+'.'+objectBreed.id, 
+                    id:objectsBreed[j].id, 
                     value:objectBreed.value+ "  (разряд высот - "+objectsBreed[j].rank+")",
                 }
                 node_OT.data.push(node_B)
@@ -72,12 +79,29 @@ export default class ComponentObjectsTaxation extends Component {
     }
 
 
-    openWindowEdit(param) {
-        let item = $$(this.id).getSelectedItem()
-        let windowEdit = $$(this.id+"_window");
-        if(param){
-
+    openWindowEdit(edit) {          
+        if(edit){
+            let selectedItem = $$(this.id).getSelectedItem()
+            if(!selectedItem){
+                webix.message({ type:"error", text:"Не выбрана порода" });
+                return
+            }
+            if(selectedItem.$level == 1){
+                webix.message({ type:"error", text:"Укажите строку с породой" });
+                return
+            }
+            let parentItem = this.data.find(item => item.id == selectedItem.$parent);
+            if(parentItem){
+                let dataItem = parentItem.objectsBreed.find(item => item.id == selectedItem.id);
+                $$(this.id+"_form").setValues({
+                    objectTaxation: parentItem.objectTaxation, 
+                    areacutting: parentItem.areacutting,
+                    breed: dataItem.breed,
+                    rank: dataItem.rank,
+                 });
+            }
         }
+        let windowEdit = $$(this.id+"_window");
         windowEdit.show()
     }
 
@@ -89,11 +113,12 @@ export default class ComponentObjectsTaxation extends Component {
             rows:[
                 {
                     view:"button", 
-                    label:"Добавить объект таксации",                   
-                    inputWidth:250, 
+                    label:"Добавить", 
+                    tooltip:'Добавить объект таксации',                 
+                    inputWidth:100, 
                     on:{
                         'onItemClick': function(id){
-                            self.openWindowEdit()
+                            self.openWindowEdit(false)
                         }
                     }
                 },
@@ -113,7 +138,12 @@ export default class ComponentObjectsTaxation extends Component {
             data:["Добавить","Изменить","Удалить"],
             on:{
                 onItemClick:function(id){
-                    webix.message("</i> <br/>Context menu item: <i>"+this.getItem(id).value+"</i>");
+                    if(this.getItem(id).value == 'Изменить'){
+                        self.openWindowEdit(true)
+                    }
+                    if(this.getItem(id).value == 'Добавить'){
+                        self.openWindowEdit(false)
+                    }
                 }
             }
         };
@@ -123,7 +153,8 @@ export default class ComponentObjectsTaxation extends Component {
             id:this.id+"_window", 
             position:"top",            
             body:{
-                view:"form", 
+                view:"form",
+                id:this.id+"_form", 
                 width:800,               
                 elements:[
                     {
