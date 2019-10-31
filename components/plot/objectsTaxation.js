@@ -7,7 +7,8 @@ export default class ComponentObjectsTaxation extends Component {
     constructor(props) {
         super(props);
         this.id         = 'plot_objectsTaxation';   
-        this.ui         = [];                        
+        this.ui         = [];   
+        this.data       = [];                     
     }   
     
     filterArray(array,params) {
@@ -23,25 +24,63 @@ export default class ComponentObjectsTaxation extends Component {
         $$(this.id).refresh();
     }
 
+    //обновления дерева на основе данных  веденых в форме редактирования дерева
     updateData(values) {
-
-        //Обновления объекта данных со ссылками, и на его основании обновления дерева
-
-
-        let node_objectTaxation = undefined
-        let array_objectTaxation = $$(this.id).find(function(obj){
-            return obj.id == values.objectTaxation;
-        })
-        if(array_objectTaxation.length != 0){
-            node_objectTaxation = array_objectTaxation[0];
-        }else{
-            node_objectTaxation = $$(this.id).add({ 
-                id:values.objectTaxation,
-                value:"Новый объект",
-            });
+        //Обновления объекта данных со ссылками, и на его основании обновления дерева        
+        //обновим объект таксации
+        let node_objectTaxation = this.data.find(item => item.objectTaxation == values.objectTaxation);
+        if(!node_objectTaxation){
+            node_objectTaxation = {
+                objectTaxation: values.objectTaxation,
+                objectsBreed:[],
+            };
+            this.data.push(node_objectTaxation)
         }
+        node_objectTaxation.areacutting = values.areacutting;        
+        //обновим породу
+        let node_breed = node_objectTaxation.objectsBreed.find(item => item.breed == values.breed);
+        if(!node_breed){
+            node_breed = {
+                breed: values.breed,
+            };
+            node_objectTaxation.objectsBreed.push(node_breed)
+        }
+        node_breed.rank = values.rank; 
 
+        let treeData = []
+        for (let i = 0; i < this.data.length; i++) {            
+            let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == this.data[i].objectTaxation);
+            let node_OT = {
+               id:objectTaxation.id, 
+               value:objectTaxation.value+ "  ("+this.data[i].areacutting+" га.)",
+               data:[],
+            }
+            treeData.push(node_OT)
+            let objectsBreed = this.data[i].objectsBreed;
+            for (let j = 0; j < objectsBreed.length; j++) { 
+                let objectBreed = this.props.breed.find(item => item.id == objectsBreed[j].breed);
+                let node_B = {
+                    id:objectTaxation.id+'.'+objectBreed.id, 
+                    value:objectBreed.value+ "  (разряд высот - "+objectsBreed[j].rank+")",
+                }
+                node_OT.data.push(node_B)
+            }
+        }  
+
+        $$(this.id).define("data", treeData);
+        $$(this.id).refresh();
     }
+
+
+    openWindowEdit(param) {
+        let item = $$(this.id).getSelectedItem()
+        let windowEdit = $$(this.id+"_window");
+        if(param){
+
+        }
+        windowEdit.show()
+    }
+
 
     componentDidMount(){
         let self = this;
@@ -54,8 +93,7 @@ export default class ComponentObjectsTaxation extends Component {
                     inputWidth:250, 
                     on:{
                         'onItemClick': function(id){
-                            let windowEdit = $$(self.id+"_window");
-                            windowEdit.show()
+                            self.openWindowEdit()
                         }
                     }
                 },
@@ -75,10 +113,7 @@ export default class ComponentObjectsTaxation extends Component {
             data:["Добавить","Изменить","Удалить"],
             on:{
                 onItemClick:function(id){
-                    var context = this.getContext();
-                    var list = context.obj;
-                    var listId = context.id;
-                    webix.message("List item: <i>"+list.getItem(listId).title+"</i> <br/>Context menu item: <i>"+this.getItem(id).value+"</i>");
+                    webix.message("</i> <br/>Context menu item: <i>"+this.getItem(id).value+"</i>");
                 }
             }
         };
@@ -86,7 +121,7 @@ export default class ComponentObjectsTaxation extends Component {
         let windowEdit = {
             view:"popup",
             id:this.id+"_window", 
-            position:"center",            
+            position:"top",            
             body:{
                 view:"form", 
                 width:800,               
@@ -94,13 +129,30 @@ export default class ComponentObjectsTaxation extends Component {
                     {
                         cols:[
                             {view:"select", label:"Объект таксации",  value:1, name:"objectTaxation", options:self.props.enumerations.objectTaxation,required:true},
-                            {view:"text",label:"Площадь, га",  value:0.000, name:"areacutting",required:true,format:"111,0000",}, 
+                            {view:"text",label:"Площадь, га", name:"areacutting",required:true,format:"111,0000",}, 
                         ]
                     },
                     {
                         cols:[
-                            {view:"select", label:"Порода",  value:0, name:"breed", options:self.props.breed,required:true},
-                            {view:"select", label:"Разряд высот",  value:1, name:"rank", options:[],required:true}, 
+                            {view:"select", label:"Порода",  name:"breed", options:self.props.breed,required:true,
+                            on:{
+                                onChange(newv, oldv){                                    
+                                    if(newv != oldv){
+                                        //сформируем список разрядов высот
+                                        let breed = self.props.breed.find(item => item.id == newv);
+                                        if(breed){
+                                            let rank = [];
+                                            for (let property in breed.table.sorttables) {
+                                                rank.push(property)
+                                            }
+                                            $$("rankSelect").define('options',rank)
+                                            $$("rankSelect").refresh()
+                                        }
+                                    }
+                                }
+                              }
+                            },
+                            {view:"select",id:'rankSelect', label:"Разряд высот", name:"rank", options:[],required:true}, 
                         ]
                     },
                     { 
@@ -109,7 +161,7 @@ export default class ComponentObjectsTaxation extends Component {
                             if (this.getParentView().validate())
                                 self.updateData(this.getParentView().getValues())
                             else
-                                webix.message({ type:"error", text:"Form data is invalid" });
+                                webix.message({ type:"error", text:"Необходимо заполнить все поля формы" });
                         },                    
                     },
                 ],
@@ -127,7 +179,7 @@ export default class ComponentObjectsTaxation extends Component {
         window.webix.ui(property, $$(this.id))        
         this.ui.push(window.webix.ui(contextmenu))
         $$("cmenu").attachTo($$(this.id));
-        this.ui.push(window.webix.ui(windowEdit))        
+        this.ui.push(window.webix.ui(windowEdit))     
 
         this.feelData(this.props)
 
