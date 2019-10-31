@@ -2,13 +2,21 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentPlot from "../../components/plot";
+import ComponentConteiner from "../../components/plot/index";
+import ComponentProperty from "../../components/plot/property";
+import ComponentObjectsTaxation from "../../components/plot/objectsTaxation";
 
 class Plot extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            conteinerReady:false
+        };
+    }
 
+    conteinerReady = () => {
+        this.setState({conteinerReady: true})      
     }
 
     componentDidMount() {
@@ -16,19 +24,45 @@ class Plot extends Component {
     }
 
     render() {
+
+        let Property = () => {
+            if(this.state.conteinerReady){
+                return <ComponentProperty
+                    property = {this.props.property}
+                    forestry = {this.props.forestry}
+                    subforestry = {this.props.subforestry}
+                    tract = {this.props.tract}
+                    methodscleanings = {this.props.methodscleanings}
+                    cuttingmethods = {this.props.cuttingmethods}
+                    typesrates = {this.props.typesrates}
+                    enumerations = {this.props.enumerations}                
+                />
+            }else{
+                return null
+            }
+        };
+        
+        let ObjectsTaxation = () => {
+            if(this.state.conteinerReady){
+                return <ComponentObjectsTaxation
+                    rows = {this.props.rows} 
+                    breed = {this.props.breed}                   
+                    enumerations = {this.props.enumerations}                
+                />
+            }else{
+                return null
+            }
+        };
+
+
         return (
-            <ComponentPlot
-                property = {this.props.property}
-                rows = {this.props.rows}
-                forestry = {this.props.forestry}
-                subforestry = {this.props.subforestry}
-                tract = {this.props.tract}
-                methodscleanings = {this.props.methodscleanings}
-                cuttingmethods = {this.props.cuttingmethods}
-                typesrates = {this.props.typesrates}
-                breed = {this.props.breed}
-                enumerations = {this.props.enumerations}
-            />
+            <Fragment>
+                <ComponentConteiner
+                    conteinerReady = {this.conteinerReady}
+                />
+                <ObjectsTaxation/>
+                <Property/>
+            </Fragment>            
         )
     }
 }
