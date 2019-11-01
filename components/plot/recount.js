@@ -2,11 +2,11 @@ import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 import * as common from '../reference/common';
 
-export default class ComponentObjectsTaxation extends Component {
+export default class ComponentRecount extends Component {
 
     constructor(props) {
         super(props);
-        this.id         = 'plot_objectsTaxation';   
+        this.id         = 'plot_recount';   
         this.ui         = [];   
         this.data       = [];                     
     }   
@@ -98,15 +98,22 @@ export default class ComponentObjectsTaxation extends Component {
                     areacutting: parentItem.areacutting,
                     breed: dataItem.breed,
                     rank: dataItem.rank,
-                 });
+                });
             }
+        }else{
+            $$(this.id+"_form").setValues({
+                id: webix.uid(),
+                objectTaxation: 1, 
+                areacutting: undefined,
+                breed: undefined,
+                rank: undefined,
+            });
         }
         let windowEdit = $$(this.id+"_window");
         windowEdit.show()
     }
 
-
-    componentDidMount(){
+    initUI(props){
         let self = this;
 
         let property = {
@@ -138,11 +145,14 @@ export default class ComponentObjectsTaxation extends Component {
             data:["Добавить","Изменить","Удалить"],
             on:{
                 onItemClick:function(id){
+                    if(this.getItem(id).value == 'Добавить'){
+                        self.openWindowEdit(false)
+                    }
                     if(this.getItem(id).value == 'Изменить'){
                         self.openWindowEdit(true)
                     }
-                    if(this.getItem(id).value == 'Добавить'){
-                        self.openWindowEdit(false)
+                    if(this.getItem(id).value == 'Удалить'){
+                        //self.openWindowEdit(false)
                     }
                 }
             }
@@ -151,7 +161,7 @@ export default class ComponentObjectsTaxation extends Component {
         let windowEdit = {
             view:"popup",
             id:this.id+"_window", 
-            position:"top",            
+            position:"centre",            
             body:{
                 view:"form",
                 id:this.id+"_form", 
@@ -159,13 +169,13 @@ export default class ComponentObjectsTaxation extends Component {
                 elements:[
                     {
                         cols:[
-                            {view:"select", label:"Объект таксации",  value:1, name:"objectTaxation", options:self.props.enumerations.objectTaxation,required:true},
+                            {view:"select", label:"Объект таксации",  value:1, name:"objectTaxation", options:props.enumerations.objectTaxation,required:true},
                             {view:"text",label:"Площадь, га", name:"areacutting",required:true,format:"111,0000",}, 
                         ]
                     },
                     {
                         cols:[
-                            {view:"select", label:"Порода",  name:"breed", options:self.props.breed,required:true,
+                            {view:"select", label:"Порода",value:undefined,  name:"breed", options:props.breed,required:true,
                             on:{
                                 onChange(newv, oldv){                                    
                                     if(newv != oldv){
@@ -212,18 +222,22 @@ export default class ComponentObjectsTaxation extends Component {
         $$("cmenu").attachTo($$(this.id));
         this.ui.push(window.webix.ui(windowEdit))     
 
-        this.feelData(this.props)
+    }
 
+    componentDidMount(){
        
     }
 
     componentWillReceiveProps(nextProps) {
 
+        if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
+            this.initUI(nextProps)
+        }
         this.feelData(nextProps.props)
 
     }
 
-    shouldComponentUpdate(){
+    shouldComponentUpdate(nextProps, nextState){
         return false;
     }
 

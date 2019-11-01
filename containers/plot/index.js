@@ -2,9 +2,12 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
+import {changeProperty} from "../../actions/plot";
+
+
 import ComponentConteiner from "../../components/plot/index";
 import ComponentProperty from "../../components/plot/property";
-import ComponentObjectsTaxation from "../../components/plot/objectsTaxation";
+import ComponentRecount from "../../components/plot/recount";
 
 class Plot extends Component {
 
@@ -19,15 +22,26 @@ class Plot extends Component {
         this.setState({conteinerReady: true})      
     }
 
+
     componentDidMount() {
         return true
     }
 
     render() {
-
-        let Property = () => {
-            if(this.state.conteinerReady){
-                return <ComponentProperty
+        
+        return (
+            <Fragment>
+                <ComponentConteiner
+                    conteinerReady = {this.conteinerReady}
+                />
+                <ComponentRecount
+                    conteinerReady = {this.state.conteinerReady}
+                    rows = {this.props.rows} 
+                    breed = {this.props.breed}                   
+                    enumerations = {this.props.enumerations} 
+                />
+                <ComponentProperty
+                    conteinerReady = {this.state.conteinerReady} 
                     property = {this.props.property}
                     forestry = {this.props.forestry}
                     subforestry = {this.props.subforestry}
@@ -35,33 +49,9 @@ class Plot extends Component {
                     methodscleanings = {this.props.methodscleanings}
                     cuttingmethods = {this.props.cuttingmethods}
                     typesrates = {this.props.typesrates}
-                    enumerations = {this.props.enumerations}                
+                    enumerations = {this.props.enumerations} 
+                    changeProperty = {this.props.changeProperty}                    
                 />
-            }else{
-                return null
-            }
-        };
-        
-        let ObjectsTaxation = () => {
-            if(this.state.conteinerReady){
-                return <ComponentObjectsTaxation
-                    rows = {this.props.rows} 
-                    breed = {this.props.breed}                   
-                    enumerations = {this.props.enumerations}                
-                />
-            }else{
-                return null
-            }
-        };
-
-
-        return (
-            <Fragment>
-                <ComponentConteiner
-                    conteinerReady = {this.conteinerReady}
-                />
-                <ObjectsTaxation/>
-                <Property/>
             </Fragment>            
         )
     }
@@ -84,7 +74,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        //forestry_fill_data: bindActionCreators(forestry.fill_data, dispatch),  
+        changeProperty: bindActionCreators(changeProperty, dispatch),  
     }
 }
 

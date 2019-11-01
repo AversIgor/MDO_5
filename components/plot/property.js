@@ -26,12 +26,12 @@ export default class ComponentProperty extends Component {
             for (let i = 0; i < options.length; i++) {
                 configOptions.push(options[i])
             }
-            field.setValue(0);
             field.refresh()
         }        
     }
 
-    componentDidMount(){
+    initUI(props){
+
         let self = this;
 
         let property = {
@@ -40,6 +40,12 @@ export default class ComponentProperty extends Component {
             complexData:true,
             css:'webix_dark',
             scroll:true,
+            width:550,
+            on:{
+                onChange(newv, oldv){
+                    self.props.changeProperty(this.getValues())
+                }
+            },			
             rules:{
                 "location.forestry":webix.rules.isNotEmpty,
                 "location.subforestry":webix.rules.isNotEmpty,
@@ -51,9 +57,9 @@ export default class ComponentProperty extends Component {
             elements:[{
                 rows:[   
                     {template:"Параметры таксации", type:"section"},
-                    {view:"select", label:"Метод таксации", name:"taxation.methodTaxation", options:self.props.enumerations.methodTaxation,required:true,},
+                    {view:"select", label:"Метод таксации", name:"taxation.methodTaxation", options:props.enumerations.methodTaxation,required:true,},
                     {view:"select", label:"Вид ставки", name:"taxation.typesrates", options:[],required:true,},
-                    {view:"select", label:"Разряд такс", name:"taxation.rankTax", options:self.props.enumerations.rankTax,required:true,},
+                    {view:"select", label:"Разряд такс", name:"taxation.rankTax", options:props.enumerations.rankTax,required:true,},
                     {cols:[
                             {view:"datepicker",label:"Дата отвода", name:"taxation.releasedate",  stringResult:true, format:"%d  %M %Y",},
                             {view:"datepicker", label:"Дата оценки",  name:"taxation.valuationdate",  stringResult:true, format:"%d  %M %Y"},  
@@ -61,8 +67,8 @@ export default class ComponentProperty extends Component {
                     },  
                     {view:"text",label:"Расчет произвел",  name:"taxation.estimator",},  
                     {template:"Характеристика рубки", type:"section"},
-                    {view:"select", label:"Форма", name:"felling.formCutting", options:self.props.enumerations.formCutting,required:true,},
-                    {view:"select", label:"Группа", name:"felling.groupCutting", options:self.props.enumerations.groupCutting,required:true,},
+                    {view:"select", label:"Форма", name:"felling.formCutting", options:props.enumerations.formCutting,required:true,},
+                    {view:"select", label:"Группа", name:"felling.groupCutting", options:props.enumerations.groupCutting,required:true,},
                     {view:"select", label:"Способ", name:"felling.cuttingmethods", options:[],required:true,},
                     {view:"text",label:"Площадь, га",  name:"felling.areacutting",required:true,format:"111,0000"},               
                     {template:"Местоположение", type:"section"},
@@ -76,19 +82,14 @@ export default class ComponentProperty extends Component {
                         ]
                     },
                     {template:"Характеристика выдела", type:"section"},
-                    {view:"select", label:"Целевое назначение лесов", name:"parameters.purposeForests", options:self.props.enumerations.purposeForests,},
-                    {view:"select", label:"Хозяйство", name:"parameters.property", options:self.props.enumerations.property,},
+                    {view:"select", label:"Целевое назначение лесов", name:"parameters.purposeForests", options:props.enumerations.purposeForests,},
+                    {view:"select", label:"Хозяйство", name:"parameters.property", options:props.enumerations.property,},
                     {view:"select", label:"Способ очистки", name:"parameters.methodscleaning", options:[],},
                     {view:"text", label:"Подрост", name:"parameters.undergrowth",},
                     {view:"text", label:"Семенники", name:"parameters.seedtrees"},
                 ]
             }],
-            elementsConfig:{
-				on:{
-					onChange:function(new_v,old_v){
-                        //$$(self.id).validate();
-                    },                    
-                },
+            elementsConfig:{                	
                 labelWidth:120,
 			}
         }    
@@ -99,57 +100,58 @@ export default class ComponentProperty extends Component {
         propertyForm.elements["location.forestry"].attachEvent("onChange", function(newv, oldv){
             if(newv != oldv){
                 //отфильтруем записи участковые лесничества                
-                let arraySubforestry = self.props.subforestry.filter(item => item.forestry.id == newv);
+                let arraySubforestry = props.subforestry.filter(item => item.forestry.id == newv);
                 self.feelOptions('location.subforestry',arraySubforestry)
             }
         });
         propertyForm.elements["location.subforestry"].attachEvent("onChange", function(newv, oldv){
             if(newv != oldv){
-                //отфильтруем записи урочищь
-                let arrayTract = self.props.tract.filter(item => item.subforestry.id == newv);
+                //отфильтруем записи урочищ
+                let arrayTract = props.tract.filter(item => item.subforestry.id == newv);
                 self.feelOptions('location.tract',arrayTract)
             }
         });
         propertyForm.elements["felling.formCutting"].attachEvent("onChange", function(newv, oldv){
+            //отфильтруем способы рубки
             if(newv != oldv){
-                //отфильтруем способы рубки
                 let values = propertyForm.getValues();
-                let arraycuttingmethods = self.filterArray(self.props.cuttingmethods,[
+                let arraycuttingmethods = self.filterArray(props.cuttingmethods.slice(),[
                     {field:'formCutting',value:newv},
                     {field:'groupCutting',value:values.felling.groupCutting}
-                ])
+                ])            
                 self.feelOptions('felling.cuttingmethods',arraycuttingmethods)
             }
         });
         propertyForm.elements["felling.groupCutting"].attachEvent("onChange", function(newv, oldv){
+            //отфильтруем способы рубки
             if(newv != oldv){
-                //отфильтруем способы рубки
                 let values = propertyForm.getValues();
-                let arraycuttingmethods = self.filterArray(self.props.cuttingmethods,[
+                let arraycuttingmethods = self.filterArray(props.cuttingmethods.slice(),[
                     {field:'formCutting',value:values.felling.formCutting},
                     {field:'groupCutting',value:newv}
                 ])
-                self.feelOptions('felling.cuttingmethods',arraycuttingmethods)
-            }
-        });
-        this.feelOptions('location.forestry',this.props.forestry)
-        this.feelOptions('parameters.methodscleaning',this.props.methodscleanings)  
-        this.feelOptions('taxation.typesrates',this.props.typesrates)      
+                self.feelOptions('felling.cuttingmethods',arraycuttingmethods) 
+            }     
+        });   
+        
+    }
 
-        let values = propertyForm.getValues();
-        let arraycuttingmethods = self.filterArray(self.props.cuttingmethods,[
-            {field:'formCutting',value:values.felling.formCutting},
-            {field:'groupCutting',value:values.felling.groupCutting}
-        ])
-        self.feelOptions('felling.cuttingmethods',arraycuttingmethods,)
-
-        propertyForm.setValues(this.props.property);
+    componentDidMount(){
+   
     }
 
     componentWillReceiveProps(nextProps) {
+
+        if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
+            this.initUI(nextProps)
+            this.feelOptions('felling.cuttingmethods',nextProps.cuttingmethods)
+        }
+
+        this.feelOptions('taxation.typesrates',nextProps.typesrates)
         this.feelOptions('location.forestry',nextProps.forestry)
         this.feelOptions('parameters.methodscleaning',nextProps.methodscleanings)
-        this.feelOptions('felling.cuttingmethods',nextProps.cuttingmethods)
+        
+  
         $$(this.id).setValues(nextProps.property);
     }
 

@@ -16,7 +16,7 @@ export default class ComponenLayot extends Component {
             rows:[
                 {
                     cols:[
-                        {id:'plot_objectsTaxation'},
+                        {id:'plot_recount'},
                         { view:"resizer" },
                         {},
                         { view:"resizer" },
