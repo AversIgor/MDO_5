@@ -8,36 +8,25 @@ export default class ComponentRecount extends Component {
         super(props);
         this.id         = 'plot_recount';   
         this.ui         = [];   
-        this.data       = [];                     
+                
     }   
     
-    filterArray(array,params) {
-        for (let i = 0; i < params.length; i++) {
-            array = array.filter(item => item[params[i].field] == params[i].value);
-        }  
-        return array
-    }
-
-    feelData(props) {
-        let data = []
-        $$(this.id).define("data", data);
-        $$(this.id).refresh();
+    feelData(recount) {
+        $$(this.id).clearAll();
+        for (let i = 0; i < recount.length; i++) {            
+            let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == recount[i].objectTaxation);
+            let node_OT = {
+               id:recount[i].id, 
+               value:objectTaxation.value+ "  ("+recount[i].areacutting+" га.)",
+               data:[],
+            }
+            $$(this.id).data.add(node_OT,);
+        }
     }
 
     //обновления дерева на основе данных  веденых в форме редактирования дерева
     updateData(values) {
-        //Обновления объекта данных со ссылками, и на его основании обновления дерева        
-        //обновим объект таксации
-        let node_objectTaxation = this.data.find(item => item.objectTaxation == values.objectTaxation);
-        if(!node_objectTaxation){
-            node_objectTaxation = {
-                id: webix.uid(),
-                objectTaxation: values.objectTaxation,
-                objectsBreed:[],
-            };
-            this.data.push(node_objectTaxation)
-        }
-        node_objectTaxation.areacutting = values.areacutting;        
+   
         //обновим породу
 
         let node_breed = node_objectTaxation.objectsBreed.find(function(item, index, array) {
@@ -54,7 +43,7 @@ export default class ComponentRecount extends Component {
             node_objectTaxation.objectsBreed.push(node_breed)
         }
 
-        let treeData = []
+        /*let treeData = []
         for (let i = 0; i < this.data.length; i++) {            
             let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == this.data[i].objectTaxation);
             let node_OT = {
@@ -75,12 +64,42 @@ export default class ComponentRecount extends Component {
         }  
 
         $$(this.id).define("data", treeData);
-        $$(this.id).refresh();
+        $$(this.id).refresh();*/
     }
 
 
-    openWindowEdit(edit) {          
-        if(edit){
+    treeEdit(level,mode) { 
+        let selectedItem = $$(this.id).getSelectedItem()
+        if(mode == 'Добавить'){
+            //добавление
+            if(level == 1){
+                //добавляем объект таксации
+                $$(this.id+"_form_objectTaxation").setValues({
+                    id: webix.uid(),
+                    objectTaxation: 1, 
+                    areacutting: undefined,
+                });
+                $$(this.id+"_window_objectTaxation").show();            
+            }
+        }
+        if(mode == 'Изменить'){
+            //редактирование
+            if(level == 1){
+                //редактируе объект таксации
+                let row = this.props.recount.find(item => item.id == selectedItem.id);
+                $$(this.id+"_form_objectTaxation").setValues(row);
+                $$(this.id+"_window_objectTaxation").show();            
+            }
+        }
+        if(mode == 'Удалить'){
+            //удаление
+            if(level == 1){
+                this.props.deleteObjectTaxation(selectedItem.id);                       
+            }
+        }
+
+        
+        /*if(edit){
             let selectedItem = $$(this.id).getSelectedItem()
             if(!selectedItem){
                 webix.message({ type:"error", text:"Не выбрана порода" });
@@ -110,131 +129,152 @@ export default class ComponentRecount extends Component {
             });
         }
         let windowEdit = $$(this.id+"_window");
-        windowEdit.show()
+        windowEdit.show()*/
     }
 
     initUI(props){
         let self = this;
 
-        let property = {
+        let ui = {            
             rows:[
                 {
-                    view:"button", 
-                    label:"Добавить", 
-                    tooltip:'Добавить объект таксации',                 
-                    inputWidth:100, 
-                    on:{
-                        'onItemClick': function(id){
-                            self.openWindowEdit(false)
-                        }
-                    }
-                },
-                {
-                    view:"tree",
-                    id:this.id,
-                    select:true,
+                    view:"toolbar",
                     borderless:true,
-                    data: []
-                },
+                    padding:5,
+                    cols:[
+                        {
+                            view:"button",
+                            type:"icon",
+                            icon: "mdi mdi-plus",
+                            label:"Объект таксации",
+                            width:180,
+                            align:"center",
+                            on:{
+                                'onItemClick': function(id){
+                                    self.treeEdit(1,'Добавить');
+                                }
+                            }
+                        },
+                        {
+                            view:"button",
+                            type:"icon",
+                            icon: "mdi mdi-plus",
+                            label:"Породу",
+                            width:100,
+                            align:"center",
+                            on:{
+                                'onItemClick': function(id){
+                                    self.treeEdit(2,'Добавить');
+                                }
+                            }
+                        },
+                    ]
+                },                  
+                {view:"tree",id:this.id,select:true,borderless:true,data: []},
             ]
         }
 
-        let contextmenu = {
-            view:"contextmenu",
-            id:"cmenu",
-            data:["Добавить","Изменить","Удалить"],
+        let contextmenu = {view:"contextmenu",id:"cmenu",data:["Изменить","Удалить"],
             on:{
                 onItemClick:function(id){
-                    if(this.getItem(id).value == 'Добавить'){
-                        self.openWindowEdit(false)
-                    }
-                    if(this.getItem(id).value == 'Изменить'){
-                        self.openWindowEdit(true)
-                    }
-                    if(this.getItem(id).value == 'Удалить'){
-                        //self.openWindowEdit(false)
-                    }
+                    let selectedItem = $$(self.id).getSelectedItem()
+                    if(selectedItem){
+                        self.treeEdit(selectedItem.$level,this.getItem(id).value);
+                    }                               
                 }
             }
         };
 
-        let windowEdit = {
-            view:"popup",
-            id:this.id+"_window", 
-            position:"centre",            
+        let objectTaxationEdit = {view:"popup",id:this.id+"_window_objectTaxation",position:"centre",            
             body:{
                 view:"form",
-                id:this.id+"_form", 
-                width:800,               
+                id:this.id+"_form_objectTaxation", 
+                width:400,               
                 elements:[
                     {
                         cols:[
-                            {view:"select", label:"Объект таксации",  value:1, name:"objectTaxation", options:props.enumerations.objectTaxation,required:true},
-                            {view:"text",label:"Площадь, га", name:"areacutting",required:true,format:"111,0000",}, 
+                            {view:"text",name:"id",hidden:true,},
+                            {view:"select", label:"Объект таксации", labelPosition:"top", value:1, name:"objectTaxation", options:props.enumerations.objectTaxation,required:true},
+                            {view:"text",label:"Площадь, га", labelPosition:"top", name:"areacutting",required:true,format:"111,0000",}, 
                         ]
-                    },
-                    {
-                        cols:[
-                            {view:"select", label:"Порода",value:undefined,  name:"breed", options:props.breed,required:true,
-                            on:{
-                                onChange(newv, oldv){                                    
-                                    if(newv != oldv){
-                                        //сформируем список разрядов высот
-                                        let breed = self.props.breed.find(item => item.id == newv);
-                                        if(breed){
-                                            let rank = [];
-                                            for (let property in breed.table.sorttables) {
-                                                rank.push(property)
-                                            }
-                                            $$("rankSelect").define('options',rank)
-                                            $$("rankSelect").refresh()
-                                        }
-                                    }
-                                }
-                              }
-                            },
-                            {view:"select",id:'rankSelect', label:"Разряд высот", name:"rank", options:[],required:true}, 
-                        ]
-                    },
+                    },                    
                     { 
-                        view:"button", value:"Сохранить", align:"right", width:200,
+                        view:"button", value:"Сохранить", align:"right", width:150,
                         click:function(){
-                            if (this.getParentView().validate())
-                                self.updateData(this.getParentView().getValues())
-                            else
+                            if (this.getParentView().validate()){
+                                self.props.updateObjectTaxation(this.getParentView().getValues());
+                                $$(self.id+"_window_objectTaxation").hide();
+                            }
+                            else{
                                 webix.message({ type:"error", text:"Необходимо заполнить все поля формы" });
+                            }
                         },                    
                     },
                 ],
-                elementsConfig:{
-                    on:{
-                        onChange:function(new_v,old_v){
-                            //$$(self.id).validate();
-                        },                    
-                    },
-                    labelWidth:120,
-                }
             }
         };
 
-        window.webix.ui(property, $$(this.id))        
+        let breedEdit = {view:"popup",id:this.id+"_window_breed",position:"centre",            
+            body:{
+                view:"form",
+                id:this.id+"_form_breed", 
+                width:400,               
+                elements:[
+                    {
+                        cols:[
+                            {view:"text",name:"id",hidden:true,},
+                            {view:"select", label:"Порода",value:undefined,  name:"breed", options:props.breed,required:true,
+                                on:{
+                                    onChange(newv, oldv){                                    
+                                        if(newv != oldv){
+                                            //сформируем список разрядов высот
+                                            let breed = self.props.breed.find(item => item.id == newv);
+                                            if(breed){
+                                                let rank = [];
+                                                for (let property in breed.table.sorttables) {
+                                                    rank.push(property)
+                                                }
+                                                $$("rankSelect").define('options',rank)
+                                                $$("rankSelect").refresh()
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            {view:"select",id:'rankSelect', label:"Разряд высот", name:"rank", options:[],required:true}, 
+                        ]
+                    },                    
+                    { 
+                        view:"button", value:"Сохранить", align:"right", width:150,
+                        click:function(){
+                            if (this.getParentView().validate()){
+                                self.props.updateObjectTaxation(this.getParentView().getValues());
+                                $$(self.id+"_window_breed").hide();
+                            }
+                            else{
+                                webix.message({ type:"error", text:"Необходимо заполнить все поля формы" });
+                            }
+                        },                    
+                    },
+                ],
+            }
+        };
+
+        window.webix.ui(ui, $$(this.id))        
         this.ui.push(window.webix.ui(contextmenu))
         $$("cmenu").attachTo($$(this.id));
-        this.ui.push(window.webix.ui(windowEdit))     
+        this.ui.push(window.webix.ui(objectTaxationEdit))   
+        this.ui.push(window.webix.ui(breedEdit))    
 
     }
 
-    componentDidMount(){
-       
-    }
+    componentDidMount(){}
 
     componentWillReceiveProps(nextProps) {
-
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
             this.initUI(nextProps)
         }
-        this.feelData(nextProps.props)
-
+        this.feelData(nextProps.recount)
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -248,5 +288,4 @@ export default class ComponentRecount extends Component {
     render() {
         return null
     }
-
 }

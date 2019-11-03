@@ -38,7 +38,6 @@ export default class ComponentFeedrates extends Component {
 
         let head = {
             view:"toolbar",
-                width:24,
             cols:[
                 {
                     view:"button",

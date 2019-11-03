@@ -1,5 +1,6 @@
 import {
     CHANGE_PROPERTY,
+    CHANGE_RECOUNT,
 } from '../../constants/plot'
 
 const initialState = {
@@ -37,7 +38,7 @@ const initialState = {
         },
     },
     coefficients:[],
-    objectsTaxation:[],
+    recount:[],
     results:[],
     rows:{
         objectTaxation:{   
@@ -63,7 +64,11 @@ export default function plot (state = initialState, action) {
         case CHANGE_PROPERTY:
             return { ...state,
                 property: action.property,
-            }       
+            }    
+        case CHANGE_RECOUNT:
+            return { ...state,
+                recount: action.recount.slice(),
+            }      
         default:
             return state
     }

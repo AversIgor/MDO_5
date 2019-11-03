@@ -56,7 +56,6 @@ export default class ComponentProperty extends Component {
 			},
             elements:[{
                 rows:[   
-                    {template:"Параметры таксации", type:"section"},
                     {view:"select", label:"Метод таксации", name:"taxation.methodTaxation", options:props.enumerations.methodTaxation,required:true,},
                     {view:"select", label:"Вид ставки", name:"taxation.typesrates", options:[],required:true,},
                     {view:"select", label:"Разряд такс", name:"taxation.rankTax", options:props.enumerations.rankTax,required:true,},

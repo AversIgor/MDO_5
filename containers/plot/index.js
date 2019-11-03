@@ -2,7 +2,7 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {changeProperty} from "../../actions/plot";
+import {changeProperty,updateObjectTaxation,deleteObjectTaxation} from "../../actions/plot";
 
 
 import ComponentConteiner from "../../components/plot/index";
@@ -22,13 +22,20 @@ class Plot extends Component {
         this.setState({conteinerReady: true})      
     }
 
+    updateObjectTaxation = (values) => {
+        this.props.updateObjectTaxation(values,this.props.recount)      
+    }
+
+    deleteObjectTaxation = (id) => {
+        this.props.deleteObjectTaxation(id,this.props.recount)      
+    }
+
 
     componentDidMount() {
         return true
     }
 
     render() {
-        
         return (
             <Fragment>
                 <ComponentConteiner
@@ -36,9 +43,13 @@ class Plot extends Component {
                 />
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}
+                    recount = {this.props.recount} 
                     rows = {this.props.rows} 
                     breed = {this.props.breed}                   
                     enumerations = {this.props.enumerations} 
+                    property = {this.props.property}
+                    updateObjectTaxation = {this.updateObjectTaxation}
+                    deleteObjectTaxation = {this.deleteObjectTaxation}
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
@@ -57,9 +68,11 @@ class Plot extends Component {
     }
 }
 
+
 function mapStateToProps (state) {
     return {
         property: state.plot.property,
+        recount: state.plot.recount,
         rows: state.plot.rows,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
@@ -75,6 +88,8 @@ function mapStateToProps (state) {
 function mapDispatchToProps(dispatch) {
     return {
         changeProperty: bindActionCreators(changeProperty, dispatch),  
+        updateObjectTaxation: bindActionCreators(updateObjectTaxation, dispatch),
+        deleteObjectTaxation: bindActionCreators(deleteObjectTaxation, dispatch),
     }
 }
 

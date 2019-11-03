@@ -1,1 +1,2 @@
 export const CHANGE_PROPERTY = 'CHANGE_PROPERTY';
+export const CHANGE_RECOUNT = 'CHANGE_RECOUNT';
