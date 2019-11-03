@@ -39,6 +39,7 @@ const initialState = {
     },
     coefficients:[],
     recount:[],
+    curentId:undefined,
     results:[],
     rows:{
         objectTaxation:{   
@@ -68,6 +69,7 @@ export default function plot (state = initialState, action) {
         case CHANGE_RECOUNT:
             return { ...state,
                 recount: action.recount.slice(),
+                curentId: action.curentId,
             }      
         default:
             return state

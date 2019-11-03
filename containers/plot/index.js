@@ -2,7 +2,7 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {changeProperty,updateObjectTaxation,deleteObjectTaxation} from "../../actions/plot";
+import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,deleteBreed} from "../../actions/plot";
 
 
 import ComponentConteiner from "../../components/plot/index";
@@ -26,8 +26,16 @@ class Plot extends Component {
         this.props.updateObjectTaxation(values,this.props.recount)      
     }
 
+    updateBreed = (values) => {
+        this.props.updateBreed(values,this.props.recount)      
+    }
+
     deleteObjectTaxation = (id) => {
         this.props.deleteObjectTaxation(id,this.props.recount)      
+    }
+
+    deleteBreed = (id,parentid) => {
+        this.props.deleteBreed(id,parentid,this.props.recount)      
     }
 
 
@@ -44,12 +52,14 @@ class Plot extends Component {
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}
                     recount = {this.props.recount} 
-                    rows = {this.props.rows} 
+                    curentId = {this.props.curentId}
                     breed = {this.props.breed}                   
                     enumerations = {this.props.enumerations} 
                     property = {this.props.property}
                     updateObjectTaxation = {this.updateObjectTaxation}
+                    updateBreed = {this.updateBreed}
                     deleteObjectTaxation = {this.deleteObjectTaxation}
+                    deleteBreed = {this.deleteBreed}
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
@@ -73,7 +83,7 @@ function mapStateToProps (state) {
     return {
         property: state.plot.property,
         recount: state.plot.recount,
-        rows: state.plot.rows,
+        curentId: state.plot.curentId,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,
@@ -90,6 +100,8 @@ function mapDispatchToProps(dispatch) {
         changeProperty: bindActionCreators(changeProperty, dispatch),  
         updateObjectTaxation: bindActionCreators(updateObjectTaxation, dispatch),
         deleteObjectTaxation: bindActionCreators(deleteObjectTaxation, dispatch),
+        updateBreed: bindActionCreators(updateBreed, dispatch),
+        deleteBreed: bindActionCreators(deleteBreed, dispatch),
     }
 }
 

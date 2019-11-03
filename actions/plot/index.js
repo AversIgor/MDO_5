@@ -32,7 +32,33 @@ export function updateObjectTaxation(newValue,recount) {
         const asyncProcess = async () => {
             dispatch({
                 type: CHANGE_RECOUNT,
-                recount: recount
+                recount: recount,
+                curentId:newValue.id
+            })
+        }
+        return asyncProcess()
+    }
+}
+
+export function updateBreed(newValue,recount) {
+    return (dispatch,getState) => {
+        let objectTaxation = recount.find(item => item.id == newValue.parentid);
+        if(objectTaxation){
+            let objectBreed = objectTaxation.objectsBreed.find(item => item.id == newValue.id);
+            if(!objectBreed){
+                objectBreed = {
+                    id: newValue.id,                
+                };
+                objectTaxation.objectsBreed.push(objectBreed)
+            }
+            objectBreed.breed = newValue.breed;
+            objectBreed.rank = newValue.rank;
+        }
+        const asyncProcess = async () => {
+            dispatch({
+                type: CHANGE_RECOUNT,
+                recount: recount,
+                curentId:newValue.id
             })
         }
         return asyncProcess()
@@ -48,7 +74,28 @@ export function deleteObjectTaxation(id,recount) {
         const asyncProcess = async () => {
             dispatch({
                 type: CHANGE_RECOUNT,
-                recount: recount
+                recount: recount,
+                curentId:undefined
+            })
+        }
+        return asyncProcess()
+    }
+}
+
+export function deleteBreed(id,parentid,recount) {
+    return (dispatch,getState) => {
+        let parent = recount.find(item => item.id == parentid);
+        if(parent){
+            let index = parent.objectsBreed.findIndex(item => item.id == id);
+            if(index != -1){
+                parent.objectsBreed.splice(index, 1)
+            }
+        }
+        const asyncProcess = async () => {
+            dispatch({
+                type: CHANGE_RECOUNT,
+                recount: recount,
+                curentId:parentid
             })
         }
         return asyncProcess()

@@ -9,77 +9,119 @@ export default class ComponentRecount extends Component {
         this.id         = 'plot_recount';   
         this.ui         = [];   
                 
-    }   
+    }      
     
-    feelData(recount) {
+    feelData(recount,curentId) {
         $$(this.id).clearAll();
-        for (let i = 0; i < recount.length; i++) {            
+        for (let i = 0; i < recount.length; i++) {        
             let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == recount[i].objectTaxation);
             let node_OT = {
                id:recount[i].id, 
                value:objectTaxation.value+ "  ("+recount[i].areacutting+" га.)",
                data:[],
             }
-            $$(this.id).data.add(node_OT,);
-        }
-    }
-
-    //обновления дерева на основе данных  веденых в форме редактирования дерева
-    updateData(values) {
-   
-        //обновим породу
-
-        let node_breed = node_objectTaxation.objectsBreed.find(function(item, index, array) {
-            if((item.breed == values.breed) && (item.rank == values.rank)){
-                return true
-            }
-        });
-        if(!node_breed){
-            node_breed = {
-                id:webix.uid(),
-                breed: values.breed,
-                rank: values.rank,
-            };
-            node_objectTaxation.objectsBreed.push(node_breed)
-        }
-
-        /*let treeData = []
-        for (let i = 0; i < this.data.length; i++) {            
-            let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == this.data[i].objectTaxation);
-            let node_OT = {
-               id:this.data[i].id, 
-               value:objectTaxation.value+ "  ("+this.data[i].areacutting+" га.)",
-               data:[],
-            }
-            treeData.push(node_OT)
-            let objectsBreed = this.data[i].objectsBreed;
-            for (let j = 0; j < objectsBreed.length; j++) { 
-                let objectBreed = this.props.breed.find(item => item.id == objectsBreed[j].breed);
+            $$(this.id).data.add(node_OT);
+            for (let j = 0; j < recount[i].objectsBreed.length; j++) {
+                let objectBreed = this.props.breed.find(item => item.id == recount[i].objectsBreed[j].breed);
                 let node_B = {
-                    id:objectsBreed[j].id, 
-                    value:objectBreed.value+ "  (разряд высот - "+objectsBreed[j].rank+")",
+                    id:recount[i].objectsBreed[j].id, 
+                    value:objectBreed.value+ "  (разряд высот - "+recount[i].objectsBreed[j].rank+")",
                 }
-                node_OT.data.push(node_B)
+                $$(this.id).data.add(node_B,0,recount[i].id);
             }
-        }  
+        }
 
-        $$(this.id).define("data", treeData);
-        $$(this.id).refresh();*/
+        if(!curentId){
+            if(recount.length != 0){
+                curentId = recount[recount.length-1].id
+            }
+        }
+        if(curentId){
+            $$(this.id).select(curentId)
+            $$(this.id).openAll()
+        }
+        $$(this.id+'_buttonAdd').define("disabled",!curentId)
+        $$(this.id+'_buttonAdd').refresh()
     }
-
-
+    
     treeEdit(level,mode) { 
+        let self = this
+        
+        if($$("plot_recount_form").elements.hasOwnProperty("id")){
+            $$(this.id+"_form").removeView('fields'); 
+        }       
+        if(level == 1){
+            let options = this.props.enumerations.objectTaxation
+            if(this.props.property.taxation.methodTaxation == 2){
+                //только лесосека в целом
+                options = this.props.enumerations.objectTaxation.filter(item => item.id == 1);
+            }
+            $$(this.id+"_form").addView({
+                id:'fields',
+                cols:[
+                    {view:"text",name:"id",hidden:true,},
+                    {view:"select", label:"Объект таксации", labelPosition:"top", value:1, name:"objectTaxation", options:options,required:true},
+                    {view:"text",label:"Площадь, га", labelPosition:"top", name:"areacutting",required:true,format:"111,0000",}, 
+                ]
+            },0);                   
+        }else{
+            $$(this.id+"_form").addView({
+                id:'fields',
+                cols:[
+                    {view:"text",name:"id",hidden:true,},
+                    {view:"text",name:"parentid",hidden:true,},
+                    {view:"select", label:"Порода",value:undefined,labelPosition:"top",  name:"breed", options:this.props.breed,required:true,
+                        on:{
+                            onChange(newv, oldv){                                    
+                                //сформируем список разрядов высот
+                                let breed = self.props.breed.find(item => item.id == newv);
+                                if(breed){
+                                    let rank = [];
+                                    for (let property in breed.table.sorttables) {
+                                        rank.push(property)
+                                    }
+                                    $$("rankSelect").define('options',rank)
+                                    $$("rankSelect").refresh()
+                                }
+                            }
+                        }
+                    },
+                    {view:"select",id:'rankSelect', label:"Разряд высот", labelPosition:"top",name:"rank", options:[],required:true}, 
+                ]
+            },0); 
+        }
+
+        $$(this.id+"_window").show();
+
         let selectedItem = $$(this.id).getSelectedItem()
+
         if(mode == 'Добавить'){
             //добавление
             if(level == 1){
                 //добавляем объект таксации
-                $$(this.id+"_form_objectTaxation").setValues({
+                $$(this.id+"_form").setValues({
                     id: webix.uid(),
                     objectTaxation: 1, 
                     areacutting: undefined,
+                });                            
+            }else{
+                //добавляе породу
+                if(!selectedItem){
+                    webix.message({ type:"error", text:"Укажите объект таксации" });
+                    return                }
+                let parentid = undefined
+                if(selectedItem.$level == 1){
+                    parentid = selectedItem.id;
+                }
+                if(selectedItem.$level == 2){
+                    parentid = selectedItem.$parent;
+                }
+                $$(this.id+"_form").setValues({
+                    id: webix.uid(),
+                    parentid: parentid,
+                    breed: undefined, 
+                    rank: undefined,
                 });
-                $$(this.id+"_window_objectTaxation").show();            
             }
         }
         if(mode == 'Изменить'){
@@ -87,49 +129,17 @@ export default class ComponentRecount extends Component {
             if(level == 1){
                 //редактируе объект таксации
                 let row = this.props.recount.find(item => item.id == selectedItem.id);
-                $$(this.id+"_form_objectTaxation").setValues(row);
-                $$(this.id+"_window_objectTaxation").show();            
+                $$(this.id+"_form").setValues(row);         
+            }else{
+                //редактируем породу
+                let parent = this.props.recount.find(item => item.id == selectedItem.$parent);
+                let row = parent.objectsBreed.find(item => item.id == selectedItem.id);
+                row.parentid = selectedItem.$parent
+                $$(this.id+"_form").setValues(row);         
             }
         }
-        if(mode == 'Удалить'){
-            //удаление
-            if(level == 1){
-                this.props.deleteObjectTaxation(selectedItem.id);                       
-            }
-        }
-
         
-        /*if(edit){
-            let selectedItem = $$(this.id).getSelectedItem()
-            if(!selectedItem){
-                webix.message({ type:"error", text:"Не выбрана порода" });
-                return
-            }
-            if(selectedItem.$level == 1){
-                webix.message({ type:"error", text:"Укажите строку с породой" });
-                return
-            }
-            let parentItem = this.data.find(item => item.id == selectedItem.$parent);
-            if(parentItem){
-                let dataItem = parentItem.objectsBreed.find(item => item.id == selectedItem.id);
-                $$(this.id+"_form").setValues({
-                    objectTaxation: parentItem.objectTaxation, 
-                    areacutting: parentItem.areacutting,
-                    breed: dataItem.breed,
-                    rank: dataItem.rank,
-                });
-            }
-        }else{
-            $$(this.id+"_form").setValues({
-                id: webix.uid(),
-                objectTaxation: 1, 
-                areacutting: undefined,
-                breed: undefined,
-                rank: undefined,
-            });
-        }
-        let windowEdit = $$(this.id+"_window");
-        windowEdit.show()*/
+       
     }
 
     initUI(props){
@@ -138,7 +148,7 @@ export default class ComponentRecount extends Component {
         let ui = {            
             rows:[
                 {
-                    view:"toolbar",
+                    view:"toolbar",                    
                     borderless:true,
                     padding:5,
                     cols:[
@@ -157,11 +167,12 @@ export default class ComponentRecount extends Component {
                         },
                         {
                             view:"button",
+                            id:this.id+'_buttonAdd',
                             type:"icon",
                             icon: "mdi mdi-plus",
                             label:"Породу",
                             width:100,
-                            align:"center",
+                            align:"center",                            
                             on:{
                                 'onItemClick': function(id){
                                     self.treeEdit(2,'Добавить');
@@ -179,31 +190,38 @@ export default class ComponentRecount extends Component {
                 onItemClick:function(id){
                     let selectedItem = $$(self.id).getSelectedItem()
                     if(selectedItem){
-                        self.treeEdit(selectedItem.$level,this.getItem(id).value);
+                        if(this.getItem(id).value == "Удалить"){
+                            if(selectedItem.$level == 1){
+                                self.props.deleteObjectTaxation(selectedItem.id);
+                            }  
+                            if(selectedItem.$level == 2){
+                                self.props.deleteBreed(selectedItem.id,selectedItem.$parent);
+                            }                                                  
+                        }else{
+                            self.treeEdit(selectedItem.$level,this.getItem(id).value);
+                        }
                     }                               
                 }
             }
         };
 
-        let objectTaxationEdit = {view:"popup",id:this.id+"_window_objectTaxation",position:"centre",            
+        let formEdit = {view:"popup",id:this.id+"_window",position:"centre",            
             body:{
                 view:"form",
-                id:this.id+"_form_objectTaxation", 
+                id:this.id+"_form", 
                 width:400,               
-                elements:[
-                    {
-                        cols:[
-                            {view:"text",name:"id",hidden:true,},
-                            {view:"select", label:"Объект таксации", labelPosition:"top", value:1, name:"objectTaxation", options:props.enumerations.objectTaxation,required:true},
-                            {view:"text",label:"Площадь, га", labelPosition:"top", name:"areacutting",required:true,format:"111,0000",}, 
-                        ]
-                    },                    
+                elements:[                    
                     { 
                         view:"button", value:"Сохранить", align:"right", width:150,
                         click:function(){
                             if (this.getParentView().validate()){
-                                self.props.updateObjectTaxation(this.getParentView().getValues());
-                                $$(self.id+"_window_objectTaxation").hide();
+                                let value = this.getParentView().getValues()
+                                if(value.hasOwnProperty('objectTaxation')){
+                                    self.props.updateObjectTaxation(value);
+                                }else{
+                                    self.props.updateBreed(value);
+                                }                                
+                                $$(self.id+"_window").hide();
                             }
                             else{
                                 webix.message({ type:"error", text:"Необходимо заполнить все поля формы" });
@@ -213,58 +231,11 @@ export default class ComponentRecount extends Component {
                 ],
             }
         };
-
-        let breedEdit = {view:"popup",id:this.id+"_window_breed",position:"centre",            
-            body:{
-                view:"form",
-                id:this.id+"_form_breed", 
-                width:400,               
-                elements:[
-                    {
-                        cols:[
-                            {view:"text",name:"id",hidden:true,},
-                            {view:"select", label:"Порода",value:undefined,  name:"breed", options:props.breed,required:true,
-                                on:{
-                                    onChange(newv, oldv){                                    
-                                        if(newv != oldv){
-                                            //сформируем список разрядов высот
-                                            let breed = self.props.breed.find(item => item.id == newv);
-                                            if(breed){
-                                                let rank = [];
-                                                for (let property in breed.table.sorttables) {
-                                                    rank.push(property)
-                                                }
-                                                $$("rankSelect").define('options',rank)
-                                                $$("rankSelect").refresh()
-                                            }
-                                        }
-                                    }
-                                }
-                            },
-                            {view:"select",id:'rankSelect', label:"Разряд высот", name:"rank", options:[],required:true}, 
-                        ]
-                    },                    
-                    { 
-                        view:"button", value:"Сохранить", align:"right", width:150,
-                        click:function(){
-                            if (this.getParentView().validate()){
-                                self.props.updateObjectTaxation(this.getParentView().getValues());
-                                $$(self.id+"_window_breed").hide();
-                            }
-                            else{
-                                webix.message({ type:"error", text:"Необходимо заполнить все поля формы" });
-                            }
-                        },                    
-                    },
-                ],
-            }
-        };
-
+        
         window.webix.ui(ui, $$(this.id))        
         this.ui.push(window.webix.ui(contextmenu))
         $$("cmenu").attachTo($$(this.id));
-        this.ui.push(window.webix.ui(objectTaxationEdit))   
-        this.ui.push(window.webix.ui(breedEdit))    
+        this.ui.push(window.webix.ui(formEdit))   
 
     }
 
@@ -274,7 +245,7 @@ export default class ComponentRecount extends Component {
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
             this.initUI(nextProps)
         }
-        this.feelData(nextProps.recount)
+        this.feelData(nextProps.recount,nextProps.curentId)
     }
 
     shouldComponentUpdate(nextProps, nextState){
