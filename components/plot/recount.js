@@ -11,21 +11,39 @@ export default class ComponentRecount extends Component {
                 
     }      
     
-    feelData(recount,curentId) {
+    feelData(props) {
+        let recount = props.recount
+        let curentId = props.curentId
+        
         $$(this.id).clearAll();
+       
         for (let i = 0; i < recount.length; i++) {        
-            let objectTaxation = this.props.enumerations.objectTaxation.find(item => item.id == recount[i].objectTaxation);
+            let objectTaxation = props.enumerations.objectTaxation.find(item => item.id == recount[i].objectTaxation);
+            let css = {}
+            let open = true
+            if(objectTaxation.id != 1){
+                if(props.property.taxation.methodTaxation == 2){
+                    css = {
+                        'text-decoration': 'line-through;'
+                    }
+                    open = false
+                } 
+            }
+            
             let node_OT = {
-               id:recount[i].id, 
-               value:objectTaxation.value+ "  ("+recount[i].areacutting+" га.)",
-               data:[],
+                id:recount[i].id, 
+                value:objectTaxation.value+ "  ("+recount[i].areacutting+" га.)",
+                data:[],
+                $css:css,  
+                open:open,             
             }
             $$(this.id).data.add(node_OT);
             for (let j = 0; j < recount[i].objectsBreed.length; j++) {
-                let objectBreed = this.props.breed.find(item => item.id == recount[i].objectsBreed[j].breed);
+                let objectBreed = props.breed.find(item => item.id == recount[i].objectsBreed[j].breed);
                 let node_B = {
                     id:recount[i].objectsBreed[j].id, 
                     value:objectBreed.value+ "  (разряд высот - "+recount[i].objectsBreed[j].rank+")",
+                    $css:css,
                 }
                 $$(this.id).data.add(node_B,0,recount[i].id);
             }
@@ -38,13 +56,12 @@ export default class ComponentRecount extends Component {
         }
         if(curentId){
             $$(this.id).select(curentId)
-            $$(this.id).openAll()
         }
         $$(this.id+'_buttonAdd').define("disabled",!curentId)
         $$(this.id+'_buttonAdd').refresh()
     }
     
-    treeEdit(level,mode) { 
+    openFormEdit(level,mode) { 
         let self = this
         
         if($$("plot_recount_form").elements.hasOwnProperty("id")){
@@ -60,8 +77,8 @@ export default class ComponentRecount extends Component {
                 id:'fields',
                 cols:[
                     {view:"text",name:"id",hidden:true,},
-                    {view:"select", label:"Объект таксации", labelPosition:"top", value:1, name:"objectTaxation", options:options,required:true},
-                    {view:"text",label:"Площадь, га", labelPosition:"top", name:"areacutting",required:true,format:"111,0000",}, 
+                    {view:"select", label:"Элемент лесосеки", labelPosition:"top", value:1, name:"objectTaxation", options:options,required:true},
+                    {view:"text",label:"Площадь, га",placeholder:"Площадь, га", labelPosition:"top", name:"areacutting",required:true,format:"111,0000",}, 
                 ]
             },0);                   
         }else{
@@ -98,16 +115,16 @@ export default class ComponentRecount extends Component {
         if(mode == 'Добавить'){
             //добавление
             if(level == 1){
-                //добавляем объект таксации
+                //добавляем Элемент лесосеки
                 $$(this.id+"_form").setValues({
                     id: webix.uid(),
                     objectTaxation: 1, 
                     areacutting: undefined,
                 });                            
             }else{
-                //добавляе породу
+                //добавляем породу
                 if(!selectedItem){
-                    webix.message({ type:"error", text:"Укажите объект таксации" });
+                    webix.message({ type:"error", text:"Укажите элемент лесосеки" });
                     return                }
                 let parentid = undefined
                 if(selectedItem.$level == 1){
@@ -127,7 +144,7 @@ export default class ComponentRecount extends Component {
         if(mode == 'Изменить'){
             //редактирование
             if(level == 1){
-                //редактируе объект таксации
+                //редактируе Элемент лесосеки
                 let row = this.props.recount.find(item => item.id == selectedItem.id);
                 $$(this.id+"_form").setValues(row);         
             }else{
@@ -145,23 +162,26 @@ export default class ComponentRecount extends Component {
     initUI(props){
         let self = this;
 
-        let ui = {            
+        let ui = { 
+            width:300,  
+            padding:5,         
             rows:[
                 {
                     view:"toolbar",                    
                     borderless:true,
-                    padding:5,
+                    paddingY:2,
+                    css:"webix_dark",
                     cols:[
                         {
                             view:"button",
                             type:"icon",
                             icon: "mdi mdi-plus",
-                            label:"Объект таксации",
-                            width:180,
-                            align:"center",
+                            label:"Элемент лесосеки",
+                            width:170,
+                            align:"left",
                             on:{
                                 'onItemClick': function(id){
-                                    self.treeEdit(1,'Добавить');
+                                    self.openFormEdit(1,'Добавить');
                                 }
                             }
                         },
@@ -171,17 +191,23 @@ export default class ComponentRecount extends Component {
                             type:"icon",
                             icon: "mdi mdi-plus",
                             label:"Породу",
-                            width:100,
-                            align:"center",                            
+                            width:90,
+                            align:"right",                            
                             on:{
                                 'onItemClick': function(id){
-                                    self.treeEdit(2,'Добавить');
+                                    self.openFormEdit(2,'Добавить');
                                 }
                             }
                         },
                     ]
                 },                  
-                {view:"tree",id:this.id,select:true,borderless:true,data: []},
+                {
+                    view:"tree",
+                    id:this.id,
+                    select:true,
+                    borderless:true,
+                    data: [],
+                },
             ]
         }
 
@@ -192,13 +218,17 @@ export default class ComponentRecount extends Component {
                     if(selectedItem){
                         if(this.getItem(id).value == "Удалить"){
                             if(selectedItem.$level == 1){
-                                self.props.deleteObjectTaxation(selectedItem.id);
+                                webix.confirm("Удалить элемент лесосеки: " + selectedItem.value).then(function(result){
+                                    self.props.deleteObjectTaxation(selectedItem.id);
+                                });
                             }  
                             if(selectedItem.$level == 2){
-                                self.props.deleteBreed(selectedItem.id,selectedItem.$parent);
+                                webix.confirm("Удалить породу: " + selectedItem.value).then(function(result){
+                                    self.props.deleteBreed(selectedItem.id,selectedItem.$parent);
+                                });                                
                             }                                                  
                         }else{
-                            self.treeEdit(selectedItem.$level,this.getItem(id).value);
+                            self.openFormEdit(selectedItem.$level,this.getItem(id).value);
                         }
                     }                               
                 }
@@ -245,7 +275,7 @@ export default class ComponentRecount extends Component {
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
             this.initUI(nextProps)
         }
-        this.feelData(nextProps.recount,nextProps.curentId)
+        this.feelData(nextProps)
     }
 
     shouldComponentUpdate(nextProps, nextState){

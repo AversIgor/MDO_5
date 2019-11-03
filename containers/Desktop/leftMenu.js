@@ -19,9 +19,6 @@ import Styles from '../styles';
 import Settings from '../settings';
 import Abrisprintforms from '../abrisprintforms';
 
-import Oldcontent from './oldcontent';
-import {RECOUNTLAYOUT} from "../../js/recountlayout";
-import {MASTER} from "../../js/master";
 
 class LeftMenu extends Component {
 
@@ -44,12 +41,6 @@ class LeftMenu extends Component {
                     return <Abrisprintforms/>                    
                 case "settings":
                     return <Settings/>
-                case "mdo":
-                    return <Fragment>
-                        <Oldcontent
-                            module = {RECOUNTLAYOUT}
-                        />
-                    </Fragment>;
                 case "plot":
                     return <Plot/>                   
                 case "forestry":
@@ -66,10 +57,6 @@ class LeftMenu extends Component {
                     return <Publication/>;
                 case "typesrates":
                     return <Typesrates/>;
-                case "master":
-                    return <Oldcontent
-                        module = {MASTER}
-                    />;
                 default:
                     return <div style={{...this.props.style,
                         backgroundColor: "darkgray",

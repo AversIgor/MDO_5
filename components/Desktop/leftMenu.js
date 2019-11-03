@@ -20,7 +20,6 @@ export default class ComponentLeftMenu extends Component {
                     id:"left_menu",
                     select:true,
                     scroll:"auto",
-                    //data:self.props.data,
                     on:{
                         onAfterSelect: function(id){
                             self.props.clickMenu(id);
