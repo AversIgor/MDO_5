@@ -39,25 +39,8 @@ const initialState = {
     },
     coefficients:[],
     recount:[],
-    curentId:undefined,
-    results:[],
-    rows:{
-        objectTaxation:{   
-            objectTaxation:1,
-            areacutting:0,
-        },
-        objectBreed:{    
-            breed:0,
-            tables:0,
-            rank:0,
-        },
-        objectStep:{     
-            step:0, 
-            business:0,  
-            halfbusiness:0,
-            firewood:0,
-        },
-    }   
+    curentRecount:undefined,
+    results:[],    
 }
 
 export default function plot (state = initialState, action) {
@@ -69,7 +52,7 @@ export default function plot (state = initialState, action) {
         case CHANGE_RECOUNT:
             return { ...state,
                 recount: action.recount.slice(),
-                curentId: action.curentId,
+                curentRecount: action.curentRecount,
             }      
         default:
             return state

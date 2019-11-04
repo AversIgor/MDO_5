@@ -8,6 +8,7 @@ import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,del
 import ComponentConteiner from "../../components/plot/index";
 import ComponentProperty from "../../components/plot/property";
 import ComponentRecount from "../../components/plot/recount";
+import ComponentSteps from "../../components/plot/steps";
 
 class Plot extends Component {
 
@@ -27,14 +28,14 @@ class Plot extends Component {
     }
 
     updateBreed = (values) => {
-        this.props.updateBreed(values,this.props.recount)      
+        this.props.updateBreed(values,this.props.recount,this.props.breed)      
     }
 
     deleteObjectTaxation = (id) => {
         this.props.deleteObjectTaxation(id,this.props.recount)      
     }
 
-    deleteBreed = (id,parentid) => {
+    deleteBreed = (id,parentid) => {        
         this.props.deleteBreed(id,parentid,this.props.recount)      
     }
 
@@ -52,7 +53,7 @@ class Plot extends Component {
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}
                     recount = {this.props.recount} 
-                    curentId = {this.props.curentId}
+                    curentRecount = {this.props.curentRecount}
                     breed = {this.props.breed}                   
                     enumerations = {this.props.enumerations} 
                     property = {this.props.property}
@@ -60,6 +61,11 @@ class Plot extends Component {
                     updateBreed = {this.updateBreed}
                     deleteObjectTaxation = {this.deleteObjectTaxation}
                     deleteBreed = {this.deleteBreed}
+                />
+                <ComponentSteps
+                    conteinerReady = {this.state.conteinerReady}
+                    recount = {this.props.recount}
+                    curentRecount = {this.props.curentRecount} 
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
@@ -83,7 +89,7 @@ function mapStateToProps (state) {
     return {
         property: state.plot.property,
         recount: state.plot.recount,
-        curentId: state.plot.curentId,
+        curentRecount: state.plot.curentRecount,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,

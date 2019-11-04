@@ -33,32 +33,40 @@ export function updateObjectTaxation(newValue,recount) {
             dispatch({
                 type: CHANGE_RECOUNT,
                 recount: recount,
-                curentId:newValue.id
+                curentRecount:objectTaxation
             })
         }
         return asyncProcess()
     }
 }
 
-export function updateBreed(newValue,recount) {
+export function updateBreed(newValue,recount,breeds) {
     return (dispatch,getState) => {
-        let objectTaxation = recount.find(item => item.id == newValue.parentid);
+        let objectTaxation  = recount.find(item => item.id == newValue.parentid);
+        let objectBreed     = undefined
         if(objectTaxation){
-            let objectBreed = objectTaxation.objectsBreed.find(item => item.id == newValue.id);
+            objectBreed = objectTaxation.objectsBreed.find(item => item.id == newValue.id);
             if(!objectBreed){
                 objectBreed = {
-                    id: newValue.id,                
+                    id: newValue.id,
+                    steps:[],
+                    objectsStep:[],                
                 };
                 objectTaxation.objectsBreed.push(objectBreed)
             }
             objectBreed.breed = newValue.breed;
             objectBreed.rank = newValue.rank;
+
+            let breed = breeds.find(item => item.id == newValue.breed);
+            let steps = breed.table.sorttables[newValue.rank];
+            objectBreed.steps = Object.keys(steps)
+            objectBreed.publication = breed.publication.fullname;
         }
         const asyncProcess = async () => {
             dispatch({
                 type: CHANGE_RECOUNT,
                 recount: recount,
-                curentId:newValue.id
+                curentRecount:objectBreed
             })
         }
         return asyncProcess()
@@ -75,7 +83,7 @@ export function deleteObjectTaxation(id,recount) {
             dispatch({
                 type: CHANGE_RECOUNT,
                 recount: recount,
-                curentId:undefined
+                curentRecount:undefined
             })
         }
         return asyncProcess()
@@ -95,7 +103,7 @@ export function deleteBreed(id,parentid,recount) {
             dispatch({
                 type: CHANGE_RECOUNT,
                 recount: recount,
-                curentId:parentid
+                curentRecount:parent
             })
         }
         return asyncProcess()

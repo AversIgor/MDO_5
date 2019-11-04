@@ -13,8 +13,8 @@ export default class ComponentRecount extends Component {
     
     feelData(props) {
         let recount = props.recount
-        let curentId = props.curentId
-        
+        let curentRecount = props.curentRecount
+
         $$(this.id).clearAll();
        
         for (let i = 0; i < recount.length; i++) {        
@@ -49,15 +49,15 @@ export default class ComponentRecount extends Component {
             }
         }
 
-        if(!curentId){
+        if(!curentRecount){
             if(recount.length != 0){
-                curentId = recount[recount.length-1].id
+                curentRecount = recount[recount.length-1]
             }
         }
-        if(curentId){
-            $$(this.id).select(curentId)
+        if(curentRecount){
+            $$(this.id).select(curentRecount.id)
         }
-        $$(this.id+'_buttonAdd').define("disabled",!curentId)
+        $$(this.id+'_buttonAdd').define("disabled",!curentRecount)
         $$(this.id+'_buttonAdd').refresh()
     }
     
@@ -162,7 +162,7 @@ export default class ComponentRecount extends Component {
     initUI(props){
         let self = this;
 
-        let ui = { 
+        let ui = {
             width:300,  
             padding:5,         
             rows:[
@@ -207,6 +207,11 @@ export default class ComponentRecount extends Component {
                     select:true,
                     borderless:true,
                     data: [],
+                    on:{
+                        'onAfterSelect': function(id){
+                            console.log(this.getSelectedItem(id));
+                        }
+                    }
                 },
             ]
         }
