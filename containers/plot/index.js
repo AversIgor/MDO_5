@@ -2,7 +2,7 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,deleteBreed} from "../../actions/plot";
+import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,deleteBreed,changeCurentRecount,updateStep} from "../../actions/plot";
 
 
 import ComponentConteiner from "../../components/plot/index";
@@ -39,6 +39,20 @@ class Plot extends Component {
         this.props.deleteBreed(id,parentid,this.props.recount)      
     }
 
+    changeCurentRecount = (node) => { 
+        if(node.$parent != 0){
+            let parent         = this.props.recount.find(item => item.id == node.$parent);
+            let curentRecount  = parent.objectsBreed.find(item => item.id == node.id);
+            this.props.changeCurentRecount(curentRecount)
+        }else{
+            let parent         =  this.props.recount.find(item => item.id == node.id);
+            this.props.changeCurentRecount(parent)
+        }    
+    }
+
+    updateStep = (row) => {   
+        this.props.updateStep(row,this.props.curentRecount) 
+    }
 
     componentDidMount() {
         return true
@@ -61,11 +75,13 @@ class Plot extends Component {
                     updateBreed = {this.updateBreed}
                     deleteObjectTaxation = {this.deleteObjectTaxation}
                     deleteBreed = {this.deleteBreed}
+                    changeCurentRecount = {this.changeCurentRecount}
                 />
                 <ComponentSteps
                     conteinerReady = {this.state.conteinerReady}
                     recount = {this.props.recount}
-                    curentRecount = {this.props.curentRecount} 
+                    curentRecount = {this.props.curentRecount}
+                    updateStep = {this.updateStep}
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
@@ -108,7 +124,10 @@ function mapDispatchToProps(dispatch) {
         deleteObjectTaxation: bindActionCreators(deleteObjectTaxation, dispatch),
         updateBreed: bindActionCreators(updateBreed, dispatch),
         deleteBreed: bindActionCreators(deleteBreed, dispatch),
+        changeCurentRecount: bindActionCreators(changeCurentRecount, dispatch),
+        updateStep: bindActionCreators(updateStep, dispatch),
     }
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Plot)

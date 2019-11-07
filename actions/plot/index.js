@@ -1,8 +1,9 @@
 import {
     CHANGE_PROPERTY,
     CHANGE_RECOUNT,
+    CHANGE_CURENTRECOUNT,
+    UPDATE_STEPS,
 } from '../../constants/plot'
-
 
 export function changeProperty(newProperty) {
     return (dispatch,getState) => {
@@ -107,5 +108,34 @@ export function deleteBreed(id,parentid,recount) {
             })
         }
         return asyncProcess()
+    }
+}
+
+export function changeCurentRecount(curentRecount) {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            dispatch({
+                type: CHANGE_CURENTRECOUNT,
+                curentRecount:curentRecount
+            })
+        }
+        return asyncProcess()
+    }
+}
+
+export function updateStep(row,curentRecount) {
+    
+    if(!('objectsStep' in curentRecount)) return
+    
+    let objectStep = curentRecount.objectsStep.find(item => item.step == row.step);
+    if(!objectStep){
+        objectStep = {step:row.step}
+        curentRecount.objectsStep.push(objectStep)
+    }
+    if('business' in row) objectStep.business = Math.abs(row.business)
+    if('halfbusiness' in row) objectStep.halfbusiness = Math.abs(row.halfbusiness)
+    if('firewood' in row) objectStep.firewood = Math.abs(row.firewood)
+
+    return (dispatch,getState) => {
     }
 }

@@ -12,14 +12,20 @@ export default class ComponentSteps extends Component {
     }   
     
     feelData(props) {
-        let recount = props.recount
         let curentRecount = props.curentRecount
+        $$(this.id).editCancel();
         $$(this.id).clearAll()
         if(curentRecount){
             if(curentRecount.hasOwnProperty('steps')){
-                for (let i = 0; i < curentRecount.steps.length; i++) {
+                for (let i = 0; i < curentRecount.steps.length; i++) {                    
+                    let objectStep = curentRecount.objectsStep.find(item => item.step == curentRecount.steps[i]);
                     let newRow = {
                         step:curentRecount.steps[i]
+                    }
+                    if(objectStep){
+                        newRow.business = objectStep.business
+                        newRow.halfbusiness = objectStep.halfbusiness
+                        newRow.firewood = objectStep.firewood
                     }
                     $$(this.id).add(newRow)
                 }            
@@ -50,21 +56,31 @@ export default class ComponentSteps extends Component {
                         { id:"business", header:{text:"Деловые",}, editor:"text", fillspace:true,
                             editFormat:function(value){return webix.i18n.intFormat(value);},
                             format:function(value){return webix.i18n.intFormat(value);},
+                            editParse:function(value){return webix.i18n.intFormat(value);},
                         },
                         { id:"halfbusiness", header:{text:"Полуделовые",}, editor:"text",fillspace:true,
                             editFormat:function(value){return webix.i18n.intFormat(value);},
                             format:function(value){return webix.i18n.intFormat(value);},
+                            editParse:function(value){return webix.i18n.intFormat(value);},
                         },
                         { id:"firewood", header:{text:"Дровяные",}, editor:"text", fillspace:true,
                             editFormat:function(value){return webix.i18n.intFormat(value);},
                             format:function(value){return webix.i18n.intFormat(value);},
+                            editParse:function(value){return webix.i18n.intFormat(value);},                            
                         },
                     ],
+                    on:{
+                        "onAfterEditStop":function(state, editor, ignoreUpdate){   
+                            let item    = this.getItem(editor.row)
+                            self.props.updateStep(item)
+                        },
+                    }
                 },
             ]
         }  
         
-        window.webix.ui(ui, $$(this.id))        
+        window.webix.ui(ui, $$(this.id))  
+
 
     }
 

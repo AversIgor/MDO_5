@@ -1,6 +1,8 @@
 import {
     CHANGE_PROPERTY,
     CHANGE_RECOUNT,
+    CHANGE_CURENTRECOUNT,
+    UPDATE_STEPS,
 } from '../../constants/plot'
 
 const initialState = {
@@ -53,7 +55,11 @@ export default function plot (state = initialState, action) {
             return { ...state,
                 recount: action.recount.slice(),
                 curentRecount: action.curentRecount,
-            }      
+            }   
+        case CHANGE_CURENTRECOUNT:
+            return { ...state,
+                curentRecount: action.curentRecount,
+            }    
         default:
             return state
     }

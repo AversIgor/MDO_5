@@ -208,8 +208,8 @@ export default class ComponentRecount extends Component {
                     borderless:true,
                     data: [],
                     on:{
-                        'onAfterSelect': function(id){
-                            console.log(this.getSelectedItem(id));
+                        'onItemClick': function(id, e, node){
+                            self.props.changeCurentRecount(this.getItem(id));
                         }
                     }
                 },
