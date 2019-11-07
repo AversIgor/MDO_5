@@ -248,6 +248,7 @@ export default class ComponentRecount extends Component {
                 elements:[                    
                     { 
                         view:"button", value:"Сохранить", align:"right", width:150,
+                        hotkey: "enter",
                         click:function(){
                             if (this.getParentView().validate()){
                                 let value = this.getParentView().getValues()

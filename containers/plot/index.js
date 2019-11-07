@@ -50,8 +50,8 @@ class Plot extends Component {
         }    
     }
 
-    updateStep = (row) => {   
-        this.props.updateStep(row,this.props.curentRecount) 
+    updateStep = (row) => { 
+        this.props.updateStep(row,this.props.recount,this.props.curentRecount.id,this.props.curentRecount.parent) 
     }
 
     componentDidMount() {

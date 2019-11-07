@@ -50,6 +50,7 @@ export function updateBreed(newValue,recount,breeds) {
             if(!objectBreed){
                 objectBreed = {
                     id: newValue.id,
+                    parent: objectTaxation.id,
                     steps:[],
                     objectsStep:[],                
                 };
@@ -123,10 +124,11 @@ export function changeCurentRecount(curentRecount) {
     }
 }
 
-export function updateStep(row,curentRecount) {
+export function updateStep(row,recount,id,parentId) {
     
-    if(!('objectsStep' in curentRecount)) return
-    
+    let parent         = recount.find(item => item.id == parentId);
+    let curentRecount  = parent.objectsBreed.find(item => item.id == id);
+
     let objectStep = curentRecount.objectsStep.find(item => item.step == row.step);
     if(!objectStep){
         objectStep = {step:row.step}
