@@ -10,7 +10,6 @@ import Update from '../containers/update';
 
 import {MASTER} from "../js/master";
 import * as MDO from "../js/mdo";
-w2utils.locale('other/ru-ru.json');
 import materialIcons from 'material-design-icons/iconfont/material-icons.css'
 webix.codebase = "../other/tinymce/";
 
@@ -41,7 +40,7 @@ if(NODE_ENV == 'node-webkit'){
 
 
 export function confirmSave(callback) {
-    if(MDO.objectMDO.projectModified) {
+    /*if(MDO.objectMDO.projectModified) {
 
         //если уже открыт какой-либо popup, то закрываем его
         if ($('#w2ui-popup').length > 0) {
@@ -76,7 +75,7 @@ export function confirmSave(callback) {
         });
     } else {
         callback();
-    }
+    }*/
 }
 
 MASTER.init();

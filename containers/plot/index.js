@@ -9,13 +9,15 @@ import ComponentConteiner from "../../components/plot/index";
 import ComponentProperty from "../../components/plot/property";
 import ComponentRecount from "../../components/plot/recount";
 import ComponentSteps from "../../components/plot/steps";
+import ComponentCoefficients from "../../components/plot/coefficients";
 
 class Plot extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            conteinerReady:false
+            conteinerReady:false,
+            openCoefficients:false,          
         };
     }
 
@@ -51,7 +53,13 @@ class Plot extends Component {
     }
 
     updateStep = (row) => { 
-        this.props.updateStep(row,this.props.recount,this.props.curentRecount.id,this.props.curentRecount.parent) 
+        if(('id' in this.props.curentRecount) && ('parent' in this.props.curentRecount)){
+            this.props.updateStep(row,this.props.recount,this.props.curentRecount.id,this.props.curentRecount.parent) 
+        }
+    }
+
+    formCoefficients = (open) => {
+        this.setState({openCoefficients: open})      
     }
 
     componentDidMount() {
@@ -82,6 +90,7 @@ class Plot extends Component {
                     recount = {this.props.recount}
                     curentRecount = {this.props.curentRecount}
                     updateStep = {this.updateStep}
+                    formCoefficients = {this.formCoefficients}
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
@@ -94,6 +103,14 @@ class Plot extends Component {
                     typesrates = {this.props.typesrates}
                     enumerations = {this.props.enumerations} 
                     changeProperty = {this.props.changeProperty}                    
+                />
+                <ComponentCoefficients
+                    conteinerReady = {this.state.conteinerReady} 
+                    openCoefficients = {this.state.openCoefficients}
+                    cuttingmethods = {this.props.cuttingmethods}
+                    enumerations = {this.props.enumerations} 
+                    property = {this.props.property} 
+                    typesrates = {this.props.typesrates}               
                 />
             </Fragment>            
         )

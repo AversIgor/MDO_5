@@ -40,6 +40,10 @@ export class Typesrates {
     //КОЭФФИЦИЕНТЫ НА СТЕПЕНЬ ПОВРЕЖДЕНИЯ НАСАЖДЕИЯ
     @Column({ type: "simple-json", nullable: true  })
     coefficientsdamage = {}
+
+    //КОЭФФИЦИЕНТЫ ПРОИЗВОЛЬНЫЕ
+    @Column({ type: "simple-json", nullable: true  })
+    coefficientsrandom = {}
     
 }
 

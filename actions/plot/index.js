@@ -126,7 +126,7 @@ export function changeCurentRecount(curentRecount) {
 
 export function updateStep(row,recount,id,parentId) {
     
-    let parent         = recount.find(item => item.id == parentId);
+    let parent         = recount.find(item => item.id == parentId); 
     let curentRecount  = parent.objectsBreed.find(item => item.id == id);
 
     let objectStep = curentRecount.objectsStep.find(item => item.step == row.step);
@@ -134,9 +134,9 @@ export function updateStep(row,recount,id,parentId) {
         objectStep = {step:row.step}
         curentRecount.objectsStep.push(objectStep)
     }
-    if('business' in row) objectStep.business = Math.abs(row.business)
-    if('halfbusiness' in row) objectStep.halfbusiness = Math.abs(row.halfbusiness)
-    if('firewood' in row) objectStep.firewood = Math.abs(row.firewood)
+    if(('business' in row) && (webix.rules.isNumber(row.business))){ objectStep.business = Math.abs(row.business)}
+    if(('halfbusiness' in row) && (webix.rules.isNumber(row.halfbusiness))){ objectStep.halfbusiness = Math.abs(row.halfbusiness)}
+    if(('firewood' in row) && (webix.rules.isNumber(row.firewood))){ objectStep.firewood = Math.abs(row.firewood)}
 
     return (dispatch,getState) => {
     }

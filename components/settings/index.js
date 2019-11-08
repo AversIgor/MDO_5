@@ -102,8 +102,10 @@ export default class ComponentSettings extends Component {
             id:this.id+'_layout',
             container:ReactDOM.findDOMNode(this.refs.root),
             css:'content',
+            padding:10,
             rows:[
                 {cols:[
+                    {},
                     {
                         padding:10,
                         borderless:true,

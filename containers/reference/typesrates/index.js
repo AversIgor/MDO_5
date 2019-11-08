@@ -7,6 +7,7 @@ import ComponentFeedratesForm from "../../../components/reference/typesrates/fee
 import ComponentCoefficientsrangesliquidationForm from "../../../components/reference/typesrates/coefficientsrangesliquidation";
 import ComponentCoefficientsformcuttingForm from "../../../components/reference/typesrates/coefficientsformcutting";
 import ComponentCoefficientsdamageForm from "../../../components/reference/typesrates/coefficientsdamage";
+import ComponentCoefficientsrandomForm from "../../../components/reference/typesrates/coefficientsrandom";
 
 import {fill_data,add,del,edit,sorting,fill_regions,fillFeedrates} from "../../../actions/reference/typesrates";
 import * as breed from "../../../actions/reference/breed";
@@ -108,6 +109,12 @@ class Typesrates extends Component {
                     openNameTable = {this.state.openNameTable}
                     table = {this.state.table}
                     damage = {this.props.damage}                    
+                    saveTable = {this.saveTable}
+                    closeTable = {this.closeTable}
+                />
+                <ComponentCoefficientsrandomForm
+                    openNameTable = {this.state.openNameTable}
+                    table = {this.state.table}                 
                     saveTable = {this.saveTable}
                     closeTable = {this.closeTable}
                 />

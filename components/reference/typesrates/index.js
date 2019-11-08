@@ -99,7 +99,13 @@ export default class sTypesrates extends Component {
                                 let selectedItem = this.getFormView().getMasterView().getSelectedItem()
                                 self.props.openTable(selectedItem,'coefficientsdamage')
                                 }
+                            },
+                            { view:"button", value:"произвольные", click:function(){
+                                let selectedItem = this.getFormView().getMasterView().getSelectedItem()
+                                self.props.openTable(selectedItem,'coefficientsrandom')
+                                }
                             }
+
                         ]
                     }                        
                 ]

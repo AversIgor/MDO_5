@@ -1,35 +1,37 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 
-export default class ComponentСoefficientsdamage extends Component {
+export default class ComponentCoefficients extends Component {
 
     constructor(props) {
         super(props);
-        this.tableid = 'coefficientsdamage_datatable';
+        this.id = 'plot_coefficients';
     }
 
-    componentDidMount(){
+    initUI(props){
 
         let self = this
 
         let table = {
             view:"datatable",
-            id:self.tableid,
+            id:self.id,
             select:"cell",
             multiselect:false,
             editable:true,
-            editaction:"dblclick",
+            editaction:"click",
             css:'box_shadow',
             borderless:true,
             columns:[
-                { id:"damage", header:["Степень поврежденности"],  editor:"combo", options:this.props.damage, fillspace:true,sort:"string"},
-                { id:"value", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"type", header:["Вид коэффициента"],  editor:"combo", options:props.enumerations.typesCoefficients, fillspace:true},
+                { id:"condition", header:["Условие/наименование"],  editor:"combo", options:[], fillspace:true},                
+                { id:"value", header:{text:"Значение",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             data: [],
             rules:{
-                "damage": webix.rules.isNotEmpty,
-            },  
-                     
+                "type": webix.rules.isNotEmpty,
+                "condition": webix.rules.isNotEmpty,
+                "value": webix.rules.isNotEmpty,
+            },     
         }
 
         let head = {
@@ -47,9 +49,9 @@ export default class ComponentСoefficientsdamage extends Component {
                     on:{
                         'onItemClick': function(id){
                             let values = {
-                                coefficientsdamage:$$(self.tableid).serialize(),
+                                coefficientsrandom:$$(self.id).serialize(),
                             }
-                            self.props.saveTable(values);
+                            //self.props.saveTable(values);
                         }
                     }
                 },
@@ -62,7 +64,7 @@ export default class ComponentСoefficientsdamage extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            $$(self.tableid).add({});
+                            $$(self.id).add({});
                         }
                     }
                 },
@@ -75,10 +77,10 @@ export default class ComponentСoefficientsdamage extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            if($$(self.tableid).getSelectedItem()){
-                                let copy = window.webix.copy($$(self.tableid).getSelectedItem());
+                            if($$(self.id).getSelectedItem()){
+                                let copy = window.webix.copy($$(self.id).getSelectedItem());
                                 delete copy.id;
-                                $$(self.tableid).add(copy)                             
+                                $$(self.id).add(copy)                             
                             }                            
                         }
                     }
@@ -92,8 +94,8 @@ export default class ComponentСoefficientsdamage extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            if($$(self.tableid).getSelectedId()){
-                                $$(self.tableid).remove($$(self.tableid).getSelectedId());
+                            if($$(self.id).getSelectedId()){
+                                $$(self.id).remove($$(self.id).getSelectedId());
                             }                            
                         }
                     }
@@ -105,7 +107,7 @@ export default class ComponentСoefficientsdamage extends Component {
                     icon: "mdi mdi-close",
                     on:{
                         'onItemClick': function(id){
-                            self.props.closeTable();                           
+                            //self.props.closeTable();                           
                         }
                     }
                 }
@@ -114,29 +116,64 @@ export default class ComponentСoefficientsdamage extends Component {
 
         var conteiner = {
             view:"window",
-            id:"coefficientsdamage_window",
+            id:this.id + "_window",
             move:true,
             zIndex:100,
             width: 800,
             height: 400,
             resize: true,
-            move:true,
             head:head,
             position:"center",
             body: table,
         };
         this.ui = window.webix.ui(conteiner);
 
+        $$(self.id).attachEvent("onBeforeEditStart", function(cell){
+            if (cell.column == "condition"){
+                //узнаем что за вид коэффициента
+                var collection = this.getColumnConfig(cell.column).collection;
+                console.log(collection)
+
+                collection.clearAll();
+                let item = this.getItem(cell.row)
+                let options = []
+                if(item.type){
+                    if(item.type == 2){
+                        options = self.props.enumerations.formCutting
+                    }
+                    if(item.type == 3){
+                        options = self.props.enumerations.rangesLiquidation
+                    }
+                    if(item.type == 4){
+                        options = self.props.enumerations.damage
+                    }
+                    if(item.type == 5){
+                        let typesratesID = self.props.property.taxation.typesrates                        
+                        let typesrates   = self.props.typesrates.find(item => item.id == typesratesID); 
+                        if(typesrates){
+                            options = typesrates.coefficientsrandom
+                        }
+                    }
+                }
+                collection.parse(options)
+            }
+            return true;
+        });
+
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.openNameTable == 'coefficientsdamage'){
-            $$(this.tableid).clearAll();
-            $$(this.tableid).define("data",nextProps.table);
-            $$(this.tableid).refresh();
+                
+        if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
+            this.initUI(nextProps)
+        }
+        if(nextProps.openCoefficients){
+            //$$(this.id).clearAll();
+            //$$(this.id).define("data",nextProps.table);
+           // $$(this.id).refresh();
             this.ui.show();
         }else{
-            this.ui.hide();
+            //this.ui.hide();
         }
     }
 

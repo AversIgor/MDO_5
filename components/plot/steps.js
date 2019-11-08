@@ -40,6 +40,28 @@ export default class ComponentSteps extends Component {
             paddingY:5,
             rows:[
                 {
+                    view:"toolbar",                    
+                    borderless:true,
+                    paddingY:2,
+                    css:"webix_dark",
+                    cols:[
+                        {},
+                        {
+                            view:"button",
+                            type:"icon",
+                            icon: "mdi mdi-percent",
+                            label:"Коэффициенты",
+                            width:150,
+                            align:"left",
+                            on:{
+                                'onItemClick': function(id){
+                                    self.props.formCoefficients(true);
+                                }
+                            }
+                        },                        
+                    ]
+                },
+                {
                     view:"datatable",
                     id:this.id,
                     select:"cell",
@@ -70,9 +92,21 @@ export default class ComponentSteps extends Component {
                         },
                     ],
                     on:{
-                        "onAfterEditStop":function(state, editor, ignoreUpdate){   
-                            let item    = this.getItem(editor.row)
-                            self.props.updateStep(item)
+                        "onAfterEditStop":function(state, editor, ignoreUpdate){
+                            if(!ignoreUpdate) {
+                                let item    = this.getItem(editor.row)
+                                self.props.updateStep(item)
+                            }
+                        },
+                        "onKeyPress":function(code){
+                            if (code == 13){
+                                var now = this.getEditor();
+                                var next = this.data.getNextId(now.row);
+                                webix.delay(function(){
+                                if (next)
+                                    this.edit({row:next, column:now.column});
+                                }, this);
+                            }
                         },
                     }
                 },

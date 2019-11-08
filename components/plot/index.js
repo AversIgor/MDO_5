@@ -8,7 +8,8 @@ export default class ComponenLayot extends Component {
         super(props);
         this.ui         = [];
     }       
-    componentDidMount(){  
+    componentDidMount(){ 
+
         
         let layout = {
             id:this.id+'_layout',
@@ -18,7 +19,7 @@ export default class ComponenLayot extends Component {
                     cols:[
                         {id:'plot_recount'}, 
                         { view:"resizer" },
-                        {id:'plot_steps'},                        
+                        {id:'plot_steps'},                                            
                         { view:"resizer" },
                         {id:'plot_property'},
                     ]

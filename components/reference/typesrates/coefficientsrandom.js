@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 
-export default class ComponentСoefficientsdamage extends Component {
+export default class ComponentСoefficientsrandom extends Component {
 
     constructor(props) {
         super(props);
-        this.tableid = 'coefficientsdamage_datatable';
+        this.tableid = 'coefficientsrandom_datatable';
     }
 
     componentDidMount(){
@@ -22,12 +22,12 @@ export default class ComponentСoefficientsdamage extends Component {
             css:'box_shadow',
             borderless:true,
             columns:[
-                { id:"damage", header:["Степень поврежденности"],  editor:"combo", options:this.props.damage, fillspace:true,sort:"string"},
-                { id:"value", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"value", header:["Наименование"],  editor:"text", fillspace:true,sort:"string"},
+                { id:"percent", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             data: [],
             rules:{
-                "damage": webix.rules.isNotEmpty,
+                "name": webix.rules.isNotEmpty,
             },  
                      
         }
@@ -47,7 +47,7 @@ export default class ComponentСoefficientsdamage extends Component {
                     on:{
                         'onItemClick': function(id){
                             let values = {
-                                coefficientsdamage:$$(self.tableid).serialize(),
+                                coefficientsrandom:$$(self.tableid).serialize(),
                             }
                             self.props.saveTable(values);
                         }
@@ -114,7 +114,7 @@ export default class ComponentСoefficientsdamage extends Component {
 
         var conteiner = {
             view:"window",
-            id:"coefficientsdamage_window",
+            id:"coefficientsrandom_window",
             move:true,
             zIndex:100,
             width: 800,
@@ -130,7 +130,7 @@ export default class ComponentСoefficientsdamage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.openNameTable == 'coefficientsdamage'){
+        if(nextProps.openNameTable == 'coefficientsrandom'){
             $$(this.tableid).clearAll();
             $$(this.tableid).define("data",nextProps.table);
             $$(this.tableid).refresh();

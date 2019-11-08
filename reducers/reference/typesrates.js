@@ -13,7 +13,6 @@ const initialState = {
     data:[],
     regions:[],
     feedrates:[],
-    coefficientsrangesliquidation:[],
     sort: {
         by:'id',
         dir:'asc',
