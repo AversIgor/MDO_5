@@ -23,24 +23,24 @@ export function defaultTypesrates() {
             coefficientsindexing:1.43,
             name:'Ставки Федерального уровня',
             coefficientsrangesliquidation:[
-                {rangesLiquidation:1,value:0.9},
-                {rangesLiquidation:2,value:1.0},
-                {rangesLiquidation:3,value:1.05},
+                {rangesLiquidation:1,percent:0.9},
+                {rangesLiquidation:2,percent:1.0},
+                {rangesLiquidation:3,percent:1.05},
             ], 
             coefficientsformcutting:[
-                {formCutting:1,value:0.5} 
+                {formCutting:2,percent:0.5} 
             ], 
             coefficientsdamage:[
-                {damage:1,value:0.9},
-                {damage:2,value:0.8},
-                {damage:3,value:0.7},
-                {damage:4,value:0.6},
-                {damage:5,value:0.5},
-                {damage:6,value:0.4},
-                {damage:7,value:0.3},
-                {damage:8,value:0.2},
-                {damage:9,value:0.1},
-                {damage:10,value:0.0},
+                {damage:1,percent:0.9},
+                {damage:2,percent:0.8},
+                {damage:3,percent:0.7},
+                {damage:4,percent:0.6},
+                {damage:5,percent:0.5},
+                {damage:6,percent:0.4},
+                {damage:7,percent:0.3},
+                {damage:8,percent:0.2},
+                {damage:9,percent:0.1},
+                {damage:10,percent:0.0},
             ],    
         },        
     ]

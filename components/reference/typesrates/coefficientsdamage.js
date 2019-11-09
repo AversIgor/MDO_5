@@ -23,7 +23,7 @@ export default class ComponentСoefficientsdamage extends Component {
             borderless:true,
             columns:[
                 { id:"damage", header:["Степень поврежденности"],  editor:"combo", options:this.props.damage, fillspace:true,sort:"string"},
-                { id:"value", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"percent", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             data: [],
             rules:{

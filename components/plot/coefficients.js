@@ -6,40 +6,67 @@ export default class ComponentCoefficients extends Component {
     constructor(props) {
         super(props);
         this.id = 'plot_coefficients';
+        this.typesrates = undefined;
     }
 
-    initUI(props){
+    updateUI(props){
+        let coefficientsrandom = [] 
+        let typesratesID  = props.property.taxation.typesrates                        
+        this.typesrates   = props.typesrates.find(item => item.id == typesratesID); 
+        if(this.typesrates ){
+            coefficientsrandom = this.typesrates.coefficientsrandom
+        }
+        $$(this.id+"_datatable").refreshColumns([
+            { id:"name", header:["Произвольные коэффициенты"],  editor:"combo", options:coefficientsrandom, fillspace:true},                
+            { id:"value", header:{text:"Значение",}, editor:"text", numberFormat:"1.111,00",width:100,},
+        ]);
+    }
+
+
+    initUI(){
 
         let self = this
 
         let table = {
             view:"datatable",
-            id:self.id,
+            id:self.id+"_datatable",
             select:"cell",
             multiselect:false,
             editable:true,
-            editaction:"click",
+            editaction:"dblclick",
             css:'box_shadow',
-            borderless:true,
-            columns:[
-                { id:"type", header:["Вид коэффициента"],  editor:"combo", options:props.enumerations.typesCoefficients, fillspace:true},
-                { id:"condition", header:["Условие/наименование"],  editor:"combo", options:[], fillspace:true},                
-                { id:"value", header:{text:"Значение",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
-            ],
+            borderless:true,            
+            columns:[],
             data: [],
             rules:{
-                "type": webix.rules.isNotEmpty,
-                "condition": webix.rules.isNotEmpty,
+                "name": webix.rules.isNotEmpty,
                 "value": webix.rules.isNotEmpty,
-            },     
+            }, 
+            on:{
+                "onAfterEditStop":function(state, editor, ignoreUpdate){
+                    if(!ignoreUpdate) {
+                        if(editor.column == 'name'){
+                            let row    = this.getItem(editor.row)
+                            row.value = 0
+                            if(self.typesrates.coefficientsrandom.length){
+                                let item   = self.typesrates.coefficientsrandom.find(item => item.id == state.value);
+                                if(item) row.value = item.percent
+                            }     
+                            this.updateItem(editor.row, row)
+                        }
+                    }
+                },
+            }    
         }
 
         let head = {
             view:"toolbar",
-                width:24,
+            id:self.id+"_head",
+            width:24,
             cols:[
                 {
                     view:"button",
+                    id:self.id+"_save",
                     type:"icon",
                     tooltip:"Сохранить и закрыть",
                     icon: "mdi mdi-pencil",
@@ -49,14 +76,35 @@ export default class ComponentCoefficients extends Component {
                     on:{
                         'onItemClick': function(id){
                             let values = {
-                                coefficientsrandom:$$(self.id).serialize(),
+                                //coefficientsrandom:$$(self.id).serialize(),
                             }
                             //self.props.saveTable(values);
                         }
                     }
-                },
+                },                    
+                {},
+                {
+                    view:"icon",
+                    id:self.id+"_close",
+                    tooltip:"Закрыть",
+                    icon: "mdi mdi-close",
+                    on:{
+                        'onItemClick': function(id){
+                            self.props.formCoefficients(false);                           
+                        }
+                    }
+                }
+            ]
+        }
+
+        let toolbar = {
+            view:"toolbar",
+            id:self.id+"_toolbar",
+            width:24,
+            cols:[               
                 {
                     view:"button",
+                    id:self.id+"_add",
                     type:"icon",
                     tooltip:"Добавить строку",
                     icon: "mdi mdi-plus",
@@ -64,29 +112,13 @@ export default class ComponentCoefficients extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            $$(self.id).add({});
+                            $$(self.id+"_datatable").add({});
                         }
                     }
-                },
+                },               
                 {
                     view:"button",
-                    type:"icon",
-                    tooltip:"Скопировать строку",
-                    icon: "mdi mdi-content-copy",
-                    width:24,
-                    align:"center",
-                    on:{
-                        'onItemClick': function(id){
-                            if($$(self.id).getSelectedItem()){
-                                let copy = window.webix.copy($$(self.id).getSelectedItem());
-                                delete copy.id;
-                                $$(self.id).add(copy)                             
-                            }                            
-                        }
-                    }
-                },
-                {
-                    view:"button",
+                    id:self.id+"_delete",
                     type:"icon",
                     tooltip:"Удалить строку",
                     icon: "mdi mdi-delete",
@@ -94,86 +126,100 @@ export default class ComponentCoefficients extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
-                            if($$(self.id).getSelectedId()){
-                                $$(self.id).remove($$(self.id).getSelectedId());
+                            if($$(self.id+"_datatable").getSelectedId()){
+                                $$(self.id+"_datatable").remove($$(self.id+"_datatable").getSelectedId());
                             }                            
                         }
                     }
-                },                     
-                {},
-                {
-                    view:"icon",
-                    tooltip:"Закрыть",
-                    icon: "mdi mdi-close",
-                    on:{
-                        'onItemClick': function(id){
-                            //self.props.closeTable();                           
-                        }
-                    }
-                }
+                },
             ]
         }
 
+        let form = {
+            view:"form", 
+            id:self.id+"_form",
+            elements:[
+                {cols:[
+                    {view:"label",label:"Коэффициент индексации ставок",  labelWidth:250,width:400,},                   
+                    {view:"text",  name:"coefficientsindexing",format:"111,00",width:100,},                   
+                ]},
+                {cols:[
+                    {view:"select", label:"Коэффициент на форму рубки", name:"formCutting", options:self.props.enumerations.formCutting,labelWidth:250,width:400,},
+                    {view:"text", name:"coefficientsformcutting",format:"111,00",width:100,},                
+                ]},
+                {cols:[
+                    {view:"select", label:"Коэффициент на ликвидный запас", name:"rangesLiquidation", options:self.props.enumerations.rangesLiquidation,labelWidth:250,width:400,},
+                    {view:"text",  name:"coefficientsrangesliquidation",format:"111,00",width:100,},                
+                ]},
+                {cols:[
+                    {view:"select", label:"Коэффициент на поврежденность", name:"damage", options:self.props.enumerations.damage,labelWidth:250,width:400,},
+                    {view:"text", name:"coefficientsdamage",format:"111,00",width:100,},                
+                ]}
+            ],
+        }
         var conteiner = {
             view:"window",
-            id:this.id + "_window",
+            id:self.id + "_window",
             move:true,
             zIndex:100,
-            width: 800,
+            width: 700,
             height: 400,
             resize: true,
             head:head,
             position:"center",
-            body: table,
+            body: {
+                rows:[
+                    form,
+                    toolbar,
+                    table
+                ]
+            },
         };
-        this.ui = window.webix.ui(conteiner);
+        self.ui = window.webix.ui(conteiner);
 
-        $$(self.id).attachEvent("onBeforeEditStart", function(cell){
-            if (cell.column == "condition"){
-                //узнаем что за вид коэффициента
-                var collection = this.getColumnConfig(cell.column).collection;
-                console.log(collection)
-
-                collection.clearAll();
-                let item = this.getItem(cell.row)
-                let options = []
-                if(item.type){
-                    if(item.type == 2){
-                        options = self.props.enumerations.formCutting
-                    }
-                    if(item.type == 3){
-                        options = self.props.enumerations.rangesLiquidation
-                    }
-                    if(item.type == 4){
-                        options = self.props.enumerations.damage
-                    }
-                    if(item.type == 5){
-                        let typesratesID = self.props.property.taxation.typesrates                        
-                        let typesrates   = self.props.typesrates.find(item => item.id == typesratesID); 
-                        if(typesrates){
-                            options = typesrates.coefficientsrandom
-                        }
-                    }
-                }
-                collection.parse(options)
-            }
-            return true;
+        $$(self.id+"_form").elements["formCutting"].attachEvent("onChange", function(newv, oldv){            
+            let values = $$(self.id+"_form").getValues()
+            values.coefficientsformcutting = 0
+            if(self.typesrates.coefficientsformcutting.length){
+                let item   = self.typesrates.coefficientsformcutting.find(item => item.formCutting == newv);
+                if(item) values.coefficientsformcutting = item.percent
+            }            
+            $$(self.id+"_form").setValues(values)
+        }); 
+        $$(self.id+"_form").elements["rangesLiquidation"].attachEvent("onChange", function(newv, oldv){            
+            let values = $$(self.id+"_form").getValues()
+            values.coefficientsrangesliquidation = 0
+            if(self.typesrates.coefficientsrangesliquidation.length){
+                let item   = self.typesrates.coefficientsrangesliquidation.find(item => item.rangesLiquidation == newv);
+                if(item) values.coefficientsrangesliquidation = item.percent
+            } 
+            $$(self.id+"_form").setValues(values)
+        }); 
+        $$(self.id+"_form").elements["damage"].attachEvent("onChange", function(newv, oldv){            
+            let values = $$(self.id+"_form").getValues()
+            values.coefficientsdamage = 0
+            if(self.typesrates.coefficientsdamage.length){
+                let item   = self.typesrates.coefficientsdamage.find(item => item.damage == newv);
+                if(item) values.coefficientsdamage = item.percent
+            } 
+            $$(self.id+"_form").setValues(values)
         });
-
+     
     }
 
     componentWillReceiveProps(nextProps) {
                 
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
-            this.initUI(nextProps)
+            this.initUI()
         }
         if(nextProps.openCoefficients){
             //$$(this.id).clearAll();
             //$$(this.id).define("data",nextProps.table);
            // $$(this.id).refresh();
+            this.updateUI(nextProps)
             this.ui.show();
         }else{
-            //this.ui.hide();
+            this.ui.hide();
         }
     }
 

@@ -107,6 +107,7 @@ class Plot extends Component {
                 <ComponentCoefficients
                     conteinerReady = {this.state.conteinerReady} 
                     openCoefficients = {this.state.openCoefficients}
+                    formCoefficients = {this.formCoefficients}
                     cuttingmethods = {this.props.cuttingmethods}
                     enumerations = {this.props.enumerations} 
                     property = {this.props.property} 

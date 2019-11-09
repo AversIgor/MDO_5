@@ -27,7 +27,7 @@ export default class ComponentСoefficientsrandom extends Component {
             ],
             data: [],
             rules:{
-                "name": webix.rules.isNotEmpty,
+                "value": webix.rules.isNotEmpty,
             },  
                      
         }

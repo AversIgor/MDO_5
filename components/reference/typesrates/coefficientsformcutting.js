@@ -23,11 +23,11 @@ export default class ComponentCoefficientsformcutting extends Component {
             borderless:true,
             columns:[
                 { id:"formCutting", header:["Форма рубки"],  editor:"combo", options:this.props.formCutting, fillspace:true,sort:"string"},
-                { id:"value", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
+                { id:"percent", header:{text:"Коэффициент",}, editor:"text", numberFormat:"1.111,00",fillspace:true},
             ],
             data: [],
             rules:{
-                "rangesLiquidation": webix.rules.isNotEmpty,
+                "formCutting": webix.rules.isNotEmpty,
             },  
                      
         }
