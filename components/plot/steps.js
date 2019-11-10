@@ -54,7 +54,8 @@ export default class ComponentSteps extends Component {
                             width:150,
                             on:{
                                 'onItemClick': function(id){
-                                    self.props.formMdoRecount(true);
+                                    //проверка заполнения реквизитов
+                                    self.props.mdoRecount();
                                 }
                             }
                         },

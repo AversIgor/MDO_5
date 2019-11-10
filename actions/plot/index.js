@@ -7,23 +7,37 @@ import {
     CHANGE_COEFFICIENTS,
 } from '../../constants/plot'
 
+let lodash = require('lodash');
+
+import * as mdo from "./mdoRecount";
+
+export function mdoRecount(property,recount,coefficients) {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            let resultsRecount = mdo.calculation(property,recount,coefficients)
+        }
+        return asyncProcess()
+    }
+}
+
 export function newPlot() {
     return (dispatch,getState) => {
         dispatch({
             type: NEW_PLOT,
+            plotObject: new mdo.PlotMDO()
         })
     }
 }
 
-export function changeProperty(newProperty) {
+//
+export function changeProperty(plotObject,newProperty) {
     return (dispatch,getState) => {
-        const asyncProcess = async () => {
-            dispatch({
-                type: CHANGE_PROPERTY,
-                property: newProperty
-            })
-        }
-        return asyncProcess()
+        let newPlot = lodash.cloneDeep(plotObject)
+        newPlot.changeProperty(newProperty)
+        dispatch({
+            type: CHANGE_PROPERTY,
+            plotObject: newPlot
+        })
     }
 }
 

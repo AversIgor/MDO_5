@@ -2,7 +2,18 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,deleteBreed,changeCurentRecount,updateStep,changeCoeficients} from "../../actions/plot";
+import {
+    newPlot,
+    changeProperty,
+    updateObjectTaxation,
+    updateBreed,
+    deleteObjectTaxation,
+    deleteBreed,
+    changeCurentRecount,
+    updateStep,
+    changeCoeficients,
+    mdoRecount
+} from "../../actions/plot";
 
 
 import ComponentConteiner from "../../components/plot/index";
@@ -26,6 +37,11 @@ class Plot extends Component {
     conteinerReady = () => {
         this.setState({conteinerReady: true})      
     }
+    
+    changeProperty = (values) => {
+        this.props.changeProperty(this.props.plotObject,values)      
+    }
+
 
     updateObjectTaxation = (values) => {
         this.props.updateObjectTaxation(values,this.props.recount)      
@@ -64,15 +80,28 @@ class Plot extends Component {
         this.setState({openCoefficients: open})      
     }
 
+    mdoRecount = () => {
+        this.props.mdoRecount(
+            this.props.property,
+            this.props.recount,
+            this.props.coefficients
+        )   
+    }
+
     formMdoRecount = (open) => {
         this.setState({openMdoRecount: open})      
     }
 
     componentDidMount() {
-        return true
+        if(!this.props.plotObject){
+            this.props.newPlot()
+        }       
     }
 
     render() {
+        if(!this.props.plotObject){
+            return null
+        }          
         return (
             <Fragment>
                 <ComponentConteiner
@@ -97,11 +126,11 @@ class Plot extends Component {
                     curentRecount = {this.props.curentRecount}
                     updateStep = {this.updateStep}
                     formCoefficients = {this.formCoefficients}
-                    formMdoRecount = {this.formMdoRecount}
+                    mdoRecount = {this.mdoRecount}
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
-                    property = {this.props.property}
+                    plotObject = {this.props.plotObject}
                     forestry = {this.props.forestry}
                     subforestry = {this.props.subforestry}
                     tract = {this.props.tract}
@@ -109,7 +138,7 @@ class Plot extends Component {
                     cuttingmethods = {this.props.cuttingmethods}
                     typesrates = {this.props.typesrates}
                     enumerations = {this.props.enumerations} 
-                    changeProperty = {this.props.changeProperty}                    
+                    changeProperty = {this.changeProperty}                    
                 />
                 <ComponentCoefficients
                     coefficients = {this.props.coefficients}
@@ -135,6 +164,7 @@ class Plot extends Component {
 
 function mapStateToProps (state) {
     return {
+        plotObject: state.plot.plotObject,
         property: state.plot.property,
         recount: state.plot.recount,
         curentRecount: state.plot.curentRecount,
@@ -152,6 +182,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        newPlot: bindActionCreators(newPlot, dispatch),
         changeProperty: bindActionCreators(changeProperty, dispatch),  
         updateObjectTaxation: bindActionCreators(updateObjectTaxation, dispatch),
         deleteObjectTaxation: bindActionCreators(deleteObjectTaxation, dispatch),
@@ -160,6 +191,7 @@ function mapDispatchToProps(dispatch) {
         changeCurentRecount: bindActionCreators(changeCurentRecount, dispatch),
         updateStep: bindActionCreators(updateStep, dispatch),
         changeCoeficients: bindActionCreators(changeCoeficients, dispatch),
+        mdoRecount: bindActionCreators(mdoRecount, dispatch),
     }
 
 }

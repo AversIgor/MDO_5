@@ -151,7 +151,7 @@ export default class ComponentProperty extends Component {
         this.feelOptions('parameters.methodscleaning',nextProps.methodscleanings)
         
   
-        $$(this.id).setValues(nextProps.property);
+        $$(this.id).setValues(nextProps.plotObject.property);
     }
 
     shouldComponentUpdate(){
