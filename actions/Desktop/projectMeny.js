@@ -1,8 +1,6 @@
 //устаревшие функции
 import * as APP from "../../src/app";
 import * as MDO from "../../js/mdo";
-import {RECOUNTLAYOUT} from "../../js/recountlayout";
-
 
 import FileSaver from "file-saver";
 import JSZip from "jszip";
@@ -12,22 +10,10 @@ import base64_arraybuffer from "base64-arraybuffer";
 import * as background from "../Abris/background";
 import * as objects from "../Abris/objects";
 
-export function newProject() {
-    return (dispatch,getState) => {
-        APP.confirmSave(function () {
-            MDO.newMDO();
-            MDO.objectMDO.startMDO();
-            RECOUNTLAYOUT.whenOpening();
-            dispatch(background.reset());
-            dispatch(objects.reset());
-        })
-    }
-};
-
 export function openProject() {
     let self = this
     return (dispatch,getState) => {
-        APP.confirmSave(function () {
+        //APP.confirmSave(function () {
             var input = $("<input/>", {
                 style:"display:none",
                 id:"inputFile",
@@ -49,7 +35,6 @@ export function openProject() {
                             MDO.objectMDO.startMDO();
                             MDO.objectMDO.reloadMDO(data); 
                             MDO.objectMDO.filename = "";
-                            RECOUNTLAYOUT.whenOpening();
                             dispatch(background.restoring(data.background));
                             dispatch(objects.restoring(data.polygons));
                         }
@@ -58,7 +43,7 @@ export function openProject() {
                 }
             });
             input.trigger('click');
-        });
+        //});
     }
 };
 
@@ -527,8 +512,6 @@ function readFileProject(data,dispatch) {
         }
 
     }
-    RECOUNTLAYOUT.whenOpening();
-
 
     //подложка
     let data_background = data.abris.background

@@ -33,18 +33,31 @@ export default class ComponentSteps extends Component {
         }
     }
   
-    initUI(props){
+    initUI(){
         let self = this;
 
         let ui = {
             paddingY:5,
+            paddingX:2,
             rows:[
                 {
                     view:"toolbar",                    
-                    borderless:true,
+                    borderless:true,                    
                     paddingY:2,
-                    css:"webix_dark",
+                    //css:"webix_dark",
                     cols:[
+                        {
+                            view:"button",
+                            type:"icon",
+                            icon: "mdi mdi-calculator",
+                            label:"Ведомость МДО",
+                            width:150,
+                            on:{
+                                'onItemClick': function(id){
+                                    self.props.formMdoRecount(true);
+                                }
+                            }
+                        },
                         {},
                         {
                             view:"button",
@@ -52,7 +65,6 @@ export default class ComponentSteps extends Component {
                             icon: "mdi mdi-percent",
                             label:"Коэффициенты",
                             width:150,
-                            align:"left",
                             on:{
                                 'onItemClick': function(id){
                                     self.props.formCoefficients(true);
@@ -62,7 +74,7 @@ export default class ComponentSteps extends Component {
                     ]
                 },
                 {
-                    view:"datatable",
+                    view:"datatable",                    
                     id:this.id,
                     select:"cell",
                     multiselect:false,
@@ -122,7 +134,7 @@ export default class ComponentSteps extends Component {
 
     componentWillReceiveProps(nextProps) {
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
-            this.initUI(nextProps)
+            this.initUI()
         }
         this.feelData(nextProps)
     }

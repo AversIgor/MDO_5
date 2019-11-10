@@ -1,9 +1,19 @@
 import {
+    NEW_PLOT,
     CHANGE_PROPERTY,
     CHANGE_RECOUNT,
     CHANGE_CURENTRECOUNT,
     UPDATE_STEPS,
+    CHANGE_COEFFICIENTS,
 } from '../../constants/plot'
+
+export function newPlot() {
+    return (dispatch,getState) => {
+        dispatch({
+            type: NEW_PLOT,
+        })
+    }
+}
 
 export function changeProperty(newProperty) {
     return (dispatch,getState) => {
@@ -118,6 +128,18 @@ export function changeCurentRecount(curentRecount) {
             dispatch({
                 type: CHANGE_CURENTRECOUNT,
                 curentRecount:curentRecount
+            })
+        }
+        return asyncProcess()
+    }
+}
+
+export function changeCoeficients(newCoefficients) {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            dispatch({
+                type: CHANGE_COEFFICIENTS,
+                coefficients:newCoefficients
             })
         }
         return asyncProcess()

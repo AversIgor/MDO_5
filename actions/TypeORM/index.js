@@ -84,7 +84,7 @@ export function init() {
                     await Migration_5_2_0_10.breedsConvert(options);
                 }
 
-                if(isNewVersions(oldVersion,"5.2.1.11")){
+                if(isNewVersions(oldVersion,"5.2.1.12")){
                     //конвертация контактной информации
                     await Migration_5_2_1_0.creatEntities(options);
                     await Migration_5_2_1_0.TypesratesConvert(options);

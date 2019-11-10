@@ -2,9 +2,12 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {openProject,newProject,saveProject} from '../../actions/Desktop/projectMeny';
+import {openProject,saveProject} from '../../actions/Desktop/projectMeny';
 import {clickQuestionMenu} from '../../actions/Desktop/questionMenu';
 import {clickMenu} from '../../actions/Desktop/leftMenu';
+import {newPlot} from '../../actions/plot';
+import * as background from '../../actions/Abris/background';
+import * as objects from '../../actions/Abris/objects';
 
 import ComponentToolbar from "../../components/Desktop/toolbar";
 import ComponentAbout from "../../components/Desktop/about";
@@ -13,6 +16,12 @@ class Toolbar extends Component {
 
     constructor(props) {
         super(props);
+    }
+
+    newProject = () => {
+        this.props.newPlot()  
+        this.props.background_reset()   
+        this.props.objects_reset()
     }
 
     render() {
@@ -34,7 +43,7 @@ class Toolbar extends Component {
                     resize = {this.props.resize}
                     leftMenuData = {this.props.leftMenuData}
                     openProject = {this.props.openProject}
-                    newProject = {this.props.newProject}
+                    newProject = {this.newProject}
                     saveProject = {this.props.saveProject} 
                     clickQuestionMenu = {this.props.clickQuestionMenu}  
                     clickMenu = {this.props.clickMenu}    
@@ -57,10 +66,12 @@ function mapStateToProps (state) {
 function mapDispatchToProps(dispatch) {
     return {
         openProject: bindActionCreators(openProject, dispatch),
-        newProject: bindActionCreators(newProject, dispatch),
         saveProject: bindActionCreators(saveProject, dispatch),
         clickQuestionMenu: bindActionCreators(clickQuestionMenu, dispatch),
-        clickMenu: bindActionCreators(clickMenu, dispatch)        
+        clickMenu: bindActionCreators(clickMenu, dispatch),  
+        newPlot: bindActionCreators(newPlot, dispatch),  
+        background_reset: bindActionCreators(background.reset, dispatch),
+        objects_reset: bindActionCreators(objects.reset, dispatch),      
     }
 }
 

@@ -2,7 +2,7 @@ import React, { Component, PropTypes,Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 
-import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,deleteBreed,changeCurentRecount,updateStep} from "../../actions/plot";
+import {changeProperty,updateObjectTaxation,updateBreed,deleteObjectTaxation,deleteBreed,changeCurentRecount,updateStep,changeCoeficients} from "../../actions/plot";
 
 
 import ComponentConteiner from "../../components/plot/index";
@@ -10,6 +10,7 @@ import ComponentProperty from "../../components/plot/property";
 import ComponentRecount from "../../components/plot/recount";
 import ComponentSteps from "../../components/plot/steps";
 import ComponentCoefficients from "../../components/plot/coefficients";
+import ComponentMdoRecount from "../../components/plot/mdoRecount";
 
 class Plot extends Component {
 
@@ -17,7 +18,8 @@ class Plot extends Component {
         super(props);
         this.state = {
             conteinerReady:false,
-            openCoefficients:false,          
+            openCoefficients:false,   
+            openMdoRecount:false,       
         };
     }
 
@@ -62,6 +64,10 @@ class Plot extends Component {
         this.setState({openCoefficients: open})      
     }
 
+    formMdoRecount = (open) => {
+        this.setState({openMdoRecount: open})      
+    }
+
     componentDidMount() {
         return true
     }
@@ -91,6 +97,7 @@ class Plot extends Component {
                     curentRecount = {this.props.curentRecount}
                     updateStep = {this.updateStep}
                     formCoefficients = {this.formCoefficients}
+                    formMdoRecount = {this.formMdoRecount}
                 />
                 <ComponentProperty
                     conteinerReady = {this.state.conteinerReady} 
@@ -105,13 +112,20 @@ class Plot extends Component {
                     changeProperty = {this.props.changeProperty}                    
                 />
                 <ComponentCoefficients
+                    coefficients = {this.props.coefficients}
                     conteinerReady = {this.state.conteinerReady} 
                     openCoefficients = {this.state.openCoefficients}
+                    changeCoeficients = {this.props.changeCoeficients}
                     formCoefficients = {this.formCoefficients}
                     cuttingmethods = {this.props.cuttingmethods}
                     enumerations = {this.props.enumerations} 
                     property = {this.props.property} 
                     typesrates = {this.props.typesrates}               
+                />
+                <ComponentMdoRecount
+                    conteinerReady = {this.state.conteinerReady} 
+                    openMdoRecount = {this.state.openMdoRecount} 
+                    formMdoRecount = {this.formMdoRecount}            
                 />
             </Fragment>            
         )
@@ -124,6 +138,7 @@ function mapStateToProps (state) {
         property: state.plot.property,
         recount: state.plot.recount,
         curentRecount: state.plot.curentRecount,
+        coefficients: state.plot.coefficients,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,
@@ -144,6 +159,7 @@ function mapDispatchToProps(dispatch) {
         deleteBreed: bindActionCreators(deleteBreed, dispatch),
         changeCurentRecount: bindActionCreators(changeCurentRecount, dispatch),
         updateStep: bindActionCreators(updateStep, dispatch),
+        changeCoeficients: bindActionCreators(changeCoeficients, dispatch),
     }
 
 }

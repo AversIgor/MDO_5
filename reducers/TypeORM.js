@@ -4,7 +4,7 @@ import {
 } from '../constants/TypeORM'
 
 const initialState = {
-    curentVersion: '5.2.1.11',
+    curentVersion: '5.2.1.12',
     isUpdate: false,
 }
 

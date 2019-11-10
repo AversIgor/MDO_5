@@ -75,10 +75,12 @@ export default class ComponentCoefficients extends Component {
                     align:"center",
                     on:{
                         'onItemClick': function(id){
+                            let formvalues = $$(self.id+"_form").getValues()
                             let values = {
-                                //coefficientsrandom:$$(self.id).serialize(),
+                                main:$$(self.id+"_form").getValues(),
+                                random:$$(self.id+"_datatable").serialize(),
                             }
-                            //self.props.saveTable(values);
+                            self.props.changeCoeficients(values);
                         }
                     }
                 },                    
@@ -157,6 +159,7 @@ export default class ComponentCoefficients extends Component {
                 ]}
             ],
         }
+
         var conteiner = {
             view:"window",
             id:self.id + "_window",
@@ -175,6 +178,7 @@ export default class ComponentCoefficients extends Component {
                 ]
             },
         };
+       
         self.ui = window.webix.ui(conteiner);
 
         $$(self.id+"_form").elements["formCutting"].attachEvent("onChange", function(newv, oldv){            
@@ -213,10 +217,10 @@ export default class ComponentCoefficients extends Component {
             this.initUI()
         }
         if(nextProps.openCoefficients){
-            //$$(this.id).clearAll();
-            //$$(this.id).define("data",nextProps.table);
-           // $$(this.id).refresh();
             this.updateUI(nextProps)
+            $$(this.id+"_form").setValues(nextProps.coefficients.main);
+            $$(this.id+"_datatable").define("data",nextProps.coefficients.random);
+            $$(this.id+"_datatable").refresh();
             this.ui.show();
         }else{
             this.ui.hide();

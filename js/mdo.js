@@ -1,4 +1,3 @@
-import {RECOUNTLAYOUT} from "./recountlayout";
 import {MDOPRINT} from "./mdoprint";
 import * as FileSaver from "file-saver";
 
@@ -563,7 +562,7 @@ function allQueryComplit() {
 			}
 			w2alert(texterror);
 		}else{
-			MDOPRINT.init(RECOUNTLAYOUT.init);
+			//MDOPRINT.init(RECOUNTLAYOUT.init);
 		}	
 	}
 
@@ -819,14 +818,7 @@ function calculationСoefficients(liquidity,firewoodwaste,totalbusiness) {
 
 function setCoefficientsNames() {//проставим название коэффициентов
 	
-	for(var i = 0; i < objectMDO.coefficients.length; i++){
-		for(var j = 0; j < RECOUNTLAYOUT.typescoefficients.length; j++){
-			if(objectMDO.coefficients[i].name == RECOUNTLAYOUT.typescoefficients[j].id){
-				objectMDO.coefficients[i].text = RECOUNTLAYOUT.typescoefficients[j].text;
-				break;
-			}
-		}
-	}
+
 }
 
 // к инциденту 3161

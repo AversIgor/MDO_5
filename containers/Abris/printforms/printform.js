@@ -326,6 +326,8 @@ class Printform extends Component {
     }
 
     saveContent = (contentDocument,name) => {
+        //let contents = jQuery(editor.contentDocument).contents()
+        //let html = contents.find('body').html()
         this.convertImagesToBase64(contentDocument)
         var content = '<!DOCTYPE html>' + contentDocument.documentElement.outerHTML;
         var converted = htmlDocx.asBlob(content, {orientation: 'portrait'});
