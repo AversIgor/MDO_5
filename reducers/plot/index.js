@@ -32,7 +32,7 @@ export default function plot (state = initialState, action) {
             }    
         case CHANGE_RECOUNT:
             return { ...state,
-                recount: action.recount.slice(),
+                plotObject: action.plotObject,
                 curentRecount: action.curentRecount,
             }   
         case CHANGE_CURENTRECOUNT:
@@ -41,7 +41,7 @@ export default function plot (state = initialState, action) {
             }   
         case CHANGE_COEFFICIENTS:
             return { ...state,
-                coefficients: action.coefficients,
+                plotObject: action.plotObject,
             }   
         default:
             return state

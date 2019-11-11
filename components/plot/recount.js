@@ -12,7 +12,7 @@ export default class ComponentRecount extends Component {
     }      
     
     feelData(props) {
-        let recount = props.recount
+        let recount = props.plotObject.recount
         let curentRecount = props.curentRecount
 
         $$(this.id).clearAll();
@@ -22,7 +22,7 @@ export default class ComponentRecount extends Component {
             let css = {}
             let open = true
             if(objectTaxation.id != 1){
-                if(props.property.taxation.methodTaxation == 2){
+                if(props.plotObject.property.taxation.methodTaxation == 2){
                     css = {
                         'text-decoration': 'line-through;'
                     }
@@ -69,7 +69,7 @@ export default class ComponentRecount extends Component {
         }       
         if(level == 1){
             let options = this.props.enumerations.objectTaxation
-            if(this.props.property.taxation.methodTaxation == 2){
+            if(this.props.plotObject.property.taxation.methodTaxation == 2){
                 //только лесосека в целом
                 options = this.props.enumerations.objectTaxation.filter(item => item.id == 1);
             }
@@ -145,11 +145,11 @@ export default class ComponentRecount extends Component {
             //редактирование
             if(level == 1){
                 //редактируе Элемент лесосеки
-                let row = this.props.recount.find(item => item.id == selectedItem.id);
+                let row = this.props.plotObject.recount.find(item => item.id == selectedItem.id);
                 $$(this.id+"_form").setValues(row);         
             }else{
                 //редактируем породу
-                let parent = this.props.recount.find(item => item.id == selectedItem.$parent);
+                let parent = this.props.plotObject.recount.find(item => item.id == selectedItem.$parent);
                 let row = parent.objectsBreed.find(item => item.id == selectedItem.id);
                 row.parentid = selectedItem.$parent
                 $$(this.id+"_form").setValues(row);         

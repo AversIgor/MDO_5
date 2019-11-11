@@ -44,35 +44,39 @@ class Plot extends Component {
 
 
     updateObjectTaxation = (values) => {
-        this.props.updateObjectTaxation(values,this.props.recount)      
+        this.props.updateObjectTaxation(this.props.plotObject,values)      
     }
 
     updateBreed = (values) => {
-        this.props.updateBreed(values,this.props.recount,this.props.breed)      
+        this.props.updateBreed(this.props.plotObject,values,this.props.breed)      
     }
 
     deleteObjectTaxation = (id) => {
-        this.props.deleteObjectTaxation(id,this.props.recount)      
+        this.props.deleteObjectTaxation(this.props.plotObject,id)      
     }
 
     deleteBreed = (id,parentid) => {        
-        this.props.deleteBreed(id,parentid,this.props.recount)      
+        this.props.deleteBreed(this.props.plotObject,id,parentid)      
+    }
+
+    changeCoeficients = (changeCoeficients) => { 
+        this.props.changeCoeficients(this.props.plotObject,changeCoeficients) 
     }
 
     changeCurentRecount = (node) => { 
         if(node.$parent != 0){
-            let parent         = this.props.recount.find(item => item.id == node.$parent);
+            let parent         = this.props.plotObject.recount.find(item => item.id == node.$parent);
             let curentRecount  = parent.objectsBreed.find(item => item.id == node.id);
             this.props.changeCurentRecount(curentRecount)
         }else{
-            let parent         =  this.props.recount.find(item => item.id == node.id);
+            let parent         =  this.props.plotObject.recount.find(item => item.id == node.id);
             this.props.changeCurentRecount(parent)
         }    
     }
 
     updateStep = (row) => { 
         if(('id' in this.props.curentRecount) && ('parent' in this.props.curentRecount)){
-            this.props.updateStep(row,this.props.recount,this.props.curentRecount.id,this.props.curentRecount.parent) 
+            this.props.updateStep(this.props.plotObject,this.props.curentRecount,row) 
         }
     }
 
@@ -82,9 +86,7 @@ class Plot extends Component {
 
     mdoRecount = () => {
         this.props.mdoRecount(
-            this.props.property,
-            this.props.recount,
-            this.props.coefficients
+            this.props.plotObject,
         )   
     }
 
@@ -109,11 +111,10 @@ class Plot extends Component {
                 />
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}
-                    recount = {this.props.recount} 
+                    plotObject = {this.props.plotObject} 
                     curentRecount = {this.props.curentRecount}
                     breed = {this.props.breed}                   
                     enumerations = {this.props.enumerations} 
-                    property = {this.props.property}
                     updateObjectTaxation = {this.updateObjectTaxation}
                     updateBreed = {this.updateBreed}
                     deleteObjectTaxation = {this.deleteObjectTaxation}
@@ -122,7 +123,6 @@ class Plot extends Component {
                 />
                 <ComponentSteps
                     conteinerReady = {this.state.conteinerReady}
-                    recount = {this.props.recount}
                     curentRecount = {this.props.curentRecount}
                     updateStep = {this.updateStep}
                     formCoefficients = {this.formCoefficients}
@@ -141,10 +141,10 @@ class Plot extends Component {
                     changeProperty = {this.changeProperty}                    
                 />
                 <ComponentCoefficients
-                    coefficients = {this.props.coefficients}
+                    plotObject = {this.props.plotObject}
                     conteinerReady = {this.state.conteinerReady} 
                     openCoefficients = {this.state.openCoefficients}
-                    changeCoeficients = {this.props.changeCoeficients}
+                    changeCoeficients = {this.changeCoeficients}
                     formCoefficients = {this.formCoefficients}
                     cuttingmethods = {this.props.cuttingmethods}
                     enumerations = {this.props.enumerations} 
@@ -165,10 +165,7 @@ class Plot extends Component {
 function mapStateToProps (state) {
     return {
         plotObject: state.plot.plotObject,
-        property: state.plot.property,
-        recount: state.plot.recount,
         curentRecount: state.plot.curentRecount,
-        coefficients: state.plot.coefficients,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,

@@ -11,7 +11,7 @@ export default class ComponentCoefficients extends Component {
 
     updateUI(props){
         let coefficientsrandom = [] 
-        let typesratesID  = props.property.taxation.typesrates                        
+        let typesratesID  = props.plotObject.property.taxation.typesrates                        
         this.typesrates   = props.typesrates.find(item => item.id == typesratesID); 
         if(this.typesrates ){
             coefficientsrandom = this.typesrates.coefficientsrandom
@@ -218,8 +218,8 @@ export default class ComponentCoefficients extends Component {
         }
         if(nextProps.openCoefficients){
             this.updateUI(nextProps)
-            $$(this.id+"_form").setValues(nextProps.coefficients.main);
-            $$(this.id+"_datatable").define("data",nextProps.coefficients.random);
+            $$(this.id+"_form").setValues(nextProps.plotObject.coefficients.main);
+            $$(this.id+"_datatable").define("data",nextProps.plotObject.coefficients.random);
             $$(this.id+"_datatable").refresh();
             this.ui.show();
         }else{

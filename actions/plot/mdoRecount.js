@@ -41,17 +41,97 @@ export class PlotMDO {
         this.resultsRecount = []//результат расчете МДО по перечетной ведомоти для печатной формы
     }
 
-    changeProperty(newProperty) {
-        this.property = {...newProperty}
+    changeProperty(newValue) {
+        this.property = {...newValue}
     }
+
+    changeCoeficients(newValue) {
+        this.coefficients = {...newValue}
+    }
+
+    getObjectTaxation(objectTaxationValue) {
+        let row = this.recount.find(item => item.id == objectTaxationValue.id);
+        if(!row){
+            row = {
+                id: objectTaxationValue.id,
+                objectsBreed:[],
+            };
+            this.recount.push(row)
+        }
+        if('areacutting' in objectTaxationValue) row.areacutting = objectTaxationValue.areacutting; 
+        if('objectTaxation' in objectTaxationValue) row.objectTaxation = objectTaxationValue.objectTaxation;   
+
+        return row
+    }
+
+    deleteObjectTaxation(id) {
+        let index = this.recount.findIndex(item => item.id == id);
+        if(index != -1){
+            this.recount.splice(index, 1)
+        }
+    }
+
+    getBreed(objectTaxation,breedValue) {
+        let row = objectTaxation.objectsBreed.find(item => item.id == breedValue.id);
+        if(!row){
+            row = {
+                id: breedValue.id,
+                parent: objectTaxation.id,
+                steps:[],
+                objectsStep:[],                
+            };
+            objectTaxation.objectsBreed.push(row)
+        }
+        if('rank' in breedValue)  row.rank = breedValue.rank;  
+        if('breed' in breedValue) row.breed = breedValue.breed;
+
+        return row
+    }
+
+    deleteBreed(objectTaxation,id) {
+        let index = objectTaxation.objectsBreed.findIndex(item => item.id == id);
+        if(index != -1){
+            objectTaxation.objectsBreed.splice(index, 1)
+        }
+    }
+
+    //Заполнение породы ступенями толщины из справочника пород
+    feelSteps(objectBreed,breeds) {
+        let breed = breeds.find(item => item.id == objectBreed.breed);
+        if(breed){
+            if('table' in breed){
+                let steps = breed.table.sorttables[objectBreed.rank];
+                objectBreed.steps = Object.keys(steps)
+            }
+            if('publication' in breed) objectBreed.publication = breed.publication.fullname;            
+        }
+    }
+
+    getStep(objectBreed,stepValue) {
+        let row = objectBreed.objectsStep.find(item => item.step == stepValue.step);
+        if(!row){
+            row = {
+                step:stepValue.step
+            }
+            objectBreed.objectsStep.push(row)
+        }
+        if(('business' in stepValue) && (webix.rules.isNumber(stepValue.business))){ row.business = Math.abs(stepValue.business)}
+        if(('halfbusiness' in stepValue) && (webix.rules.isNumber(stepValue.halfbusiness))){ row.halfbusiness = Math.abs(stepValue.halfbusiness)}
+        if(('firewood' in stepValue) && (webix.rules.isNumber(stepValue.firewood))){ row.firewood = Math.abs(stepValue.firewood)}
+
+        return row
+    }
+
+    calculation() {
+        const asyncProcess = async () => {
+            for (var i = 0; i < this.recount.length; i++) {
+                console.log(this.recount[i].areacutting)
+            }
+            
+        }
+        return asyncProcess()
+    }
+
 }
 
-export function calculation(property,recount,coefficients) {
-    //прототип функции fill_arrayAssortmentStructure
-    const asyncProcess = async () => {
-        //let plot = new Plot()
-       // plot.addObjectTaxation(recount)
-       // return plot
-    }
-    return asyncProcess()
-}
+
