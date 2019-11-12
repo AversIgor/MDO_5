@@ -100,10 +100,12 @@ export class PlotMDO {
         let breed = breeds.find(item => item.id == objectBreed.breed);
         if(breed){
             if('table' in breed){
-                let steps = breed.table.sorttables[objectBreed.rank];
-                objectBreed.steps = Object.keys(steps)
+                let sorttables          = breed.table.sorttables[objectBreed.rank];
+                objectBreed.sorttables  = sorttables;
+                objectBreed.steps       = Object.keys(sorttables)                
             }
-            if('publication' in breed) objectBreed.publication = breed.publication.fullname;            
+            if('publication' in breed) objectBreed.publication = breed.publication.fullname; 
+          
         }
     }
 
@@ -122,16 +124,227 @@ export class PlotMDO {
         return row
     }
 
+
+
     calculation() {
         const asyncProcess = async () => {
             for (var i = 0; i < this.recount.length; i++) {
-                console.log(this.recount[i].areacutting)
-            }
-            
+                var row_objectTaxation = this.recount[i];
+                //проверка на сплошной и ленточный перечет
+                if(!this.check_methodTaxation(row_objectTaxation.objectTaxation)) continue;
+
+                for (var j = 0; j < row_objectTaxation.objectsBreed.length; j++) {
+                    var row_objBreed = row_objectTaxation.objectsBreed[j];
+                    for (var k = 0; k < row_objBreed.objectsStep.length; k++) {
+                        var row_objStep 			= row_objBreed.objectsStep[k];
+                        console.log(row_objBreed)
+                        console.log(row_objStep)
+                        //на этом уровне заполним сортиментную структуру на основе сортиментных таблиц и настроек МДО				
+                        var objAssortmentStructure = fillStepFromSortTablesAndSettings(row_objBreed,row_objStep);
+                        //if(objAssortmentStructure != null){
+                        //    objBreed.addAssortmentStructure(objAssortmentStructure);
+                        //}
+                    }
+                    
+                    
+                    //сформируем итоговую строку по ступеням толщины - сделае это потом
+                    //var objTotalStep = new ClassAssortmentStructure({});			
+
+                }
+            }            
         }
         return asyncProcess()
     }
 
+    check_methodTaxation(objectTaxation) {	
+        var result = true;	
+        if(this.property.taxation.methodTaxation == 1){
+            if(objectTaxation.id == 5){
+                result = false;
+            }
+        }else{
+            if(objectTaxation.id != 5){
+                result = false;
+            }	
+        } 	
+        return result;        
+    }
+
 }
+
+function fillStepFromSortTablesAndSettings(objBreed,objStep,totalStep) { 
+
+	var business 		= Number(objStep.business);
+	var halfbusiness 	= Number(objStep.halfbusiness);
+	var firewood 		= Number(objStep.firewood);
+	if(business+halfbusiness+firewood == 0){
+		return null;
+	}	
+	//распределим полуделовые				
+	var halfbusinessFor = (halfbusiness-halfbusiness%2)/2; //целочилостное деление
+
+	if(constantValues.distributionhalfbusiness == 0){
+		var business_r = business+halfbusiness-halfbusinessFor;
+		var firewood_r = firewood+halfbusinessFor;
+	}
+	if(constantValues.distributionhalfbusiness == 1){
+		business_r = business+halfbusinessFor;
+		firewood_r = firewood+halfbusiness-halfbusinessFor;
+	}
+
+	var rowSortTable 			= null;
+	var rowSortFirewoodTable 	= null; //сортиментная таблица для дровяных стволов
+	for (var i = 0; i < breeds.length; i++) {
+		if(breeds[i].table){
+			if(breeds[i].table.id == objBreed.tables_id){
+				rowSortTable = breeds[i].table.sorttables[objBreed.rank][objStep.step];
+			}
+		}
+		if(breeds[i].tablefirewood){
+			if(breeds[i].tablefirewood.id == objBreed.tablesfirewood_id){
+				rowSortFirewoodTable = breeds[i].tablefirewood.sorttables[objBreed.rank][objStep.step];
+			}
+		}
+		if(rowSortTable){
+			break
+		}
+	}
+
+	if(rowSortTable == null){
+		fixError('Не найдено данных в сортиментной таблице для породы "'+objBreed.name+'", разряда высот: "'+
+				objBreed.rank+', ступени толщины: "'+objStep.step+'"!');				
+		return null;
+	} 	
+	
+	
+	//Учет дров от дровяных деревьев в зависимости от настроек	
+	var technical_f 		= parseFloat(rowSortTable.technical_f);
+	var	firewood_f 			= parseFloat(rowSortTable.firewood_f);	
+	
+	var totalfirewood_f 	= 0;				
+	if(constantValues.assessfirewoodcommonstock == 1) {
+		totalfirewood_f	= technical_f + firewood_f;
+	}
+	
+	//отходы
+	var waste_f		= parseFloat(rowSortTable.waste_f);
+
+	if(objBreed.kodGulf == '304200'){
+		if(constantValues.firewoodtrunkslindencountedinbark == 1 && constantValues.barklindenindividualreserves == 1) {
+			//добавим кору если она отдельно и учет в коре
+			firewood_f += parseFloat(rowSortTable.bark);
+			waste_f += parseFloat(rowSortTable.bark);
+		}
+		if(constantValues.firewoodtrunkslindencountedinbark == 0 && constantValues.barklindenindividualreserves == 0) {
+			//убавим кору если она вместе с отходами и учет без коры
+			firewood_f -= parseFloat(rowSortTable.bark);
+			waste_f -= parseFloat(rowSortTable.bark);
+		}	
+	}
+	
+	if(waste_f < 0) {
+		waste_f = 0;	
+	}
+
+	//всего дров
+	if(constantValues.assessfirewoodcommonstock == 1) {
+		//по общему запасу
+		if(constantValues.assesswastefirewood == 1) {
+			//использовать отходы
+			totalfirewood_f = totalfirewood_f + waste_f;
+		}
+	}	
+	
+	
+	var average 	= round_value((parseFloat(rowSortTable.average1)+parseFloat(rowSortTable.average2))*business_r,2);
+	var large 		= round_value(parseFloat(rowSortTable.large)*business_r,2);
+	var small 		= round_value(parseFloat(rowSortTable.small)*business_r,2);
+	var waste_b		= round_value(parseFloat(rowSortTable.waste_b)*business_r,2);
+	var technical_b = round_value(parseFloat(rowSortTable.technical_b)*business_r,2);
+	var firewood_b 	= round_value(parseFloat(rowSortTable.firewood_b)*business_r,2);
+	
+	if(rowSortFirewoodTable != null){
+		large 		= large			+	round_value(parseFloat(rowSortFirewoodTable.large)*firewood_r,2);
+		small 		= small			+	round_value(parseFloat(rowSortFirewoodTable.small)*firewood_r,2);
+		average 	= average		+	round_value((parseFloat(rowSortFirewoodTable.average1)+parseFloat(rowSortFirewoodTable.average2))*firewood_r,2);
+		waste_b		= waste_b		+	round_value(parseFloat(rowSortFirewoodTable.waste_b)*firewood_r,2);
+		technical_b	= technical_b	+	round_value(parseFloat(rowSortFirewoodTable.technical_b)*firewood_r,2);
+		firewood_b	= firewood_b	+	round_value(parseFloat(rowSortFirewoodTable.firewood_b)*firewood_r,2);
+	}
+
+	var totalfirewood_b 	= 0;
+	if(constantValues.assessfirewoodcommonstock == 1) {
+		totalfirewood_b	= technical_b + firewood_b;
+	}	
+
+	var options = {	'recid'	:			objStep.recid,		
+					'step'	:			objStep.step,
+					'business'	:		business,
+					'halfbusiness'	:	halfbusiness,
+					'firewood'	:		firewood,
+					'total'			:	business + firewood + halfbusiness,
+					'business_r'	:	business_r,
+					'firewood_r'	:	firewood_r,
+					'total_r'		:	business_r + firewood_r,
+					'large'	:			large,
+					'average'	:		average,
+					'small'	:			small,
+					'totalbusiness_b':	large+average+small,
+					'technical_b':		technical_b,
+					'firewood_b':		firewood_b,
+					'totalfirewood_b':	totalfirewood_b,
+					'waste_b':			waste_b,
+					
+					'technical_f':		Math.round(technical_f*firewood_r*1000)/1000,
+					'firewood_f':		Math.round(firewood_f*firewood_r*1000)/1000,
+					'waste_f':			Math.round(waste_f*firewood_r*1000)/1000,
+					'totalfirewood_f':	Math.round(totalfirewood_f*firewood_r*1000)/1000
+				};
+
+
+	var objAssortmentStructure = new ClassAssortmentStructure(options);	
+
+	
+	return objAssortmentStructure;
+
+}
+
+
+//Строка расчета сортиментной структура
+class ClassAssortmentStructure {
+
+    constructor(options) {
+        this.id			    = '';
+        this.step 			= 0;
+        this.business 		= 0;
+        this.halfbusiness	= 0;
+        this.firewood 		= 0;
+        this.total  		= 0;
+        this.business_r		= 0;
+        this.firewood_r		= 0;
+        this.total_r		= 0;
+        this.large 			= 0;
+        this.average 		= 0;
+        this.small 			= 0;
+        this.totalbusiness_b= 0;//всего деловая, 			в этом объекте не заполняется
+        this.technical_b	= 0;
+        this.firewood_b		= 0;
+        this.totalfirewood_b= 0;//всего дрова от деловых,	заполняется если оценка по общему запасу дров!!!
+        this.liquidity		= 0;//ликвид, 					в этом объекте не заполняется
+        this.waste_b 		= 0;
+        this.total_b 		= 0;//всего деловых деревьев, 	в этом объекте не заполняется
+        
+        this.technical_f	= 0;
+        this.firewood_f		= 0;
+        this.waste_f		= 0;
+        this.totalfirewood_f= 0;//всего ликвидных дров от дровяных, заполняется если оценка по общему запасу дров!!!
+        this.total_f 		= 0;//всего дровяных деревьев, 	в этом объекте не заполняется
+        
+        for (var key in options) {
+            this[key] = options[key];
+        }
+    }
+}
+
 
 

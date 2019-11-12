@@ -589,7 +589,7 @@ function clear_arrayMDO() {
   
 }
 
-/*export function check_methodTaxation(methodTaxation,ObjectsTaxation) {
+export function check_methodTaxation(methodTaxation,ObjectsTaxation) {
 	
 	var result = true;	
 	if(methodTaxation.id == 1){
@@ -603,7 +603,7 @@ function clear_arrayMDO() {
 	} 	
 	return result;
 	
-}*/
+}
 
 function fill_arrayAssortmentStructure() {  
   
@@ -620,7 +620,7 @@ function fill_arrayAssortmentStructure() {
 	
 	for (var i = 0; i < objectMDO.arrayObjectsTaxation.length; i++) {
 		
-		//if(check_methodTaxation(objectMDO.methodTaxation,objectMDO.arrayObjectsTaxation[i]) == false) {continue;}
+		if(check_methodTaxation(objectMDO.methodTaxation,objectMDO.arrayObjectsTaxation[i]) == false) {continue;}
 		
 		var objTaxation = objectMDO.arrayObjectsTaxation[i];
 		for (var j = 0; j < objTaxation.arrayBreedTaxation.length; j++) {
@@ -631,7 +631,7 @@ function fill_arrayAssortmentStructure() {
 			for (var k = 0; k < objBreed.arrayStep.length; k++) {
 				var objStep 			= objBreed.arrayStep[k];
 				//на этом уровне заполним сортиментную структуру на основе сортиментных таблиц и настроек МДО				
-				//var objAssortmentStructure = fillStepFromSortTablesAndSettings(objBreed,objStep,objTotalStep);
+				var objAssortmentStructure = fillStepFromSortTablesAndSettings(objBreed,objStep,objTotalStep);
 				if(objAssortmentStructure != null){
 					objBreed.addAssortmentStructure(objAssortmentStructure);
 				}
@@ -682,7 +682,7 @@ function fill_arrayAssortmentStructure() {
 	
 	for (var i = 0; i < objectMDO.arrayObjectsTaxation.length; i++) {
 		
-		//if(check_methodTaxation(objectMDO.methodTaxation,objectMDO.arrayObjectsTaxation[i]) == false) {continue;}
+		if(check_methodTaxation(objectMDO.methodTaxation,objectMDO.arrayObjectsTaxation[i]) == false) {continue;}
 
 		objTaxation = objectMDO.arrayObjectsTaxation[i];
 		var objOptionsPlots = new ClassOptionsPlots({});
@@ -1069,7 +1069,7 @@ function round_value(in_number, in_digits, in_do_preround) {
 	return Math.round(in_number * pre_multiplier / 10) / multiplier;
 }
 
-/*function fillStepFromSortTablesAndSettings(objBreed,objStep,totalStep) { 
+function fillStepFromSortTablesAndSettings(objBreed,objStep,totalStep) { 
 
 	var business 		= Number(objStep.business);
 	var halfbusiness 	= Number(objStep.halfbusiness);
@@ -1212,4 +1212,4 @@ function round_value(in_number, in_digits, in_do_preround) {
     }	
 	return objAssortmentStructure;
 
-}*/
+}
