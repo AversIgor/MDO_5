@@ -15,7 +15,8 @@ export function mdoRecount(plotObject) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let new_plotObject = lodash.cloneDeep(plotObject)
-            new_plotObject.calculation()
+            let state = getState()
+            new_plotObject.calculation(state)
         }
         return asyncProcess()
     }
@@ -58,7 +59,7 @@ export function updateBreed(plotObject,newValue,breeds){
     return (dispatch,getState) => {
         let new_plotObject = lodash.cloneDeep(plotObject)
         let rowBreed = undefined        
-        let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:newValue.parentid})
+        let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:newValue.parent})
         if(rowObjectTaxation){
             rowBreed = new_plotObject.getBreed(rowObjectTaxation,newValue)
             if(rowBreed){
@@ -86,10 +87,10 @@ export function deleteObjectTaxation(plotObject,id) {
     }
 }
 
-export function deleteBreed(plotObject,id,parentid) {
+export function deleteBreed(plotObject,id,parent) {
     return (dispatch,getState) => {
         let new_plotObject = lodash.cloneDeep(plotObject)
-        let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:parentid})
+        let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:parent})
         if(rowObjectTaxation){
             new_plotObject.deleteBreed(rowObjectTaxation,id)
         }       

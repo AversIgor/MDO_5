@@ -86,7 +86,7 @@ export default class ComponentRecount extends Component {
                 id:'fields',
                 cols:[
                     {view:"text",name:"id",hidden:true,},
-                    {view:"text",name:"parentid",hidden:true,},
+                    {view:"text",name:"parent",hidden:true,},
                     {view:"select", label:"Порода",value:undefined,labelPosition:"top",  name:"breed", options:this.props.breed,required:true,
                         on:{
                             onChange(newv, oldv){                                    
@@ -126,16 +126,16 @@ export default class ComponentRecount extends Component {
                 if(!selectedItem){
                     webix.message({ type:"error", text:"Укажите элемент лесосеки" });
                     return                }
-                let parentid = undefined
+                let parent = undefined
                 if(selectedItem.$level == 1){
-                    parentid = selectedItem.id;
+                    parent = selectedItem.id;
                 }
                 if(selectedItem.$level == 2){
-                    parentid = selectedItem.$parent;
+                    parent = selectedItem.$parent;
                 }
                 $$(this.id+"_form").setValues({
                     id: webix.uid(),
-                    parentid: parentid,
+                    parent: parent,
                     breed: undefined, 
                     rank: undefined,
                 });
@@ -151,7 +151,7 @@ export default class ComponentRecount extends Component {
                 //редактируем породу
                 let parent = this.props.plotObject.recount.find(item => item.id == selectedItem.$parent);
                 let row = parent.objectsBreed.find(item => item.id == selectedItem.id);
-                row.parentid = selectedItem.$parent
+                row.parent = selectedItem.$parent
                 $$(this.id+"_form").setValues(row);         
             }
         }

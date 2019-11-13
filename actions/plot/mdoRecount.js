@@ -75,7 +75,7 @@ export class PlotMDO {
         let row = objectTaxation.objectsBreed.find(item => item.id == breedValue.id);
         if(!row){
             row = {
-                id: breedValue.id,
+                id: breedValue.id,                
                 parent: objectTaxation.id,
                 steps:[],
                 objectsStep:[],                
@@ -84,7 +84,6 @@ export class PlotMDO {
         }
         if('rank' in breedValue)  row.rank = breedValue.rank;  
         if('breed' in breedValue) row.breed = breedValue.breed;
-
         return row
     }
 
@@ -99,13 +98,10 @@ export class PlotMDO {
     feelSteps(objectBreed,breeds) {
         let breed = breeds.find(item => item.id == objectBreed.breed);
         if(breed){
-            if('table' in breed){
-                let sorttables          = breed.table.sorttables[objectBreed.rank];
-                objectBreed.sorttables  = sorttables;
-                objectBreed.steps       = Object.keys(sorttables)                
-            }
-            if('publication' in breed) objectBreed.publication = breed.publication.fullname; 
-          
+            if(('table' in breed) && ('sorttables' in breed.table)){
+                let sorttables      = breed.table.sorttables[objectBreed.rank];
+                objectBreed.steps   = Object.keys(sorttables)                
+            }       
         }
     }
 
@@ -126,21 +122,25 @@ export class PlotMDO {
 
 
 
-    calculation() {
+    //здесь буде на основе перечетной ведомости создавать Новое дерево даных и дополнять его данными
+    calculation(state) {
         const asyncProcess = async () => {
-            for (var i = 0; i < this.recount.length; i++) {
-                var row_objectTaxation = this.recount[i];
+            for (let i = 0; i < this.recount.length; i++) {
+                let row_objectTaxation = this.recount[i];
                 //проверка на сплошной и ленточный перечет
                 if(!this.check_methodTaxation(row_objectTaxation.objectTaxation)) continue;
 
-                for (var j = 0; j < row_objectTaxation.objectsBreed.length; j++) {
-                    var row_objBreed = row_objectTaxation.objectsBreed[j];
-                    for (var k = 0; k < row_objBreed.objectsStep.length; k++) {
-                        var row_objStep 			= row_objBreed.objectsStep[k];
-                        console.log(row_objBreed)
-                        console.log(row_objStep)
+                for (let j = 0; j < row_objectTaxation.objectsBreed.length; j++) {
+                    let row_objBreed = row_objectTaxation.objectsBreed[j];
+                    for (let k = 0; k < row_objBreed.objectsStep.length; k++) {
+                        let row_objStep = row_objBreed.objectsStep[k];
+                        console.log(state)
                         //на этом уровне заполним сортиментную структуру на основе сортиментных таблиц и настроек МДО				
-                        var objAssortmentStructure = fillStepFromSortTablesAndSettings(row_objBreed,row_objStep);
+                        let objAssortmentStructure = fillStepFromSortTablesAndSettings(
+                            row_objBreed,
+                            row_objStep,
+                            state.settings.data.mdo
+                        );
                         //if(objAssortmentStructure != null){
                         //    objBreed.addAssortmentStructure(objAssortmentStructure);
                         //}
@@ -148,7 +148,7 @@ export class PlotMDO {
                     
                     
                     //сформируем итоговую строку по ступеням толщины - сделае это потом
-                    //var objTotalStep = new ClassAssortmentStructure({});			
+                    //let objTotalStep = new ClassAssortmentStructure({});			
 
                 }
             }            
@@ -172,70 +172,62 @@ export class PlotMDO {
 
 }
 
-function fillStepFromSortTablesAndSettings(objBreed,objStep,totalStep) { 
+function fillStepFromSortTablesAndSettings(objBreed,objStep,settings) { 
 
-	var business 		= Number(objStep.business);
-	var halfbusiness 	= Number(objStep.halfbusiness);
-	var firewood 		= Number(objStep.firewood);
+	var business 		= parseInt(objStep.business) || 0;
+	var halfbusiness 	= parseInt(objStep.halfbusiness) || 0;
+	var firewood 		= parseInt(objStep.firewood) || 0;
 	if(business+halfbusiness+firewood == 0){
-		return null;
-	}	
+		return undefined;
+    }
+    	
 	//распределим полуделовые				
 	var halfbusinessFor = (halfbusiness-halfbusiness%2)/2; //целочилостное деление
-
-	if(constantValues.distributionhalfbusiness == 0){
-		var business_r = business+halfbusiness-halfbusinessFor;
-		var firewood_r = firewood+halfbusinessFor;
-	}
-	if(constantValues.distributionhalfbusiness == 1){
+    let business_r = 0;
+    let firewood_r = 0;
+	if(!settings.distributionhalfbusiness){
+		business_r = business+halfbusiness-halfbusinessFor;
+		firewood_r = firewood+halfbusinessFor;
+	}else{
 		business_r = business+halfbusinessFor;
 		firewood_r = firewood+halfbusiness-halfbusinessFor;
 	}
 
-	var rowSortTable 			= null;
-	var rowSortFirewoodTable 	= null; //сортиментная таблица для дровяных стволов
-	for (var i = 0; i < breeds.length; i++) {
-		if(breeds[i].table){
-			if(breeds[i].table.id == objBreed.tables_id){
-				rowSortTable = breeds[i].table.sorttables[objBreed.rank][objStep.step];
-			}
-		}
-		if(breeds[i].tablefirewood){
-			if(breeds[i].tablefirewood.id == objBreed.tablesfirewood_id){
-				rowSortFirewoodTable = breeds[i].tablefirewood.sorttables[objBreed.rank][objStep.step];
-			}
-		}
-		if(rowSortTable){
-			break
-		}
-	}
+    let rowSortTable 			= undefined;
+    let rowSortFirewoodTable    = undefined;//сортиментная таблица для дровяных стволов
+    if('sorttables' in objBreed) rowSortTable 			        = objBreed.sorttables[objStep.step];
+    if('sorttablesfirewood' in objBreed) rowSortFirewoodTable   = objBreed.sorttablesfirewood[objStep.step];
 
-	if(rowSortTable == null){
-		fixError('Не найдено данных в сортиментной таблице для породы "'+objBreed.name+'", разряда высот: "'+
-				objBreed.rank+', ступени толщины: "'+objStep.step+'"!');				
-		return null;
-	} 	
-	
+	if(!rowSortTable){
+        webix.message({
+            text:'Не найдено данных в сортиментной таблице для породы "'+objBreed.value+'", разряда высот: "'+
+                objBreed.rank+', ступени толщины: "'+objStep.step+'"!',
+            type:"error", 
+            expire: 10000});
+		return undefined;
+    }    
 	
 	//Учет дров от дровяных деревьев в зависимости от настроек	
 	var technical_f 		= parseFloat(rowSortTable.technical_f);
 	var	firewood_f 			= parseFloat(rowSortTable.firewood_f);	
 	
 	var totalfirewood_f 	= 0;				
-	if(constantValues.assessfirewoodcommonstock == 1) {
+	if(settings.assessfirewoodcommonstock) {
 		totalfirewood_f	= technical_f + firewood_f;
 	}
 	
 	//отходы
-	var waste_f		= parseFloat(rowSortTable.waste_f);
+    var waste_f		= parseFloat(rowSortTable.waste_f);
+    
+    console.log(objBreed)
 
 	if(objBreed.kodGulf == '304200'){
-		if(constantValues.firewoodtrunkslindencountedinbark == 1 && constantValues.barklindenindividualreserves == 1) {
+		if(settings.firewoodtrunkslindencountedinbark == 1 && settings.barklindenindividualreserves == 1) {
 			//добавим кору если она отдельно и учет в коре
 			firewood_f += parseFloat(rowSortTable.bark);
 			waste_f += parseFloat(rowSortTable.bark);
 		}
-		if(constantValues.firewoodtrunkslindencountedinbark == 0 && constantValues.barklindenindividualreserves == 0) {
+		if(settings.firewoodtrunkslindencountedinbark == 0 && constantValues.barklindenindividualreserves == 0) {
 			//убавим кору если она вместе с отходами и учет без коры
 			firewood_f -= parseFloat(rowSortTable.bark);
 			waste_f -= parseFloat(rowSortTable.bark);
@@ -345,6 +337,3 @@ class ClassAssortmentStructure {
         }
     }
 }
-
-
-
