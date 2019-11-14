@@ -4,6 +4,7 @@ import typeORM from './TypeORM'
 //Рабочий стол
 import toolbar from './desktop/toolbar'
 import leftMenu from './desktop/leftMenu'
+import curentproject from './desktop/curentproject'
 
 //Подсистемы
 import background from './abris/background'
@@ -24,6 +25,7 @@ import abrisprintforms from './reference/abrisprintforms'
 import typesrates from './reference/typesrates'
 
 
+
 //настройки
 import settings from './settings/index'
 
@@ -37,6 +39,7 @@ export default combineReducers({
     update:update,
     toolbar:toolbar,
     leftMenu:leftMenu,
+    curentproject:curentproject,
     polygons:polygons,
     background:background,
     plot:plot,

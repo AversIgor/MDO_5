@@ -20,6 +20,7 @@ import {Tables} from "./entity/tables";
 import {Breed} from "./entity/breed";
 import {Abrisprintforms} from "./entity/abrisprintforms";
 import {Typesrates} from "./entity/typesrates";
+import {Curentproject} from "./entity/curentproject";
 
 
 export function init() {
@@ -46,6 +47,7 @@ export function init() {
                 Breed,
                 Abrisprintforms,
                 Typesrates,
+                Curentproject,
              ]
     }
 
@@ -84,7 +86,7 @@ export function init() {
                     await Migration_5_2_0_10.breedsConvert(options);
                 }
 
-                if(isNewVersions(oldVersion,"5.2.1.12")){
+                if(isNewVersions(oldVersion,"5.2.1.13")){
                     //конвертация контактной информации
                     await Migration_5_2_1_0.creatEntities(options);
                     await Migration_5_2_1_0.TypesratesConvert(options);

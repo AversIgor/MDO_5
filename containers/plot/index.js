@@ -15,6 +15,7 @@ import {
     mdoRecount
 } from "../../actions/plot";
 
+import {saveCurentPlot} from "../../actions/Desktop/curentproject";
 
 import ComponentConteiner from "../../components/plot/index";
 import ComponentProperty from "../../components/plot/property";
@@ -96,11 +97,19 @@ class Plot extends Component {
 
     componentDidMount() {
         if(!this.props.plotObject){
+            console.log(this.props.curentproject)
             this.props.newPlot()
         }       
     }
 
-    render() {
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.plotObject != this.props.plotObject){
+            this.props.saveCurentPlot(this.props.curentproject,nextProps.plotObject)
+        }
+        return true
+    }
+
+    render() {        
         if(!this.props.plotObject){
             return null
         }          
@@ -164,6 +173,7 @@ class Plot extends Component {
 
 function mapStateToProps (state) {
     return {
+        curentproject: state.curentproject,
         plotObject: state.plot.plotObject,
         curentRecount: state.plot.curentRecount,
         forestry: state.forestry.data,
@@ -189,6 +199,7 @@ function mapDispatchToProps(dispatch) {
         updateStep: bindActionCreators(updateStep, dispatch),
         changeCoeficients: bindActionCreators(changeCoeficients, dispatch),
         mdoRecount: bindActionCreators(mdoRecount, dispatch),
+        saveCurentPlot: bindActionCreators(saveCurentPlot, dispatch),
     }
 
 }

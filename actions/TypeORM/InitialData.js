@@ -10,8 +10,7 @@ import * as methodscleanings from "../reference/methodscleanings";
 import * as cuttingmethods from "../reference/cuttingmethods";
 import * as typesrates from "../reference/typesrates";
 import * as breed from "../reference/breed";
-
-
+import * as publications from "../reference/publications";
 
 import {defaultStyle} from "../reference/styles";
 import {defaultCuttingMethods} from "../reference/cuttingmethods";
@@ -90,7 +89,8 @@ export function feelAllReducers(dispatch) {
     dispatch(methodscleanings.fill_data({status:0}))
     dispatch(cuttingmethods.fill_data({status:0}))
     dispatch(typesrates.fill_data({status:0})) 
-    dispatch(breed.fill_data({status:0}))    
+    dispatch(breed.fill_data({status:0}))  
+    dispatch(publications.fill_data({status:0}))   
 }
 
 

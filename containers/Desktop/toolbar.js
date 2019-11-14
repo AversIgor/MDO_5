@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 import {openProject,saveProject} from '../../actions/Desktop/projectMeny';
 import {clickQuestionMenu} from '../../actions/Desktop/questionMenu';
 import {clickMenu} from '../../actions/Desktop/leftMenu';
+import {restoreProject} from '../../actions/Desktop/curentproject';
 import {newPlot} from '../../actions/plot';
 import * as background from '../../actions/Abris/background';
 import * as objects from '../../actions/Abris/objects';
+
 
 import ComponentToolbar from "../../components/Desktop/toolbar";
 import ComponentAbout from "../../components/Desktop/about";
@@ -42,6 +44,7 @@ class Toolbar extends Component {
                 <ComponentToolbar
                     resize = {this.props.resize}
                     leftMenuData = {this.props.leftMenuData}
+                    restoreProject = {this.props.restoreProject}
                     openProject = {this.props.openProject}
                     newProject = {this.newProject}
                     saveProject = {this.props.saveProject} 
@@ -71,7 +74,8 @@ function mapDispatchToProps(dispatch) {
         clickMenu: bindActionCreators(clickMenu, dispatch),  
         newPlot: bindActionCreators(newPlot, dispatch),  
         background_reset: bindActionCreators(background.reset, dispatch),
-        objects_reset: bindActionCreators(objects.reset, dispatch),      
+        objects_reset: bindActionCreators(objects.reset, dispatch), 
+        restoreProject: bindActionCreators(restoreProject, dispatch),      
     }
 }
 

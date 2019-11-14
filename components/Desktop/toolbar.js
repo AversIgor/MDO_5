@@ -20,6 +20,7 @@ export default class ComponentToolbar extends Component {
             data: [
                 {id: "new", icon: "mdi mdi-folder-plus", value: "Новый"},
                 {id: "open", icon: "mdi mdi-folder-open", value: "Открыть"},
+                {id: "restore", icon: "mdi mdi-folder-open", value: "Восстановить"},
                 { $template:"Separator" },
                 {id: "save", icon: "mdi mdi-content-save", value: "Сохранить"}
             ],            
@@ -41,6 +42,16 @@ export default class ComponentToolbar extends Component {
                             callback:(res) => {
                                 if(res){
                                     props.openProject()
+                                }
+                            }
+                        });
+                    }
+                    if(id == 'restore'){
+                        window.webix.confirm({
+                            text:"При загрузке все данные текущего проекта будут утеряны. Продолжить?", ok:"Да", cancel:"Нет",
+                            callback:(res) => {
+                                if(res){
+                                    props.restoreProject()
                                 }
                             }
                         });
