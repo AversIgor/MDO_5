@@ -3,6 +3,7 @@ import {Styles} from "../TypeORM/entity/styles"
 import {Cuttingmethods} from "../TypeORM/entity/cuttingmethods"
 import {Typesrates} from "../TypeORM/entity/typesrates"
 
+import * as curentproject from "../Desktop/curentproject";
 import * as forestry from "../reference/forestry";
 import * as subforestry from "../reference/subforestry";
 import * as tract from "../reference/tract";
@@ -83,7 +84,8 @@ export function updateAbrisPrintForms() {
 }
 
 export function feelAllReducers(dispatch) {
-    dispatch(forestry.fill_data({status:0}))
+
+    dispatch(curentproject.restoreProject())      
     dispatch(subforestry.fill_data({status:0}))
     dispatch(tract.fill_data({status:0}))
     dispatch(methodscleanings.fill_data({status:0}))

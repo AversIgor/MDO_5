@@ -7,8 +7,7 @@ import {
     CHANGE_COEFFICIENTS,
 } from '../../constants/plot'
 
-const initialState = {
-    
+const initialState = {    
     plotObject:undefined,
     curentRecount:undefined,//текущий объект перечета (объект таксации или порода)
 
@@ -24,7 +23,9 @@ export default function plot (state = initialState, action) {
     switch(action.type) {        
         case NEW_PLOT:
             return { ...initialState,
-                plotObject:action.plotObject,    
+                plotObject:action.plotObject, 
+                coefficients:action.coefficients,
+                recount:action.recount,  
             }   
         case CHANGE_PROPERTY:
             return { ...state,

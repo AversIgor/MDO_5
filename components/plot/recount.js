@@ -281,7 +281,9 @@ export default class ComponentRecount extends Component {
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
             this.initUI(nextProps)
         }
-        this.feelData(nextProps)
+        if(nextProps.plotObject){
+            this.feelData(nextProps)
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState){

@@ -76,8 +76,9 @@ class Plot extends Component {
     }
 
     updateStep = (row) => { 
-        if(('id' in this.props.curentRecount) && ('parent' in this.props.curentRecount)){
+        if(('id' in this.props.curentRecount) && ('parent' in this.props.curentRecount)){            
             this.props.updateStep(this.props.plotObject,this.props.curentRecount,row) 
+            this.props.saveCurentPlot(this.props.plotObject)
         }
     }
 
@@ -95,28 +96,33 @@ class Plot extends Component {
         this.setState({openMdoRecount: open})      
     }
 
-    componentDidMount() {
-        if(!this.props.plotObject){
-            console.log(this.props.curentproject)
+    initPlot = (restore) => {
+        if(restore){
+            this.props.newPlot(this.props.curentproject.plot)
+        }else{
             this.props.newPlot()
-        }       
+        }   
+    }
+
+    componentDidMount() {
+      
     }
 
     shouldComponentUpdate(nextProps, nextState){
         if(nextProps.plotObject != this.props.plotObject){
-            this.props.saveCurentPlot(this.props.curentproject,nextProps.plotObject)
+            this.props.saveCurentPlot(nextProps.plotObject)
         }
         return true
     }
 
-    render() {        
-        if(!this.props.plotObject){
-            return null
-        }          
+    render() {
         return (
             <Fragment>
                 <ComponentConteiner
                     conteinerReady = {this.conteinerReady}
+                    plotObject = {this.props.plotObject}
+                    curentproject = {this.props.curentproject}
+                    initPlot = {this.initPlot}
                 />
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}

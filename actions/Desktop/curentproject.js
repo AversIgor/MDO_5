@@ -5,21 +5,14 @@ import {
 import {getRepository} from "typeorm";
 import {Curentproject} from "../TypeORM/entity/curentproject";
 
-let lodash = require('lodash');
-
-export function saveCurentPlot(curentproject,plot) {
+export function saveCurentPlot(plot) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository          = getRepository(Curentproject);
-            let new_curentproject   = lodash.cloneDeep(curentproject)
-            new_curentproject.plot  = plot
-            let row = await repository.save({
+            await repository.save({
                 id:0,
-                data:new_curentproject
-            })
-            dispatch({
-                type: CURENTPROJECT_PLOT_EDIT,
-                plot: row.data.plot,
+                saved:false,
+                plot:plot
             })
         }
         asyncProcess()
@@ -31,10 +24,13 @@ export function restoreProject() {
         const asyncProcess = async () => {
             let repository      = getRepository(Curentproject);
             let data            = await repository.find();
-            dispatch({
-                type: LOAD_CURENTPROJECT,
-                plot: data[0].data.plot,
-            })
+            if(data.length != 0){
+                dispatch({
+                    type: LOAD_CURENTPROJECT,
+                    plot: data[0].plot,
+                    saved: data[0].saved,
+                })
+            }
         }
         asyncProcess()
     }

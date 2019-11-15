@@ -22,12 +22,26 @@ export function mdoRecount(plotObject) {
     }
 }
 
-export function newPlot() {
+export function newPlot(restoreData) {
     return (dispatch,getState) => {
-        dispatch({
-            type: NEW_PLOT,
-            plotObject: new mdo.PlotMDO()
-        })
+        if(!restoreData){
+            dispatch({
+                type: NEW_PLOT,
+                plotObject: new mdo.PlotMDO(),
+                coefficients: {
+                    main:{},
+                    random:[]
+                },
+                recount: [],
+            })
+        }else{
+            dispatch({
+                type: NEW_PLOT,
+                plotObject: new mdo.PlotMDO(restoreData),
+                coefficients: lodash.cloneDeep(restoreData.coefficients),
+                recount: lodash.cloneDeep(restoreData.recount),
+            })
+        }
     }
 }
 

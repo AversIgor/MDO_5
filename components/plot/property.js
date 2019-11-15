@@ -145,13 +145,13 @@ export default class ComponentProperty extends Component {
             this.initUI(nextProps)
             this.feelOptions('felling.cuttingmethods',nextProps.cuttingmethods)
         }
+        if(nextProps.plotObject){
+            this.feelOptions('taxation.typesrates',nextProps.typesrates)
+            this.feelOptions('location.forestry',nextProps.forestry)
+            this.feelOptions('parameters.methodscleaning',nextProps.methodscleanings) 
+            $$(this.id).setValues(nextProps.plotObject.property);
+        }
 
-        this.feelOptions('taxation.typesrates',nextProps.typesrates)
-        this.feelOptions('location.forestry',nextProps.forestry)
-        this.feelOptions('parameters.methodscleaning',nextProps.methodscleanings)
-        
-  
-        $$(this.id).setValues(nextProps.plotObject.property);
     }
 
     shouldComponentUpdate(){

@@ -4,7 +4,8 @@ import {
 } from '../../constants/decktop/curentproject'
 
 const initialState = {
-    plot: {},
+    saved: false,
+    plot: undefined,
 }
 
 export default function leftMenu (state = initialState, action) {
@@ -16,6 +17,7 @@ export default function leftMenu (state = initialState, action) {
         case LOAD_CURENTPROJECT://и МДО и еще чего нибудь
             return {...state,
                 plot:action.plot,
+                saved:action.saved,
             }
         default:
             return state
