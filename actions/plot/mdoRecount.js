@@ -5,6 +5,10 @@ export class PlotMDO {
         if(data){
             Object.assign(this, data);
         }else{
+            this.curentRecount = {
+                objectTaxation:undefined,
+                breed:undefined
+            }//текущая ветка объекта перечета
             this.property = {
                 location:{
                     forestry:0,
@@ -45,6 +49,10 @@ export class PlotMDO {
             this.recount = []//объекты таксации,площади/породы,разряды высот/ступени толщины,количество
             this.resultsRecount = []//результат расчете МДО по перечетной ведомоти для печатной формы
         }        
+    }
+
+    changeCurentRecount(newValue) {
+        this.curentRecount = {...newValue}
     }
 
     changeProperty(newValue) {

@@ -12,15 +12,20 @@ export default class ComponentSteps extends Component {
     }   
     
     feelData(props) {
-        let curentRecount = props.curentRecount
+        let curentRecount = props.plotObject.curentRecount
         $$(this.id).editCancel();
         $$(this.id).clearAll()
-        if(curentRecount){
-            if(curentRecount.hasOwnProperty('steps')){
-                for (let i = 0; i < curentRecount.steps.length; i++) {                    
-                    let objectStep = curentRecount.objectsStep.find(item => item.step == curentRecount.steps[i]);
+        let curentRow = undefined;
+        if(curentRecount.breed){
+            let parent     = this.props.plotObject.recount.find(item => item.id == curentRecount.objectTaxation);
+            curentRow  = parent.objectsBreed.find(item => item.id == curentRecount.breed);
+        }
+        if(curentRow){
+            if(curentRow.hasOwnProperty('steps')){
+                for (let i = 0; i < curentRow.steps.length; i++) {                    
+                    let objectStep = curentRow.objectsStep.find(item => item.step == curentRow.steps[i]);
                     let newRow = {
-                        step:curentRecount.steps[i]
+                        step:curentRow.steps[i]
                     }
                     if(objectStep){
                         newRow.business = objectStep.business
@@ -137,7 +142,9 @@ export default class ComponentSteps extends Component {
         if((nextProps.conteinerReady) && (!this.props.conteinerReady)){
             this.initUI()
         }
-        this.feelData(nextProps)
+        if(nextProps.plotObject){
+            this.feelData(nextProps)
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState){

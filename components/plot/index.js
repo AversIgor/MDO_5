@@ -8,36 +8,7 @@ export default class ComponenLayot extends Component {
         super(props);
         this.ui         = [];
     }       
-    componentDidMount(){ 
-
-        let self = this;
-
-        if(!this.props.plotObject){
-            if(this.props.curentproject){
-                if(!this.props.curentproject.saved){
-                    webix.modalbox({
-                        title: "Внимание!",
-                        buttons:["Продолжить проект", "Начать новый"],
-                        text: "Зафиксирован не сохраненный проект",
-                        type:"confirm-warning",
-                        width:400,
-                    }).then(function(result){
-                        switch(result){
-                            case "0": 
-                            self.props.initPlot(self.props.curentproject.plot);
-                                break;
-                            case "1":
-                            self.props.initPlot();
-                                break;
-                        }   
-                    });
-                }else{
-                    this.props.initPlot()
-                }
-            }else{
-                this.props.initPlot()
-            }
-        } 
+    componentDidMount(){        
 
         let layout = {
             id:this.id+'_layout',

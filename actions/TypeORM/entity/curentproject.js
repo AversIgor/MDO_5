@@ -15,6 +15,9 @@ export class Curentproject {
     @Column({ type: "simple-json", nullable: true })
     plot = {};
 
+    @Column({ type: "simple-json", nullable: true })
+    abris = {};
+
 
 }
 

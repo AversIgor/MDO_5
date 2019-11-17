@@ -1,23 +1,21 @@
 import {
-    CURENTPROJECT_PLOT_EDIT,
     LOAD_CURENTPROJECT,
 } from '../../constants/decktop/curentproject'
 
+//в эти переменные будем инициировать сохраненные но не выгруженные с прошлого сеанса объекты
 const initialState = {
     saved: false,
     plot: undefined,
+    abris: undefined,
 }
 
-export default function leftMenu (state = initialState, action) {
+export default function curentproject (state = initialState, action) {
     switch(action.type) {
-        case CURENTPROJECT_PLOT_EDIT:
-            return {...state,
-                plot:action.plot,
-            }
         case LOAD_CURENTPROJECT://и МДО и еще чего нибудь
             return {...state,
-                plot:action.plot,
                 saved:action.saved,
+                plot:action.plot,
+                abris:action.abris,
             }
         default:
             return state

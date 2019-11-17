@@ -12,8 +12,8 @@ export default class ComponentRecount extends Component {
     }      
     
     feelData(props) {
-        let recount = props.plotObject.recount
-        let curentRecount = props.curentRecount
+        let recount         = props.plotObject.recount
+        let curentRecount   = props.plotObject.curentRecount
 
         $$(this.id).clearAll();
        
@@ -49,15 +49,22 @@ export default class ComponentRecount extends Component {
             }
         }
 
+        let selectId = undefined
         if(!curentRecount){
             if(recount.length != 0){
-                curentRecount = recount[recount.length-1]
+                selectId = recount[recount.length-1].id
+            }
+        }else{
+            if(curentRecount.breed){
+                selectId = curentRecount.breed
+            }else{
+                selectId = curentRecount.objectTaxation
             }
         }
-        if(curentRecount){
-            $$(this.id).select(curentRecount.id)
+        if(selectId){
+            $$(this.id).select(selectId)
         }
-        $$(this.id+'_buttonAdd').define("disabled",!curentRecount)
+        $$(this.id+'_buttonAdd').define("disabled",!selectId)
         $$(this.id+'_buttonAdd').refresh()
     }
     

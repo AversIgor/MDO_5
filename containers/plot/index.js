@@ -64,22 +64,21 @@ class Plot extends Component {
         this.props.changeCoeficients(this.props.plotObject,changeCoeficients) 
     }
 
-    changeCurentRecount = (node) => { 
+    changeCurentRecount = (node) => {
+        let curentRecount = {} 
         if(node.$parent != 0){
-            let parent         = this.props.plotObject.recount.find(item => item.id == node.$parent);
-            let curentRecount  = parent.objectsBreed.find(item => item.id == node.id);
-            this.props.changeCurentRecount(curentRecount)
+            curentRecount.objectTaxation = node.$parent
+            curentRecount.breed = node.id
         }else{
-            let parent         =  this.props.plotObject.recount.find(item => item.id == node.id);
-            this.props.changeCurentRecount(parent)
+            curentRecount.objectTaxation = node.id
+            curentRecount.breed = undefined
         }    
+        this.props.changeCurentRecount(this.props.plotObject,curentRecount)
     }
 
     updateStep = (row) => { 
-        if(('id' in this.props.curentRecount) && ('parent' in this.props.curentRecount)){            
-            this.props.updateStep(this.props.plotObject,this.props.curentRecount,row) 
-            this.props.saveCurentPlot(this.props.plotObject)
-        }
+        this.props.updateStep(this.props.plotObject,row) 
+        this.props.saveCurentPlot(this.props.plotObject)
     }
 
     formCoefficients = (open) => {
@@ -138,7 +137,7 @@ class Plot extends Component {
                 />
                 <ComponentSteps
                     conteinerReady = {this.state.conteinerReady}
-                    curentRecount = {this.props.curentRecount}
+                    plotObject = {this.props.plotObject}
                     updateStep = {this.updateStep}
                     formCoefficients = {this.formCoefficients}
                     mdoRecount = {this.mdoRecount}

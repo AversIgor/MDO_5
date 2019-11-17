@@ -1,10 +1,5 @@
 import {
-    NEW_PLOT,
     CHANGE_PROPERTY,
-    CHANGE_RECOUNT,
-    CHANGE_CURENTRECOUNT,
-    UPDATE_STEPS,
-    CHANGE_COEFFICIENTS,
 } from '../../constants/plot'
 
 let lodash = require('lodash');
@@ -26,20 +21,13 @@ export function newPlot(restoreData) {
     return (dispatch,getState) => {
         if(!restoreData){
             dispatch({
-                type: NEW_PLOT,
+                type: CHANGE_PROPERTY,
                 plotObject: new mdo.PlotMDO(),
-                coefficients: {
-                    main:{},
-                    random:[]
-                },
-                recount: [],
             })
         }else{
             dispatch({
-                type: NEW_PLOT,
+                type: CHANGE_PROPERTY,
                 plotObject: new mdo.PlotMDO(restoreData),
-                coefficients: lodash.cloneDeep(restoreData.coefficients),
-                recount: lodash.cloneDeep(restoreData.recount),
             })
         }
     }
@@ -62,9 +50,8 @@ export function updateObjectTaxation(plotObject,newValue) {
         let new_plotObject = lodash.cloneDeep(plotObject)
         let rowObjectTaxation = new_plotObject.getObjectTaxation(newValue)
         dispatch({
-            type: CHANGE_RECOUNT,
+            type: CHANGE_PROPERTY,
             plotObject: new_plotObject,
-            curentRecount:rowObjectTaxation
         })
     }
 }
@@ -82,9 +69,8 @@ export function updateBreed(plotObject,newValue,breeds){
             }
         }
         dispatch({
-            type: CHANGE_RECOUNT,
+            type: CHANGE_PROPERTY,
             plotObject: new_plotObject,
-            curentRecount:rowBreed
         })
     }
 }
@@ -94,9 +80,8 @@ export function deleteObjectTaxation(plotObject,id) {
         let new_plotObject = lodash.cloneDeep(plotObject)
         new_plotObject.deleteObjectTaxation(id)
         dispatch({
-            type: CHANGE_RECOUNT,
+            type: CHANGE_PROPERTY,
             plotObject: new_plotObject,
-            curentRecount:undefined
         })
     }
 }
@@ -109,18 +94,19 @@ export function deleteBreed(plotObject,id,parent) {
             new_plotObject.deleteBreed(rowObjectTaxation,id)
         }       
         dispatch({
-            type: CHANGE_RECOUNT,
+            type: CHANGE_PROPERTY,
             plotObject: new_plotObject,
-            curentRecount:rowObjectTaxation
         })
     }
 }
 
-export function changeCurentRecount(curentRecount) {
+export function changeCurentRecount(plotObject,curentRecount) {
+    let new_plotObject = lodash.cloneDeep(plotObject)
+    new_plotObject.changeCurentRecount(curentRecount)
     return (dispatch,getState) => {
         dispatch({
-            type: CHANGE_CURENTRECOUNT,
-            curentRecount:curentRecount
+            type: CHANGE_PROPERTY,
+            plotObject: new_plotObject
         })
     }
 }
@@ -130,17 +116,16 @@ export function changeCoeficients(plotObject,newCoefficients) {
         let new_plotObject = lodash.cloneDeep(plotObject)
         new_plotObject.changeCoeficients(newCoefficients)
         dispatch({
-            type: CHANGE_COEFFICIENTS,
+            type: CHANGE_PROPERTY,
             plotObject:new_plotObject
         })
     }
 }
 
-export function updateStep(plotObject,curentRecount,stepValue) {
+export function updateStep(plotObject,stepValue) {
     return (dispatch,getState) => {
-        let rowObjectTaxation   = plotObject.getObjectTaxation({id:curentRecount.parent})
-        let rowBreed            = plotObject.getBreed(rowObjectTaxation,{id:curentRecount.id})
+        let rowObjectTaxation   = plotObject.getObjectTaxation({id:plotObject.curentRecount.objectTaxation})
+        let rowBreed            = plotObject.getBreed(rowObjectTaxation,{id:plotObject.curentRecount.breed})
         plotObject.getStep(rowBreed,stepValue)
-        //dispatch({})
     }
 }

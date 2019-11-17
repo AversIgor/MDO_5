@@ -10,7 +10,8 @@ export default class ComponentToolbar extends Component {
     }
 
     componentDidMount(){
-       var props = this.props; 
+
+        let props = this.props;
 
         const projectMenu = {
             view: "submenu",
@@ -20,7 +21,6 @@ export default class ComponentToolbar extends Component {
             data: [
                 {id: "new", icon: "mdi mdi-folder-plus", value: "Новый"},
                 {id: "open", icon: "mdi mdi-folder-open", value: "Открыть"},
-                {id: "restore", icon: "mdi mdi-folder-open", value: "Восстановить"},
                 { $template:"Separator" },
                 {id: "save", icon: "mdi mdi-content-save", value: "Сохранить"}
             ],            
@@ -31,7 +31,7 @@ export default class ComponentToolbar extends Component {
                             text:"Удалить все данные и начать новый проект?", ok:"Да", cancel:"Нет",
                             callback:(res) => {
                                 if(res){
-                                    props.newProject()
+                                    props.newProject(false);
                                 }
                             }
                         });
@@ -42,16 +42,6 @@ export default class ComponentToolbar extends Component {
                             callback:(res) => {
                                 if(res){
                                     props.openProject()
-                                }
-                            }
-                        });
-                    }
-                    if(id == 'restore'){
-                        window.webix.confirm({
-                            text:"При загрузке все данные текущего проекта будут утеряны. Продолжить?", ok:"Да", cancel:"Нет",
-                            callback:(res) => {
-                                if(res){
-                                    props.restoreProject()
                                 }
                             }
                         });
@@ -169,9 +159,28 @@ export default class ComponentToolbar extends Component {
 
     }
 
-
-    shouldComponentUpdate(){
-        return true;
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.curentproject.saved){
+                webix.modalbox({
+                title: "Внимание!",
+                buttons:["Продолжить проект", "Начать новый"],
+                text: "Зафиксирован не сохраненный проект",
+                type:"confirm-warning",
+                width:400,
+            }).then(function(result){
+                switch(result){
+                    case "0": 
+                        nextProps.newProject(true);
+                        break;
+                    case "1":
+                        nextProps.newProject(false);
+                        break;
+                }   
+            });
+        }else{
+            nextProps.newProject(false);
+        }
+        return true
     }
 
     componentDidUpdate(prevProps, prevState){
