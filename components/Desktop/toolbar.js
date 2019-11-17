@@ -152,16 +152,15 @@ export default class ComponentToolbar extends Component {
         this.toolbar = window.webix.ui(toolbar);
         window.webix.ui(projectMenu);
         window.webix.ui(questionMenu);
-        window.webix.ui(leftMenu);   
-        
-
-
+        window.webix.ui(leftMenu);
 
     }
 
     shouldComponentUpdate(nextProps, nextState){
         if(nextProps.curentproject.saved){
+                webix.modalbox.hide("savaProject");
                 webix.modalbox({
+                id:"savaProject", 
                 title: "Внимание!",
                 buttons:["Продолжить проект", "Начать новый"],
                 text: "Зафиксирован не сохраненный проект",
@@ -189,7 +188,7 @@ export default class ComponentToolbar extends Component {
 
     componentWillUnmount(){
         this.toolbar.destructor();
-        this.toolbar = null;
+        this.toolbar = null;        
     }
 
 

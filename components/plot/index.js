@@ -31,7 +31,6 @@ export default class ComponenLayot extends Component {
    
     componentWillUnmount(){
         common.uiDestructor(this)
-        webix.modalbox.hideAll();
     }
 
     shouldComponentUpdate(){
