@@ -12,12 +12,13 @@ export default class ComponentSteps extends Component {
     }   
     
     feelData(props) {
+
         let curentRecount = props.plotObject.curentRecount
         $$(this.id).editCancel();
         $$(this.id).clearAll()
         let curentRow = undefined;
         if(curentRecount.breed){
-            let parent     = this.props.plotObject.recount.find(item => item.id == curentRecount.objectTaxation);
+            let parent     = props.plotObject.recount.find(item => item.id == curentRecount.objectTaxation);
             curentRow  = parent.objectsBreed.find(item => item.id == curentRecount.breed);
         }
         if(curentRow){

@@ -48,7 +48,11 @@ export function changeProperty(plotObject,newValue) {
 export function updateObjectTaxation(plotObject,newValue) {
     return (dispatch,getState) => {
         let new_plotObject = lodash.cloneDeep(plotObject)
-        let rowObjectTaxation = new_plotObject.getObjectTaxation(newValue)
+        new_plotObject.getObjectTaxation(newValue)
+        new_plotObject.changeCurentRecount({
+            objectTaxation:newValue.id,
+            breed:undefined
+        })
         dispatch({
             type: CHANGE_PROPERTY,
             plotObject: new_plotObject,
@@ -64,8 +68,11 @@ export function updateBreed(plotObject,newValue,breeds){
         if(rowObjectTaxation){
             rowBreed = new_plotObject.getBreed(rowObjectTaxation,newValue)
             if(rowBreed){
-                rowBreed = new_plotObject.getBreed(rowObjectTaxation,newValue)
                 new_plotObject.feelSteps(rowBreed,breeds)
+                new_plotObject.changeCurentRecount({
+                    objectTaxation:rowObjectTaxation.id,
+                    breed:rowBreed.id
+                })
             }
         }
         dispatch({
@@ -79,6 +86,10 @@ export function deleteObjectTaxation(plotObject,id) {
     return (dispatch,getState) => {
         let new_plotObject = lodash.cloneDeep(plotObject)
         new_plotObject.deleteObjectTaxation(id)
+        new_plotObject.changeCurentRecount({
+            objectTaxation:undefined,
+            breed:undefined
+        })
         dispatch({
             type: CHANGE_PROPERTY,
             plotObject: new_plotObject,
@@ -92,6 +103,10 @@ export function deleteBreed(plotObject,id,parent) {
         let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:parent})
         if(rowObjectTaxation){
             new_plotObject.deleteBreed(rowObjectTaxation,id)
+            new_plotObject.changeCurentRecount({
+                objectTaxation:rowObjectTaxation.id,
+                breed:undefined
+            })
         }       
         dispatch({
             type: CHANGE_PROPERTY,

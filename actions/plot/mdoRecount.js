@@ -1,5 +1,3 @@
-let lodash = require('lodash');
-
 export class PlotMDO {
     constructor(data = undefined) {
         if(data){
@@ -135,8 +133,9 @@ export class PlotMDO {
     }
 
 
-    //здесь буде на основе перечетной ведомости создавать Новое дерево даных и дополнять его данными
+    //здесь будем на основе перечетной ведомости создавать Новое дерево данных и дополнять его данными
     calculation(state) {
+        console.log(state)
         const asyncProcess = async () => {
             for (let i = 0; i < this.recount.length; i++) {
                 let row_objectTaxation = this.recount[i];
@@ -147,7 +146,6 @@ export class PlotMDO {
                     let row_objBreed = row_objectTaxation.objectsBreed[j];
                     for (let k = 0; k < row_objBreed.objectsStep.length; k++) {
                         let row_objStep = row_objBreed.objectsStep[k];
-                        console.log(state)
                         //на этом уровне заполним сортиментную структуру на основе сортиментных таблиц и настроек МДО				
                         let objAssortmentStructure = fillStepFromSortTablesAndSettings(
                             row_objBreed,
@@ -230,9 +228,7 @@ function fillStepFromSortTablesAndSettings(objBreed,objStep,settings) {
 	}
 	
 	//отходы
-    var waste_f		= parseFloat(rowSortTable.waste_f);
-    
-    console.log(objBreed)
+    var waste_f		= parseFloat(rowSortTable.waste_f);    
 
 	if(objBreed.kodGulf == '304200'){
 		if(settings.firewoodtrunkslindencountedinbark == 1 && settings.barklindenindividualreserves == 1) {
@@ -313,7 +309,6 @@ function fillStepFromSortTablesAndSettings(objBreed,objStep,settings) {
 	return objAssortmentStructure;
 
 }
-
 
 //Строка расчета сортиментной структура
 class ClassAssortmentStructure {
