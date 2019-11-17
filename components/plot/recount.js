@@ -50,15 +50,14 @@ export default class ComponentRecount extends Component {
         }
 
         let selectId = undefined
-        if(!curentRecount){
+        if(curentRecount.breed){
+            selectId = curentRecount.breed
+        }else{
+            selectId = curentRecount.objectTaxation
+        }
+        if(!selectId){
             if(recount.length != 0){
                 selectId = recount[recount.length-1].id
-            }
-        }else{
-            if(curentRecount.breed){
-                selectId = curentRecount.breed
-            }else{
-                selectId = curentRecount.objectTaxation
             }
         }
         if(selectId){
