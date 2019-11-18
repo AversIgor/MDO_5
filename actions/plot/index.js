@@ -4,14 +4,23 @@ import {
 
 let lodash = require('lodash');
 
-import * as mdo from "./mdoRecount";
+import * as plot from "./plot";
+import * as recount from "./recount";
 
 export function mdoRecount(plotObject) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let new_plotObject = lodash.cloneDeep(plotObject)
-            let state = getState()
-            new_plotObject.calculation(state)
+            let state       = getState()
+            let newRecount  = new recount.Recount()
+            newRecount.setProperty({
+                plot:plotObject,
+                settings:state.settings.data.mdo,
+                enumerations:state.enumerations,
+                breed:state.breed,
+            })            
+            console.log(state)
+            newRecount.calculation()
+            console.log(newRecount.getProperty("results"))
         }
         return asyncProcess()
     }
@@ -22,12 +31,12 @@ export function newPlot(restoreData) {
         if(!restoreData){
             dispatch({
                 type: CHANGE_PROPERTY,
-                plotObject: new mdo.PlotMDO(),
+                plotObject: new plot.Plot(),
             })
         }else{
             dispatch({
                 type: CHANGE_PROPERTY,
-                plotObject: new mdo.PlotMDO(restoreData),
+                plotObject: new plot.Plot(restoreData),
             })
         }
     }
