@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Selectprintform from "../../components/Abris/selectprintform";
 import Saveaspng from "../../components/Abris/printforms/saveaspng";
 import Printform from "../../containers/Abris/printforms/printform";
-import {fill_data} from "../../actions/reference/abrisprintforms";
+import {fill_data} from "../../actions/reference/printforms";
 
 
 class SelectprintformForm extends Component {
@@ -81,7 +81,7 @@ function mapStateToProps (state) {
     return {
         opacity: state.background.opacity,
         rotate: state.background.rotate,
-        printforms: state.abrisprintforms.data,
+        printforms: state.printforms.data,
     }
 }
 

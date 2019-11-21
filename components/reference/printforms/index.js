@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
-import * as common from '../reference/common';
+import * as common from '../common';
 
-export default class ComponentAbrisprintforms extends Component {
+export default class ComponentPrintforms extends Component {
 
 	loadButton() {
 		this.props.handlerLoad();
@@ -19,7 +19,7 @@ export default class ComponentAbrisprintforms extends Component {
         this.state = {
             selected:   {},
         };
-        this.id     = 'abrisprintforms';
+        this.id     = 'Printforms';
         this.editable = false;
         this.menu   = [
             {id: "showDel", value: "Показать (скрыть) помеченные на удаление"},
@@ -30,7 +30,8 @@ export default class ComponentAbrisprintforms extends Component {
 
         this.columns = [
             common.datatableFieldID(),
-            { id:"name",	header:"Наименование", editor:"text", fillspace:true },
+            { id:"name",	header:"Наименование", fillspace:true },
+            { id:"type",	header:"Назначение", options:this.props.typesPrintForms},
 
         ]
         this.rules   = {
@@ -50,8 +51,6 @@ export default class ComponentAbrisprintforms extends Component {
                 common.addButton(this),
                 common.copyButton(this),
 				common.deleteButton(this),
-				//this.loadButton(),
-				//this.saveButton(),
                 {},
                 common.search(this),
                 common.settingsButton(this),
@@ -82,7 +81,6 @@ export default class ComponentAbrisprintforms extends Component {
 
     componentWillReceiveProps(nextProps) {
         common.datatableUpdate(this,nextProps)
-        common.formResize(this)
     }
 
     componentWillUnmount(){
@@ -94,7 +92,7 @@ export default class ComponentAbrisprintforms extends Component {
     }
 
     render() {
-        return (<div ref="root"></div>)
+        return (<div ref="root" style={{height: "100%"}}></div>)
     }
 
 }

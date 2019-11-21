@@ -1,9 +1,9 @@
 import {
-    ABRISPRINTFORMS_FILL_SUCCESS,
-    ABRISPRINTFORMS_ADD,
-    ABRISPRINTFORMS_DEL,
-    ABRISPRINTFORMS_EDIT,
-} from '../../constants/reference/abrisprintforms'
+    PRINTFORMS_FILL_SUCCESS,
+    PRINTFORMS_ADD,
+    PRINTFORMS_DEL,
+    PRINTFORMS_EDIT,
+} from '../../constants/reference/printforms'
 
 const initialState = {
     currentId:undefined,
@@ -18,24 +18,24 @@ const initialState = {
     }    
 }
 
-export default function abrisprintforms(state = initialState, action) {
+export default function printforms(state = initialState, action) {
     switch(action.type) {
-        case ABRISPRINTFORMS_FILL_SUCCESS:
+        case PRINTFORMS_FILL_SUCCESS:
             return { ...state,
                 data: action.data,
                 where: action.where                
             }
-        case ABRISPRINTFORMS_ADD:
+        case PRINTFORMS_ADD:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,
             }
-        case ABRISPRINTFORMS_DEL:
+        case PRINTFORMS_DEL:
             return { ...state,
                 currentId: undefined,
                 data: action.data,
             }
-        case ABRISPRINTFORMS_EDIT:
+        case PRINTFORMS_EDIT:
             return { ...state,
                 currentId: action.currentId,
                 data: action.data,

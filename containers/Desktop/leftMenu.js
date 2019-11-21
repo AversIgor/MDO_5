@@ -13,11 +13,12 @@ import Cuttingmethods from '../reference/cuttingmethods';
 import Typesrates from '../reference/typesrates';
 import Publication from '../reference/publication';
 import Breed from '../reference/breed';
+import Printforms from '../reference/printforms';
 import Abris from '../Abris';
 import Styles from '../styles';
 
 import Settings from '../settings';
-import Abrisprintforms from '../abrisprintforms';
+
 
 
 class LeftMenu extends Component {
@@ -37,8 +38,8 @@ class LeftMenu extends Component {
                     return <Methodscleanings/>;
                 case "styles":
                     return <Styles/>
-                case "abrisprintforms":
-                    return <Abrisprintforms/>                    
+                case "printforms":
+                    return <Printforms/>                    
                 case "settings":
                     return <Settings/>
                 case "plot":

@@ -12,7 +12,8 @@ const initialState = {
                 { id: "subforestry", value: "Участковые лесничества"},
                 { id: "tract", value: "Урочища"},
                 { id: "breed", value: "Породы"},
-                { id: "cuttingmethods", value: "Способы рубки"},                
+                { id: "cuttingmethods", value: "Способы рубки"},
+                { id: "printforms", value: "Печатные формы"},                
             ]}, 
             {id: "mdoreference", value:"Справочники (МДО)", data:[
                 { id: "publications", value: "Сортиментные таблицы"}, 
@@ -20,8 +21,7 @@ const initialState = {
                 { id: "methodscleanings", value: "Способы очистки"},
             ]}, 
             {id: "abrisreference", value:"Справочники (Абрис)", data:[
-                { id: "styles", value: "Стили отображения абриса"},
-                { id: "abrisprintforms", value: "Печатные формы"},
+                { id: "styles", value: "Стили отображения абриса"},                
             ]},
         ]},
         { id: "settings", value: "Настройка программы"},         

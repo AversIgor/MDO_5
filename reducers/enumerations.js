@@ -105,6 +105,10 @@ const initialState = {
       "ЮЗ",
       "СЗ"
     ],
+    typesPrintForms: [
+      {"id":1,   "value":"Для абриса"},
+      {"id":2,   "value":"Для МДО"},
+    ],
 }
 
 

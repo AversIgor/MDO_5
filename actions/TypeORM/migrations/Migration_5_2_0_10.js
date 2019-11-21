@@ -7,7 +7,6 @@ import {Cuttingmethods} from "../entity/cuttingmethods"
 import {Publications} from "../entity/publications"
 import {Tables} from "../entity/tables";
 import {Breed} from "../entity/breed";
-import {Abrisprintforms} from "../entity/abrisprintforms"
 import {Methodscleanings} from "../entity/methodscleanings";
 
 import {store} from "../../../src/app";
@@ -27,7 +26,6 @@ export function creatEntities(conectionOption) {
                 Publications,
                 Tables,
                 Breed,
-                Abrisprintforms,
             ]
             let connection      = await createConnection(newOption);
             await connection.close();

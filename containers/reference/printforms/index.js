@@ -2,16 +2,15 @@ import React, { Component, Fragment } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import ComponentAbrisprintforms from "../../components/abrisprintforms";
-import ComponentAbrisprintformsForm from "../../components/abrisprintforms/form";
-import {fill_data,add,del,edit,load,save,getVariables,getImages} from "../../actions/reference/abrisprintforms";
+import ComponentPrintforms from "../../../components/reference/printforms";
+import ComponentPrintformsForm from "../../../components/reference/printforms/form";
+import {fill_data,add,del,edit,load,save,getVariables,getImages} from "../../../actions/reference/printforms";
 
-class Abrisprintforms extends Component {
+class Printforms extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            resize: false,
             editObject:undefined
         };
         this.showAllStatus = false
@@ -20,9 +19,6 @@ class Abrisprintforms extends Component {
     componentDidMount() {
         let self = this;
         this.props.fill_data({status:0});
-        webix.event(window, "resize", function(){
-            self.setState({resize: !self.state.resize})
-        })
     }
 
     handlerShowAllStatus = () => {
@@ -60,7 +56,7 @@ class Abrisprintforms extends Component {
     render() {        
         return(
             <Fragment>
-                <ComponentAbrisprintforms
+                <ComponentPrintforms
                     data = {this.props.data}
                     sort = {this.props.sort}
                     currentId = {this.props.currentId}
@@ -72,13 +68,15 @@ class Abrisprintforms extends Component {
 					handlerEdit={this.handlerEdit}
                     handlerEditForm = {this.handlerEditForm}
                     handlerShowAllStatus = {this.handlerShowAllStatus}
+                    typesPrintForms = {this.props.typesPrintForms}
                 />
-                <ComponentAbrisprintformsForm
+                <ComponentPrintformsForm
                     editObject = {this.state.editObject}
                     getVariables = {getVariables}
                     getImages = {getImages}
                     handlerEdit = {this.handlerEdit}
                     handlerClose = {this.handlerClose}
+                    typesPrintForms = {this.props.typesPrintForms}
                 />
 
             </Fragment>
@@ -90,8 +88,9 @@ class Abrisprintforms extends Component {
 
 function mapStateToProps (state) {
     return {
-        data: state.abrisprintforms.data,
-        currentId: state.abrisprintforms.currentId
+        data: state.printforms.data,
+        currentId: state.printforms.currentId,
+        typesPrintForms: state.enumerations.typesPrintForms
     }
 }
 
@@ -107,6 +106,6 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Abrisprintforms)
+export default connect(mapStateToProps, mapDispatchToProps)(Printforms)
 
 

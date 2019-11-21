@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import ReactDOM from 'react-dom';
 
-export default class ComponentAbrisprintformsForm extends Component {
+export default class ComponentPrintformsForm extends Component {
 
     constructor(props) {
         super(props);
@@ -12,11 +12,14 @@ export default class ComponentAbrisprintformsForm extends Component {
         let self = this;
         let form = {
             view:"form",
-            id:"abrisprintforms_form",
+            id:"Printforms_form",
             scroll:false,
             autoheight:true,
             elements:[
-                { view:"text", name:"name", label:"Наименование:",labelWidth:130},
+                {cols:[
+                    { view:"text", name:"name", label:"Наименование:",labelWidth:130},
+                    { view:"select", name:"type", label:"Назначение", labelWidth:80,width:200,options:this.props.typesPrintForms},                
+                ]},
                 { view:"tinymce-editor", name:'printform', id: "printform", config:
                     {
                         theme:"modern",
@@ -96,7 +99,8 @@ export default class ComponentAbrisprintformsForm extends Component {
                     on:{
                         'onItemClick': function(id){
                             let value = {
-                                name:$$("abrisprintforms_form").getValues().name,
+                                name:$$("Printforms_form").getValues().name,
+                                type:$$("Printforms_form").getValues().type,
                                 printform: $$("printform").getValue()
                             }
                             if(self.props.editObject.predefined){
@@ -131,7 +135,7 @@ export default class ComponentAbrisprintformsForm extends Component {
 
         var conteiner = {
             view:"window",
-            id:"abrisprintforms_window",
+            id:"Printforms_window",
             container:ReactDOM.findDOMNode(this.refs.root),
             zIndex:100,
             width: 1000,
@@ -151,8 +155,9 @@ export default class ComponentAbrisprintformsForm extends Component {
     componentWillReceiveProps(nextProps) {
         if(nextProps.editObject){
             this.ui.show();
-            $$("abrisprintforms_form").setValues({
+            $$("Printforms_form").setValues({
                 name: nextProps.editObject.name,
+                type: nextProps.editObject.type,
             });
             $$("printform").setValue(nextProps.editObject.printform);
         }else{

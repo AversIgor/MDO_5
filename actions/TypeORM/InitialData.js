@@ -16,7 +16,7 @@ import * as publications from "../reference/publications";
 import {defaultStyle} from "../reference/styles";
 import {defaultCuttingMethods} from "../reference/cuttingmethods";
 import {defaultTypesrates} from "../reference/typesrates";
-import {updatePredefinedAbrisPrintForms} from "../../actions/reference/abrisprintforms";
+import {updatePredefinedPrintForms} from "../../actions/reference/printforms";
 
 export function creatMainStyle(conectionOption) {
 
@@ -76,9 +76,9 @@ export function creatTypesrates(conectionOption) {
     return asyncProcess();
 }
 
-export function updateAbrisPrintForms() {
+export function updatePrintForms() {
     const asyncProcess = async () => {
-        await updatePredefinedAbrisPrintForms();
+        await updatePredefinedPrintForms();
     }
     return asyncProcess();
 }
@@ -86,6 +86,7 @@ export function updateAbrisPrintForms() {
 export function feelAllReducers(dispatch) {
 
     dispatch(curentproject.restoreProject())      
+    dispatch(forestry.fill_data({status:0}))
     dispatch(subforestry.fill_data({status:0}))
     dispatch(tract.fill_data({status:0}))
     dispatch(methodscleanings.fill_data({status:0}))

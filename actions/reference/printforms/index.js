@@ -1,34 +1,60 @@
 import {
-	ABRISPRINTFORMS_FILL_SUCCESS,
-	ABRISPRINTFORMS_ADD,
-	ABRISPRINTFORMS_DEL,
-	ABRISPRINTFORMS_EDIT,
-} from '../../../constants/reference/abrisprintforms'
+	PRINTFORMS_FILL_SUCCESS,
+	PRINTFORMS_ADD,
+	PRINTFORMS_DEL,
+	PRINTFORMS_EDIT,
+} from '../../../constants/reference/printforms'
 import { getRepository } from "typeorm";
-import { Abrisprintforms } from "../../TypeORM/entity/abrisprintforms";
+import { Printforms } from "../../TypeORM/entity/printforms";
 import * as FileSaver from "file-saver";
 
-export function getVariables() {
+export function getVariables(type) {
 
-	let variables = [
-		{ text: 'Лесничество', value: '~Лесничество~' },
-		{ text: 'Участковое лесничество', value: '~УчастковоеЛесничество~' },
-		{ text: 'Урочище', value: '~Урочище~' },
-		{ text: 'Квартал', value: '~Квартал~' },
-		{ text: 'Выдел', value: '~Выдел~' },
-		{ text: 'Делянка', value: '~Делянка~' },
-		{ text: 'Масштаб', value: '~Масштаб~' },
-		{ text: 'Площадь всех объектов', value: '~ПлощадьВсехОбъектов~' },
-		{ text: 'Наименование объекта (экспликация)', value: '~О.НаименованиеОбъекта~' },
-		{ text: 'Площадь объекта (экспликация)', value: '~О.ПлощадьОбъекта~' },
-		{ text: 'Позиция (экспликация)', value: '~Э1.Позиция~' },
-		{ text: 'Румб (экспликация)', value: '~Э1.Румб~' },
-		{ text: 'Азимут (экспликация)', value: '~Э1.Азимут~' },
-		{ text: 'Промер (экспликация)', value: '~Э1.Промер~' },
-		{ text: 'Широта (экспликация)', value: '~Э1.Широта~' },
-		{ text: 'Долгота (экспликация)', value: '~Э1.Долгота~' },
-		{ text: 'Магнитное склонение', value: '~МагнитноеСклонение~' },
-	]
+	let variables = []
+
+	if(type == 1){
+		variables = [
+			{ text: 'Лесничество', value: '~Лесничество~' },
+			{ text: 'Участковое лесничество', value: '~УчастковоеЛесничество~' },
+			{ text: 'Урочище', value: '~Урочище~' },
+			{ text: 'Квартал', value: '~Квартал~' },
+			{ text: 'Выдел', value: '~Выдел~' },
+			{ text: 'Делянка', value: '~Делянка~' },
+			{ text: 'Масштаб', value: '~Масштаб~' },
+			{ text: 'Площадь всех объектов', value: '~ПлощадьВсехОбъектов~' },
+			{ text: 'Наименование объекта (экспликация)', value: '~О.НаименованиеОбъекта~' },
+			{ text: 'Площадь объекта (экспликация)', value: '~О.ПлощадьОбъекта~' },
+			{ text: 'Позиция (экспликация)', value: '~Э1.Позиция~' },
+			{ text: 'Румб (экспликация)', value: '~Э1.Румб~' },
+			{ text: 'Азимут (экспликация)', value: '~Э1.Азимут~' },
+			{ text: 'Промер (экспликация)', value: '~Э1.Промер~' },
+			{ text: 'Широта (экспликация)', value: '~Э1.Широта~' },
+			{ text: 'Долгота (экспликация)', value: '~Э1.Долгота~' },
+			{ text: 'Магнитное склонение', value: '~МагнитноеСклонение~' },
+		]
+	}
+	if(type == 2){
+		variables = [
+			{ text: 'Лесничество', value: '~Лесничество~' },
+			{ text: 'Участковое лесничество', value: '~УчастковоеЛесничество~' },
+			{ text: 'Урочище', value: '~Урочище~' },
+			{ text: 'Квартал', value: '~Квартал~' },
+			{ text: 'Выдел', value: '~Выдел~' },
+			{ text: 'Делянка', value: '~Делянка~' },
+			{ text: 'Масштаб', value: '~Масштаб~' },
+			{ text: 'Площадь всех объектов', value: '~ПлощадьВсехОбъектов~' },
+			{ text: 'Наименование объекта (экспликация)', value: '~О.НаименованиеОбъекта~' },
+			{ text: 'Площадь объекта (экспликация)', value: '~О.ПлощадьОбъекта~' },
+			{ text: 'Позиция (экспликация)', value: '~Э1.Позиция~' },
+			{ text: 'Румб (экспликация)', value: '~Э1.Румб~' },
+			{ text: 'Азимут (экспликация)', value: '~Э1.Азимут~' },
+			{ text: 'Промер (экспликация)', value: '~Э1.Промер~' },
+			{ text: 'Широта (экспликация)', value: '~Э1.Широта~' },
+			{ text: 'Долгота (экспликация)', value: '~Э1.Долгота~' },
+			{ text: 'Магнитное склонение', value: '~МагнитноеСклонение~' },
+		]
+	}
+	
 
 	return variables
 }
@@ -44,16 +70,17 @@ export function getImages() {
 }
 
 
-export function updatePredefinedAbrisPrintForms() {
+export function updatePredefinedPrintForms() {
 	const asyncProcess = async () => {
-		let repository = getRepository(Abrisprintforms);
+		let repository = getRepository(Printforms);
 
-		let abrisprintformsResurs = await $.ajax("../../../actions/reference/abrisprintforms/c54082ae-1325-4fe0-b9ab-a4b1bf0723b1.txt");
+		let printformsResurs = await $.ajax("../../../actions/reference/printforms/c54082ae-1325-4fe0-b9ab-a4b1bf0723b1.txt");
 		let printform = {
 			id: 'c54082ae-1325-4fe0-b9ab-a4b1bf0723b1',
 			name: 'Абрис лесосеки (Приказ от 17 октября 2017 г. N 567)',
 			predefined: true,
-			printform: abrisprintformsResurs,
+			type: 1,
+			printform: printformsResurs,
 		};
 		let obj = await repository.preload(printform);
 		if (!obj) {
@@ -61,12 +88,13 @@ export function updatePredefinedAbrisPrintForms() {
 		}
 		await repository.save(obj);
 
-		abrisprintformsResurs = await $.ajax("../../../actions/reference/abrisprintforms/041fca06-3c5f-4403-a65e-7b9a9a56b914.txt");
+		printformsResurs = await $.ajax("../../../actions/reference/printforms/041fca06-3c5f-4403-a65e-7b9a9a56b914.txt");
 		printform = {
 			id: '041fca06-3c5f-4403-a65e-7b9a9a56b914',
 			name: 'Абрис участка (к акту лесопатологического обследования)',
 			predefined: true,
-			printform: abrisprintformsResurs,
+			type: 1,
+			printform: printformsResurs,
 		};
 		obj = await repository.preload(printform);
 		if (!obj) {
@@ -82,7 +110,7 @@ export function updatePredefinedAbrisPrintForms() {
 
 export function getData(getState, repository) {
 	const asyncProcess = async () => {
-		let where = getState().abrisprintforms.where;
+		let where = getState().printforms.where;
 		let data = await repository.find({
 			where: where,
 		});
@@ -94,12 +122,12 @@ export function getData(getState, repository) {
 export function fill_data(where = {}) {
 	return (dispatch, getState) => {
 		const asyncProcess = async () => {
-			let repository = getRepository(Abrisprintforms);
+			let repository = getRepository(Printforms);
 			let data = await repository.find({
 				where: where,
 			});
 			dispatch({
-				type: ABRISPRINTFORMS_FILL_SUCCESS,
+				type: PRINTFORMS_FILL_SUCCESS,
 				data: data,
 				where: where
 			})
@@ -111,7 +139,7 @@ export function fill_data(where = {}) {
 export function add(obj) {
 	return (dispatch, getState) => {
 		const asyncProcess = async () => {
-			let repository = getRepository(Abrisprintforms);
+			let repository = getRepository(Printforms);
 			let currentObject = undefined;
 			if (obj) {
 				let newobj = { ...obj }
@@ -124,7 +152,7 @@ export function add(obj) {
 			await repository.save(currentObject);
 			let data = await getData(getState, repository);
 			dispatch({
-				type: ABRISPRINTFORMS_ADD,
+				type: PRINTFORMS_ADD,
 				data: data
 			})
 		}
@@ -135,7 +163,7 @@ export function add(obj) {
 export function del(ids) {
 	return (dispatch, getState) => {
 		const asyncProcess = async () => {
-			let repository = getRepository(Abrisprintforms);
+			let repository = getRepository(Printforms);
 			let data = await repository.find({
 				where: { status: 1 },
 			});
@@ -143,7 +171,7 @@ export function del(ids) {
 			webix.message({ type: "info", text: 'Удалено ' + data.length + ' элементов' });
 			data = await getData(getState, repository);
 			dispatch({
-				type: ABRISPRINTFORMS_DEL,
+				type: PRINTFORMS_DEL,
 				data: data
 			})
 		}
@@ -154,7 +182,7 @@ export function del(ids) {
 export function edit(obj, values) {
 	return (dispatch, getState) => {
 		const asyncProcess = async () => {
-			let repository = getRepository(Abrisprintforms);
+			let repository = getRepository(Printforms);
 			if (obj) {
 				for (var property in values) {
 					obj[property] = values[property]
@@ -163,7 +191,7 @@ export function edit(obj, values) {
 			}
 			let data = await getData(getState, repository);
 			dispatch({
-				type: ABRISPRINTFORMS_EDIT,
+				type: PRINTFORMS_EDIT,
 				currentId: obj.id,
 				data: data
 			})
@@ -191,7 +219,7 @@ export function load() {
 						const asyncLoad = async () => {
 							var printform = JSON.parse(e.target.result);
 
-							let repository = getRepository(Abrisprintforms);
+							let repository = getRepository(Printforms);
 
 							let obj = await repository.preload(printform);
 							if (!obj) {
@@ -201,7 +229,7 @@ export function load() {
 
 							let data = await getData(getState, repository);
 							dispatch({
-								type: ABRISPRINTFORMS_ADD,
+								type: PRINTFORMS_ADD,
 								data: data
 							})
 						}

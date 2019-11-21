@@ -21,7 +21,7 @@ import cuttingmethods from './reference/cuttingmethods'
 import publications from './reference/publications'
 import tables from './reference/tables'
 import breed from './reference/breed'
-import abrisprintforms from './reference/abrisprintforms'
+import printforms from './reference/printforms'
 import typesrates from './reference/typesrates'
 
 
@@ -54,7 +54,7 @@ export default combineReducers({
     breed:breed,
     typesrates:typesrates,
     settings:settings,
-    abrisprintforms:abrisprintforms,
+    printforms:printforms,
 })
 
 

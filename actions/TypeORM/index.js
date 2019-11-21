@@ -18,7 +18,7 @@ import {Cuttingmethods} from "./entity/cuttingmethods";
 import {Publications} from "./entity/publications";
 import {Tables} from "./entity/tables";
 import {Breed} from "./entity/breed";
-import {Abrisprintforms} from "./entity/abrisprintforms";
+import {Printforms} from "./entity/printforms";
 import {Typesrates} from "./entity/typesrates";
 import {Curentproject} from "./entity/curentproject";
 
@@ -45,7 +45,7 @@ export function init() {
                 Publications,
                 Tables,
                 Breed,
-                Abrisprintforms,
+                Printforms,
                 Typesrates,
                 Curentproject,
              ]
@@ -86,7 +86,7 @@ export function init() {
                     await Migration_5_2_0_10.breedsConvert(options);
                 }
 
-                if(isNewVersions(oldVersion,"5.2.1.13")){
+                if(isNewVersions(oldVersion,"5.2.1.154")){
                     //конвертация контактной информации
                     await Migration_5_2_1_0.creatEntities(options);
                     await Migration_5_2_1_0.TypesratesConvert(options);
@@ -99,7 +99,7 @@ export function init() {
                 await InitialData.creatMainStyle(options);
                 await InitialData.creatCuttingmethods(options);
                 await InitialData.creatTypesrates(options);
-                await InitialData.updateAbrisPrintForms(); 
+                await InitialData.updatePrintForms(); 
                 isUpdate = true;
                 options.synchronize = false;
                 let connection = await createConnection(options); 

@@ -1,7 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity()
-export class Abrisprintforms {
+export class Printforms {
 
     @PrimaryGeneratedColumn("uuid")
     id = '';
@@ -15,7 +15,11 @@ export class Abrisprintforms {
     @Column({ type: "text", nullable: true })
     name = '';
 
+    @Column({ type: "int", nullable: true })
+    type = 0;
+
     @Column({ type: "text", nullable: true })
     printform= '';
+
 }
 
