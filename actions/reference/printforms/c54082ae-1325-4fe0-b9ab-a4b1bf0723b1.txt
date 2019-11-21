@@ -1,31 +1,31 @@
 <h2 style="text-align: center;">СХЕМА</h2>
 <h3 style="text-align: center;">расположения лесных насаждений</h3>
-<p><span style="font-size: 10pt;">Местоположение: ~Лесничество~,&nbsp;~УчастковоеЛесничество~,&nbsp;~Урочище~, квартал:&nbsp;~Квартал~, выдел:&nbsp;~Выдел~, делянка:&nbsp;~Делянка~.</span></p>
-<p><span style="font-size: 10pt;">Масштаб:&nbsp;~Масштаб~. Магнитное склонение:&nbsp;~МагнитноеСклонение~.</span></p>
-<p><span style="font-size: 10pt;">Площадь:&nbsp;~ПлощадьВсехОбъектов~&nbsp;га.</span></p>
+<div>Местоположение: ~Лесничество~,&nbsp;~УчастковоеЛесничество~,&nbsp;~Урочище~, квартал:&nbsp;~Квартал~, выдел:&nbsp;~Выдел~, делянка:&nbsp;~Делянка~.</div>
+<div>Масштаб:&nbsp;~Масштаб~. Магнитное склонение:&nbsp;~МагнитноеСклонение~.</div>
+<div>Площадь:&nbsp;~ПлощадьВсехОбъектов~&nbsp;га.</div>
 <p style="text-align: center;"><span style="font-size: 10pt;"><img src="~Абрис~" width="600" height="500" /><img title="arrow" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAHCCAYAAAAw15OUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVCQzA4Rjc1OTYzNDExRTg5N0Y5OUU5MkU5MUNFMjZDIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjVCQzA4Rjc2OTYzNDExRTg5N0Y5OUU5MkU5MUNFMjZDIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NUJDMDhGNzM5NjM0MTFFODk3Rjk5RTkyRTkxQ0UyNkMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NUJDMDhGNzQ5NjM0MTFFODk3Rjk5RTkyRTkxQ0UyNkMiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6aUGWkAAAE90lEQVR42uydTUhjVxTH73t5iWbGRKsRv1CZxq/GtJaOLeiotSCKpV044LTQQindFrqbTovShYt2ZV0oQhfSVaW4KbiwIxUR28Hq4FCKmGlBBHWMGr+19SPJ6znpfTNxktckFkoX/wt/Hr53f/f+37n3nGxMrqLrurhsU80eKIpiJ3lIrpRhai+SviI1XQYuId0guWl2NWmYOlvpUkoKk27KgWIbB+xpUXuB9Ds/lgO8Hq+fme1rpDLDiNnMahzLGl08pFDU7XfofklC29QqST5pOVo3krGdLwd4uj1HsyumtmWUXzGJQwvpGVPbMki/xbHMOuJY/JNtp4x0vHYqrVtibEvLr5E0E5gHfpOUEWObWjFpycRytHV3PNsOUlGCLPwjOupqlOU3SLYEcC7pbdLVx7blzbUElg3tsMNo2zySNckCEiR52boqc/VVuRTJNHb5njEZv+dEkpYNPeLdxrPmkKpSrH285i/zhniJZJdJb7Q/ZUpyp4C06Ih6zjFq4fV6lnSddBL10Ev6RAIc3S9kmhqNt+iKWRlqklHVpYOmVMrQFQkK+TpXUi29l//EAAwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBhz/v5O8Xq8IBALC7/eL/Px84XK5EDDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgP9bWPN4PDE3LRZLrXjyPWG+1lK/72NgkzNB7ou/f1uewaCqqvfjzpyZmXnhRigUEsFgkMbUIycUbG5uioGBgXBHR4c4ODi4CM/MzDz+g10sLCwog4ODV4eGhoxXsOzt7V0j0EoOzqPPmlBpFp4pMmM4HBanp6clgUDgLU3T+Hf0RV5entLV1fVlf39/3cnJSaSPwahRQeLzE9TR0dEPRkZGbh0dHfFBA2J1dZXtnq2trb1LoDMtLe2J7/Pz84j8fr+tr6/vw+zsbN3lcl04cMBqterp6el6b2/vxz6fT+NvZe/skDGenq1MTEy4afbT4uLiuCcWFBQU6Dk5OfsUvFr+OjcPoEq7gux+xLOurKzE3RDr6+s8UXB6evoOWU+jgYQlIyPDNj4+/unw8PCd4+NjjQJmuqPomX1jY8NDV21ubm5aIdhBs6/abDbn1tZWwi2ZlZXFTg9pWYtUh8MhyEUoGZAbrbmgZQza7XbBZ0XwSOGUsklVw8yhkvwvYEoGQds1ck0JpnWM7CS32y2KiooE7b7kYcoyvaqqytfW1va11+td5KxLCqa8FU6nU6msrPymp6fnfWq3y8vLfbIgmsOcnrRvRUNDw1xnZ+d3+/v7orq6+geC7+bm5moXqgi3wsJCB9WpgJH09fX1D6ampuq5GB4eHorl5WUxOTn5fEtLywPaz5E+3J85zaiaHFW6ISjLfq6pqbnH78milBXNzc2/kosuqmWfzc7OXjfKsirtcl6LioqKe1SnPmd7PCBnDg/A9svKyu5SPB7SCqgUfT1SgktLS51Ut/yNjY0z8/PzNQwZpZUqi9je3ha7u7uCKohYWloqbG1t/ZHW/5jKkJPrtkIznbW3t39LQfnFeA2jGUWe3dCaP+ru7r5NNV6lQTVlbGzMSnYa6urqfqKOZ7xBDIjrGcsYgFdicXFRocrJx/lMK//m8Ku/BBgAnrlLUgt5zAkAAAAASUVORK5CYII=" width="15" height="500" /></span></p>
 <ul>
 <li style="text-align: left;"><span style="font-size: 10pt;"><span style="font-size: 10pt;">~О.НаименованиеОбъекта~, площадь:~О.ПлощадьОбъекта~, га<br /></span></span>
 <table style="border-collapse: collapse; width: 100%;">
 <thead>
 <tr style="border: 1px solid black; height: 13.2344px;">
-<td style="width: 10%; text-align: center; height: 13.2344px;">NN</td>
-<td style="width: 23%; height: 13.2344px; text-align: center;">Румбы (азимуты) линий&nbsp;</td>
-<td style="width: 17%; height: 13.2344px; text-align: center;">Промеры, м</td>
-<td style="width: 10%; text-align: center; height: 13.2344px;">NN</td>
-<td style="width: 23%; height: 13.2344px; text-align: center;">Румбы (азимуты) линий&nbsp;</td>
-<td style="height: 13.2344px; width: 17%; text-align: center;">Промеры, м</td>
+<td style="width: 10%; text-align: center; height: 13.2344px;"><span style="font-size: 8pt;">NN</span></td>
+<td style="width: 23%; height: 13.2344px; text-align: center;"><span style="font-size: 8pt;">Румбы (азимуты) линий&nbsp;</span></td>
+<td style="width: 17%; height: 13.2344px; text-align: center;"><span style="font-size: 8pt;">Промеры, м</span></td>
+<td style="width: 10%; text-align: center; height: 13.2344px;"><span style="font-size: 8pt;">NN</span></td>
+<td style="width: 23%; height: 13.2344px; text-align: center;"><span style="font-size: 8pt;">Румбы (азимуты) линий&nbsp;</span></td>
+<td style="height: 13.2344px; width: 17%; text-align: center;"><span style="font-size: 8pt;">Промеры, м</span></td>
 </tr>
 <tr style="border: 1px solid black; height: 13px;">
-<td style="text-align: center; height: 13px;">~Э1.Позиция~</td>
-<td style="text-align: center; height: 13px;">~Э1.Румб~&nbsp;(~Э1.Азимут~)</td>
-<td style="text-align: center; height: 13px;">~Э1.Промер~</td>
-<td style="text-align: center; height: 13px;">&nbsp;~Э2.Позиция~</td>
-<td style="text-align: center; height: 13px;">~Э2.Румб~&nbsp;(~Э2.Азимут~)</td>
-<td style="text-align: center; height: 13px;">~Э2.Промер~</td>
+<td style="text-align: center; height: 13px;"><span style="font-size: 8pt;">~Э1.Позиция~</span></td>
+<td style="text-align: center; height: 13px;"><span style="font-size: 8pt;">~Э1.Румб~&nbsp;(~Э1.Азимут~)</span></td>
+<td style="text-align: center; height: 13px;"><span style="font-size: 8pt;">~Э1.Промер~</span></td>
+<td style="text-align: center; height: 13px;"><span style="font-size: 8pt;">&nbsp;~Э2.Позиция~</span></td>
+<td style="text-align: center; height: 13px;"><span style="font-size: 8pt;">~Э2.Румб~&nbsp;(~Э2.Азимут~)</span></td>
+<td style="text-align: center; height: 13px;"><span style="font-size: 8pt;">~Э2.Промер~</span></td>
 </tr>
 </thead>
 </table>
 </li>
 </ul>
-<p style="text-align: center;">Продавец_______________________________&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Покупатель______________________________</p>
+<p style="text-align: center;">Продавец__________________&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Покупатель____________________</p>

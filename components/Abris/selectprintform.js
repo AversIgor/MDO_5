@@ -45,10 +45,7 @@ export default class selectprintform extends Component {
                             onItemDblClick:function(id, e, node){
                                 if(id == 1){
                                     props.handlerOpen_saveaspng()
-                                }
-                                else if(id == 2){
-                                    props.handlerOpen_567()
-                                }
+                                }                                
                                 else{
                                     props.handlerOpenPrintForm(id)
                                 }

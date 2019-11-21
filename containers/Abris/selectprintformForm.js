@@ -57,7 +57,6 @@ class SelectprintformForm extends Component {
                     show={this.props.show}
                     handlerCloseSelectPrintForm={this.props.handlerCloseSelectPrintForm}
                     handlerOpen_saveaspng={this.handlerOpen_saveaspng}
-                    handlerOpen_567={this.handlerOpen_567}
                     handlerOpenPrintForm={this.handlerOpenPrintForm}
                     data={data}
                 />

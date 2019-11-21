@@ -139,7 +139,7 @@ export default class ComponentPrintformsForm extends Component {
             container:ReactDOM.findDOMNode(this.refs.root),
             zIndex:100,
             width: 1000,
-            height: 700,
+            height: 600,
             move:true,
             resize: true,
             head:head,

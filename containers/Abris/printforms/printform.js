@@ -3,9 +3,6 @@ import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 import * as FileSaver from "file-saver";
 
-import * as MDO from "../../../js/mdo";
-
-
 import ComponentPrintform from "../../../components/Abris/printforms/printform";
 import {thumb_azimut_format,roundingLengths} from "../../../actions/Abris/common";
 
@@ -203,39 +200,41 @@ class Printform extends Component {
         return newRow
     }
 
+    getValueFromId(state,id) {
+        let result = ""
+        let item = state.find(item => item.id == id);
+        if(item){
+            result = item.value
+        }
+        return result
+    }
+
     updateStates = (editor) => {
         this.calculateArea()
+        let plotProperty = this.props.plotObject.property;
         const asyncProcess = async () => {
 
             let contents = jQuery(editor.contentDocument).contents()
+            
             let html = contents.find('body').html()
 
             //замена всех возможных переменных
-            let forestry = ''
-            if(MDO.objectMDO.forestry.text != undefined){
-                forestry = MDO.objectMDO.forestry.text
-            }
+            let forestry = this.getValueFromId(this.props.forestry,plotProperty.location.forestry)
             html = html.replace(/~Лесничество~/g, forestry)
 
-            let subforestry = ''
-            if(MDO.objectMDO.subforestry.text != undefined){
-                subforestry = MDO.objectMDO.subforestry.text
-            }
+            let subforestry = this.getValueFromId(this.props.subforestry,plotProperty.location.subforestry)
             html = html.replace(/~УчастковоеЛесничество~/g, subforestry)
 
             let magneticdeclination = this.props.magneticdeclination.toString()+"&deg;"
             html = html.replace(/~МагнитноеСклонение~/g, magneticdeclination)
 
-            let tract = ''
-            if(MDO.objectMDO.tract.text != undefined){
-                tract = MDO.objectMDO.tract.text
-            }
+            let tract = this.getValueFromId(this.props.tract,plotProperty.location.tract)
             html = html.replace(/~Урочище~/g, tract)
 
 
-            html = html.replace(/~Квартал~/g, MDO.objectMDO.quarter)
-            html = html.replace(/~Выдел~/g, MDO.objectMDO.isolated)
-            html = html.replace(/~Делянка~/g, MDO.objectMDO.cuttingarea)
+            html = html.replace(/~Квартал~/g, plotProperty.location.quarter)
+            html = html.replace(/~Выдел~/g, plotProperty.location.isolated)
+            html = html.replace(/~Делянка~/g, plotProperty.location.cuttingarea)
 
 
             html = html.replace(/~Масштаб~/g, "1:"+this.props.scale)
@@ -366,7 +365,12 @@ function mapStateToProps (state) {
         rotate: state.background.rotate,
         scale: state.background.scale,
         objects: state.polygons.objects,
+        plotObject:state.plot.plotObject,
         magneticdeclination: state.background.magneticdeclination,
+        forestry:state.forestry.data,
+        subforestry:state.subforestry.data,
+        tract:state.subforestry.data,
+        
     }
 }
 
