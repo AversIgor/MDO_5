@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import ComponentPrintforms from "../../../components/reference/printforms";
 import ComponentPrintformsForm from "../../../components/reference/printforms/form";
-import {fill_data,add,del,edit,load,save,getVariables,getImages} from "../../../actions/reference/printforms";
+import {fill_data,add,del,edit,load,save} from "../../../actions/reference/printforms";
 
 class Printforms extends Component {
 
@@ -71,9 +71,8 @@ class Printforms extends Component {
                     typesPrintForms = {this.props.typesPrintForms}
                 />
                 <ComponentPrintformsForm
+                    variables = {this.props.variables}
                     editObject = {this.state.editObject}
-                    getVariables = {getVariables}
-                    getImages = {getImages}
                     handlerEdit = {this.handlerEdit}
                     handlerClose = {this.handlerClose}
                     typesPrintForms = {this.props.typesPrintForms}
@@ -89,6 +88,7 @@ class Printforms extends Component {
 function mapStateToProps (state) {
     return {
         data: state.printforms.data,
+        variables: state.printforms.variables,
         currentId: state.printforms.currentId,
         typesPrintForms: state.enumerations.typesPrintForms
     }

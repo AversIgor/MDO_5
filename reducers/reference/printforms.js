@@ -8,6 +8,7 @@ import {
 const initialState = {
     currentId:undefined,
     data:[],
+    variables:{},
     sort: {
         by:'id',
         dir:'asc',
@@ -23,7 +24,8 @@ export default function printforms(state = initialState, action) {
         case PRINTFORMS_FILL_SUCCESS:
             return { ...state,
                 data: action.data,
-                where: action.where                
+                where: action.where,
+                variables: action.variables                
             }
         case PRINTFORMS_ADD:
             return { ...state,

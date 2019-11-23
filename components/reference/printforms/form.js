@@ -5,11 +5,96 @@ export default class ComponentPrintformsForm extends Component {
 
     constructor(props) {
         super(props);
+        this.type = undefined
     }
 
-    componentDidMount(){
+    init_tinymce(props){
 
-        let self = this;
+        let self = this
+        let variables = []
+        if(self.type == 1){
+            variables = props.variables.abris
+        }
+        if(self.type == 2){
+            variables = props.variables.mdo
+        }
+        let tinymce = { 
+            view:"tinymce-editor", name:'printform', id: "printform", 
+            config:
+            {
+                theme:"modern",
+                language: 'ru',
+                width : 700,                        
+                content_style: "body {width: 700px;}",
+                menu: {
+                    edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
+                    insert: {title: 'Insert', items: 'image'},
+                    format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+                    table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
+                    tools: {title: 'Tools', items: 'spellchecker code'},
+                },
+                'toolbar': 'bullist numlist | bold italic alignleft | aligncenter alignright alignjustify | outdent indent | fontselect | fontsizeselect | forecolor backcolor | variablesselect | imagesselect',
+                'plugins': 'lists image textcolor code table',
+                // enable title field in the Image dialog
+                image_title: true,
+                automatic_uploads: true,
+                file_picker_types: 'image',
+                images_dataimg_filter: function(img) {
+                    return img.hasAttribute('internal-blob');
+                },
+                file_picker_callback: function(cb, value, meta) {
+                    var input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.onchange = function() {
+                        var file = this.files[0];
+                        var reader = new FileReader();
+                        reader.onload = function () {
+                            var id = 'blobid' + (new Date()).getTime();
+                            var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                            var base64 = reader.result.split(',')[1];
+                            var blobInfo = blobCache.create(id, file, base64);
+                            blobCache.add(blobInfo);
+                            // call the callback and populate the Title field with the file name
+                            cb(blobInfo.blobUri(), { title: file.name });
+                        };
+                        reader.readAsDataURL(file);
+                    };
+                    input.click();
+                },
+                setup: function (editor) {
+                    editor.addButton('variablesselect', {
+                        type: 'listbox',
+                        text: 'Переменные',
+                        icon: false,
+                        onselect: function (e) {
+                            editor.insertContent(this.value());
+                        },
+                        values:variables,
+                    });
+                    editor.addButton('imagesselect', {
+                        type: 'listbox',
+                        text: 'Картинки',
+                        icon: false,
+                        onselect: function (e) {
+                            editor.insertContent(this.value());
+                        },
+                        values: props.variables.abrisImages,
+                    });
+                },
+            }
+        }
+
+        window.webix.ui(tinymce, $$('printform'))
+
+        if(props.editObject){
+            $$("printform").setValue(props.editObject.printform);
+        }
+
+    }
+
+    initUI(){
+        let self = this
         let form = {
             view:"form",
             id:"Printforms_form",
@@ -18,72 +103,16 @@ export default class ComponentPrintformsForm extends Component {
             elements:[
                 {cols:[
                     { view:"text", name:"name", label:"Наименование:",labelWidth:130},
-                    { view:"select", name:"type", label:"Назначение", labelWidth:80,width:200,options:this.props.typesPrintForms},                
+                    { view:"select", name:"type", label:"Назначение", labelWidth:80,width:200,options:self.props.typesPrintForms,
+                        on:{
+                            onChange(newVal, oldVal){
+                                self.type = newVal
+                                self.init_tinymce(self.props)
+                            }
+                        }                
+                    },                
                 ]},
-                { view:"tinymce-editor", name:'printform', id: "printform", config:
-                    {
-                        theme:"modern",
-                        language: 'ru',
-                        width : 700,                        
-                        content_style: "body {width: 700px;}",
-                        menu: {
-                            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
-                            insert: {title: 'Insert', items: 'image'},
-                            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
-                            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'},
-                            tools: {title: 'Tools', items: 'spellchecker code'},
-                        },
-                        'toolbar': 'bullist numlist | bold italic alignleft | aligncenter alignright alignjustify | outdent indent | fontselect | fontsizeselect | forecolor backcolor | variablesselect | imagesselect',
-                        'plugins': 'lists image textcolor code table',
-                        // enable title field in the Image dialog
-                        image_title: true,
-                        automatic_uploads: true,
-                        file_picker_types: 'image',
-                        images_dataimg_filter: function(img) {
-                            return img.hasAttribute('internal-blob');
-                        },
-                        file_picker_callback: function(cb, value, meta) {
-                            var input = document.createElement('input');
-                            input.setAttribute('type', 'file');
-                            input.setAttribute('accept', 'image/*');
-                            input.onchange = function() {
-                                var file = this.files[0];
-                                var reader = new FileReader();
-                                reader.onload = function () {
-                                    var id = 'blobid' + (new Date()).getTime();
-                                    var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-                                    var base64 = reader.result.split(',')[1];
-                                    var blobInfo = blobCache.create(id, file, base64);
-                                    blobCache.add(blobInfo);
-                                    // call the callback and populate the Title field with the file name
-                                    cb(blobInfo.blobUri(), { title: file.name });
-                                };
-                                reader.readAsDataURL(file);
-                            };
-                            input.click();
-                        },
-                        setup: function (editor) {
-                            editor.addButton('variablesselect', {
-                                type: 'listbox',
-                                text: 'Переменные',
-                                icon: false,
-                                onselect: function (e) {
-                                    editor.insertContent(this.value());
-                                },
-                                values: self.props.getVariables(),
-                            });
-                            editor.addButton('imagesselect', {
-                                type: 'listbox',
-                                text: 'Картинки',
-                                icon: false,
-                                onselect: function (e) {
-                                    editor.insertContent(this.value());
-                                },
-                                values: self.props.getImages(),
-                            });
-                        },
-                    }
-                }
+                {id:'printform'},                
             ]
         };
 
@@ -147,27 +176,32 @@ export default class ComponentPrintformsForm extends Component {
             body: form,
         };
 
-        this.ui = window.webix.ui(conteiner);
+        this.ui = window.webix.ui(conteiner);        
 
+    }
+
+    componentDidMount(){
+        this.initUI(this.props);
     }
 
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.editObject){
-            this.ui.show();
+            this.ui.show()
             $$("Printforms_form").setValues({
                 name: nextProps.editObject.name,
                 type: nextProps.editObject.type,
-            });
-            $$("printform").setValue(nextProps.editObject.printform);
+            }); 
+            this.type = nextProps.editObject.type
+            this.init_tinymce(nextProps)
         }else{
-            this.ui.hide();
+            this.ui.hide()
         }
     }
 
-    componentWillUnmount(){        
+    componentWillUnmount(){ 
         this.ui.destructor();
-        this.ui = null;
+         this.ui = null;
     }
 
     shouldComponentUpdate(){
