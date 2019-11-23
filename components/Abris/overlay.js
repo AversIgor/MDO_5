@@ -44,7 +44,7 @@ export default class Overlay extends Component {
 
         if(!print.hasEvent('onItemClick')){
             print.attachEvent("onItemClick", function(id, e){
-                props.handlerOpenSelectPrintForm();
+                props.handlerOpenCloseSelectPrintForm(true);
             });
         }
     }
@@ -160,7 +160,7 @@ export default class Overlay extends Component {
             on:{
                 onMenuItemClick:function(id){
                     if(id == 'selectprintform'){
-                        self.props.handlerOpenSelectPrintForm();
+                        self.props.handlerOpenCloseSelectPrintForm(true);
                     }
                     if(id == 'background'){
                         self.props.handlerBackground(true);

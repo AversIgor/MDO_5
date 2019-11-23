@@ -1,5 +1,5 @@
 import * as MDO from "./mdo";
-import {PRINT} from "./print";
+import {PRINT} from "./PRINT";
 import * as FileSaver from "file-saver";
 
 import {store} from "../src/app";

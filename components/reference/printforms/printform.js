@@ -12,15 +12,17 @@ export default class Printform extends Component {
     componentDidMount(){
 
         let self = this;
-        let node        = document.getElementById('paint')
+        let node        = document.getElementById('box')
 
         this.modalbox = {
             view:"window",
             id:'printform_window',
-            height:node.clientHeight,
+            height:node.clientHeight-100,
             width:900,
             position:"center",
             modal:true,
+            move:true,
+            resize: true,
             head:{
                 view:"toolbar",
                 cols:[
@@ -32,7 +34,9 @@ export default class Printform extends Component {
                         view:"icon",
                         tooltip:"Закрыть",
                         icon: "times",
-                        click: "$$('printform_window').hide()"
+                        click:function(id,event){
+                            self.props.selectPrintForm(undefined);
+                        }
                     }
                 ]
             },
@@ -86,7 +90,7 @@ export default class Printform extends Component {
                                     icon: 'save',
                                     onclick: function() {
                                         self.props.saveContent(editor.getDoc(),self.props.data.name)
-                                       }
+                                    }
                                 });
                             },
                         },
@@ -94,11 +98,6 @@ export default class Printform extends Component {
                     },                    
                 ]
             },
-            on:{
-                onHide:function(){
-                    self.props.handlerClose();
-                }
-            }
         };
 
         this.ui = window.webix.ui(this.modalbox);

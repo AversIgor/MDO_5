@@ -40,14 +40,12 @@ export default class saveasfile extends Component {
 
 
     componentDidMount(){
-
         let self = this;
-        let node        = document.getElementById('paint')
-
-        this.modalbox = {
+        let node     = document.getElementById('paint')
+        let modalbox = {
             view:"window",
             id:"saveasfile",
-            height:node.clientHeight+44,
+            height:node.clientHeight,
             width:node.clientWidth,
             position:"center",
             resize: true,
@@ -72,7 +70,9 @@ export default class saveasfile extends Component {
                         view:"icon",
                         tooltip:"Закрыть",
                         icon: "times",
-                        click: "$$('saveasfile').hide()"
+                        click:function(id,event){
+                            self.props.selectPrintForm(undefined);
+                        }
                     }
                 ]
             },
@@ -83,27 +83,39 @@ export default class saveasfile extends Component {
                 width:node.clientWidth,
                 template: "<div id='saveasfile_background' style=';position: absolute;z-index: -1;'/>"
             },
-            on:{
-                onHide:function(){
-                    self.props.handlerClose();
-                }
-            }
         };
-       
+
+        this.ui = window.webix.ui(modalbox); 
+        this.ui.show();
+  
+        this.background = document.getElementById('saveasfile_background')
+        this.parentDiv  = this.background.parentNode;
+        let SVG         = document.getElementById('SVG').cloneNode(true)
+        var img         = node.querySelector('#background')
+
+        if(img){
+            let canvas = this.trimImage(img,
+                img.offsetLeft,
+                img.offsetTop,
+                img.width,
+                img.height,
+                self.props.rotate,//нужен rotate и возможно прозрачность
+                self.props.opacity,
+            )
+            this.background.appendChild(canvas);
+        }
+        SVG.querySelectorAll(".aim").forEach(
+            e => e.parentNode.removeChild(e)
+        )
+        this.parentDiv.appendChild(SVG);              
         
     }
-
-
-    componentWillReceiveProps(nextProps) {
-
-        let self = this;
-
-        if(nextProps.show ){
-            if(this.ui) return
-            this.ui = window.webix.ui(this.modalbox);
+    componentWillReceiveProps(nextProps) { 
+        /*console.log(nextProps.open)       
+        if(nextProps.open){
+            let self = this
             this.ui.show();
-
-            let node        = document.getElementById('paint')
+            let node     = document.getElementById('paint')            
             this.background = document.getElementById('saveasfile_background')
             this.parentDiv  = this.background.parentNode;
             let SVG         = document.getElementById('SVG').cloneNode(true)
@@ -123,22 +135,20 @@ export default class saveasfile extends Component {
             SVG.querySelectorAll(".aim").forEach(
                 e => e.parentNode.removeChild(e)
             )
-            this.parentDiv.appendChild(SVG);           
-            
+            this.parentDiv.appendChild(SVG);            
         }else{
-            if(this.ui){
-                this.ui.destructor();
-                this.ui = null;
+            if(this.parentDiv){
+                this.parentDiv.innerHTML = "<div id='saveasfile_background' style=';position: absolute;z-index: -1;'/>"
             }
-        }
+            this.ui.hide();
+        }*/
+       
     }
 
 
     componentWillUnmount(){
-        if(this.ui){
-            this.ui.destructor();
-            this.ui = null;
-        }
+        this.ui.destructor();
+        this.ui = null;
     }
 
     render() {

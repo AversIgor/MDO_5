@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 
-
 export default class selectprintform extends Component {
 
     constructor(props) {
@@ -8,7 +7,6 @@ export default class selectprintform extends Component {
     }
 
     componentDidMount(){
-
         let props = this.props;
 
         var modalbox = {
@@ -43,12 +41,7 @@ export default class selectprintform extends Component {
                         data:[],
                         on:{
                             onItemDblClick:function(id, e, node){
-                                if(id == 1){
-                                    props.handlerOpen_saveaspng()
-                                }                                
-                                else{
-                                    props.handlerOpenPrintForm(id)
-                                }
+                                props.selectPrintForm(id)
                                 $$('selectprintform').hide()
                             }
                         }
@@ -57,7 +50,7 @@ export default class selectprintform extends Component {
             },
             on:{
                 onHide:function(){
-                    props.handlerCloseSelectPrintForm();
+                    props.handlerOpenClose(false);
                 }
             }
         };
@@ -67,13 +60,14 @@ export default class selectprintform extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.show){
+        if(nextProps.open){
             $$("selectprintform_list").define("data",nextProps.data);
             $$("selectprintform_list").refresh();
             this.ui.show();
         }else{
             this.ui.hide();
         }
+
     }
 
 

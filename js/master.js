@@ -1,7 +1,5 @@
 ﻿import * as MDO from "./mdo";
-
 import {store} from "../src/app";
-
 import * as publications from "../actions/reference/publications";
 
 var btnStyle 	=		'width: 80px; margin:0 10px; padding: 5px; border-radius: 4px; border: 1px solid #B6B6B6;';

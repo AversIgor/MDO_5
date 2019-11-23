@@ -1,17 +1,19 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes, Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 import * as FileSaver from "file-saver";
 
-import ComponentPrintform from "../../../components/Abris/printforms/printform";
-import {thumb_azimut_format,roundingLengths} from "../../../actions/Abris/common";
+import Saveaspng from "../../components/Abris/saveaspng";
+import ComponentPrintform from "../../components/reference/printforms/printform";
+import ComponentSelectprintform from "../../components/reference/printforms/selectprintform";
+import {thumb_azimut_format,roundingLengths} from "../../actions/Abris/common";
 
 class Printform extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            params: {},
+            selectPrintId: undefined,
         };
         this.area =  0
     }
@@ -150,30 +152,34 @@ class Printform extends Component {
         return data
     }
 
+    stringReplace(str,substr,value){
+        return str.replace(new RegExp(substr,"g"), ((value) ? value : "" ))
+    }
+
     fiLlRowObject = (template,data) => {
         let newRow  = template.clone(true)
         let html    = newRow.html()
-        html = html.replace(/~О.НаименованиеОбъекта~/g, data.name)
+        html = this.stringReplace(html,'~О.НаименованиеОбъекта~',data.name)
         let area    = data.area
         if(data.area != data.areaexploitation){
             area = area+' ('+data.areaexploitation+')'
         }
-        html = html.replace(/~О.ПлощадьОбъекта~/g, area)
+        html = this.stringReplace(html,'~О.ПлощадьОбъекта~',area)
         newRow.html(html)
         return newRow
     }
 
-    fiLlRowExplication = (newRow,data,index) => {
+    feelRowExplication = (newRow,data,index) => {
 
         let html    = newRow.html()
-        html = html.replace(new RegExp("~Э"+index+".Позиция~","g"), ((data) ? data.position : "" ))
-		html = html.replace(new RegExp("~Э"+index+".Промер~","g"),  ((data) ? data.distance: "" ))
-		html = html.replace(new RegExp("~Э"+index+".Широта~","g"),  ((data) ? data.gpsX: "" ))
-		html = html.replace(new RegExp("~Э"+index+".Долгота~","g"), ((data) ? data.gpsY: "" ))
         if(data){
+            html = this.stringReplace(html,"~Э"+index+".Позиция~",data.position)
+            html = this.stringReplace(html,"~Э"+index+".Промер~",data.distance)
+            html = this.stringReplace(html,"~Э"+index+".Широта~",data.gpsX)
+            html = this.stringReplace(html,"~Э"+index+".Долгота~",data.gpsY)
             if(!data.natural_boundary){
-                html = html.replace(new RegExp("~Э"+index+".Румб~","g"),    data.direct+", "+thumb_azimut_format(data.rhumb,true))
-				html = html.replace(new RegExp("~Э"+index+".Азимут~","g"),  thumb_azimut_format(data.azimut,true))
+                html = this.stringReplace(html,"~Э"+index+".Румб~", data.direct+", "+thumb_azimut_format(data.rhumb,true))
+                html = this.stringReplace(html,"~Э"+index+".Азимут~", thumb_azimut_format(data.azimut,true))
             }
 		}		
 
@@ -220,25 +226,23 @@ class Printform extends Component {
 
             //замена всех возможных переменных
             let forestry = this.getValueFromId(this.props.forestry,plotProperty.location.forestry)
-            html = html.replace(/~Лесничество~/g, forestry)
+            html = this.stringReplace(html,'~Лесничество~',forestry)
 
             let subforestry = this.getValueFromId(this.props.subforestry,plotProperty.location.subforestry)
-            html = html.replace(/~УчастковоеЛесничество~/g, subforestry)
+            html = this.stringReplace(html,'~УчастковоеЛесничество~',subforestry)
 
             let magneticdeclination = this.props.magneticdeclination.toString()+"&deg;"
-            html = html.replace(/~МагнитноеСклонение~/g, magneticdeclination)
+            html = this.stringReplace(html,'~МагнитноеСклонение~',magneticdeclination)
 
             let tract = this.getValueFromId(this.props.tract,plotProperty.location.tract)
-            html = html.replace(/~Урочище~/g, tract)
+            html = this.stringReplace(html,'~Урочище~',tract)
 
+            html = this.stringReplace(html,'~Квартал~',plotProperty.location.quarter)
+            html = this.stringReplace(html,'~Выдел~',plotProperty.location.isolated)
+            html = this.stringReplace(html,'~Делянка~',plotProperty.location.cuttingarea)
 
-            html = html.replace(/~Квартал~/g, plotProperty.location.quarter)
-            html = html.replace(/~Выдел~/g, plotProperty.location.isolated)
-            html = html.replace(/~Делянка~/g, plotProperty.location.cuttingarea)
-
-
-            html = html.replace(/~Масштаб~/g, "1:"+this.props.scale)
-            html = html.replace(/~ПлощадьВсехОбъектов~/g, this.area)
+            html = this.stringReplace(html,'~Масштаб~',"1:"+this.props.scale)
+            html = this.stringReplace(html,'~ПлощадьВсехОбъектов~',this.area)
             contents.find('body').html(html)
             
 
@@ -290,8 +294,8 @@ class Printform extends Component {
                             let row1    = measure[i]
                             let row2    = measure[i+rowcount1]
                             let newRow  = template_row_explication.clone(true)
-                            newRow = this.fiLlRowExplication(newRow,row1,1)
-                            newRow = this.fiLlRowExplication(newRow,row2,2)
+                            newRow = this.feelRowExplication(newRow,row1,1)
+                            newRow = this.feelRowExplication(newRow,row2,2)
                             newRow.appendTo(parent_explication)
                         }
 
@@ -333,29 +337,54 @@ class Printform extends Component {
         FileSaver.saveAs(converted, name+'.docx');
     }
 
+    selectPrintForm = (id) => {  
+        this.setState({selectPrintId:id})
+    }
+
     render() {
-        let PrintForm = () => {
-            if(this.props.id){
 
-                let data = undefined
-                for (let i = 0; i < this.props.printforms.length; i++) {
-                    if(this.props.printforms[i].id == this.props.id){
-                        data = this.props.printforms[i]
-                    }
-                }
-
-                return <ComponentPrintform
-                    handlerClose={this.props.handlerClose}
-                    updateStates={this.updateStates}
-                    saveContent={this.saveContent}
-                    id={this.props.id}
-                    data={data}
-                />
-            }else{
-                return null
+        let meny = []
+        if(this.props.type == 1){
+            meny.push({ id:1, title:"Сохранить абрис в файл"})
+        }
+        for (let i = 0; i < this.props.printforms.length; i++) {
+            if(this.props.printforms[i].type == this.props.type){
+                meny.push({ id:this.props.printforms[i].id, title:this.props.printforms[i].name})
             }
-        };
-        return (<PrintForm/>)
+        }
+
+        let Printform = () => {
+            if(this.state.selectPrintId == 1){
+                return <Saveaspng
+                            selectPrintForm={this.selectPrintForm}
+                            opacity={this.props.opacity}
+                            rotate={this.props.rotate}
+                        />;
+            }
+            if ((this.state.selectPrintId != 1) && (this.state.selectPrintId != undefined)){
+                return <ComponentPrintform
+                            selectPrintForm={this.selectPrintForm}
+                            updateStates={this.updateStates}
+                            saveContent={this.saveContent}
+                            data={this.props.printforms.find(item => item.id == this.state.selectPrintId)}                            
+                        />;
+            }
+            if(this.state.selectPrintId == undefined){
+                return null
+            }            
+        }
+
+        return (
+            <Fragment>
+                <Printform/>;
+                <ComponentSelectprintform
+                    open={this.props.open}
+                    handlerOpenClose={this.props.handlerOpenClose}
+                    selectPrintForm={this.selectPrintForm}
+                    data={meny}
+                />
+            </Fragment>
+        )
     }
 }
 
@@ -370,6 +399,7 @@ function mapStateToProps (state) {
         forestry:state.forestry.data,
         subforestry:state.subforestry.data,
         tract:state.subforestry.data,
+        printforms: state.printforms.data,
         
     }
 }

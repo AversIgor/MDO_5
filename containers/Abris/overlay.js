@@ -11,7 +11,7 @@ import Opacity from "../../components/Abris/opacity";
 import Calibrate from "../../components/Abris/calibrate";
 import Gpsbinding from "../../components/Abris/gpsbinding";
 import MagneticDeclination from "../../components/Abris/magneticdeclination";
-import Selectprintform from "./selectprintformForm";
+import Printforms from "./printform";
 import PlotProperty from "./plot/plotProperty";
 import PlotList from "./plot/plotList";
 import {load,clear,setZoom,setRotate,setScale,getScaleArray,setOpacity,setCoefficientCalibrate,clearCoefficientCalibrate,setGpsCoordinate,setMagneticDeclination} from '../../actions/Abris/background';
@@ -30,7 +30,7 @@ class Overlay extends Component {
             scaleForm: false,
             listForm:false,
             opacityForm:false,
-            selectprintformForm:false,
+            openSelectPrintForm:false,
         };
     }
 
@@ -139,12 +139,8 @@ class Overlay extends Component {
         this.props.loadGeoJson();
     }
 
-    handlerOpenSelectPrintForm = () => {
-        this.setState({selectprintformForm: true})
-    }
-
-    handlerCloseSelectPrintForm = () => {
-        this.setState({selectprintformForm: false})
+    handlerOpenCloseSelectPrintForm = (param) => {
+        this.setState({openSelectPrintForm: param})
     }
 
     handlersetCoefficientCalibrate = (distance) => {
@@ -152,9 +148,7 @@ class Overlay extends Component {
             this.props.setCoefficientCalibrate(distance,this.props.calibrate,this.props.coefficientcalibrate);
         }
         this.props.changeMode(1);
-    }
-
-   
+    }   
 
     render() {
        
@@ -181,7 +175,7 @@ class Overlay extends Component {
 					handlerGpsBinding			= {this.handlerGpsBinding}
                     handlerMagneticDeclination	= {this.handlerMagneticDeclination}
                     handlerClearCalibrate       = {this.handlerClearCalibrate}                    
-                    handlerOpenSelectPrintForm  = {this.handlerOpenSelectPrintForm}
+                    handlerOpenCloseSelectPrintForm      = {this.handlerOpenCloseSelectPrintForm}
                     handlerSaveGeoJson          = {this.handlerSaveGeoJson}   
                     handlerLoadGeoJson          = {this.handlerLoadGeoJson} 
                 >
@@ -241,9 +235,10 @@ class Overlay extends Component {
                     show={this.state.listForm}
                     handlerCloseListForm={this.handlerCloseListForm}
                 />
-                <Selectprintform
-                    show={this.state.selectprintformForm}
-                    handlerCloseSelectPrintForm={this.handlerCloseSelectPrintForm}
+                <Printforms
+                    open                = {this.state.openSelectPrintForm}
+                    handlerOpenClose    = {this.handlerOpenCloseSelectPrintForm}
+                    type={1}
                 />
                 <PlotProperty/>				
             </Fragment>

@@ -12,6 +12,7 @@ import * as cuttingmethods from "../reference/cuttingmethods";
 import * as typesrates from "../reference/typesrates";
 import * as breed from "../reference/breed";
 import * as publications from "../reference/publications";
+import * as printforms from "../reference/printforms";
 
 import {defaultStyle} from "../reference/styles";
 import {defaultCuttingMethods} from "../reference/cuttingmethods";
@@ -94,6 +95,7 @@ export function feelAllReducers(dispatch) {
     dispatch(typesrates.fill_data({status:0})) 
     dispatch(breed.fill_data({status:0}))  
     dispatch(publications.fill_data({status:0}))   
+    dispatch(printforms.fill_data({status:0})) 
 }
 
 
