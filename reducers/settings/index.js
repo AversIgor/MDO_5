@@ -15,7 +15,7 @@ orderRoundingValues - порядок округления объема
 const initialState = {
     data:{
         mdo:{
-            distributionhalfbusiness:false,
+            distributionhalfbusiness:0,
             assessfirewoodcommonstock:false,
             assesswastefirewood:true,
             firewoodtrunkslindencountedinbark:false,
