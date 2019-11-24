@@ -25,7 +25,7 @@ export default class ComponentPrintformsForm extends Component {
                 theme:"modern",
                 language: 'ru',
                 width : 700,                        
-                content_style: "body {width: 700px;}",
+                content_style: "body {width: 100%;}",
                 menu: {
                     edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},
                     insert: {title: 'Insert', items: 'image'},
