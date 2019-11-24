@@ -1,132 +1,132 @@
 <div style="text-align: center;"><strong><span style="font-size: 12pt;">Ведомость материально-денежной оценки лесосеки при сплошном или ленточном перечете</span></strong></div>
 <div>
-<table style="height: 210px; width: 100%; padding: 0px; font-family: Arial; border-collapse: collapse !important;" border="0" width="100%">
+<table style="height: 101px; width: 100%; padding: 0px; font-family: Arial; border-collapse: collapse !important;" border="0">
 <tbody>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 20%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Лесничество:</span></div>
 </td>
-<td style="height: 18px; width: 26.4286%;"><span style="font-size: 8pt;">forestry</span></td>
-<td style="height: 18px; width: 20.4286%;">
+<td style="width: 30%; border-style: hidden; height: 10px;"><span style="font-size: 8pt;">~forestry~</span></td>
+<td style="width: 20%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Площадь лесосеки, га:</span></div>
 </td>
-<td style="height: 18px; width: 31.1428%;">
+<td style="width: 30%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">areacutting</span></div>
 </td>
 </tr>
-<tr style="height: 36px;">
-<td style="height: 33px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Участковое лесничество:</span></div>
 </td>
-<td style="height: 33px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">subforestry</span></div>
 </td>
-<td style="height: 33px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Метод таксации:</span></div>
 </td>
-<td style="height: 33px; width: 31.1428%;">
+<td style="width: 32.1428%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">methodTaxation</span></div>
 </td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Урочище:</span></div>
 </td>
-<td style="height: 18px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">tract</span></div>
 </td>
-<td style="height: 18px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Коэффициент:</span></div>
 </td>
-<td style="height: 18px; width: 31.1428%;">
+<td style="width: 32.1428%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">coefficient</span></div>
 </td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Квартал:</span></div>
 </td>
-<td style="height: 18px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">quarter</span></div>
 </td>
-<td style="height: 18px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Разряд такс:</span></div>
 </td>
-<td style="height: 18px; width: 31.1428%;">
+<td style="width: 32.1428%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">rankTax</span></div>
 </td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Выдел:</span></div>
 </td>
-<td style="height: 18px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">isolated</span></div>
 </td>
-<td style="height: 18px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Семенники:</span></div>
 </td>
-<td style="height: 18px; width: 31.1428%;">
+<td style="width: 32.1428%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">seedtrees</span></div>
 </td>
 </tr>
-<tr style="height: 36px;">
-<td style="height: 33px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Лесосека (делянка):</span></div>
 </td>
-<td style="height: 33px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">cuttingarea</span></div>
 </td>
-<td style="height: 33px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Сортиментная таблица:</span></div>
 </td>
-<td style="height: 33px; width: 31.1428%;"><span style="font-size: 8pt;">Publications</span></td>
+<td style="width: 32.1428%; border-style: hidden; height: 10px;"><span style="font-size: 8pt;">Publications</span></td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Способ рубки:</span></div>
 </td>
-<td style="height: 18px; width: 78%;" colspan="3">
+<td style="width: 78.5714%; border-style: hidden; height: 10px;" colspan="3">
 <div><span style="font-size: 8pt;">cuttingmethods</span></div>
 </td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Целевое назначение:</span></div>
 </td>
-<td style="height: 18px; width: 78%;" colspan="3">
+<td style="width: 78.5714%; border-style: hidden; height: 10px;" colspan="3">
 <div><span style="font-size: 8pt;">purposeForests</span></div>
 </td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Хозяйство:</span></div>
 </td>
-<td style="height: 18px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">property</span></div>
 </td>
-<td style="height: 18px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Лесотаксовый район:</span></div>
 </td>
-<td style="height: 18px; width: 31.1428%;">
+<td style="width: 32.1428%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">region</span></div>
 </td>
 </tr>
-<tr style="height: 19px;">
-<td style="height: 18px; width: 21.8571%;">
+<tr style="height: 10px;">
+<td style="width: 21.2857%; border-style: hidden; height: 10px;">
 <div>
 <div><span style="font-size: 8pt;">Подрост:</span></div>
 </div>
 </td>
-<td style="height: 18px; width: 26.4286%;">
+<td style="width: 27%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">undergrowth</span></div>
 </td>
-<td style="height: 18px; width: 20.4286%;">
+<td style="width: 19.4286%; border-style: hidden; height: 10px;">
 <div>
 <div><span style="font-size: 8pt;">Способ очистки:</span></div>
 </div>
 </td>
-<td style="height: 18px; width: 31.1428%;">
+<td style="width: 32.1428%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">methodscleaning</span></div>
 </td>
 </tr>
