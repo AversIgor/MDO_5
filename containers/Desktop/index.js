@@ -14,10 +14,21 @@ class Desktop extends Component {
             resize: false,
             widthLeftMenu:0
         };
+        this.windowSize = {
+            height:0,
+            width:0,
+        }
     }
 
     resizeFromWindow = () => {
-        this.setState({resize: !this.state.resize})
+        console.log($(window).height(),$(window).width())
+        let newheight = $(window).height()
+        let newwidth = $(window).width()
+        if((newheight != this.windowSize.height) && (newwidth != this.windowSize.width)){           
+            this.windowSize.height = newheight
+            this.windowSize.width = newwidth
+            this.setState({resize: !this.state.resize})
+        }
     }
 
     resizeLeftMenu = (width) => {
@@ -26,13 +37,14 @@ class Desktop extends Component {
 
     componentDidMount() {
         let self = this;
+        this.windowSize.height = $(window).height()
+        this.windowSize.width = $(window).width()
         webix.event(window, "resize", function(){
             self.resizeFromWindow()
         })
     }
 
-    render() {  
-
+    render() { 
 
         let styleMdoSubsystem = {
             height:($(window).height()-50)+"px",
@@ -45,8 +57,8 @@ class Desktop extends Component {
             position:'absolute',
             top:"50px",
             left:this.state.widthLeftMenu+"px",            
-        }
- 
+        } 
+        
         return (
             <Fragment>
                 <div 
