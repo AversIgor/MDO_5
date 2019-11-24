@@ -47,7 +47,7 @@ export default class Printform extends Component {
                             theme:"modern",
                             language: 'ru',
                             width : 900,
-                            content_style: "body {width: 700px;}",
+                            content_style: "body {width: 100%;}",
                             menu: {
                                 file: {title: 'File', items: 'print | save'},
                                 edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall'},

@@ -42,26 +42,28 @@ class Toolbar extends Component {
 
         return (
             <Fragment>
-                <ComponentToolbar
-                    resize = {this.props.resize}
+                <ComponentToolbar                    
                     leftMenuData = {this.props.leftMenuData}
+                    plotObject = {this.props.plotObject}
                     curentproject = {this.props.curentproject}
                     newProject = {this.newProject}
                     clickQuestionMenu = {this.props.clickQuestionMenu}  
                     clickMenu = {this.props.clickMenu}    
-                ComponentToolbar/>
+                />
                 <About/>
             </Fragment>
         )
     }
 }
 
+
 function mapStateToProps (state) {
     return {        
         questionId: state.toolbar.questionId, 
         leftMenuData: state.leftMenu.data,
-        curentVersion: state.typeORM.curentVersion, 
+        curentVersion: state.typeORM.curentVersion,
         curentproject: state.curentproject,
+        plotObject: state.plot.plotObject, 
     }
 }
 

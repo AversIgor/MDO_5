@@ -4,9 +4,7 @@ export class Recount {
         this.setting = undefined
         this.enumerations = undefined
         this.breed = undefined
-        this.results = {
-            assortmentStructure:[]
-        }//результат расчете МДО по перечетной ведомости для печатной формы   
+        this.recountResult = []//результат расчете МДО по перечетной ведомости для печатной формы   
     }
 
     setProperty(data){
@@ -39,16 +37,16 @@ export class Recount {
                         rank:row_objBreed.rank,
                         breed:this.getValueFromId(this.breed,'data',row_objBreed.breed),                    
                     }
-                    this.results.assortmentStructure.push(objectTaxation)
+                    this.recountResult.push(objectTaxation)
 
                     for (let k = 0; k < row_objBreed.objectsStep.length; k++) {
                         let row_objStep = row_objBreed.objectsStep[k];
                         //на этом уровне заполним сортиментную структуру на основе сортиментных таблиц и настроек МДО				
-                        let objAssortmentStructure = row(
+                        /*let objAssortmentStructure = row(
                             row_objBreed,
                             row_objStep,
                             this.settings
-                        );
+                        );*/
                         //if(objAssortmentStructure != null){
                         //    objBreed.addAssortmentStructure(objAssortmentStructure);
                         //}

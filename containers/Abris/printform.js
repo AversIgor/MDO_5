@@ -329,8 +329,6 @@ class Printform extends Component {
     }
 
     saveContent = (contentDocument,name) => {
-        //let contents = jQuery(editor.contentDocument).contents()
-        //let html = contents.find('body').html()
         this.convertImagesToBase64(contentDocument)
         var content = '<!DOCTYPE html>' + contentDocument.documentElement.outerHTML;
         var converted = htmlDocx.asBlob(content, {orientation: 'portrait'});
@@ -344,11 +342,10 @@ class Printform extends Component {
     render() {
 
         let meny = []
-        if(this.props.type == 1){
-            meny.push({ id:1, title:"Сохранить абрис в файл"})
-        }
+        meny.push({ id:1, title:"Сохранить абрис в файл"})
+
         for (let i = 0; i < this.props.printforms.length; i++) {
-            if(this.props.printforms[i].type == this.props.type){
+            if(this.props.printforms[i].type == 1){
                 meny.push({ id:this.props.printforms[i].id, title:this.props.printforms[i].name})
             }
         }

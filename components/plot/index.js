@@ -7,8 +7,13 @@ export default class ComponenLayot extends Component {
     constructor(props) {
         super(props);
         this.ui         = [];
-    }       
-    componentDidMount(){        
+    }  
+    
+    shouldComponentUpdate(nextProps, nextState){
+        return true
+    }    
+
+    componentDidMount(){ 
 
         let layout = {
             id:this.id+'_layout',

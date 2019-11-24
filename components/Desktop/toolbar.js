@@ -9,10 +9,44 @@ export default class ComponentToolbar extends Component {
         this.toolbar = null;
     }
 
+    initProject(props){
+        if(!props.plotObject){
+            if(props.curentproject.saved){
+                webix.modalbox.hide("saveProject");
+                webix.modalbox({
+                id:"saveProject", 
+                title: "Внимание!",
+                buttons:["Продолжить расчет", "Начать новый"],
+                text: "Зафиксирован не сохраненный расчет МДО",
+                type:"confirm-warning",
+                width:400,
+            }).then(function(result){
+                switch(result){
+                    case "0": 
+                        props.newProject(true);
+                        break;
+                    case "1":
+                        props.newProject(false);
+                        break;
+                }   
+            });
+            }else{
+                props.newProject(false);
+            }
+        }
+
+    }
+
+
+    shouldComponentUpdate(nextProps, nextState){
+        this.initProject(nextProps)        
+        return true
+    }    
+
     componentDidMount(){
 
         let props = this.props;
-
+        
         const projectMenu = {
             view: "submenu",
             id: "projectMenu",
@@ -154,33 +188,7 @@ export default class ComponentToolbar extends Component {
         window.webix.ui(questionMenu);
         window.webix.ui(leftMenu);
 
-    }
-
-    shouldComponentUpdate(nextProps, nextState){
-        if(nextProps.curentproject.saved){
-                webix.modalbox.hide("savaProject");
-                webix.modalbox({
-                id:"savaProject", 
-                title: "Внимание!",
-                buttons:["Продолжить проект", "Начать новый"],
-                text: "Зафиксирован не сохраненный проект",
-                type:"confirm-warning",
-                width:400,
-            }).then(function(result){
-                switch(result){
-                    case "0": 
-                        nextProps.newProject(true);
-                        break;
-                    case "1":
-                        nextProps.newProject(false);
-                        break;
-                }   
-            });
-        }else{
-            nextProps.newProject(false);
-        }
-        return true
-    }
+    }    
 
     componentDidUpdate(prevProps, prevState){
         this.toolbar.adjust()         

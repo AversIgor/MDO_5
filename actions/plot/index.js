@@ -1,5 +1,6 @@
 import {
     CHANGE_PROPERTY,
+    RECOUNTRESULT,
 } from '../../constants/plot'
 
 let lodash = require('lodash');
@@ -18,9 +19,11 @@ export function mdoRecount(plotObject) {
                 enumerations:state.enumerations,
                 breed:state.breed,
             })            
-            console.log(state)
             newRecount.calculation()
-            console.log(newRecount.getProperty("results"))
+            dispatch({
+                type: RECOUNTRESULT,
+                recountResult: newRecount.getProperty("recountResult"),
+            })
         }
         return asyncProcess()
     }

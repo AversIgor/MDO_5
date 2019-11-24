@@ -12,7 +12,7 @@ export default class selectprintform extends Component {
         var modalbox = {
             view:"window",
             id:"selectprintform",
-            width:500,
+            width:700,
             position:"center",
             modal:true,
             head:{

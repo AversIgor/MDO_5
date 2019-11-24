@@ -238,7 +238,6 @@ class Overlay extends Component {
                 <Printforms
                     open                = {this.state.openSelectPrintForm}
                     handlerOpenClose    = {this.handlerOpenCloseSelectPrintForm}
-                    type={1}
                 />
                 <PlotProperty/>				
             </Fragment>

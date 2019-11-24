@@ -110,38 +110,8 @@ export default class saveasfile extends Component {
         this.parentDiv.appendChild(SVG);              
         
     }
-    componentWillReceiveProps(nextProps) { 
-        /*console.log(nextProps.open)       
-        if(nextProps.open){
-            let self = this
-            this.ui.show();
-            let node     = document.getElementById('paint')            
-            this.background = document.getElementById('saveasfile_background')
-            this.parentDiv  = this.background.parentNode;
-            let SVG         = document.getElementById('SVG').cloneNode(true)
-            var img         = node.querySelector('#background')
-
-            if(img){
-                let canvas = this.trimImage(img,
-                    img.offsetLeft,
-                    img.offsetTop,
-                    img.width,
-                    img.height,
-                    self.props.rotate,//нужен rotate и возможно прозрачность
-                    self.props.opacity,
-                )
-                this.background.appendChild(canvas);
-            }
-            SVG.querySelectorAll(".aim").forEach(
-                e => e.parentNode.removeChild(e)
-            )
-            this.parentDiv.appendChild(SVG);            
-        }else{
-            if(this.parentDiv){
-                this.parentDiv.innerHTML = "<div id='saveasfile_background' style=';position: absolute;z-index: -1;'/>"
-            }
-            this.ui.hide();
-        }*/
+    
+    componentWillReceiveProps(nextProps) {       
        
     }
 

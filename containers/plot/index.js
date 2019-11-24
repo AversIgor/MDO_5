@@ -24,6 +24,8 @@ import ComponentSteps from "../../components/plot/steps";
 import ComponentCoefficients from "../../components/plot/coefficients";
 import ComponentMdoRecount from "../../components/plot/mdoRecount";
 
+import Printform from "./printform";
+
 class Plot extends Component {
 
     constructor(props) {
@@ -31,7 +33,8 @@ class Plot extends Component {
         this.state = {
             conteinerReady:false,
             openCoefficients:false,   
-            openMdoRecount:false,       
+            openMdoRecount:false, 
+            openSelectPrintForm:false,      
         };
     }
 
@@ -95,12 +98,8 @@ class Plot extends Component {
         this.setState({openMdoRecount: open})      
     }
 
-    initPlot = (restore) => {
-        if(restore){
-            this.props.newPlot(this.props.curentproject.plot)
-        }else{
-            this.props.newPlot()
-        }   
+    handlerOpenCloseSelectPrintForm = (param) => {
+        this.setState({openSelectPrintForm: param})
     }
 
     componentDidMount() {
@@ -111,6 +110,9 @@ class Plot extends Component {
         if(nextProps.plotObject != this.props.plotObject){
             this.props.saveCurentPlot(nextProps.plotObject)
         }
+        if(nextProps.recountResult != this.props.recountResult){
+            this.setState({openSelectPrintForm:true})
+        }
         return true
     }
 
@@ -119,9 +121,6 @@ class Plot extends Component {
             <Fragment>
                 <ComponentConteiner
                     conteinerReady = {this.conteinerReady}
-                    plotObject = {this.props.plotObject}
-                    curentproject = {this.props.curentproject}
-                    initPlot = {this.initPlot}
                 />
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}
@@ -170,6 +169,10 @@ class Plot extends Component {
                     openMdoRecount = {this.state.openMdoRecount} 
                     formMdoRecount = {this.formMdoRecount}            
                 />
+                <Printform
+                    open = {this.state.openSelectPrintForm}
+                    handlerOpenClose    = {this.handlerOpenCloseSelectPrintForm}          
+                />
             </Fragment>            
         )
     }
@@ -178,9 +181,9 @@ class Plot extends Component {
 
 function mapStateToProps (state) {
     return {
-        curentproject: state.curentproject,
         plotObject: state.plot.plotObject,
         curentRecount: state.plot.curentRecount,
+        recountResult: state.plot.recountResult,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,
