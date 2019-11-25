@@ -62,14 +62,43 @@ class Printform extends Component {
             html = this.replaceField(html,'~methodscleaning~',plotProperty.parameters.methodscleaning,this.props.methodscleanings)
             html = this.replaceField(html,'~region~',plotProperty.taxation.typesrates,this.props.typesrates,'region')
 
-            //сортиментные таблицы будем брать из пород
-            console.log(this.props.publications)
-                
             contents.find('body').html(html)
+
+            //сортиментные таблицы будем брать из пород            
+            //группировка по объектам таксации
+            let row_ot         = contents.find('tr:contains("~ot.")')
+            if(row_ot.length>0){
+                let template_row_ot     = row_ot.clone(true)
+                let parent_row_ot       = row_ot.parent()
+                row_ot.remove()
+                for (let i = 0; i < this.props.recountResult.length; i++) {
+                    let row_objectTaxation = this.props.recountResult[i];
+                    let newRow = this.feel_row_objectTaxation(template_row_ot,row_objectTaxation)
+                    newRow.appendTo(parent_row_ot)
+    
+                }
+
+            }
+
+
+
+                
+            
 
             return
         }
         asyncProcess()
+    }
+
+    feel_row_objectTaxation = (template,data) => {
+        let newRow  = template.clone(true)
+        let html    = newRow.html()
+        html = this.replaceField(html,'~ot.objectTaxation~',data.objectTaxation)
+        html = this.replaceField(html,'~ot.areacutting~',data.areacutting)
+        html = this.replaceField(html,'~ot.rank~',data.rank)
+        html = this.replaceField(html,'~ot.breed~',data.breed)
+        newRow.html(html)
+        return newRow
     }
 
     saveContent = (contentDocument,name) => {
@@ -126,9 +155,7 @@ class Printform extends Component {
             </Fragment>
         )
     }
-}
-
-         
+}         
 
 function mapStateToProps (state) {
     return {

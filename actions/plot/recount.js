@@ -15,8 +15,14 @@ export class Recount {
         return this[name];
     }
 
-    getValueFromId(state,name,id) {
-        return state[name].find(item => item.id == id).value;
+
+    getValueFromId(id,collection,field = 'value') {
+        let value = ''
+        let item = collection.find(item => item.id == id);
+        if(item){
+            value = item[field]
+        }
+        return value
     }
 
     //здесь будем на основе перечетной ведомости создавать Новое дерево данных и дополнять его данными
@@ -32,12 +38,13 @@ export class Recount {
 
                     //строка с описанием породы и объекта таксации
                     let objectTaxation = {
-                        objectTaxation:this.getValueFromId(this.enumerations,'objectTaxation',row_objectTaxation.objectTaxation),
+                        objectTaxation:this.getValueFromId(row_objectTaxation.objectTaxation,this.enumerations.objectTaxation),  
                         areacutting:row_objectTaxation.areacutting,
                         rank:row_objBreed.rank,
-                        breed:this.getValueFromId(this.breed,'data',row_objBreed.breed),                    
+                        breed:this.getValueFromId(row_objBreed.breed,this.breed),                    
                     }
                     this.recountResult.push(objectTaxation)
+                   // console.log(objectTaxation)
 
                     for (let k = 0; k < row_objBreed.objectsStep.length; k++) {
                         let row_objStep = row_objBreed.objectsStep[k];

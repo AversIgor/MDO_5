@@ -21,10 +21,9 @@ class Desktop extends Component {
     }
 
     resizeFromWindow = () => {
-        console.log($(window).height(),$(window).width())
         let newheight = $(window).height()
         let newwidth = $(window).width()
-        if((newheight != this.windowSize.height) && (newwidth != this.windowSize.width)){           
+        if((newheight != this.windowSize.height) || (newwidth != this.windowSize.width)){           
             this.windowSize.height = newheight
             this.windowSize.width = newwidth
             this.setState({resize: !this.state.resize})
