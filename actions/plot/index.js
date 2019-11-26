@@ -3,7 +3,7 @@ import {
     RECOUNTRESULT,
 } from '../../constants/plot'
 
-let lodash = require('lodash');
+let cloneDeep = require('lodash/cloneDeep');
 
 import * as plot from "./plot";
 import * as recount from "./recount";
@@ -48,7 +48,7 @@ export function newPlot(restoreData) {
 
 export function changeProperty(plotObject,newValue) {
     return (dispatch,getState) => {  
-        let new_plotObject = lodash.cloneDeep(plotObject)      
+        let new_plotObject = cloneDeep(plotObject)      
         new_plotObject.changeProperty(newValue)        
         dispatch({
             type: CHANGE_PROPERTY,
@@ -59,7 +59,7 @@ export function changeProperty(plotObject,newValue) {
 
 export function updateObjectTaxation(plotObject,newValue) {
     return (dispatch,getState) => {
-        let new_plotObject = lodash.cloneDeep(plotObject)
+        let new_plotObject = cloneDeep(plotObject)
         new_plotObject.getObjectTaxation(newValue)
         new_plotObject.changeCurentRecount({
             objectTaxation:newValue.id,
@@ -74,7 +74,7 @@ export function updateObjectTaxation(plotObject,newValue) {
 
 export function updateBreed(plotObject,newValue,breeds){
     return (dispatch,getState) => {
-        let new_plotObject = lodash.cloneDeep(plotObject)
+        let new_plotObject = cloneDeep(plotObject)
         let rowBreed = undefined        
         let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:newValue.parent})
         if(rowObjectTaxation){
@@ -96,7 +96,7 @@ export function updateBreed(plotObject,newValue,breeds){
 
 export function deleteObjectTaxation(plotObject,id) {
     return (dispatch,getState) => {
-        let new_plotObject = lodash.cloneDeep(plotObject)
+        let new_plotObject = cloneDeep(plotObject)
         new_plotObject.deleteObjectTaxation(id)
         new_plotObject.changeCurentRecount({
             objectTaxation:undefined,
@@ -111,7 +111,7 @@ export function deleteObjectTaxation(plotObject,id) {
 
 export function deleteBreed(plotObject,id,parent) {
     return (dispatch,getState) => {
-        let new_plotObject = lodash.cloneDeep(plotObject)
+        let new_plotObject = cloneDeep(plotObject)
         let rowObjectTaxation  = new_plotObject.getObjectTaxation({id:parent})
         if(rowObjectTaxation){
             new_plotObject.deleteBreed(rowObjectTaxation,id)
@@ -128,7 +128,7 @@ export function deleteBreed(plotObject,id,parent) {
 }
 
 export function changeCurentRecount(plotObject,curentRecount) {
-    let new_plotObject = lodash.cloneDeep(plotObject)
+    let new_plotObject = cloneDeep(plotObject)
     new_plotObject.changeCurentRecount(curentRecount)
     return (dispatch,getState) => {
         dispatch({
@@ -140,7 +140,7 @@ export function changeCurentRecount(plotObject,curentRecount) {
 
 export function changeCoeficients(plotObject,newCoefficients) {
     return (dispatch,getState) => {
-        let new_plotObject = lodash.cloneDeep(plotObject)
+        let new_plotObject = cloneDeep(plotObject)
         new_plotObject.changeCoeficients(newCoefficients)
         dispatch({
             type: CHANGE_PROPERTY,

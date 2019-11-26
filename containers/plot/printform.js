@@ -25,6 +25,8 @@ class Printform extends Component {
             let item = collection.find(item => item.id == value);
             if(item){
                 value = item[collectionValue]
+            }else{
+                value = ""
             }
         }
         html = this.stringReplace(html,field,value)
@@ -64,41 +66,41 @@ class Printform extends Component {
 
             contents.find('body').html(html)
 
-            //сортиментные таблицы будем брать из пород            
-            //группировка по объектам таксации
-            let row_ot         = contents.find('tr:contains("~ot.")')
-            if(row_ot.length>0){
-                let template_row_ot     = row_ot.clone(true)
-                let parent_row_ot       = row_ot.parent()
-                row_ot.remove()
-                for (let i = 0; i < this.props.recountResult.length; i++) {
-                    let row_objectTaxation = this.props.recountResult[i];
-                    let newRow = this.feel_row_objectTaxation(template_row_ot,row_objectTaxation)
-                    newRow.appendTo(parent_row_ot)
-    
-                }
-
+            let objectTaxationCnteiner = this.findConteiner(contents,'~ot.')//строка с описание объектов таксации
+            //цикл по объекта таксации
+            for (let i = 0; i < this.props.recountResult.length; i++) {
+                let objectTaxation = this.props.recountResult[i];
+                this.feelConteiner(objectTaxationCnteiner,objectTaxation)
             }
-
-
-
-                
-            
 
             return
         }
         asyncProcess()
     }
 
-    feel_row_objectTaxation = (template,data) => {
-        let newRow  = template.clone(true)
-        let html    = newRow.html()
-        html = this.replaceField(html,'~ot.objectTaxation~',data.objectTaxation)
-        html = this.replaceField(html,'~ot.areacutting~',data.areacutting)
-        html = this.replaceField(html,'~ot.rank~',data.rank)
-        html = this.replaceField(html,'~ot.breed~',data.breed)
-        newRow.html(html)
-        return newRow
+    feelConteiner = (conteiner,data) => {
+        if(!conteiner) return
+        let row     = conteiner.template.clone(true)
+        let html    = row.html()
+        for (let key in data) {
+            html = this.replaceField(html,conteiner.prefix+key+'~',data[key])
+        }
+        row.html(html)
+        row.appendTo(conteiner.parent)
+    }
+    
+    findConteiner = (contents,prefix) => {
+        let conteiner = undefined
+        let row_ot         = contents.find('tr:contains("'+prefix+'")')
+        if(row_ot.length>0){
+            conteiner = { 
+                template:   row_ot.clone(true),
+                parent:     row_ot.parent(),
+                prefix:     prefix
+            }
+            row_ot.remove()
+        }
+        return conteiner
     }
 
     saveContent = (contentDocument,name) => {

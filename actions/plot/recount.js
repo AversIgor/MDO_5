@@ -44,7 +44,6 @@ export class Recount {
                         breed:this.getValueFromId(row_objBreed.breed,this.breed),                    
                     }
                     this.recountResult.push(objectTaxation)
-                   // console.log(objectTaxation)
 
                     for (let k = 0; k < row_objBreed.objectsStep.length; k++) {
                         let row_objStep = row_objBreed.objectsStep[k];
