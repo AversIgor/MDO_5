@@ -1,3 +1,4 @@
+
 export class Recount {
     constructor() {
         this.plot = undefined
@@ -16,11 +17,10 @@ export class Recount {
     }
 
 
-    getValueFromId(id,collection,field = 'value') {
-        let value = ''
-        let item = collection.find(item => item.id == id);
-        if(item){
-            value = item[field]
+    getValueFromId(id,collection,field = undefined) {
+        let value = collection.find(item => item.id == id);
+        if(field){
+            value = value[field]
         }
         return value
     }
@@ -30,29 +30,35 @@ export class Recount {
         const asyncProcess = async () => {
             for (let i = 0; i < this.plot.recount.length; i++) {
                 let row_objectTaxation = this.plot.recount[i];
+                let objectTaxation = this.getValueFromId(row_objectTaxation.objectTaxation,this.enumerations.objectTaxation);
+                
                 //проверка на сплошной и ленточный перечет
                 if(!this.check_methodTaxation(row_objectTaxation.objectTaxation)) continue;                
 
                 for (let j = 0; j < row_objectTaxation.objectsBreed.length; j++) {
                     let row_objBreed = row_objectTaxation.objectsBreed[j];
+                    let objBreed = this.getValueFromId(row_objBreed.breed,this.breed)                
 
                     //строка с описанием породы и объекта таксации
-                    let objectTaxation = {
-                        objectTaxation:this.getValueFromId(row_objectTaxation.objectTaxation,this.enumerations.objectTaxation),  
+                    let row = {
+                        objectTaxation:objectTaxation.value,  
                         areacutting:row_objectTaxation.areacutting,
                         rank:row_objBreed.rank,
-                        breed:this.getValueFromId(row_objBreed.breed,this.breed),                    
+                        breed:objBreed.value,                    
                     }
-                    this.recountResult.push(objectTaxation)
+                    this.recountResult.push(row)
 
+                    //сформируем итоговую строку по ступеням толщины
+			        let objTotalStep = new ClassAssortmentStructure({});
                     for (let k = 0; k < row_objBreed.objectsStep.length; k++) {
                         let row_objStep = row_objBreed.objectsStep[k];
                         //на этом уровне заполним сортиментную структуру на основе сортиментных таблиц и настроек МДО				
-                        /*let objAssortmentStructure = row(
+                        let objAssortmentStructure = this.fillStepFromSortTablesAndSettings(
+                            objBreed,
                             row_objBreed,
                             row_objStep,
-                            this.settings
-                        );*/
+                            objTotalStep
+                            );
                         //if(objAssortmentStructure != null){
                         //    objBreed.addAssortmentStructure(objAssortmentStructure);
                         //}
@@ -63,7 +69,9 @@ export class Recount {
                     //let objTotalStep = new ClassAssortmentStructure({});			
 
                 }
-            }            
+            }           
+            
+
         }
         return asyncProcess()
     }
@@ -82,11 +90,11 @@ export class Recount {
         return result;        
     }
 
-    fillSteps(objBreed,objStep) { 
+    fillStepFromSortTablesAndSettings(objBreed,rowBreed,rowStep,totalStep) { 
 
-        var business 		= parseInt(objStep.business) || 0;
-        var halfbusiness 	= parseInt(objStep.halfbusiness) || 0;
-        var firewood 		= parseInt(objStep.firewood) || 0;
+        var business 		= parseInt(rowStep.business) || 0;
+        var halfbusiness 	= parseInt(rowStep.halfbusiness) || 0;
+        var firewood 		= parseInt(rowStep.firewood) || 0;
         if(business+halfbusiness+firewood == 0){
             return undefined;
         }
@@ -103,15 +111,17 @@ export class Recount {
             firewood_r = firewood+halfbusiness-halfbusinessFor;
         }
     
+        //данные бере из породы
         let rowSortTable 			= undefined;
         let rowSortFirewoodTable    = undefined;//сортиментная таблица для дровяных стволов
-        if('sorttables' in objBreed) rowSortTable 			        = objBreed.sorttables[objStep.step];
-        if('sorttablesfirewood' in objBreed) rowSortFirewoodTable   = objBreed.sorttablesfirewood[objStep.step];
+        if('sorttables' in objBreed) rowSortTable 			        = objBreed.sorttables[rowStep.step];
+        if('sorttablesfirewood' in objBreed) rowSortFirewoodTable   = objBreed.sorttablesfirewood[rowStep.step];
     
+        console.log(rowSortTable)
         if(!rowSortTable){
             webix.message({
                 text:'Не найдено данных в сортиментной таблице для породы "'+objBreed.value+'", разряда высот: "'+
-                    objBreed.rank+', ступени толщины: "'+objStep.step+'"!',
+                    rowBreed.rank+', ступени толщины: "'+rowStep.step+'"!',
                 type:"error", 
                 expire: 10000});
             return undefined;
@@ -177,8 +187,7 @@ export class Recount {
             totalfirewood_b	= technical_b + firewood_b;
         }	
     
-        var options = {	'recid'	:			objStep.recid,		
-                        'step'	:			objStep.step,
+        var options = {	'step'	:			rowStep.step,
                         'business'	:		business,
                         'halfbusiness'	:	halfbusiness,
                         'firewood'	:		firewood,
@@ -204,6 +213,14 @@ export class Recount {
     
         var objAssortmentStructure = new ClassAssortmentStructure(options);	
     
+        //данные по ступени добавим в итоги
+	
+        for (var key in options) {
+            if(key == 'step') {
+                continue;
+            }
+            totalStep[key] = totalStep[key]+options[key];
+        }	
         
         return objAssortmentStructure;
     
@@ -217,7 +234,6 @@ export class Recount {
 class ClassAssortmentStructure {
 
     constructor(options) {
-        this.id			    = '';
         this.step 			= 0;
         this.business 		= 0;
         this.halfbusiness	= 0;
