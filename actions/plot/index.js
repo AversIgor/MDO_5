@@ -18,6 +18,7 @@ export function mdoRecount(plotObject) {
                 settings:state.settings.data.mdo,
                 enumerations:state.enumerations,
                 breed:state.breed.data,
+                publications:state.publications.data,
             })            
             newRecount.calculation()
             dispatch({
