@@ -110,7 +110,7 @@ class Plot extends Component {
         if(nextProps.plotObject != this.props.plotObject){
             this.props.saveCurentPlot(nextProps.plotObject)
         }
-        if(nextProps.recountResult != this.props.recountResult){
+        if(nextProps.recount != this.props.recount){
             this.setState({openSelectPrintForm:true})
         }
         return true
@@ -183,7 +183,7 @@ function mapStateToProps (state) {
     return {
         plotObject: state.plot.plotObject,
         curentRecount: state.plot.curentRecount,
-        recountResult: state.plot.recountResult,
+        recount: state.plot.recount,
         forestry: state.forestry.data,
         subforestry: state.subforestry.data,
         tract: state.tract.data,

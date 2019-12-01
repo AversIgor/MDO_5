@@ -6,7 +6,7 @@ import {
 const initialState = {    
     plotObject:undefined,
     curentRecount:undefined,//текущий объект перечета (объект таксации или порода)
-    recountResult:[]
+    recount:[]
 }
 
 export default function plot (state = initialState, action) {
@@ -17,7 +17,7 @@ export default function plot (state = initialState, action) {
             }  
         case RECOUNTRESULT:
             return { ...state,
-                recountResult:action.recountResult, 
+                recount:action.recount, 
             }  
         default:
             return state

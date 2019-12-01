@@ -21,15 +21,23 @@ export default class ComponentRecount extends Component {
             let objectTaxation = props.enumerations.objectTaxation.find(item => item.id == recount[i].objectTaxation);
             let css = {}
             let open = true
-            if(objectTaxation.id != 1){
-                if(props.plotObject.property.taxation.methodTaxation == 2){
-                    css = {
-                        'text-decoration': 'line-through;'
-                    }
+            if(props.plotObject.property.taxation.methodTaxation == 1){
+                //сплошной перечет
+                if(objectTaxation.id == 5){
+                    //ленты перечета
+                    css = {'text-decoration': 'line-through;'}
                     open = false
                 } 
             }
-            
+            if(props.plotObject.property.taxation.methodTaxation == 2){
+                //ленточный перечет
+                if(objectTaxation.id != 5){
+                    //не ленты перечета
+                    css = {'text-decoration': 'line-through;'}
+                    open = false
+                } 
+            }
+
             let node_OT = {
                 id:recount[i].id, 
                 value:objectTaxation.value+ "  ("+recount[i].areacutting+" га.)",

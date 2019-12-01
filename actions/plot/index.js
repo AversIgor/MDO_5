@@ -23,7 +23,7 @@ export function mdoRecount(plotObject) {
             newRecount.calculation()
             dispatch({
                 type: RECOUNTRESULT,
-                recountResult: newRecount.getProperty("recountResult"),
+                recount: newRecount,
             })
         }
         return asyncProcess()

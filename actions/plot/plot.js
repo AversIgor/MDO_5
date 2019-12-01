@@ -1,4 +1,5 @@
 let uniq = require('lodash/uniq');
+let sortBy = require('lodash/sortBy');
 
 export class Plot {
     constructor(data = undefined) {
@@ -130,6 +131,9 @@ export class Plot {
                 step:stepValue.step
             }
             objectBreed.objectsStep.push(row)
+            let sortArray = sortBy(objectBreed.objectsStep,['step'])
+            objectBreed.objectsStep = []
+            objectBreed.objectsStep.push(...sortArray)
         }
         if(('business' in stepValue) && (webix.rules.isNumber(stepValue.business))){ row.business = Math.abs(stepValue.business)}
         if(('halfbusiness' in stepValue) && (webix.rules.isNumber(stepValue.halfbusiness))){ row.halfbusiness = Math.abs(stepValue.halfbusiness)}

@@ -68,12 +68,27 @@ class Printform extends Component {
 
             contents.find('body').html(html)
 
-            let objectTaxationCnteiner = this.findConteiner(contents,'~ot.')//строка с описание объектов таксации
+            let objectTaxationConteiner = this.findConteiner(contents,'~ot.')//строка с описание объектов таксации
+            let objectStepConteiner = this.findConteiner(contents,'~st.')//строка с описаниеступеней толщины
+            let objectTotalStepConteiner = this.findConteiner(contents,'~ts.')//строка с итогами по ступеням толщины
             //цикл по объекта таксации
-            for (let i = 0; i < this.props.recountResult.length; i++) {
-                let objectTaxation = this.props.recountResult[i];
-                this.feelConteiner(objectTaxationCnteiner,objectTaxation)
+            for (let i = 0; i < this.props.recount.objectsTaxation.rows.length; i++) {
+                let objectTaxation = this.props.recount.objectsTaxation.rows[i];
+                this.feelConteiner(objectTaxationConteiner,objectTaxation)
+                //цикл по ступеням
+                let steps = this.props.recount.objectsSteps.steps.find(item => item.id == objectTaxation.id);
+                if(!steps) continue
+                for (let j = 0; j < steps.rows.length; j++) {
+                    let objectStep = steps.rows[j];
+                    this.feelConteiner(objectStepConteiner,objectStep)
+                }
+                //итоги по ступеням
+                let totalSteps = this.props.recount.totalSteps.find(item => item.id == objectTaxation.id);
+                if(totalSteps){
+                    this.feelConteiner(objectTotalStepConteiner,totalSteps.total)
+                }
             }
+
 
             return
         }
@@ -164,7 +179,7 @@ class Printform extends Component {
 function mapStateToProps (state) {
     return {
         plotObject: state.plot.plotObject,
-        recountResult: state.plot.recountResult,
+        recount: state.plot.recount,
         printforms: state.printforms.data,
         forestry:state.forestry.data,
         subforestry:state.subforestry.data,
