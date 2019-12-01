@@ -42,9 +42,12 @@ export class Recount {
         
         //формирование колекции объектов таксации
         this.objectsTaxation    = new ClassObjectsTaxation(this)
-        this.objectsTaxation.feel(this.plot.recount)  
+        this.objectsTaxation.feel(this.plot.recount)
+        
+        //рассчитае коэффциент для ленточного перечета
+        this.plot.property.taxation.coefficient = this.objectsTaxation.getCoefficient(this.plot.property.taxation.methodTaxation)
 
-        //по каждой ступени толщины заполним сортментную структуру
+        //по каждой ступени толщины заполним сортиментную структуру
         this.objectsSteps       = new ClassObjectsSteps(this)
         this.objectsSteps.feel()
 
@@ -65,13 +68,17 @@ class ClassObjectsTaxation {
         this.rows = [];        
     }
 
+    round_value(value, digits) {
+        return parseFloat(value.toFixed(digits))
+    }
+
     feel(recount) {
         for (let i = 0; i < recount.length; i++) {
             let row_objectTaxation = recount[i];
             let objectTaxation = this.owner.getObject(row_objectTaxation.objectTaxation,this.owner.enumerations.objectTaxation);
             
             //проверка на сплошной и ленточный перечет
-            if(!this.check_methodTaxation(row_objectTaxation.objectTaxation)) continue;                
+            if(!this.check_methodTaxation(objectTaxation.id)) continue;                
 
             for (let j = 0; j < row_objectTaxation.objectsBreed.length; j++) {
                 let row_objBreed                    = row_objectTaxation.objectsBreed[j];
@@ -80,6 +87,7 @@ class ClassObjectsTaxation {
                 this.rows.push({
                     id:row_objBreed.id,
                     objectTaxation:objectTaxation.value,
+                    objectTaxationId:objectTaxation.id,
                     breed:objBreed.value, 
                     kodGulf:objBreed.kodGulf,
                     rank:row_objBreed.rank, 
@@ -92,14 +100,32 @@ class ClassObjectsTaxation {
         }
     }
 
-    check_methodTaxation(objectTaxation) {	
+    getCoefficient(methodTaxation) {
+        let coefficient = 1
+        if(methodTaxation == 2){
+            let areacutting = 0;
+            for (let i = 0; i < this.rows.length; i++) {
+                let row = this.rows[i];
+                if(row.objectTaxationId == 5){
+                    areacutting += row.areacutting
+                }
+            } 
+            if(areacutting !=0){
+                coefficient = this.round_value(this.owner.plot.property.felling.areacutting/areacutting,2)
+            }           
+        }
+        return coefficient
+    }
+    
+
+    check_methodTaxation(objectTaxationId) {	
         var result = true;	
         if(this.owner.plot.property.taxation.methodTaxation == 1){
-            if(objectTaxation.id == 5){
+            if(objectTaxationId == 5){
                 result = false;
             }
         }else{
-            if(objectTaxation.id != 5){
+            if(objectTaxationId != 5){
                 result = false;
             }	
         } 	
@@ -307,20 +333,6 @@ class ClassObjectsSteps {
     }
 
     feelTotalValue(totalValue) {
-
-        //если ленточный перечет посчитаем все площади объектов таксации с ленточным перечетом
-        //и расчитаем коэффициент через общую площадь лесосеки
-        
-        if(this.owner.plot.property.taxation.methodTaxation == 1){
-            this.owner.plot.property.taxation.coefficient = 1;
-        }else{
-            if(objTaxation.areacutting !=0){
-                objectMDO.coefficient = Math.round((objectMDO.areacutting/objTaxation.areacutting)*100)/100;
-            }else{		
-                fixError('Не указана площадь объекта таксации!');
-                objectMDO.coefficient = 1;
-            }		
-        }	
         
         for (var key in objTotalStep) {
             if(	key == 'recid' || 

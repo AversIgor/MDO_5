@@ -84,8 +84,8 @@ export default class ComponentRecount extends Component {
         if(level == 1){
             let options = this.props.enumerations.objectTaxation
             if(this.props.plotObject.property.taxation.methodTaxation == 2){
-                //только лесосека в целом
-                options = this.props.enumerations.objectTaxation.filter(item => item.id == 1);
+                //только ленты перечета
+                options = this.props.enumerations.objectTaxation.filter(item => item.id == 5);
             }
             $$(this.id+"_form").addView({
                 id:'fields',
