@@ -73,8 +73,6 @@ class Printform extends Component {
             publications = uniq(publications)
             html = this.replaceField(html,'~publications~',publications.toString())
 
-   
-
             contents.find('body').html(html)
 
             let objectTaxationConteiner = this.findConteiner(contents,'~ot.')//строка с описание объектов таксации
@@ -92,7 +90,7 @@ class Printform extends Component {
                     this.feelConteiner(objectStepConteiner,objectStep)
                 }
                 //итоги по ступеням
-                let totalSteps = this.props.recount.totalSteps.find(item => item.id == objectTaxation.id);
+                let totalSteps = this.props.recount.objectsSteps.totalSteps.find(item => item.id == objectTaxation.id);
                 if(totalSteps){
                     this.feelConteiner(objectTotalStepConteiner,totalSteps.total)
                 }

@@ -8,12 +8,6 @@ export class Recount {
 
         this.objectsTaxation    = undefined//коллекция объектов таксации
         this.objectsSteps       = undefined//коллекция ступеней толщшины с сортиментной структурой
-        this.totalSteps         = [];//итоги по ступеням толщины
-        this.totalValue         = [];//итог на делянке с коэффциентом и округлением
-
-
-
-
  
     }
 
@@ -52,10 +46,10 @@ export class Recount {
         this.objectsSteps.feel()
 
         //заполним итоги по ступеням толщины
-        this.objectsSteps.feelTotalSteps(this.totalSteps)
+        this.objectsSteps.feelTotalSteps()
 
         //заполним итоги по делянке
-        //this.objectsSteps.feelTotalValue(this.totalValue)
+        this.objectsSteps.feelTotalValue()
    
  
     }
@@ -68,9 +62,6 @@ class ClassObjectsTaxation {
         this.rows = [];        
     }
 
-    round_value(value, digits) {
-        return parseFloat(value.toFixed(digits))
-    }
 
     feel(recount) {
         for (let i = 0; i < recount.length; i++) {
@@ -111,7 +102,7 @@ class ClassObjectsTaxation {
                 }
             } 
             if(areacutting !=0){
-                coefficient = this.round_value(this.owner.plot.property.felling.areacutting/areacutting,2)
+                coefficient = round_value(this.owner.plot.property.felling.areacutting/areacutting,2)
             }           
         }
         return coefficient
@@ -161,14 +152,13 @@ class ClassObjectsTaxation {
 
 class ClassObjectsSteps {
     constructor(owner) {
-        this.owner = owner;
-        this.steps = [];        
+        this.owner      = owner;
+        this.steps      = []; 
+        this.totalSteps = [];//итоги по ступеням толщины 
+        this.totalValue = [];//итог на делянке с коэффциентом и округлением      
     }
 
-    round_value(value, digits) {
-        return parseFloat(value.toFixed(digits))
-    }
-
+    
     feel() {
         for (let i = 0; i < this.owner.objectsTaxation.rows.length; i++) {
             let row_objectTaxation = this.owner.objectsTaxation.rows[i]; 
@@ -188,6 +178,7 @@ class ClassObjectsSteps {
         }
     }    
 
+    //заполнение ступеней толщины данными сортиментных таблиц
     feelRow(objectTaxation,rowStep) { 
 
         let ST                              = objectTaxation.sortables;
@@ -260,20 +251,20 @@ class ClassObjectsSteps {
         }	
         
         
-        var average 	= this.round_value((parseFloat(rowSortTable.average1)+parseFloat(rowSortTable.average2))*business,2);
-        var large 		= this.round_value(parseFloat(rowSortTable.large)*business,2);
-        var small 		= this.round_value(parseFloat(rowSortTable.small)*business,2);
-        var waste_b		= this.round_value(parseFloat(rowSortTable.waste_b)*business,2);
-        var technical_b = this.round_value(parseFloat(rowSortTable.technical_b)*business,2);
-        var firewood_b 	= this.round_value(parseFloat(rowSortTable.firewood_b)*business,2);
+        var average 	= round_value((parseFloat(rowSortTable.average1)+parseFloat(rowSortTable.average2))*business,2);
+        var large 		= round_value(parseFloat(rowSortTable.large)*business,2);
+        var small 		= round_value(parseFloat(rowSortTable.small)*business,2);
+        var waste_b		= round_value(parseFloat(rowSortTable.waste_b)*business,2);
+        var technical_b = round_value(parseFloat(rowSortTable.technical_b)*business,2);
+        var firewood_b 	= round_value(parseFloat(rowSortTable.firewood_b)*business,2);
         
         if(rowSortFirewoodTable){
-            large 		= large			+	this.round_value(parseFloat(rowSortFirewoodTable.large)*firewood,2);
-            small 		= small			+	this.round_value(parseFloat(rowSortFirewoodTable.small)*firewood,2);
-            average 	= average		+	this.round_value((parseFloat(rowSortFirewoodTable.average1)+parseFloat(rowSortFirewoodTable.average2))*firewood,2);
-            waste_b		= waste_b		+	this.round_value(parseFloat(rowSortFirewoodTable.waste_b)*firewood,2);
-            technical_b	= technical_b	+	this.round_value(parseFloat(rowSortFirewoodTable.technical_b)*firewood,2);
-            firewood_b	= firewood_b	+	this.round_value(parseFloat(rowSortFirewoodTable.firewood_b)*firewood,2);
+            large 		= large			+	round_value(parseFloat(rowSortFirewoodTable.large)*firewood,2);
+            small 		= small			+	round_value(parseFloat(rowSortFirewoodTable.small)*firewood,2);
+            average 	= average		+	round_value((parseFloat(rowSortFirewoodTable.average1)+parseFloat(rowSortFirewoodTable.average2))*firewood,2);
+            waste_b		= waste_b		+	round_value(parseFloat(rowSortFirewoodTable.waste_b)*firewood,2);
+            technical_b	= technical_b	+	round_value(parseFloat(rowSortFirewoodTable.technical_b)*firewood,2);
+            firewood_b	= firewood_b	+	round_value(parseFloat(rowSortFirewoodTable.firewood_b)*firewood,2);
         }
     
         var totalfirewood_b 	= 0;
@@ -288,23 +279,24 @@ class ClassObjectsSteps {
                         'large'	:			large,
                         'average'	:		average,
                         'small'	:			small,
-                        'totalbusiness_b':	this.round_value(large+average+small,2),
+                        'totalbusiness_b':	round_value(large+average+small,2),
                         'technical_b':		technical_b,
                         'firewood_b':		firewood_b,
                         'totalfirewood_b':	totalfirewood_b,
                         'waste_b':			waste_b,
                         
-                        'technical_f':		this.round_value(technical_f*firewood,2),
-                        'firewood_f':		this.round_value(firewood_f*firewood,2),
-                        'waste_f':			this.round_value(waste_f*firewood,2),
-                        'totalfirewood_f':	this.round_value(totalfirewood_f*firewood,2),
+                        'technical_f':		round_value(technical_f*firewood,2),
+                        'firewood_f':		round_value(firewood_f*firewood,2),
+                        'waste_f':			round_value(waste_f*firewood,2),
+                        'totalfirewood_f':	round_value(totalfirewood_f*firewood,2),
                     };
     
         return new ClassAssortmentStructure(options)
     
     }
 
-    feelTotalSteps(totalSteps) {
+    //заполнение строки итогов по ступеням толщины
+    feelTotalSteps() {
 
         for (let i = 0; i < this.steps.length; i++) {
             let row_objectTaxation = this.steps[i]
@@ -318,98 +310,70 @@ class ClassObjectsSteps {
                     total[key] = total[key]+row[key];
                 }
             }
-            //окургление
+            //округление
             for (var key in total) {
                 if(key == 'step') {
                     continue;
                 }
-                total[key] = this.round_value(total[key],2);
+                total[key] = round_value(total[key],2);
             }
-            totalSteps.push({
+            this.totalSteps.push({
                 id:     row_objectTaxation.id,
                 total:  total
             })
         }
     }
 
-    feelTotalValue(totalValue) {
+    //заполнение строки итогов с учетом коэффициента и округления
+    feelTotalValue() {
+
+        for (let i = 0; i < this.totalSteps.length; i++) {
+            let row_objectTaxation = this.totalSteps[i]
+            let total = new ClassAssortmentStructure(
+                row_objectTaxation.total,
+                this.owner.plot.property.taxation.coefficient,
+                this.owner.settings.orderRoundingValues
+            )
+
+            total.totalbusiness_b = total.large + total.average + total.small;
         
-        for (var key in objTotalStep) {
-            if(	key == 'recid' || 
-                key == 'step' ||
-                key == 'business' ||
-                key == 'halfbusiness' ||
-                key == 'firewood' ||
-                key == 'business_r' ||
-                key == 'firewood_r'){
-                continue;
-            }
-            var value = 0;
-            if(objTaxation.id == 5){
-                //ленточный перечет
-                value = Math.round(objTotalStep[key]*objectMDO.coefficient*1000)/1000;
+            if(!this.owner.settings.assessfirewoodcommonstock) {
+                total.totalfirewood_b = total.technical_b + total.firewood_b;
             }else{
-                value = objTotalStep[key];
-            }	
-            //округление
-            if(constantValues.orderRoundingValues == 3){
-                value = Math.round(value*100)/100;			
+                total.technical_b = 0;
+                total.firewood_b = 0;
             }
-            if(constantValues.orderRoundingValues == 2){
-                value = Math.round(value*10)/10;			
+            
+            total.liquidity 		= total.totalbusiness_b	+ total.totalfirewood_b;
+            total.total_b 			= total.liquidity		+ total.waste_b;
+            
+            if(!this.owner.settings.assessfirewoodcommonstock) {
+                total.total_f 			= total.technical_f + total.firewood_f + total.waste_f;
+                total.totalfirewood_f 	= total.technical_f + total.firewood_f;	
+                if(this.owner.settings.assesswastefirewood){
+                    total.totalfirewood_f 		= total.totalfirewood_f + total.waste_f;	
+                }		
+            }else{
+                total.total_f	= total.totalfirewood_f;
+                if(!this.owner.settings.assesswastefirewood){
+                    total.total_f 		= total.total_f + total.waste_f;	
+                }			
+                total.technical_f = 0;
+                total.firewood_f = 0;
+                total.waste_f = 0;
             }
-            if(constantValues.orderRoundingValues == 1){
-                value = Math.round(value);			
-            }		
-            obgTotalValue[key] = value;
-                
+
+            console.log(row_objectTaxation.total)
+            console.log(total)           
         }
-        
-        obgTotalValue.totalbusiness_b 	= obgTotalValue.large 			+ obgTotalValue.average 	+ obgTotalValue.small;
-        
-        if(constantValues.assessfirewoodcommonstock == 0) {
-            obgTotalValue.totalfirewood_b = obgTotalValue.technical_b + obgTotalValue.firewood_b;
-        }else{
-            obgTotalValue.technical_b = 0;
-            obgTotalValue.firewood_b = 0;
-        }
-        
-        obgTotalValue.liquidity 		= obgTotalValue.totalbusiness_b	+ obgTotalValue.totalfirewood_b;
-        obgTotalValue.total_b 			= obgTotalValue.liquidity		+ obgTotalValue.waste_b;
-        
-        if(constantValues.assessfirewoodcommonstock == 0) {
-            obgTotalValue.total_f 			= obgTotalValue.technical_f + obgTotalValue.firewood_f + obgTotalValue.waste_f;
-            obgTotalValue.totalfirewood_f 	= obgTotalValue.technical_f + obgTotalValue.firewood_f;	
-            if(constantValues.assesswastefirewood == 1){
-                obgTotalValue.totalfirewood_f 		= obgTotalValue.totalfirewood_f + obgTotalValue.waste_f;	
-            }		
-        }else{
-            obgTotalValue.total_f	= obgTotalValue.totalfirewood_f;
-            if(constantValues.assesswastefirewood == 0){
-                obgTotalValue.total_f 		= obgTotalValue.total_f + obgTotalValue.waste_f;	
-            }			
-            obgTotalValue.technical_f = 0;
-            obgTotalValue.firewood_f = 0;
-            obgTotalValue.waste_f = 0;
-        }
-        
-        for (var key in obgTotalValue) {
-            objectMDO.obgTotalsValue[key] = objectMDO.obgTotalsValue[key]+obgTotalValue[key];
-        }	
-        
-        return obgTotalValue; 
     }
 
-
-
-
 }
-
 
 //Строка расчета сортиментной структура
 class ClassAssortmentStructure {
 
-    constructor(options) {
+    constructor(options,coefficient = undefined,orderRoundingValues = undefined ) {
         this.step 			= 0;
         this.business 		= 0;
         this.firewood 		= 0;
@@ -432,7 +396,28 @@ class ClassAssortmentStructure {
         this.total_f 		= 0.00;//всего дровяных деревьев, 	в этом объекте не заполняется
         
         for (var key in options) {
-            this[key] = options[key];
+            let value = options[key];
+            if(coefficient){
+                if(key == 'step') continue;
+                value = round_value(options[key]*coefficient,2);
+            }
+            //округление
+            if(orderRoundingValues){
+                if(orderRoundingValues == 3){
+                    value = round_value(value,2);
+                }
+                if(orderRoundingValues == 2){
+                    value = round_value(value,1);			
+                }
+                if(orderRoundingValues == 1){
+                    value = round_value(value,0);			
+                }
+            }         
+            this[key] = value
         }
     }
+}
+
+function round_value(value, digits) {
+    return parseFloat(value.toFixed(digits))
 }
