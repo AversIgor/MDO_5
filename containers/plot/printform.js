@@ -75,9 +75,10 @@ class Printform extends Component {
 
             contents.find('body').html(html)
 
-            let objectTaxationConteiner = this.findConteiner(contents,'~ot.')//строка с описание объектов таксации
-            let objectStepConteiner = this.findConteiner(contents,'~st.')//строка с описаниеступеней толщины
-            let objectTotalStepConteiner = this.findConteiner(contents,'~ts.')//строка с итогами по ступеням толщины
+            let objectTaxationConteiner     = this.findConteiner(contents,'~ot.')//строка с описание объектов таксации
+            let objectStepConteiner         = this.findConteiner(contents,'~st.')//строка с описанием ступеней толщины
+            let objectTotalStepConteiner    = this.findConteiner(contents,'~ts.')//строка с итогами по ступеням толщины
+            let objectTotalValueConteiner   = this.findConteiner(contents,'~tv.')//строка с округленными итогами по объекту
             //цикл по объекта таксации
             for (let i = 0; i < this.props.recount.objectsTaxation.rows.length; i++) {
                 let objectTaxation = this.props.recount.objectsTaxation.rows[i];
@@ -93,6 +94,11 @@ class Printform extends Component {
                 let totalSteps = this.props.recount.objectsSteps.totalSteps.find(item => item.id == objectTaxation.id);
                 if(totalSteps){
                     this.feelConteiner(objectTotalStepConteiner,totalSteps.total)
+                }
+                //округленые итоги по делянке
+                let totalValue = this.props.recount.objectsSteps.totalValue.find(item => item.id == objectTaxation.id);
+                if(totalValue){
+                    this.feelConteiner(objectTotalValueConteiner,totalValue.total)
                 }
             }
 

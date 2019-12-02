@@ -268,8 +268,8 @@ class ClassObjectsSteps {
         }
     
         var totalfirewood_b 	= 0;
-        if(this.owner.settings.assessfirewoodcommonstock == 1) {
-            totalfirewood_b	= technical_b + firewood_b;
+        if(this.owner.settings.assessfirewoodcommonstock) {
+            totalfirewood_b	= round_value(technical_b + firewood_b,2);
         }	
     
         var options = {	'step'	:			rowStep.step,
@@ -335,36 +335,39 @@ class ClassObjectsSteps {
                 this.owner.settings.orderRoundingValues
             )
 
-            total.totalbusiness_b = total.large + total.average + total.small;
+            total.totalbusiness_b = round_value(total.large + total.average + total.small,2);
         
             if(!this.owner.settings.assessfirewoodcommonstock) {
-                total.totalfirewood_b = total.technical_b + total.firewood_b;
+                total.totalfirewood_b = round_value(total.technical_b + total.firewood_b,2);
             }else{
                 total.technical_b = 0;
                 total.firewood_b = 0;
             }
             
-            total.liquidity 		= total.totalbusiness_b	+ total.totalfirewood_b;
-            total.total_b 			= total.liquidity		+ total.waste_b;
+            total.liquidity 		= round_value(total.totalbusiness_b	+ total.totalfirewood_b,2);
+            total.total_b 			= round_value(total.liquidity		+ total.waste_b,2);
             
             if(!this.owner.settings.assessfirewoodcommonstock) {
-                total.total_f 			= total.technical_f + total.firewood_f + total.waste_f;
-                total.totalfirewood_f 	= total.technical_f + total.firewood_f;	
+                total.total_f 			= round_value(total.technical_f + total.firewood_f + total.waste_f,2);
+                total.totalfirewood_f 	= round_value(total.technical_f + total.firewood_f,2);	
                 if(this.owner.settings.assesswastefirewood){
-                    total.totalfirewood_f 		= total.totalfirewood_f + total.waste_f;	
+                    total.totalfirewood_f 		= round_value(total.totalfirewood_f + total.waste_f,2);	
                 }		
             }else{
                 total.total_f	= total.totalfirewood_f;
                 if(!this.owner.settings.assesswastefirewood){
-                    total.total_f 		= total.total_f + total.waste_f;	
+                    total.total_f 		= round_value(total.total_f + total.waste_f,2);	
                 }			
                 total.technical_f = 0;
                 total.firewood_f = 0;
                 total.waste_f = 0;
             }
 
-            console.log(row_objectTaxation.total)
-            console.log(total)           
+            this.totalValue.push({
+                id:     row_objectTaxation.id,
+                total:  total
+            })
+      
         }
     }
 
