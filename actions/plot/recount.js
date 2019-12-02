@@ -55,7 +55,7 @@ export class Recount {
         this.objectsSteps.feelTotalSteps(this.totalSteps)
 
         //заполним итоги по делянке
-        this.objectsSteps.feelTotalValue(this.totalValue)
+        //this.objectsSteps.feelTotalValue(this.totalValue)
    
  
     }
@@ -82,8 +82,7 @@ class ClassObjectsTaxation {
 
             for (let j = 0; j < row_objectTaxation.objectsBreed.length; j++) {
                 let row_objBreed                    = row_objectTaxation.objectsBreed[j];
-                let objBreed                        = this.owner.getObject(row_objBreed.breed,this.owner.breed) 
-                
+                let objBreed                        = this.owner.getObject(row_objBreed.breed,this.owner.breed)
                 this.rows.push({
                     id:row_objBreed.id,
                     objectTaxation:objectTaxation.value,
@@ -93,6 +92,7 @@ class ClassObjectsTaxation {
                     rank:row_objBreed.rank, 
                     areacutting:row_objectTaxation.areacutting,
                     steps:row_objBreed.objectsStep,
+                    publication:objBreed.publication.name,
                     sortables:this.getSorttables(objBreed,row_objBreed.rank), 
                     barklindenindividualreserves:this.owner.getObject(objBreed.publication.id,this.owner.publications,'barklindenindividualreserves'),                                     
                 })

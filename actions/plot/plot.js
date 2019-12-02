@@ -1,4 +1,3 @@
-let uniq = require('lodash/uniq');
 let sortBy = require('lodash/sortBy');
 
 export class Plot {
@@ -47,7 +46,6 @@ export class Plot {
                 main:{},
                 random:[]
             }//коэффициенты на ставки
-            this.publications = []
             this.recount = []//объекты таксации,площади/породы,разряды высот/ступени толщины,количество
         }        
     }
@@ -116,11 +114,8 @@ export class Plot {
             if(('table' in breed) && ('sorttables' in breed.table)){
                 let sorttables      = breed.table.sorttables[objectBreed.rank];
                 objectBreed.steps   = Object.keys(sorttables)                
-            }  
-            if(breed.publication){
-                this.publications.push(breed.publication.name)
-                this.publications = uniq(this.publications)
-            }         
+            } 
+  
         }
     }
 

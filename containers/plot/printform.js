@@ -2,6 +2,7 @@ import React, { Component, PropTypes, Fragment} from "react";
 import { bindActionCreators  } from 'redux'
 import { connect } from 'react-redux'
 import * as FileSaver from "file-saver";
+let uniq = require('lodash/uniq');
 
 import ComponentSelectprintform from "../../components/reference/printforms/selectprintform";
 import ComponentPrintform from "../../components/reference/printforms/printform";
@@ -63,8 +64,16 @@ class Printform extends Component {
             html = this.replaceField(html,'~rankTax~',plotProperty.taxation.rankTax,this.props.enumerations.rankTax)
             html = this.replaceField(html,'~seedtrees~',plotProperty.parameters.seedtrees)
             html = this.replaceField(html,'~methodscleaning~',plotProperty.parameters.methodscleaning,this.props.methodscleanings)
-            html = this.replaceField(html,'~region~',plotProperty.taxation.typesrates,this.props.typesrates,'region')
-            html = this.replaceField(html,'~publications~',plotPublications.toString())
+            html = this.replaceField(html,'~region~',plotProperty.taxation.typesrates,this.props.typesrates,'region')            
+            let publications = []
+            for (let i = 0; i < this.props.recount.objectsTaxation.rows.length; i++) {
+                let objectTaxation = this.props.recount.objectsTaxation.rows[i];
+                publications.push(objectTaxation.publication)                    
+            }
+            publications = uniq(publications)
+            html = this.replaceField(html,'~publications~',publications.toString())
+
+   
 
             contents.find('body').html(html)
 
