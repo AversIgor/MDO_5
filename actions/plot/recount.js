@@ -61,8 +61,6 @@ export class Recount {
         //очистим основные коэффициенты
         this.plot.coefficients.main = {}
 
-        console.log(this.typesrates)
-
         let typesrates = this.typesrates.find(item => item.id == this.plot.property.taxation.typesrates);
         if(!typesrates) return
 
@@ -79,62 +77,39 @@ export class Recount {
         //коэффициенты на ликвидный запас для сплошных рубок 
         if(this.plot.property.felling.formCutting == 1){
             let liquidityOnAreacutting = this.totalValue.liquidity/this.plot.property.felling.areacutting;
-
-            console.log(this.totalValue.liquidity,this.plot.property.felling.areacutting,liquidityOnAreacutting)
-
-        }
-        
-
-        
-
-        return
-
-        
-    
-        //коэффициент на ликвидный запас
-        if(objectMDO.formCutting.id == 1){
-            var liquidityOnAreacutting = liquidity/objectMDO.areacutting;//arearecount;
-            for (var i = 0; i < coefficientsrangesliquidationValues.length; i++) {
-                if(		(liquidityOnAreacutting < 100 && coefficientsrangesliquidationValues[i].rangesLiquidation == 1)
-                    || 	(liquidityOnAreacutting >= 100 && liquidityOnAreacutting < 150 && coefficientsrangesliquidationValues[i].rangesLiquidation == 2)
-                    ||	(liquidityOnAreacutting >= 150 && coefficientsrangesliquidationValues[i].rangesLiquidation == 3)){
-                    var rowCoefficient = {};
-                    rowCoefficient.recid = objectMDO.coefficients.length+1;
-                    rowCoefficient.predefined = 1;
-                    rowCoefficient.name = 3;
-                    rowCoefficient.value = coefficientsrangesliquidationValues[i].value;
-                    objectMDO.coefficients.push(rowCoefficient);
+            for (var i = 0; i < typesrates.coefficientsrangesliquidation.length; i++) {
+                if(		(liquidityOnAreacutting < 100 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 1)
+                    || 	(liquidityOnAreacutting >= 100 && liquidityOnAreacutting < 150 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 2)
+                    ||	(liquidityOnAreacutting >= 150 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 3)){
+                    this.plot.coefficients.main.rangesLiquidation             = typesrates.coefficientsrangesliquidation[i].rangesLiquidation
+                    this.plot.coefficients.main.coefficientsrangesliquidation = typesrates.coefficientsrangesliquidation[i].percent
                 }
             }	
-        }
-        
+        }     
+         
         //коэффициент на поврежденность насаждения
-        if(objectMDO.formCutting.id == 1 && objectMDO.groupCutting.id == 3){
+        if(this.plot.property.felling.formCutting == 1 && this.plot.property.felling.groupCutting == 3){
+            //итог дрова и отходы
+			let firewoodwaste = this.totalValue.totalfirewood_b + this.totalValue.waste_b + this.totalValue.total_f;	
+			let totalbusiness = this.totalValue.totalbusiness_b;
             var damageCoefficient = firewoodwaste/(totalbusiness+firewoodwaste);
-            for (var i = 0; i < coefficientsdamageValues.length; i++) {
-                if(		(damageCoefficient > 0   	&& damageCoefficient < 0.1 && coefficientsdamageValues[i].damage == 1)
-                    || 	(damageCoefficient >= 0.1   && damageCoefficient < 0.2 && coefficientsdamageValues[i].damage == 2)
-                    || 	(damageCoefficient >= 0.2   && damageCoefficient < 0.3 && coefficientsdamageValues[i].damage == 3)
-                    || 	(damageCoefficient >= 0.3   && damageCoefficient < 0.4 && coefficientsdamageValues[i].damage == 4)
-                    || 	(damageCoefficient >= 0.4   && damageCoefficient < 0.5 && coefficientsdamageValues[i].damage == 5)
-                    || 	(damageCoefficient >= 0.5   && damageCoefficient < 0.6 && coefficientsdamageValues[i].damage == 6)
-                    || 	(damageCoefficient >= 0.6   && damageCoefficient < 0.7 && coefficientsdamageValues[i].damage == 7)
-                    || 	(damageCoefficient >= 0.7   && damageCoefficient < 0.8 && coefficientsdamageValues[i].damage == 8)
-                    || 	(damageCoefficient >= 0.8   && damageCoefficient < 0.9 && coefficientsdamageValues[i].damage == 9)
-                    ||	(damageCoefficient >= 0.9 	&& coefficientsdamageValues[i].damage == 10)){
-                    var rowCoefficient = {};
-                    rowCoefficient.recid = objectMDO.coefficients.length+1;
-                    rowCoefficient.predefined = 1;
-                    rowCoefficient.text = "Коэффициент на степень повреждения насаждения";
-                    rowCoefficient.value = coefficientsdamageValues[i].value;
-                    objectMDO.coefficients.push(rowCoefficient);
-                }
+            for (var i = 0; i < typesrates.coefficientsdamage.length; i++) {
+                if(		(damageCoefficient > 0   	&& damageCoefficient < 0.1 && typesrates.coefficientsdamage[i].damage == 1)
+                    || 	(damageCoefficient >= 0.1   && damageCoefficient < 0.2 && typesrates.coefficientsdamage[i].damage == 2)
+                    || 	(damageCoefficient >= 0.2   && damageCoefficient < 0.3 && typesrates.coefficientsdamage[i].damage == 3)
+                    || 	(damageCoefficient >= 0.3   && damageCoefficient < 0.4 && typesrates.coefficientsdamage[i].damage == 4)
+                    || 	(damageCoefficient >= 0.4   && damageCoefficient < 0.5 && typesrates.coefficientsdamage[i].damage == 5)
+                    || 	(damageCoefficient >= 0.5   && damageCoefficient < 0.6 && typesrates.coefficientsdamage[i].damage == 6)
+                    || 	(damageCoefficient >= 0.6   && damageCoefficient < 0.7 && typesrates.coefficientsdamage[i].damage == 7)
+                    || 	(damageCoefficient >= 0.7   && damageCoefficient < 0.8 && typesrates.coefficientsdamage[i].damage == 8)
+                    || 	(damageCoefficient >= 0.8   && damageCoefficient < 0.9 && typesrates.coefficientsdamage[i].damage == 9)
+                    ||	(damageCoefficient >= 0.9 	&& typesrates.coefficientsdamage[i].damage == 10)){
+                    this.plot.coefficients.main.damage              = typesrates.coefficientsdamage[i].damage
+                    this.plot.coefficients.main.coefficientsdamage  = typesrates.coefficientsdamage[i].percent
+                    }
             }	
-        }
-    
-    }
-
-  
+        }    
+    }  
 }
 
 class ClassObjectsTaxation {
