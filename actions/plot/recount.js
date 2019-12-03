@@ -5,9 +5,11 @@ export class Recount {
         this.enumerations = undefined
         this.breed = undefined
         this.publications = undefined
+        this.typesrates = undefined        
 
-        this.objectsTaxation    = undefined//коллекция объектов таксации
-        this.objectsSteps       = undefined//коллекция ступеней толщшины с сортиментной структурой
+        this.objectsTaxation    = new ClassObjectsTaxation(this)//коллекция объектов таксации
+        this.objectsSteps       = new ClassObjectsSteps(this)//коллекция ступеней толщшины с сортиментной структурой
+        this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке
  
     }
 
@@ -35,25 +37,104 @@ export class Recount {
     calculation() {  
         
         //формирование колекции объектов таксации
-        this.objectsTaxation    = new ClassObjectsTaxation(this)
         this.objectsTaxation.feel(this.plot.recount)
         
         //рассчитае коэффциент для ленточного перечета
         this.plot.property.taxation.coefficient = this.objectsTaxation.getCoefficient(this.plot.property.taxation.methodTaxation)
 
         //по каждой ступени толщины заполним сортиментную структуру
-        this.objectsSteps       = new ClassObjectsSteps(this)
         this.objectsSteps.feel()
 
         //заполним итоги по ступеням толщины
         this.objectsSteps.feelTotalSteps()
 
-        //заполним итоги по делянке
+        //заполним итоги объема по объектам таксации и по всейделянке
         this.objectsSteps.feelTotalValue()
-   
+
+        //Сформируем коэффциенты на ставки платы
+        this.feelСoefficients()  
  
     }
 
+    feelСoefficients(liquidity,firewoodwaste,totalbusiness) {
+	
+        //очистим основные коэффициенты
+        this.plot.coefficients.main = {}
+
+        console.log(this.typesrates)
+
+        let typesrates = this.typesrates.find(item => item.id == this.plot.property.taxation.typesrates);
+        if(!typesrates) return
+
+        //коэффицент индексации ставок
+        this.plot.coefficients.main.coefficientsindexing = typesrates.coefficientsindexing
+
+        //коэффициенты на форму рубки
+        let coefficientsformcutting = typesrates.coefficientsformcutting.find(item => item.formCutting == this.plot.property.felling.formCutting);
+        if(coefficientsformcutting){
+            this.plot.coefficients.main.formCutting             = coefficientsformcutting.formCutting
+            this.plot.coefficients.main.coefficientsformcutting = coefficientsformcutting.percent
+        }
+
+        //коэффициенты на ликвидный запас для сплошных рубок 
+        if(this.plot.property.felling.formCutting == 1){
+            let liquidityOnAreacutting = this.totalValue.liquidity/this.plot.property.felling.areacutting;
+
+            console.log(this.totalValue.liquidity,this.plot.property.felling.areacutting,liquidityOnAreacutting)
+
+        }
+        
+
+        
+
+        return
+
+        
+    
+        //коэффициент на ликвидный запас
+        if(objectMDO.formCutting.id == 1){
+            var liquidityOnAreacutting = liquidity/objectMDO.areacutting;//arearecount;
+            for (var i = 0; i < coefficientsrangesliquidationValues.length; i++) {
+                if(		(liquidityOnAreacutting < 100 && coefficientsrangesliquidationValues[i].rangesLiquidation == 1)
+                    || 	(liquidityOnAreacutting >= 100 && liquidityOnAreacutting < 150 && coefficientsrangesliquidationValues[i].rangesLiquidation == 2)
+                    ||	(liquidityOnAreacutting >= 150 && coefficientsrangesliquidationValues[i].rangesLiquidation == 3)){
+                    var rowCoefficient = {};
+                    rowCoefficient.recid = objectMDO.coefficients.length+1;
+                    rowCoefficient.predefined = 1;
+                    rowCoefficient.name = 3;
+                    rowCoefficient.value = coefficientsrangesliquidationValues[i].value;
+                    objectMDO.coefficients.push(rowCoefficient);
+                }
+            }	
+        }
+        
+        //коэффициент на поврежденность насаждения
+        if(objectMDO.formCutting.id == 1 && objectMDO.groupCutting.id == 3){
+            var damageCoefficient = firewoodwaste/(totalbusiness+firewoodwaste);
+            for (var i = 0; i < coefficientsdamageValues.length; i++) {
+                if(		(damageCoefficient > 0   	&& damageCoefficient < 0.1 && coefficientsdamageValues[i].damage == 1)
+                    || 	(damageCoefficient >= 0.1   && damageCoefficient < 0.2 && coefficientsdamageValues[i].damage == 2)
+                    || 	(damageCoefficient >= 0.2   && damageCoefficient < 0.3 && coefficientsdamageValues[i].damage == 3)
+                    || 	(damageCoefficient >= 0.3   && damageCoefficient < 0.4 && coefficientsdamageValues[i].damage == 4)
+                    || 	(damageCoefficient >= 0.4   && damageCoefficient < 0.5 && coefficientsdamageValues[i].damage == 5)
+                    || 	(damageCoefficient >= 0.5   && damageCoefficient < 0.6 && coefficientsdamageValues[i].damage == 6)
+                    || 	(damageCoefficient >= 0.6   && damageCoefficient < 0.7 && coefficientsdamageValues[i].damage == 7)
+                    || 	(damageCoefficient >= 0.7   && damageCoefficient < 0.8 && coefficientsdamageValues[i].damage == 8)
+                    || 	(damageCoefficient >= 0.8   && damageCoefficient < 0.9 && coefficientsdamageValues[i].damage == 9)
+                    ||	(damageCoefficient >= 0.9 	&& coefficientsdamageValues[i].damage == 10)){
+                    var rowCoefficient = {};
+                    rowCoefficient.recid = objectMDO.coefficients.length+1;
+                    rowCoefficient.predefined = 1;
+                    rowCoefficient.text = "Коэффициент на степень повреждения насаждения";
+                    rowCoefficient.value = coefficientsdamageValues[i].value;
+                    objectMDO.coefficients.push(rowCoefficient);
+                }
+            }	
+        }
+    
+    }
+
+  
 }
 
 class ClassObjectsTaxation {
@@ -367,6 +448,11 @@ class ClassObjectsSteps {
                 id:     row_objectTaxation.id,
                 total:  total
             })
+
+            //итог по всем объекта таксации
+            for (var key in total) {
+                this.owner.totalValue[key] = this.owner.totalValue[key]+total[key];
+            }	
       
         }
     }
@@ -376,7 +462,7 @@ class ClassObjectsSteps {
 //Строка расчета сортиментной структура
 class ClassAssortmentStructure {
 
-    constructor(options,coefficient = undefined,orderRoundingValues = undefined ) {
+    constructor(options = {},coefficient = undefined,orderRoundingValues = undefined ) {
         this.step 			= 0;
         this.business 		= 0;
         this.firewood 		= 0;

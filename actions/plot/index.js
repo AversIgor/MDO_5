@@ -12,18 +12,24 @@ export function mdoRecount(plotObject) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let state       = getState()
-            let newRecount  = new recount.Recount()
-            newRecount.setProperty({
-                plot:plotObject,
+            let new_plotObject = cloneDeep(plotObject)
+            let new_Recount  = new recount.Recount()
+            new_Recount.setProperty({
+                plot:new_plotObject,
                 settings:state.settings.data.mdo,
                 enumerations:state.enumerations,
                 breed:state.breed.data,
                 publications:state.publications.data,
+                typesrates:state.typesrates.data,
             })            
-            newRecount.calculation()
+            new_Recount.calculation()
             dispatch({
                 type: RECOUNTRESULT,
-                recount: newRecount,
+                recount: new_Recount,
+            })
+            dispatch({
+                type: CHANGE_PROPERTY,
+                plotObject: new_plotObject
             })
         }
         return asyncProcess()
