@@ -8,8 +8,10 @@ export class Recount {
         this.typesrates = undefined        
 
         this.objectsTaxation    = new ClassObjectsTaxation(this)//коллекция объектов таксации
-        this.objectsSteps       = new ClassObjectsSteps(this)//коллекция ступеней толщшины с сортиментной структурой
+        this.objectsSteps       = new ClassObjectsSteps(this)//коллекция ступеней толщшины с сортиментной структурой        
         this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке
+
+        this.objectsFeedrates   = new ClassObjectsFeedrates(this)//коллекция ставок платы с учетом коэффцентов
  
     }
 
@@ -52,7 +54,12 @@ export class Recount {
         this.objectsSteps.feelTotalValue()
 
         //Сформируем коэффциенты на ставки платы
-        this.feelСoefficients()  
+        this.feelСoefficients() 
+        
+        //Сформируем ставки платы
+        this.objectsFeedrates.feel() 
+
+            
  
     }
 
@@ -135,6 +142,7 @@ class ClassObjectsTaxation {
                     objectTaxation:objectTaxation.value,
                     objectTaxationId:objectTaxation.id,
                     breed:objBreed.value, 
+                    breedId:objBreed.id,
                     kodGulf:objBreed.kodGulf,
                     rank:row_objBreed.rank, 
                     areacutting:row_objectTaxation.areacutting,
@@ -434,10 +442,88 @@ class ClassObjectsSteps {
 
 }
 
+class ClassObjectsFeedrates {
+    constructor(owner) {
+        this.owner = owner;
+        this.rows  = [];
+    }
+
+    feel() {
+        for (let i = 0; i < this.owner.objectsTaxation.rows.length; i++) {
+            let row_objectTaxation = this.owner.objectsTaxation.rows[i]; 
+            //вид ставки
+            let typesrates = this.owner.typesrates.find(item => item.id == this.owner.plot.property.taxation.typesrates);           
+            if(!typesrates) return
+            //ставки
+            let feedrates = typesrates.feedrates
+            if(!feedrates) return
+            //по породе
+            let feedratesBreed = feedrates.filter(item => item.breed == row_objectTaxation.breedId);
+            //разряду такс
+            let feedratesValues  = feedratesBreed.find(item => item.ranktax == this.owner.plot.property.taxation.rankTax);
+            if(!feedratesValues) return
+             
+            let options = {}            
+            options.large 		= this.applyСoefficients(feedratesValues.large);
+			options.average 	= this.applyСoefficients(feedratesValues.average);
+			options.small 		= this.applyСoefficients(feedratesValues.small);
+            let firewood        = this.applyСoefficients(feedratesValues.firewood)
+
+			if(this.owner.settings.assessfirewoodcommonstock == 0) {
+				options.technical_b 	= firewood;
+				options.firewood_b 		= firewood;
+				options.technical_f 	= firewood;
+				options.firewood_f 		= firewood;
+				if(this.owner.settings.assesswastefirewood == 1){
+					options.waste_f 	= firewood;	
+				}				
+			}else{
+				options.totalfirewood_b	= firewood;
+				options.totalfirewood_f	= firewood;
+			}		
+            
+            this.rows.push({
+                id:    row_objectTaxation.id,
+                row:   new ClassAssortmentStructure(options,undefined,typesrates.orderroundingrates)
+            })
+        }
+    } 
+    
+    applyСoefficients(feedrate) {
+
+        let result = feedrate;
+        //умножим ставку на коэффицент индексации
+        let coefficientsindexing = this.owner.plot.coefficients.main.coefficientsindexing
+        if(coefficientsindexing && coefficientsindexing !=0){
+            result *= coefficientsindexing;
+            result = round_value(result,2)
+        } 
+
+        //умножим ставку на прочие коэффициенты
+        let coefficientsformcutting = this.owner.plot.coefficients.main.coefficientsformcutting
+        if(coefficientsformcutting && coefficientsformcutting !=0) result *= coefficientsformcutting;
+
+        let coefficientsrangesliquidation = this.owner.plot.coefficients.main.coefficientsrangesliquidation
+        if(coefficientsrangesliquidation && coefficientsrangesliquidation !=0) result *= coefficientsrangesliquidation;
+
+        let coefficientsdamage = this.owner.plot.coefficients.main.coefficientsdamage
+        if(coefficientsdamage && coefficientsdamage !=0) result *= coefficientsdamage;
+
+        //умножим ставку на произвольные коэффиценты
+        let random = this.owner.plot.coefficients.random
+        for (var i = 0; i < random.length; i++) {
+            let value = random[i].value
+            if(value && value !=0) result *= value;
+        }
+        return result;
+    }
+
+}
+
 //Строка расчета сортиментной структура
 class ClassAssortmentStructure {
 
-    constructor(options = {},coefficient = undefined,orderRoundingValues = undefined ) {
+    constructor(options = {},coefficient = undefined,roundingValues = undefined ) {
         this.step 			= 0;
         this.business 		= 0;
         this.firewood 		= 0;
@@ -466,14 +552,14 @@ class ClassAssortmentStructure {
                 value = round_value(options[key]*coefficient,2);
             }
             //округление
-            if(orderRoundingValues){
-                if(orderRoundingValues == 3){
+            if(roundingValues){
+                if(roundingValues == 3){
                     value = round_value(value,2);
                 }
-                if(orderRoundingValues == 2){
+                if(roundingValues == 2){
                     value = round_value(value,1);			
                 }
-                if(orderRoundingValues == 1){
+                if(roundingValues == 1){
                     value = round_value(value,0);			
                 }
             }         

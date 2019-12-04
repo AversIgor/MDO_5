@@ -79,6 +79,7 @@ class Printform extends Component {
             let objectStepConteiner         = this.findConteiner(contents,'~st.')//строка с описанием ступеней толщины
             let objectTotalStepConteiner    = this.findConteiner(contents,'~ts.')//строка с итогами по ступеням толщины
             let objectTotalValueConteiner   = this.findConteiner(contents,'~tv.')//строка с округленными итогами по объекту
+            let objectsFeedratesConteiner   = this.findConteiner(contents,'~fr.')//строка с ставкми платы
             //цикл по объекта таксации
             for (let i = 0; i < this.props.recount.objectsTaxation.rows.length; i++) {
                 let objectTaxation = this.props.recount.objectsTaxation.rows[i];
@@ -99,6 +100,11 @@ class Printform extends Component {
                 let totalValue = this.props.recount.objectsSteps.totalValue.find(item => item.id == objectTaxation.id);
                 if(totalValue){
                     this.feelConteiner(objectTotalValueConteiner,totalValue.total)
+                }
+                //округленые итоги по делянке
+                let feedrates = this.props.recount.objectsFeedrates.rows.find(item => item.id == objectTaxation.id);
+                if(feedrates){
+                    this.feelConteiner(objectsFeedratesConteiner,feedrates.row)
                 }
             }
 
