@@ -246,6 +246,25 @@
 <td style="text-align: right; width: 6%; height: 19px;"><span style="font-size: 8pt;">~fr.totalfirewood_f~</span></td>
 <td style="text-align: right; width: 6%; height: 19px;"><span style="font-size: 8pt;">~fr.total_f~</span></td>
 </tr>
+<tr style="height: 18px;">
+<td style="width: 18%; border-top: 0px;" colspan="3"><strong><span style="font-size: 8pt;">Общая стоимость.</span></strong></td>
+<td style="width: 6.28769%;"><strong><span style="font-size: 8pt;">руб.</span></strong></td>
+<td style="width: 5.71231%; text-align: right;"><strong><span style="font-size: 8pt;">~su.large~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.average~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.small~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.totalbusiness_b~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.technical_b~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.firewood_b~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.totalfirewood_b~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.liquidity~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.waste_b~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.total_b~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.technical_f~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.firewood_f~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.waste_f~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.totalfirewood_f~</span></strong></td>
+<td style="width: 6%; text-align: right;"><strong><span style="font-size: 8pt;">~su.total_f~</span></strong></td>
+</tr>
 </tbody>
 </table>
 </div>

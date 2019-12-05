@@ -9,9 +9,10 @@ export class Recount {
 
         this.objectsTaxation    = new ClassObjectsTaxation(this)//коллекция объектов таксации
         this.objectsSteps       = new ClassObjectsSteps(this)//коллекция ступеней толщшины с сортиментной структурой        
-        this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке
+        this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке в разрезе объектов таксции
 
         this.objectsFeedrates   = new ClassObjectsFeedrates(this)//коллекция ставок платы с учетом коэффцентов
+        this.totalSumm          = new ClassAssortmentStructure() //итоги стоимости по делянке в разрезе объектов таксции
  
     }
 
@@ -50,7 +51,7 @@ export class Recount {
         //заполним итоги по ступеням толщины
         this.objectsSteps.feelTotalSteps()
 
-        //заполним итоги объема по объектам таксации и по всейделянке
+        //заполним итоги объема по объектам таксации и по всей делянке
         this.objectsSteps.feelTotalValue()
 
         //Сформируем коэффциенты на ставки платы
@@ -59,7 +60,10 @@ export class Recount {
         //Сформируем ставки платы
         this.objectsFeedrates.feel() 
 
-            
+        //Заполним стоимость
+        this.objectsFeedrates.feelTotalSumm()
+
+         
  
     }
 
@@ -445,7 +449,8 @@ class ClassObjectsSteps {
 class ClassObjectsFeedrates {
     constructor(owner) {
         this.owner = owner;
-        this.rows  = [];
+        this.feedrates = [];
+        this.totalSumm = [];//итог суммы на делянке с округлением
     }
 
     feel() {
@@ -453,15 +458,15 @@ class ClassObjectsFeedrates {
             let row_objectTaxation = this.owner.objectsTaxation.rows[i]; 
             //вид ставки
             let typesrates = this.owner.typesrates.find(item => item.id == this.owner.plot.property.taxation.typesrates);           
-            if(!typesrates) return
+            if(!typesrates) continue
             //ставки
             let feedrates = typesrates.feedrates
-            if(!feedrates) return
+            if(!feedrates) continue
             //по породе
             let feedratesBreed = feedrates.filter(item => item.breed == row_objectTaxation.breedId);
             //разряду такс
             let feedratesValues  = feedratesBreed.find(item => item.ranktax == this.owner.plot.property.taxation.rankTax);
-            if(!feedratesValues) return
+            if(!feedratesValues) continue
              
             let options = {}            
             options.large 		= this.applyСoefficients(feedratesValues.large);
@@ -482,7 +487,7 @@ class ClassObjectsFeedrates {
 				options.totalfirewood_f	= firewood;
 			}		
             
-            this.rows.push({
+            this.feedrates.push({
                 id:    row_objectTaxation.id,
                 row:   new ClassAssortmentStructure(options,undefined,typesrates.orderroundingrates)
             })
@@ -516,6 +521,54 @@ class ClassObjectsFeedrates {
             if(value && value !=0) result *= value;
         }
         return result;
+    }
+
+    //заполнение строки итогов с учетом коэффициента и округления
+    feelTotalSumm() {
+
+        for (let i = 0; i < this.owner.objectsTaxation.rows.length; i++) {
+            let row_objectTaxation = this.owner.objectsTaxation.rows[i];
+            
+            //найдем строки с итогом объема и ставок по объекту таксации
+            let row_feedrates = this.feedrates.find(item => item.id == row_objectTaxation.id);
+            let row_totalValue = this.owner.objectsSteps.totalValue.find(item => item.id == row_objectTaxation.id);
+
+            if((!row_feedrates) || (!row_totalValue)) continue
+
+            let feedrates = row_feedrates.row;
+            let totalValue = row_totalValue.total;
+
+            let options = {}
+            options.large 		= totalValue.large		*feedrates.large;
+            options.average 	= totalValue.average	*feedrates.average;
+            options.small 		= totalValue.small		*feedrates.small;
+            
+            if(this.owner.settings.assessfirewoodcommonstock == 0) {
+                options.technical_b 	= totalValue.technical_b	*feedrates.technical_b;
+                options.firewood_b 		= totalValue.firewood_b		*feedrates.firewood_b;
+                options.technical_f 	= totalValue.technical_f	*feedrates.technical_f;
+                options.firewood_f 		= totalValue.firewood_f		*feedrates.firewood_f;
+                if(this.owner.settings.assesswastefirewood == 1){
+                    options.waste_f 	= totalValue.waste_f		*feedrates.waste_f;
+                }				
+            }else{
+                options.totalfirewood_b 	= totalValue.totalfirewood_b	*feedrates.totalfirewood_b;
+                options.totalfirewood_f 	= totalValue.totalfirewood_f	*feedrates.totalfirewood_f;
+            }
+
+            let total = new ClassAssortmentStructure(options,undefined,this.owner.settings.orderRoundingRates)
+
+            this.totalSumm.push({
+                id:    row_objectTaxation.id,
+                total: total
+            })
+  
+            //итог по всем объекта таксации
+            for (var key in total) {
+                this.owner.totalSumm[key] = this.owner.totalSumm[key]+total[key];
+            }	
+      
+        }
     }
 
 }

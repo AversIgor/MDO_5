@@ -80,6 +80,7 @@ class Printform extends Component {
             let objectTotalStepConteiner    = this.findConteiner(contents,'~ts.')//строка с итогами по ступеням толщины
             let objectTotalValueConteiner   = this.findConteiner(contents,'~tv.')//строка с округленными итогами по объекту
             let objectsFeedratesConteiner   = this.findConteiner(contents,'~fr.')//строка с ставкми платы
+            let objectsTotalSummConteiner   = this.findConteiner(contents,'~su.')//строка с округленными итогами по стомости
             //цикл по объекта таксации
             for (let i = 0; i < this.props.recount.objectsTaxation.rows.length; i++) {
                 let objectTaxation = this.props.recount.objectsTaxation.rows[i];
@@ -96,15 +97,21 @@ class Printform extends Component {
                 if(totalSteps){
                     this.feelConteiner(objectTotalStepConteiner,totalSteps.total)
                 }
-                //округленые итоги по делянке
+                //округленые итоги по объекту таксации
                 let totalValue = this.props.recount.objectsSteps.totalValue.find(item => item.id == objectTaxation.id);
                 if(totalValue){
                     this.feelConteiner(objectTotalValueConteiner,totalValue.total)
                 }
-                //округленые итоги по делянке
-                let feedrates = this.props.recount.objectsFeedrates.rows.find(item => item.id == objectTaxation.id);
+                //ставки по объекту таксации
+                let feedrates = this.props.recount.objectsFeedrates.feedrates.find(item => item.id == objectTaxation.id);
                 if(feedrates){
                     this.feelConteiner(objectsFeedratesConteiner,feedrates.row)
+                }
+                //стоимость по оъекту таксации
+                let totalSumm = this.props.recount.objectsFeedrates.totalSumm.find(item => item.id == objectTaxation.id);
+                if(totalSumm){
+                    console.log(totalSumm)
+                    this.feelConteiner(objectsTotalSummConteiner,totalSumm.total)
                 }
             }
 
