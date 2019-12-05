@@ -78,7 +78,7 @@
 <td style="width: 20%; border-style: hidden; height: 10px;">
 <div><span style="font-size: 8pt;">Сортиментная таблица:</span></div>
 </td>
-<td style="border-style: hidden; height: 30px; width: 30%; vertical-align: top;" rowspan="3"><span style="font-size: 8pt;">~publications~</span><span style="font-size: 8pt;"><br /></span></td>
+<td style="border-style: hidden; height: 30px; width: 30%; vertical-align: top;" rowspan="3"><span style="font-size: 8pt;">~publications~</span><span style="font-size: 8pt;"></span></td>
 </tr>
 <tr style="height: 10px;">
 <td style="width: 20%; border-style: hidden; height: 10px;">
@@ -167,46 +167,46 @@
 <td style="width: 60%; height: 18px; text-align: right;" colspan="10"><span style="font-size: 8pt;">Объект таксации: ~ot.objectTaxation~, площадь перечета: ~ot.areacutting~ га.&nbsp;</span><span style="font-size: 8pt;">&nbsp;</span></td>
 </tr>
 <tr style="height: 18px;">
-<td style="text-align: center; width: 6%; height: 18px;"><span style="font-size: 8pt;">~st.step~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.business~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.firewood~<br /></span></td>
-<td style="width: 6.28769%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.total~<br /></span></td>
-<td style="width: 5.71231%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.large~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.average~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.small~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.totalbusiness_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.technical_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.firewood_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.totalfirewood_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.liquidity~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.waste_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.total_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.technical_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.firewood_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.waste_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.totalfirewood_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.total_f~<br /></span></td>
+<td style="text-align: center; width: 6%; height: 18px;"><span style="font-size: 8pt;">~st.step~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.business~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.firewood~</span></td>
+<td style="width: 6.28769%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.total~</span></td>
+<td style="width: 5.71231%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.large~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.average~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.small~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.totalbusiness_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.technical_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.firewood_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.totalfirewood_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.liquidity~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.waste_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.total_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.technical_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.firewood_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.waste_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.totalfirewood_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~st.total_f~</span></td>
 </tr>
 <tr style="height: 18px;">
-<td style="width: 6%; height: 18px; border-bottom: 0px; text-align: left;"><span style="font-size: 8pt;">Итого<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.business~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.firewood~<br /></span></td>
-<td style="width: 6.28769%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.total~<br /></span></td>
-<td style="width: 5.71231%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.large~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.average~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.small~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.totalbusiness_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.technical_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.firewood_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.totalfirewood_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.liquidity~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.waste_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.total_b~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.technical_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.firewood_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.waste_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.totalfirewood_f~<br /></span></td>
-<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.total_f~<br /></span></td>
+<td style="width: 6%; height: 18px; border-bottom: 0px; text-align: left;"><span style="font-size: 8pt;">Итого</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.business~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.firewood~</span></td>
+<td style="width: 6.28769%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.total~</span></td>
+<td style="width: 5.71231%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.large~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.average~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.small~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.totalbusiness_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.technical_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.firewood_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.totalfirewood_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.liquidity~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.waste_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.total_b~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.technical_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.firewood_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.waste_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.totalfirewood_f~</span></td>
+<td style="width: 6%; height: 18px; text-align: right;"><span style="font-size: 8pt;">~ts.total_f~</span></td>
 </tr>
 <tr style="height: 18px;">
 <td style="border-bottom: 0px; border-top: 0px; width: 18%; height: 19px;" colspan="3"><strong><span style="font-size: 8pt;">Итого на объекте.</span></strong></td>
