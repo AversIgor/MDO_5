@@ -81,6 +81,7 @@ class Printform extends Component {
             let objectTotalValueConteiner   = this.findConteiner(contents,'~tv.')//строка с округленными итогами по объекту
             let objectsFeedratesConteiner   = this.findConteiner(contents,'~fr.')//строка с ставкми платы
             let objectsTotalSummConteiner   = this.findConteiner(contents,'~su.')//строка с округленными итогами по стомости
+            let objectsOptionsPlotConteiner = this.findConteiner(contents,'~op.')//строка с параметрами объекта таксации
             //цикл по объекта таксации
             for (let i = 0; i < this.props.recount.objectsTaxation.rows.length; i++) {
                 let objectTaxation = this.props.recount.objectsTaxation.rows[i];
@@ -110,11 +111,16 @@ class Printform extends Component {
                 //стоимость по оъекту таксации
                 let totalSumm = this.props.recount.objectsFeedrates.totalSumm.find(item => item.id == objectTaxation.id);
                 if(totalSumm){
-                    console.log(totalSumm)
                     this.feelConteiner(objectsTotalSummConteiner,totalSumm.total)
                 }
             }
-
+            
+            //параметры по объекта таксации
+            for (let i = 0; i < this.props.recount.optionsPlots.optionsObjectTaxation.length; i++) {
+                let optionsObjectTaxation = this.props.recount.optionsPlots.optionsObjectTaxation[i];
+                this.feelConteiner(objectsOptionsPlotConteiner,optionsObjectTaxation)
+            }
+            
 
             return
         }

@@ -56,7 +56,7 @@ export default class ComponentSteps extends Component {
                             view:"button",
                             type:"icon",
                             icon: "mdi mdi-calculator",
-                            label:"Ведомость МДО",
+                            label:"Печать",
                             width:150,
                             on:{
                                 'onItemClick': function(id){

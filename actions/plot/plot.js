@@ -26,7 +26,7 @@ export class Plot {
                     seedtrees:"",        
                 },
                 felling:{
-                    areacutting:0,
+                    areacutting:1,
                     formCutting:1,
                     groupCutting:1,
                     cuttingmethods:20,

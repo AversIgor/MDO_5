@@ -9,11 +9,13 @@ export class Recount {
 
         this.objectsTaxation    = new ClassObjectsTaxation(this)//коллекция объектов таксации
         this.objectsSteps       = new ClassObjectsSteps(this)//коллекция ступеней толщшины с сортиментной структурой        
-        this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке в разрезе объектов таксции
+        this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке 
 
         this.objectsFeedrates   = new ClassObjectsFeedrates(this)//коллекция ставок платы с учетом коэффцентов
-        this.totalSumm          = new ClassAssortmentStructure() //итоги стоимости по делянке в разрезе объектов таксции
- 
+        this.totalSumm          = new ClassAssortmentStructure() //итоги стоимости по делянке 
+
+        this.optionsPlots          = new ClassOptionsPlots(this) //параетры делянки по объектам таксаци
+
     }
 
     setProperty(data){
@@ -63,7 +65,9 @@ export class Recount {
         //Заполним стоимость
         this.objectsFeedrates.feelTotalSumm()
 
-         
+        //Заполним параметры по объектам таксции
+        this.optionsPlots.feel()
+     
  
     }
 
@@ -87,22 +91,32 @@ export class Recount {
 
         //коэффициенты на ликвидный запас для сплошных рубок 
         if(this.plot.property.felling.formCutting == 1){
-            let liquidityOnAreacutting = this.totalValue.liquidity/this.plot.property.felling.areacutting;
-            for (var i = 0; i < typesrates.coefficientsrangesliquidation.length; i++) {
-                if(		(liquidityOnAreacutting < 100 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 1)
-                    || 	(liquidityOnAreacutting >= 100 && liquidityOnAreacutting < 150 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 2)
-                    ||	(liquidityOnAreacutting >= 150 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 3)){
-                    this.plot.coefficients.main.rangesLiquidation             = typesrates.coefficientsrangesliquidation[i].rangesLiquidation
-                    this.plot.coefficients.main.coefficientsrangesliquidation = typesrates.coefficientsrangesliquidation[i].percent
+            let liquidityOnAreacutting = 0;            
+            if(this.plot.property.taxation.methodTaxation == 1){
+                //для сплошного перечета площадь возьмем из объектов таксации
+                liquidityOnAreacutting = this.totalValue.liquidity/this.plot.property.taxation.arearecount;
+            }else{
+                //для ленточного перечета площад возьмем из площади лесосеки
+                liquidityOnAreacutting = this.totalValue.liquidity/this.plot.property.felling.areacutting;
+            }          
+            
+            if(liquidityOnAreacutting != 0){
+                for (var i = 0; i < typesrates.coefficientsrangesliquidation.length; i++) {
+                    if(		(liquidityOnAreacutting < 100 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 1)
+                        || 	(liquidityOnAreacutting >= 100 && liquidityOnAreacutting < 150 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 2)
+                        ||	(liquidityOnAreacutting >= 150 && typesrates.coefficientsrangesliquidation[i].rangesLiquidation == 3)){
+                        this.plot.coefficients.main.rangesLiquidation             = typesrates.coefficientsrangesliquidation[i].rangesLiquidation
+                        this.plot.coefficients.main.coefficientsrangesliquidation = typesrates.coefficientsrangesliquidation[i].percent
+                    }
                 }
-            }	
+            }
         }     
          
         //коэффициент на поврежденность насаждения
         if(this.plot.property.felling.formCutting == 1 && this.plot.property.felling.groupCutting == 3){
             //итог дрова и отходы
 			let firewoodwaste = this.totalValue.totalfirewood_b + this.totalValue.waste_b + this.totalValue.total_f;	
-			let totalbusiness = this.totalValue.totalbusiness_b;
+			let totalbusiness = this.totalValue.totalbusiness;
             var damageCoefficient = firewoodwaste/(totalbusiness+firewoodwaste);
             for (var i = 0; i < typesrates.coefficientsdamage.length; i++) {
                 if(		(damageCoefficient > 0   	&& damageCoefficient < 0.1 && typesrates.coefficientsdamage[i].damage == 1)
@@ -131,6 +145,10 @@ class ClassObjectsTaxation {
 
 
     feel(recount) {
+        
+        //очистим общую площадь таксации
+        this.owner.plot.property.taxation.arearecount = 0;
+
         for (let i = 0; i < recount.length; i++) {
             let row_objectTaxation = recount[i];
             let objectTaxation = this.owner.getObject(row_objectTaxation.objectTaxation,this.owner.enumerations.objectTaxation);
@@ -156,6 +174,7 @@ class ClassObjectsTaxation {
                     barklindenindividualreserves:this.owner.getObject(objBreed.publication.id,this.owner.publications,'barklindenindividualreserves'),                                     
                 })
             }
+            this.owner.plot.property.taxation.arearecount = this.owner.plot.property.taxation.arearecount+row_objectTaxation.areacutting
         }
     }
 
@@ -220,10 +239,10 @@ class ClassObjectsTaxation {
 
 class ClassObjectsSteps {
     constructor(owner) {
-        this.owner      = owner;
-        this.steps      = []; 
-        this.totalSteps = [];//итоги по ступеням толщины 
-        this.totalValue = [];//итог на делянке с коэффциентом и округлением      
+        this.owner          = owner;
+        this.steps          = []; 
+        this.totalSteps     = [];//итоги по ступеням толщины 
+        this.totalValue     = [];//итоги по объектам таксации с коэффциентом и округлением   
     }
 
     
@@ -347,7 +366,7 @@ class ClassObjectsSteps {
                         'large'	:			large,
                         'average'	:		average,
                         'small'	:			small,
-                        'totalbusiness_b':	round_value(large+average+small,2),
+                        'totalbusiness':	round_value(large+average+small,2),
                         'technical_b':		technical_b,
                         'firewood_b':		firewood_b,
                         'totalfirewood_b':	totalfirewood_b,
@@ -401,9 +420,9 @@ class ClassObjectsSteps {
                 row_objectTaxation.total,
                 this.owner.plot.property.taxation.coefficient,
                 this.owner.settings.orderRoundingValues
-            )
+            )            
 
-            total.totalbusiness_b = round_value(total.large + total.average + total.small,2);
+            total.totalbusiness = round_value(total.large + total.average + total.small,2);
         
             if(!this.owner.settings.assessfirewoodcommonstock) {
                 total.totalfirewood_b = round_value(total.technical_b + total.firewood_b,2);
@@ -412,7 +431,7 @@ class ClassObjectsSteps {
                 total.firewood_b = 0;
             }
             
-            total.liquidity 		= round_value(total.totalbusiness_b	+ total.totalfirewood_b,2);
+            total.liquidity 		= round_value(total.totalbusiness	+ total.totalfirewood_b,2);
             total.total_b 			= round_value(total.liquidity		+ total.waste_b,2);
             
             if(!this.owner.settings.assessfirewoodcommonstock) {
@@ -558,6 +577,28 @@ class ClassObjectsFeedrates {
 
             let total = new ClassAssortmentStructure(options,undefined,this.owner.settings.orderRoundingRates)
 
+            //ИТОГИ	
+            total.totalbusiness_b 	= total.large 			+ total.average 	+ total.small;
+            if(this.owner.settings.assessfirewoodcommonstock == 0) {
+                total.totalfirewood_b = total.technical_b + total.firewood_b;
+            }else{
+                total.technical_b = 0;
+                total.firewood_b = 0;
+            }
+            
+            total.liquidity 		= total.totalbusiness_b	+ total.totalfirewood_b;
+            
+            if(this.owner.settings.assessfirewoodcommonstock == 0) {
+                total.totalfirewood_f 	= total.technical_f + total.firewood_f;	
+                if(this.owner.settings.assesswastefirewood == 1){
+                    total.totalfirewood_f 		= total.totalfirewood_f + total.waste_f;	
+                }		
+            }else{
+                total.technical_f = 0;
+                total.firewood_f = 0;
+                total.waste_f = 0;
+            }
+
             this.totalSumm.push({
                 id:    row_objectTaxation.id,
                 total: total
@@ -573,6 +614,109 @@ class ClassObjectsFeedrates {
 
 }
 
+class ClassOptionsPlots {
+    constructor(owner) {
+        this.owner                  = owner;
+        this.optionsObjectTaxation  = [];//параметры по объектам таксации 
+        this.optionsBreeds          = [];//параметры по объектам таксации
+        this.totalObjectTaxation    = new ClassAssortmentStructure({});//итоги параметров по объектам таксации  
+        this.totalBreeds            = new ClassAssortmentStructure({});//итоги параметров по породам 
+    }
+
+    feel() {
+        for (let i = 0; i < this.owner.objectsTaxation.rows.length; i++) {
+            let row_objectTaxation = this.owner.objectsTaxation.rows[i]; 
+            let objectTaxation = this.optionsObjectTaxation.find(item => item.id == row_objectTaxation.objectTaxationId);
+            if(!objectTaxation){
+                objectTaxation = new    ClassOptions({
+                    id:     row_objectTaxation.objectTaxationId,
+                    name:   row_objectTaxation.objectTaxation
+                })
+                this.optionsObjectTaxation.push(objectTaxation)
+            }
+            let objectBreed = this.optionsBreeds.find(item => item.id == row_objectTaxation.breedId);
+            if(!objectBreed){
+                objectBreed = new ClassOptions({
+                    id:     row_objectTaxation.breedId,
+                    name:   row_objectTaxation.breed
+                })
+                this.optionsBreeds.push(objectBreed)
+            }
+            //найдем строки с итогами по объему
+            let totalValue = this.owner.objectsSteps.totalValue.find(item => item.id == row_objectTaxation.id);
+            //найдем строки с итогами по стоимости
+            let totalSumm = this.owner.objectsFeedrates.totalSumm.find(item => item.id == row_objectTaxation.id);                        
+            if(!totalValue) continue
+
+            objectBreed.total 		    += totalValue.total.total_b         +totalValue.total.total_f;
+            objectBreed.liquidity 		+= totalValue.total.liquidity		+totalValue.total.totalfirewood_f;
+			objectBreed.totalbusiness   += totalValue.total.totalbusiness;
+			objectBreed.firewood 		+= totalValue.total.totalfirewood_b	+totalValue.total.totalfirewood_f;            
+            objectBreed.numberstems 	+= totalValue.total.total;
+            if(totalSumm){
+                objectBreed.totalsumm 	+= totalSumm.total.liquidity		+totalSumm.total.totalfirewood_f;
+            }
+
+			//заполним параметры объекта таксации
+			objectTaxation.total 				+= objectBreed.total;
+			objectTaxation.liquidity 			+= objectBreed.liquidity;
+			objectTaxation.totalbusiness 		+= objectBreed.totalbusiness;
+			objectTaxation.firewood 			+= objectBreed.firewood;
+			objectTaxation.numberstems 		    += objectBreed.numberstems;
+            objectTaxation.totalsumm 			+= objectBreed.totalsumm;
+            objectTaxation.areacutting 			+= row_objectTaxation.areacutting;
+            
+            objectTaxation.total_perhectare 	    = objectTaxation.total			/objectTaxation.areacutting;
+			objectTaxation.liquidity_perhectare     = objectTaxation.liquidity		/objectTaxation.areacutting;
+			objectTaxation.totalbusiness_perhectare = objectTaxation.totalbusiness	/objectTaxation.areacutting;
+			objectTaxation.firewood_perhectare 	    = objectTaxation.firewood		/objectTaxation.areacutting;
+			objectTaxation.averagevolumestems 	    = objectTaxation.liquidity		/objectBreed.numberstems;
+	
+        }
+
+        
+    }    
+}
+
+//Строка расчета сортиментной структура
+class ClassOptions {
+
+    constructor(options = {},roundingValues = undefined ) {
+        this.id         	        = "";
+        this.name    		        = "";
+        this.areacutting 		    = 0;
+        this.numberstems  		    = 0;
+        this.total_perhectare	    = 0.00;
+        this.liquidity_perhectare 	= 0.00;
+        this.totalbusiness_perhectare 	= 0.00;
+        this.firewood_perhectare    = 0.00;
+        this.averagevolumestems	    = 0.00;
+        this.total		            = 0.00;
+        this.totalbusiness          = 0.00;
+        this.liquidity              = 0.00;
+        this.firewood		        = 0.00;        
+        this.totalsumm 		        = 0.00;
+        
+        
+        for (var key in options) {
+            let value = options[key];
+            //округление
+            if(roundingValues){
+                if(roundingValues == 3){
+                    value = round_value(value,2);
+                }
+                if(roundingValues == 2){
+                    value = round_value(value,1);			
+                }
+                if(roundingValues == 1){
+                    value = round_value(value,0);			
+                }
+            }         
+            this[key] = value
+        }
+    }
+}
+
 //Строка расчета сортиментной структура
 class ClassAssortmentStructure {
 
@@ -584,7 +728,7 @@ class ClassAssortmentStructure {
         this.large 			= 0.00;
         this.average 		= 0.00;
         this.small 			= 0.00;
-        this.totalbusiness_b= 0.00;//всего деловая, 			в этом объекте не заполняется
+        this.totalbusiness= 0.00;//всего деловая, 			в этом объекте не заполняется
         this.technical_b	= 0.00;
         this.firewood_b		= 0.00;
         this.totalfirewood_b= 0.00;//всего дрова от деловых,	заполняется если оценка по общему запасу дров!!!
