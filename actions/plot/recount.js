@@ -14,7 +14,7 @@ export class Recount {
         this.objectsFeedrates   = new ClassObjectsFeedrates(this)//коллекция ставок платы с учетом коэффцентов
         this.totalSumm          = new ClassAssortmentStructure() //итоги стоимости по делянке 
 
-        this.optionsPlots          = new ClassOptionsPlots(this) //параетры делянки по объектам таксаци
+        this.optionsPlots       = new ClassOptionsPlots(this) //параетры делянки по объектам таксаци
 
     }
 
@@ -66,8 +66,7 @@ export class Recount {
         this.objectsFeedrates.feelTotalSumm()
 
         //Заполним параметры по объектам таксции
-        this.optionsPlots.feel()
-     
+        this.optionsPlots.feel()     
  
     }
 
@@ -161,8 +160,9 @@ class ClassObjectsTaxation {
                 let objBreed                        = this.owner.getObject(row_objBreed.breed,this.owner.breed)
                 this.rows.push({
                     id:row_objBreed.id,
+                    objectTaxationId:row_objectTaxation.id,
                     objectTaxation:objectTaxation.value,
-                    objectTaxationId:objectTaxation.id,
+                    objectTaxationType:objectTaxation.id,
                     breed:objBreed.value, 
                     breedId:objBreed.id,
                     kodGulf:objBreed.kodGulf,
@@ -182,11 +182,14 @@ class ClassObjectsTaxation {
         let coefficient = 1
         if(methodTaxation == 2){
             let areacutting = 0;
-            for (let i = 0; i < this.rows.length; i++) {
-                let row = this.rows[i];
-                if(row.objectTaxationId == 5){
+            let objectTaxationId = 0;
+            for (let i = 0; i < this.rows.length; i++) {                
+                let row = this.rows[i];                
+                if(objectTaxationId == row.objectTaxationId) continue
+                if(row.objectTaxationType == 5){
                     areacutting += row.areacutting
                 }
+                objectTaxationId = row.objectTaxationId
             } 
             if(areacutting !=0){
                 coefficient = round_value(this.owner.plot.property.felling.areacutting/areacutting,2)
@@ -196,14 +199,14 @@ class ClassObjectsTaxation {
     }
     
 
-    check_methodTaxation(objectTaxationId) {	
+    check_methodTaxation(objectTaxationType) {	
         var result = true;	
         if(this.owner.plot.property.taxation.methodTaxation == 1){
-            if(objectTaxationId == 5){
+            if(objectTaxationType == 5){
                 result = false;
             }
         }else{
-            if(objectTaxationId != 5){
+            if(objectTaxationType != 5){
                 result = false;
             }	
         } 	
@@ -623,13 +626,15 @@ class ClassOptionsPlots {
     }
 
     feel() {
+
+        let areacutting = this.owner.plot.property.felling.areacutting; 
         
         for (let i = 0; i < this.owner.objectsTaxation.rows.length; i++) {
             let row_objectTaxation = this.owner.objectsTaxation.rows[i]; 
-            let objectTaxation = this.optionsObjectTaxation.find(item => item.id == row_objectTaxation.objectTaxationId);
+            let objectTaxation = this.optionsObjectTaxation.find(item => item.id == row_objectTaxation.objectTaxationType);
             if(!objectTaxation){
                 objectTaxation = new    ClassOptions({
-                    id:             row_objectTaxation.objectTaxationId,
+                    id:             row_objectTaxation.objectTaxationType,
                     name:           "- "+row_objectTaxation.objectTaxation,
                     areacutting:    row_objectTaxation.areacutting,
                 })
@@ -671,10 +676,10 @@ class ClassOptionsPlots {
                 objectTaxation.totalsumm 	    += totalSumm.total.liquidity		+totalSumm.total.totalfirewood_f;
             }
             
-            objectTaxation.total_perhectare 	    = round_value(objectTaxation.total			/objectTaxation.areacutting,0);
-			objectTaxation.liquidity_perhectare     = round_value(objectTaxation.liquidity		/objectTaxation.areacutting,0);
-			objectTaxation.totalbusiness_perhectare = round_value(objectTaxation.totalbusiness	/objectTaxation.areacutting,0);
-			objectTaxation.firewood_perhectare 	    = round_value(objectTaxation.firewood		/objectTaxation.areacutting,0);
+            objectTaxation.total_perhectare 	    = round_value(objectTaxation.total			/areacutting,0);
+			objectTaxation.liquidity_perhectare     = round_value(objectTaxation.liquidity		/areacutting,0);
+			objectTaxation.totalbusiness_perhectare = round_value(objectTaxation.totalbusiness	/areacutting,0);
+			objectTaxation.firewood_perhectare 	    = round_value(objectTaxation.firewood		/areacutting,0);
             objectTaxation.averagevolumestems 	    = round_value(objectTaxation.liquidity		/objectBreed.numberstems,2);
                         
         
@@ -691,18 +696,14 @@ class ClassOptionsPlots {
             }
         }
 
-
-        let coefficient = this.owner.plot.property.taxation.coefficient;
-        this.totaloptions.total_perhectare 	        = round_value(this.totaloptions.total			/this.totaloptions.areacutting/coefficient,0);
-        this.totaloptions.liquidity_perhectare      = round_value(this.totaloptions.liquidity		/this.totaloptions.areacutting/coefficient,0);
-        this.totaloptions.totalbusiness_perhectare  = round_value(this.totaloptions.totalbusiness	/this.totaloptions.areacutting/coefficient,0);
-        this.totaloptions.firewood_perhectare 	    = round_value(this.totaloptions.firewood		/this.totaloptions.areacutting/coefficient,0);
+        this.totaloptions.total_perhectare 	        = round_value(this.totaloptions.total			/areacutting,0);
+        this.totaloptions.liquidity_perhectare      = round_value(this.totaloptions.liquidity		/areacutting,0);
+        this.totaloptions.totalbusiness_perhectare  = round_value(this.totaloptions.totalbusiness	/areacutting,0);
+        this.totaloptions.firewood_perhectare 	    = round_value(this.totaloptions.firewood		/areacutting,0);
         
-        this.totaloptions.numberstems 			    = this.totaloptions.numberstems	*coefficient;
+        this.totaloptions.numberstems 			    = this.totaloptions.numberstems;
         this.totaloptions.averagevolumestems	    = round_value(this.totaloptions.liquidity	    /this.totaloptions.numberstems,2);
 
-        //console.log(this.totaloptions)
-        
     }    
 }
 

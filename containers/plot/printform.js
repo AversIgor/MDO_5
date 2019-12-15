@@ -115,22 +115,25 @@ class Printform extends Component {
                 }
             }
             
-
             //параметры по всем объектам таксации
             let totaloptions = this.props.recount.optionsPlots.totaloptions;
             this.feelConteiner(objectsOptionsPlotConteiner,totaloptions)
 
-            //параметры по объекта таксации
-            for (let i = 0; i < this.props.recount.optionsPlots.optionsObjectTaxation.length; i++) {
-                let optionsObjectTaxation = this.props.recount.optionsPlots.optionsObjectTaxation[i];
-                this.feelConteiner(objectsOptionsPlotConteiner,optionsObjectTaxation)
+            if(this.props.recount.optionsPlots.optionsObjectTaxation.length > 1){
+                //параметры по объекта таксации
+                for (let i = 0; i < this.props.recount.optionsPlots.optionsObjectTaxation.length; i++) {
+                    let optionsObjectTaxation = this.props.recount.optionsPlots.optionsObjectTaxation[i];
+                    this.feelConteiner(objectsOptionsPlotConteiner,optionsObjectTaxation)
+                }
             }
-            //параметры по породам
-            for (let i = 0; i < this.props.recount.optionsPlots.optionsBreeds.length; i++) {
-                let optionsBreeds = this.props.recount.optionsPlots.optionsBreeds[i];
-                this.feelConteiner(objectsOptionsPlotConteiner,optionsBreeds)
+
+            if(this.props.recount.optionsPlots.optionsBreeds.length > 1){
+                //параметры по породам
+                for (let i = 0; i < this.props.recount.optionsPlots.optionsBreeds.length; i++) {
+                    let optionsBreeds = this.props.recount.optionsPlots.optionsBreeds[i];
+                    this.feelConteiner(objectsOptionsPlotConteiner,optionsBreeds)
+                }
             }
-            
 
             return
         }
