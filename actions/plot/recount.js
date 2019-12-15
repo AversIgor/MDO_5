@@ -618,19 +618,20 @@ class ClassOptionsPlots {
     constructor(owner) {
         this.owner                  = owner;
         this.optionsObjectTaxation  = [];//параметры по объектам таксации 
-        this.optionsBreeds          = [];//параметры по объектам таксации
-        this.totalObjectTaxation    = new ClassAssortmentStructure({});//итоги параметров по объектам таксации  
-        this.totalBreeds            = new ClassAssortmentStructure({});//итоги параметров по породам 
+        this.optionsBreeds          = [];//параметры по породам
+        this.totaloptions           = new ClassOptions({name:"Всего"});//итоги параметров по всем объектам  
     }
 
     feel() {
+        
         for (let i = 0; i < this.owner.objectsTaxation.rows.length; i++) {
             let row_objectTaxation = this.owner.objectsTaxation.rows[i]; 
             let objectTaxation = this.optionsObjectTaxation.find(item => item.id == row_objectTaxation.objectTaxationId);
             if(!objectTaxation){
                 objectTaxation = new    ClassOptions({
-                    id:     row_objectTaxation.objectTaxationId,
-                    name:   row_objectTaxation.objectTaxation
+                    id:             row_objectTaxation.objectTaxationId,
+                    name:           "- "+row_objectTaxation.objectTaxation,
+                    areacutting:    row_objectTaxation.areacutting,
                 })
                 this.optionsObjectTaxation.push(objectTaxation)
             }
@@ -638,12 +639,15 @@ class ClassOptionsPlots {
             if(!objectBreed){
                 objectBreed = new ClassOptions({
                     id:     row_objectTaxation.breedId,
-                    name:   row_objectTaxation.breed
+                    name:   "-- "+row_objectTaxation.breed
                 })
                 this.optionsBreeds.push(objectBreed)
             }
+
+
             //найдем строки с итогами по объему
             let totalValue = this.owner.objectsSteps.totalValue.find(item => item.id == row_objectTaxation.id);
+
             //найдем строки с итогами по стоимости
             let totalSumm = this.owner.objectsFeedrates.totalSumm.find(item => item.id == row_objectTaxation.id);                        
             if(!totalValue) continue
@@ -658,22 +662,46 @@ class ClassOptionsPlots {
             }
 
 			//заполним параметры объекта таксации
-			objectTaxation.total 				+= objectBreed.total;
-			objectTaxation.liquidity 			+= objectBreed.liquidity;
-			objectTaxation.totalbusiness 		+= objectBreed.totalbusiness;
-			objectTaxation.firewood 			+= objectBreed.firewood;
-			objectTaxation.numberstems 		    += objectBreed.numberstems;
-            objectTaxation.totalsumm 			+= objectBreed.totalsumm;
-            objectTaxation.areacutting 			+= row_objectTaxation.areacutting;
+			objectTaxation.total 				+= totalValue.total.total_b         +totalValue.total.total_f;;
+			objectTaxation.liquidity 			+= totalValue.total.liquidity		+totalValue.total.totalfirewood_f;
+			objectTaxation.totalbusiness 		+= totalValue.total.totalbusiness;
+			objectTaxation.firewood 			+= totalValue.total.totalfirewood_b	+totalValue.total.totalfirewood_f;
+            objectTaxation.numberstems 		    += totalValue.total.total;
+            if(totalSumm){
+                objectTaxation.totalsumm 	    += totalSumm.total.liquidity		+totalSumm.total.totalfirewood_f;
+            }
             
-            objectTaxation.total_perhectare 	    = objectTaxation.total			/objectTaxation.areacutting;
-			objectTaxation.liquidity_perhectare     = objectTaxation.liquidity		/objectTaxation.areacutting;
-			objectTaxation.totalbusiness_perhectare = objectTaxation.totalbusiness	/objectTaxation.areacutting;
-			objectTaxation.firewood_perhectare 	    = objectTaxation.firewood		/objectTaxation.areacutting;
-			objectTaxation.averagevolumestems 	    = objectTaxation.liquidity		/objectBreed.numberstems;
-	
+            objectTaxation.total_perhectare 	    = round_value(objectTaxation.total			/objectTaxation.areacutting,0);
+			objectTaxation.liquidity_perhectare     = round_value(objectTaxation.liquidity		/objectTaxation.areacutting,0);
+			objectTaxation.totalbusiness_perhectare = round_value(objectTaxation.totalbusiness	/objectTaxation.areacutting,0);
+			objectTaxation.firewood_perhectare 	    = round_value(objectTaxation.firewood		/objectTaxation.areacutting,0);
+            objectTaxation.averagevolumestems 	    = round_value(objectTaxation.liquidity		/objectBreed.numberstems,2);
+                        
+        
         }
 
+        //заполним итоги по параметрам лесосеки
+        for (let i = 0; i < this.optionsObjectTaxation.length; i++) {
+            let row_objectTaxation = this.optionsObjectTaxation[i]; 
+            for (var key in row_objectTaxation) {
+                if((key == 'name') || (key == 'id')) {
+                    continue;
+                }				
+                this.totaloptions[key] 				+= row_objectTaxation[key]
+            }
+        }
+
+
+        let coefficient = this.owner.plot.property.taxation.coefficient;
+        this.totaloptions.total_perhectare 	        = round_value(this.totaloptions.total			/this.totaloptions.areacutting/coefficient,0);
+        this.totaloptions.liquidity_perhectare      = round_value(this.totaloptions.liquidity		/this.totaloptions.areacutting/coefficient,0);
+        this.totaloptions.totalbusiness_perhectare  = round_value(this.totaloptions.totalbusiness	/this.totaloptions.areacutting/coefficient,0);
+        this.totaloptions.firewood_perhectare 	    = round_value(this.totaloptions.firewood		/this.totaloptions.areacutting/coefficient,0);
+        
+        this.totaloptions.numberstems 			    = this.totaloptions.numberstems	*coefficient;
+        this.totaloptions.averagevolumestems	    = round_value(this.totaloptions.liquidity	    /this.totaloptions.numberstems,2);
+
+        //console.log(this.totaloptions)
         
     }    
 }
