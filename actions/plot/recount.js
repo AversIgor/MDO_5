@@ -707,7 +707,7 @@ class ClassOptionsPlots {
     }    
 }
 
-//Строка расчета сортиментной структура
+//Строка расчета параметров делянки
 class ClassOptions {
 
     constructor(options = {},roundingValues = undefined ) {
