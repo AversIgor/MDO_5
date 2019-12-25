@@ -98,6 +98,7 @@ export default class ComponentSettings extends Component {
             }
         }
 
+
         let layout = {
             id:this.id+'_layout',
             container:ReactDOM.findDOMNode(this.refs.root),
@@ -120,7 +121,7 @@ export default class ComponentSettings extends Component {
                                 rows:[ //or rows 
                                     { header:"Настроки МДО", body:settingsMDO,collapsed:true,  }, 
                                     { header:"Настройки абриса", body:settingsAbris,collapsed:true, },
-                                    { header:"Контактная информция", body:settingsContacts,collapsed:true, }
+                                    { header:"Контактная информация", body:settingsContacts,collapsed:true, },
                                 ]
                             },                            
                         ]

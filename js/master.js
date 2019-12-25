@@ -1,5 +1,4 @@
-﻿import * as MDO from "./mdo";
-import {store} from "../src/app";
+﻿import {store} from "../src/app";
 import * as publications from "../actions/reference/publications";
 
 var btnStyle 	=		'width: 80px; margin:0 10px; padding: 5px; border-radius: 4px; border: 1px solid #B6B6B6;';
@@ -67,8 +66,8 @@ export var MASTER = {
 		this.readip();
 		this.readlicense();
 
-		MDO.newMDO();
-		MDO.objectMDO.startMDO();
+		//M-DO.newMDO();
+		//M-DO.objectM-DO.startM-DO();
 	},
 	
 	initConfirm: function () {
@@ -88,7 +87,7 @@ export var MASTER = {
 		});			
 	},
 	
-	readlicense: function () {
+	/*readlicense: function () {
 		if(NODE_ENV == 'node-webkit'){
 			let fs 		= require('fs');
 			let path 	= require('path')
@@ -112,9 +111,9 @@ export var MASTER = {
 			MASTER.initConfirm();
 		}
 		
-	},
+	},*/
 	
-	newlicense: function () {
+	/*newlicense: function () {
 
 		let crypto		= require('crypto');
 		let md5 		= crypto.createHash('md5');
@@ -137,9 +136,9 @@ export var MASTER = {
 				}
 			});
 		}
-	},
+	},*/
 	
-	readidDB: function (data) {
+	/*readidDB: function (data) {
 		if(MASTER.data.id_db == undefined){
 			this.data.id_db = this.data.numberlicense;
 			var struct = [];
@@ -162,7 +161,7 @@ export var MASTER = {
 			MASTER.checkData();	
 		}
 		MASTER.checklicense = false
-	},
+	},*/
 	
 	beforeOpening: function (firstStart = false) {		
 		if (!w2ui.hasOwnProperty(this.masterlayout.name)){
@@ -323,7 +322,7 @@ export var MASTER = {
 		all.ip				= this.data.ip;
 		
 		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "http://rdp.aversit.ru/mdoappreg/hs/register", true);
+		xhr.open("POST", "http://rdp.aversit.ru/m-doappreg/hs/register", true);
 		
 		var login 	= 'license';
 		var pass 	= 'pkj72VM3nKTqH0pT';
@@ -368,7 +367,7 @@ export var MASTER = {
 		}		
 	},	
 	
-	localpath: function () {	
+/*	localpath: function () {	
 		var os 		= require('os');			
 		var tmpdir 	= os.tmpdir();	
 		var path 	= require('path');	
@@ -396,6 +395,6 @@ export var MASTER = {
 
 		return localpath;
 		
-	}
+	}*/
 	
 }

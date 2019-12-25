@@ -24,10 +24,11 @@ import breed from './reference/breed'
 import printforms from './reference/printforms'
 import typesrates from './reference/typesrates'
 
-
-
 //настройки
 import settings from './settings/index'
+
+//лицензирование
+import license from './license'
 
 //обновление
 import update from './update'
@@ -54,6 +55,7 @@ export default combineReducers({
     breed:breed,
     typesrates:typesrates,
     settings:settings,
+    license:license,
     printforms:printforms,
 })
 
