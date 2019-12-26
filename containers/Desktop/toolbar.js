@@ -10,6 +10,16 @@ import * as background from '../../actions/Abris/background';
 import * as objects from '../../actions/Abris/objects';
 
 
+//новая логика. все управляется их projectMeny
+import * as projectMeny from '../../actions/Desktop/projectMeny';
+
+
+
+
+
+
+
+
 import ComponentToolbar from "../../components/Desktop/toolbar";
 import ComponentAbout from "../../components/Desktop/about";
 
@@ -49,7 +59,8 @@ class Toolbar extends Component {
                     curentproject = {this.props.curentproject}
                     newProject = {this.newProject}
                     clickQuestionMenu = {this.props.clickQuestionMenu}  
-                    clickMenu = {this.props.clickMenu}    
+                    clickMenu = {this.props.clickMenu}
+                    saveProject = {this.props.saveProject}    
                 />
                 <About/>
             </Fragment>
@@ -71,7 +82,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        //openProject: bindActionCreators(openProject, dispatch),
+        saveProject: bindActionCreators(projectMeny.saveProject, dispatch),
         clickQuestionMenu: bindActionCreators(clickQuestionMenu, dispatch),
         clickMenu: bindActionCreators(clickMenu, dispatch),  
         background_reset: bindActionCreators(background.reset, dispatch),

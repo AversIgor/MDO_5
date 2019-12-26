@@ -4,7 +4,7 @@
 
 //устаревшие функции
 import * as APP from "../../src/app";
-import * as MDO from "../../js/mdo";
+//import * as MDO from "../../js/mdo";
 
 import FileSaver from "file-saver";
 import JSZip from "jszip";
@@ -53,11 +53,9 @@ export function openProject() {
 
 export function saveProject() {
     return (dispatch,getState) => {
-        MDO.objectMDO.background = getState().background;
-        MDO.objectMDO.polygons = getState().polygons.objects;
-        MDO.save();
-        /*let objectFile = creatFileProject(MDO.objectMDO,common.getBackground(),common.getPolygons().objects)
-        const asyncProcess = async () => {
+        let objectFile = creatFileProject(getState())
+        console.log(objectFile)
+        /*const asyncProcess = async () => {
             let blob = new Blob([objectFile], {type: "json;charset=utf-8"});
             let zip = new JSZip();            
             zip.file("Проект.json", blob, {base64: true});
@@ -73,10 +71,9 @@ export function saveProject() {
 };
 
 //создание "нормального "файла проекта
-function creatFileProject(objectMDO,background,polygons) {
+function creatFileProject(state) {
 
     let objectData = {};
-
     //описание формата
     let format = {
         version      : "5.2.0",                         //версия формата
@@ -87,9 +84,9 @@ function creatFileProject(objectMDO,background,polygons) {
     //источник данных
     let target = {
         name      : "АВЕРС: МДО#5",              //программа
-        //version   :            //Версия программы
+        version   : state.TypeORM.curentVersion //Версия программы
     }
-    objectData.target = target;   
+    objectData.target = target;     
 
     //описание делянки
     let plot = {}
@@ -108,6 +105,8 @@ function creatFileProject(objectMDO,background,polygons) {
             id : objectMDO.forestry.id,
         }
     }
+
+    return objectData
 
     //Участковое лесничество
     location.subforestry = {}
@@ -325,7 +324,7 @@ function creatFileProject(objectMDO,background,polygons) {
         results.totalsumm           = elementOptionsPlot.totalsumm   //Общая стоимость
     }    
     
-    
+    /*
     //описание абриса
     let abris = {
         background  : {},            //подложка
@@ -347,7 +346,7 @@ function creatFileProject(objectMDO,background,polygons) {
 
     //реквизиты объектов
 
-    abris.polygons = polygons
+    abris.polygons = polygons*/
 
 
     var objectFile = JSON.stringify(objectData, null, '\t');
