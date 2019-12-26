@@ -2,17 +2,29 @@ import {
     LICENSE_CHECK,
 } from '../../constants/license'
 
-
 export function fill_data() {
     return (dispatch,getState) => {
         const asyncProcess = async () => { 
+            //лицензирование
             let license  = new License()
             license.readlicense()
-            sendingDataServer(getState(),license)
+
+            if(NODE_ENV == 'node-webkit'){
+                //статистика и активация лицензии
+                let info  = new Info()
+                let resultIP = await makeRequest("GET",info.IPserver,undefined,{});
+                info.setData(getState(),license,resultIP)
+                let result = await makeRequest("POST",info.server,info.data,info.getOptions());
+                if(result){
+                    if(license.dateactive == ''){
+                        license.updatelicense(result)
+                    }	
+                } 
+            }
             dispatch({
                 type: LICENSE_CHECK,
                 numberlicense: license.numberlicense,
-                dateactive:license.license
+                dateactive:license.dateactive
             })
         }
         return asyncProcess()
@@ -59,6 +71,18 @@ class License {
 			dateactive : '',		
 		}
         this.fs.writeFileSync(this.file, JSON.stringify(license, '\t')) 
+    }
+    
+    updatelicense(text) {
+		var obj = JSON.parse(text);		
+		if(this.numberlicense == obj.numberlicense){	
+			this.dateactive = obj.dateactive;	
+			let license = {
+				numberlicense : this.numberlicense,
+				dateactive : this.dateactive,		
+			}		
+            this.fs.writeFileSync(this.file, JSON.stringify(license, '\t')) 
+        }
 	}
 
     licensepath () {
@@ -84,49 +108,81 @@ class License {
 	}
 }
 
-function sendingDataServer(state,license) {
-    
-    let settings    = state.settings.data
-    let typeORM     = state.typeORM
+class Info {
 
-    var all = {};
-    all.organization 	= settings.contacts.organization;
-    all.responsible 	= settings.contacts.responsible;
-    all.adress 			= settings.contacts.adress;
-    all.fon 			= settings.contacts.fon;
-    all.email 			= settings.contacts.email;
-    all.site 			= settings.contacts.site;    
-    all.version			= typeORM.curentVersion;
-    
-    all.numberlicense	= license.numberlicense;
-    all.dateactive		= license.dateactive;
-    all.id_db			= license.numberlicense;
-    all.ip				= 'this.data.ip';
-    
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "http://1c.aversit.ru/mdoappreg/hs/register", true);
-    
-    var login 	= 'license';
-    var pass 	= 'pkj72VM3nKTqH0pT';
-    var Authorization = 'Basic '+ window.btoa(login+':'+pass);	
-    xhr.setRequestHeader("Authorization", Authorization);
-    
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-    xhr.timeout = 30000;
+    constructor() {
+        this.data           = {}
+        this.login          = 'license'
+        this.pass           = 'pkj72VM3nKTqH0pT'
+        this.server         = 'http://1c.aversit.ru/mdoappreg/hs/register'
+        this.IPserver       = 'https://api.ipify.org/?format=json'
+    }   
 
-    xhr.onreadystatechange = function() { // (3)
-        if (xhr.readyState != 4) return;
-
-        if (xhr.status != 200) {
-        } else {
-            console.log(xhr.responseText)
-            //проверим в переменной состояние активации лицензии
-            //if(w2utils.isDate(MASTER.data.dateactive,'dd.mm.yyyy') == false){
-              // console.log(xhr.responseText)
-                // MASTER.updatelicense(xhr.responseText);	
-           //}			
+    getOptions(){
+        return {
+            Authorization:'Basic '+ window.btoa(this.login+':'+this.pass),
+            ContentType:'application/json; charset=utf-8',
+            timeout:30000
         }
     }
-    xhr.send(JSON.stringify(all, '\t'));
 
-}	
+    setData(state,license,dataIP) {
+        let settings    = state.settings.data
+        let typeORM     = state.typeORM    
+        this.data.organization 	= settings.contacts.organization;
+        this.data.responsible 	= settings.contacts.responsible;
+        this.data.adress 		= settings.contacts.adress;
+        this.data.fon 			= settings.contacts.fon;
+        this.data.email 		= settings.contacts.email;
+        this.data.site 			= settings.contacts.site;    
+        this.data.version		= typeORM.curentVersion;
+        
+        this.data.numberlicense	= license.numberlicense;
+        this.data.dateactive	= license.dateactive;
+        this.data.id_db			= license.numberlicense;
+
+        let objIP = JSON.parse(dataIP)
+        if(objIP){
+            this.data.ip		= objIP.ip;
+        }else{
+            this.data.ip		= "не установлен";
+        }
+    }
+} 
+
+function makeRequest(method, url,send,options) {
+    return new Promise(function (resolve, reject) {
+        let xhr = new XMLHttpRequest();
+        xhr.open(method, url,true);
+        if(options.Authorization){
+            xhr.setRequestHeader("Authorization", options.Authorization);
+        }
+        if(options.ContentType){
+            xhr.setRequestHeader("Content-Type", options.ContentType);
+        }
+        if(options.timeout){
+            xhr.timeout = options.timeout;
+        }        
+        xhr.onload = function () {
+            if (this.status >= 200 && this.status < 300) {
+                resolve(xhr.response);
+            } else {
+                reject({
+                    status: this.status,
+                    statusText: xhr.statusText
+                });
+            }
+        };
+        xhr.onerror = function () {
+            reject({
+                status: this.status,
+                statusText: xhr.statusText
+            });
+        };
+        if(send){
+            xhr.send(JSON.stringify(send, '\t'));
+        }else{
+            xhr.send();
+        }        
+    });
+}

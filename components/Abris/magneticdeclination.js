@@ -63,7 +63,7 @@ export default class MagneticDeclination extends Component {
                     {
                         view:"icon",
                         tooltip:"Закрыть",
-                        icon: "times",
+                        icon: "mdi mdi-close",
                         click: "$$('magnetic_declination').hide()"
                     }
                 ]

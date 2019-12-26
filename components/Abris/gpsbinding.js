@@ -64,7 +64,7 @@ export default class Gpsbinding extends Component {
                     {
                         view:"icon",
                         tooltip:"Закрыть",
-                        icon: "times",
+                        icon: "mdi mdi-close",
                         click: "$$('gps_binding').hide()"
                     }
                 ]

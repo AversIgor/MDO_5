@@ -33,6 +33,7 @@ class Toolbar extends Component {
             if(this.props.questionId == 'about'){
                 return <ComponentAbout
                     curentVersion = {this.props.curentVersion}
+                    license = {this.props.license}
                     clickQuestionMenu = {this.props.clickQuestionMenu}
                 />
             }else{
@@ -62,6 +63,7 @@ function mapStateToProps (state) {
         questionId: state.toolbar.questionId, 
         leftMenuData: state.leftMenu.data,
         curentVersion: state.typeORM.curentVersion,
+        license: state.license,
         curentproject: state.curentproject,
         plotObject: state.plot.plotObject, 
     }

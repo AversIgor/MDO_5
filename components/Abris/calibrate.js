@@ -51,7 +51,7 @@ export default class Calibrate extends Component {
                     {
                         view:"icon",
                         tooltip:"Закрыть",
-                        icon: "times",
+                        icon: "mdi mdi-close",
                         click: "$$('calibrate').hide()"
                     }
                 ]

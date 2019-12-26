@@ -4,7 +4,7 @@ import {
 
 const initialState = {
     numberlicense: '',//номер лицензии
-    dateactive: new Date,//дата активацииe,
+    dateactive: '',//дата активацииe,
 }
 
 

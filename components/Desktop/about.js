@@ -19,7 +19,7 @@ export default class ComponentAbout extends Component {
                     id:"Aboutclose",
                     tooltip:"Закрыть",
                     align:"right",
-                    icon: "times",
+                    icon: "mdi mdi-close",
                     click: "$$('AboutWindow').hide()"
                 }
             ]
@@ -29,11 +29,12 @@ export default class ComponentAbout extends Component {
             id:"AboutWindow",
             head:head,
             width: 550,
-            height: 150,
+            height: 200,
             position:"center",
             body:{
                 data: { 
                     curentVersion: props.curentVersion,
+                    license: props.license.numberlicense,
                 },
                 template:'<div style="width: 100%;">'+
                 '    <div style="width: 100%; height: 35px; text-align: center;">'+
@@ -46,6 +47,10 @@ export default class ComponentAbout extends Component {
                 '    <div style="width: 100%;height: 35px;">'+
                 '        <label style="width: 120px;display: inline-block;">Разработчик:</label>'+
                 '        <label style="width: 400px;  text-align: left; padding-left: 10px">©&nbsp;ООО "Аверс информ", 2009-2019. Все права защищены.</label>'+
+                '    </div>'+ 
+                '    <div style="width: 100%;height: 35px;">'+
+                '        <label style="width: 120px;display: inline-block;">Лицензия:</label>'+
+                '        <label style="width: 400px;  text-align: left; padding-left: 10px">#license#</label>'+
                 '    </div>'+ 
                 '</div>'
             },
