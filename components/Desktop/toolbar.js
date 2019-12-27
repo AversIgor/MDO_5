@@ -10,7 +10,7 @@ export default class ComponentToolbar extends Component {
     }
 
     initProject(props){
-        if(!props.plotObject){
+       /* if(!props.plotObject){
             if(props.curentproject.saved){
                 webix.modalbox.hide("saveProject");
                 webix.modalbox({
@@ -33,7 +33,7 @@ export default class ComponentToolbar extends Component {
             }else{
                 props.newProject(false);
             }
-        }
+        }*/
     }
 
 

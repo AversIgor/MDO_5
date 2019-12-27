@@ -15,7 +15,7 @@ import {
     mdoRecount
 } from "../../actions/plot";
 
-import {saveCurentPlot} from "../../actions/Desktop/curentproject";
+import {saveCurentPlot,clearProject} from "../../actions/Desktop/curentproject";
 
 import ComponentConteiner from "../../components/plot/index";
 import ComponentProperty from "../../components/plot/property";
@@ -103,7 +103,33 @@ class Plot extends Component {
     }
 
     componentDidMount() {
-      
+
+        let props =  this.props
+        if(!this.props.plotObject){
+            if(this.props.curentproject.plot){
+                webix.modalbox.hide("saveProject");
+                webix.modalbox({
+                id:"saveProject", 
+                title: "Внимание!",
+                buttons:["Продолжить расчет", "Начать новый"],
+                text: "Зафиксирован не сохраненный расчет МДО",
+                type:"confirm-warning",
+                width:400,
+                }).then(function(result){
+                    switch(result){
+                        case "0": 
+                            props.newPlot(this.props.curentproject.plot);
+                            break;
+                        case "1":
+                            props.newPlot();
+                            break;
+                    }   
+                });
+                props.clearProject(0)
+            }else{
+                props.newPlot();
+            }
+        }      
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -181,6 +207,7 @@ class Plot extends Component {
 
 function mapStateToProps (state) {
     return {
+        curentproject: state.curentproject,
         plotObject: state.plot.plotObject,
         curentRecount: state.plot.curentRecount,
         recount: state.plot.recount,
@@ -208,6 +235,9 @@ function mapDispatchToProps(dispatch) {
         changeCoeficients: bindActionCreators(changeCoeficients, dispatch),
         mdoRecount: bindActionCreators(mdoRecount, dispatch),
         saveCurentPlot: bindActionCreators(saveCurentPlot, dispatch),
+        clearProject: bindActionCreators(clearProject, dispatch),
+
+        
     }
 
 }

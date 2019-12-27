@@ -28,7 +28,7 @@ class Toolbar extends Component {
         }else{
             this.props.newPlot()             
         }  
-        this.props.clearProject()        
+        this.props.clearProject(0)        
     }
 
     render() {
