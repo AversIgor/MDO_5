@@ -53,8 +53,10 @@ export function openProject() {
 
 export function saveProject() {
     return (dispatch,getState) => {
-        let objectFile = creatFileProject(getState())
-        console.log(objectFile)
+
+        let sharingFile = new SharingFile(getState())
+        sharingFile.creatFile()
+        console.log(sharingFile.data)
         /*const asyncProcess = async () => {
             let blob = new Blob([objectFile], {type: "json;charset=utf-8"});
             let zip = new JSZip();            
@@ -70,68 +72,82 @@ export function saveProject() {
     }
 };
 
+class SharingFile {
+
+    constructor(state) {
+        this.data           = {}
+        this.plot           = state.plot.plotObject
+        this.typeORM        = state.typeORM
+        this.references     = {
+            forestry: state.forestry.data,  
+            subforestry: state.subforestry.data, 
+            tract: state.tract.data,         
+        }
+    }           
+    creatFile() {
+        this.writeFormat()
+        this.writeTarget()
+        this.writePlot()
+    }
+
+    //описание формата
+    writeFormat () {
+        let format = {
+            version      : "5.2.0",                //версия формата
+            developer    : "ООО 'Аверс информ'",   //разработчик формата
+        }
+        this.data.format = format;
+    }
+
+    //Описание программы
+    writeTarget () {
+        let target = {
+            name      : "АВЕРС: МДО#5",            //программа
+            version   : this.typeORM.curentVersion //Версия программы
+        }
+        this.data.target = target;   
+    }
+
+    //описание лесосеки
+    writePlot () {
+        let plot = {}
+        this.data.plot = plot; 
+        this.writeLocation();
+    }
+
+    //описание местоположения
+    writeLocation () {
+        let location = {}
+        this.data.plot.location = location;        
+        location.forestry       = getRef(this.plot.property.location.forestry,this.references.forestry)//Лесничество
+        location.subforestry    = getRef(this.plot.property.location.subforestry,this.references.subforestry)//Участковое лесничество
+        location.tract          = getRef(this.plot.property.location.tract,this.references.tract)//Урочище        
+        location.quarter        = this.plot.property.location.quarter           //квартал
+        location.isolated       = this.plot.property.location.isolated          //выдела
+        location.cuttingarea    = this.plot.property.location.cuttingarea       //номер делянки
+    }
+
+}
+
+function getRef(id,reference) {
+    let result = {
+        id      : id,
+        name    : '',
+        cod     : '',
+    }
+    let item = reference.find(item => item.id == id);
+    if(item){
+        if(item.name) result.name   = item.name;
+        if(item.cod) result.cod     = item.cod;
+    }
+    return result
+}
+
+
 //создание "нормального "файла проекта
 function creatFileProject(state) {
 
-    let objectData = {};
-    //описание формата
-    let format = {
-        version      : "5.2.0",                         //версия формата
-        developer    : "ООО 'Аверс информ'",            //разработчик формата
-    }
-    objectData.format = format;
-
-    //источник данных
-    let target = {
-        name      : "АВЕРС: МДО#5",              //программа
-        version   : state.TypeORM.curentVersion //Версия программы
-    }
-    objectData.target = target;     
-
-    //описание делянки
-    let plot = {}
-    objectData.plot = plot;
-
-    //местоположение делянки
-    let location = {}
-    plot.location = location;
-   
-    //Лесничество
-    location.forestry = {}
-    if (Object.keys(objectMDO.forestry).length != 0) {
-        location.forestry = {
-            name : objectMDO.forestry.text,
-            cod : objectMDO.forestry.cod,
-            id : objectMDO.forestry.id,
-        }
-    }
-
-    return objectData
-
-    //Участковое лесничество
-    location.subforestry = {}
-    if (Object.keys(objectMDO.subforestry).length != 0) {
-        location.subforestry = {
-            name : objectMDO.subforestry.text,
-            cod : objectMDO.subforestry.cod,
-            id : objectMDO.subforestry.id,
-        }
-    }    
-
-    //Урочище
-    location.tract = {}
-    if (Object.keys(objectMDO.tract).length != 0) {
-        location.tract = {
-            name : objectMDO.tract.text,
-            cod : objectMDO.tract.cod,
-            id : objectMDO.tract.id,
-        }
-    }
-
-    location.quarter        = objectMDO.quarter           //квартал
-    location.isolated       = objectMDO.isolated          //выдела
-    location.cuttingarea    = objectMDO.cuttingarea       //номер делянки
-    
+  
     
     //Параметры делянки
     let parameters = {}

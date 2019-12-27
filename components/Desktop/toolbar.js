@@ -34,7 +34,6 @@ export default class ComponentToolbar extends Component {
                 props.newProject(false);
             }
         }
-
     }
 
 

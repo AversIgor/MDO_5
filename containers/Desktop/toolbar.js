@@ -13,13 +13,6 @@ import * as objects from '../../actions/Abris/objects';
 //новая логика. все управляется их projectMeny
 import * as projectMeny from '../../actions/Desktop/projectMeny';
 
-
-
-
-
-
-
-
 import ComponentToolbar from "../../components/Desktop/toolbar";
 import ComponentAbout from "../../components/Desktop/about";
 

@@ -41,6 +41,7 @@ class Desktop extends Component {
         webix.event(window, "resize", function(){
             self.resizeFromWindow()
         })
+
     }
 
     render() { 
@@ -95,5 +96,7 @@ function mapDispatchToProps(dispatch) {
 
     }
 }
+  
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Desktop)

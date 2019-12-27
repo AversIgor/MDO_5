@@ -88,9 +88,10 @@ export function updatePrintForms() {
 
 export function feelAllReducers(dispatch) {
     
-    dispatch(settings.fill_data()) 
-    dispatch(license.fill_data())      
+    dispatch(settings.fill_data())  
+
     dispatch(curentproject.restoreProject()) 
+
     dispatch(forestry.fill_data({status:0}))
     dispatch(subforestry.fill_data({status:0}))
     dispatch(tract.fill_data({status:0}))
@@ -100,6 +101,8 @@ export function feelAllReducers(dispatch) {
     dispatch(breed.fill_data({status:0}))  
     dispatch(publications.fill_data({status:0}))   
     dispatch(printforms.fill_data({status:0})) 
+    
+    dispatch(license.fill_data())  
 
 }
 
