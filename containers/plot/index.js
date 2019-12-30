@@ -39,7 +39,16 @@ class Plot extends Component {
     }
 
     conteinerReady = () => {
-        this.setState({conteinerReady: true})      
+        this.setState({conteinerReady: true})   
+    }
+
+    newPlot = (restore) => {
+        if(restore){
+            this.props.newPlot(restore)
+        }else{
+            this.props.newPlot()             
+        }  
+        this.props.clearProject(0) 
     }
     
     changeProperty = (values) => {
@@ -103,33 +112,7 @@ class Plot extends Component {
     }
 
     componentDidMount() {
-
-        let props =  this.props
-        if(!this.props.plotObject){
-            if(this.props.curentproject.plot){
-                webix.modalbox.hide("saveProject");
-                webix.modalbox({
-                id:"saveProject", 
-                title: "Внимание!",
-                buttons:["Продолжить расчет", "Начать новый"],
-                text: "Зафиксирован не сохраненный расчет МДО",
-                type:"confirm-warning",
-                width:400,
-                }).then(function(result){
-                    switch(result){
-                        case "0": 
-                            props.newPlot(this.props.curentproject.plot);
-                            break;
-                        case "1":
-                            props.newPlot();
-                            break;
-                    }   
-                });
-                props.clearProject(0)
-            }else{
-                props.newPlot();
-            }
-        }      
+  
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -147,6 +130,9 @@ class Plot extends Component {
             <Fragment>
                 <ComponentConteiner
                     conteinerReady = {this.conteinerReady}
+                    newPlot = {this.newPlot}                    
+                    plotObject = {this.props.plotObject}
+                    curentproject = {this.props.curentproject}
                 />
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}

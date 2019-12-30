@@ -15,6 +15,7 @@ export default class ComponenLayot extends Component {
 
     componentDidMount(){ 
 
+        let props =  this.props
         let layout = {
             id:this.id+'_layout',
             container:ReactDOM.findDOMNode(this.refs.root),
@@ -31,7 +32,32 @@ export default class ComponenLayot extends Component {
             ]
         }
         this.ui.push(window.webix.ui(layout))
-        this.props.conteinerReady()
+        props.conteinerReady();
+
+        if(!props.plotObject){
+            if(props.curentproject.plot){
+                webix.modalbox.hide("saveProject");
+                webix.modalbox({
+                id:"saveProject", 
+                title: "Внимание!",
+                buttons:["Продолжить расчет", "Начать новый"],
+                text: "Зафиксирован не сохраненный расчет МДО",
+                type:"confirm-warning",
+                width:400,
+                }).then(function(result){
+                    switch(result){
+                        case "0": 
+                            props.newPlot(props.curentproject.plot);
+                            break;
+                        case "1":
+                            props.newPlot();
+                            break;
+                    }   
+                });
+            }else{
+                props.newPlot();
+            }
+        }  
     }  
    
     componentWillUnmount(){

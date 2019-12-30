@@ -81,13 +81,16 @@ class SharingFile {
         this.references     = {
             forestry: state.forestry.data,  
             subforestry: state.subforestry.data, 
-            tract: state.tract.data,         
+            tract: state.tract.data, 
+            methodscleanings:state.methodscleanings.data,
+            enumerations: state.enumerations,        
         }
     }           
     creatFile() {
         this.writeFormat()
         this.writeTarget()
         this.writePlot()
+
     }
 
     //описание формата
@@ -113,6 +116,8 @@ class SharingFile {
         let plot = {}
         this.data.plot = plot; 
         this.writeLocation();
+        this.writeParameters();
+        this.writeFelling();
     }
 
     //описание местоположения
@@ -127,6 +132,30 @@ class SharingFile {
         location.cuttingarea    = this.plot.property.location.cuttingarea       //номер делянки
     }
 
+    //описание лесосеки
+    writeParameters () {
+        let parameters = {}
+        this.data.plot.parameters = parameters;        
+        parameters.purposeForests = getRef(this.plot.property.parameters.purposeForests,this.references.enumerations.purposeForests)//Целевое назначение лесов
+        parameters.property       = getRef(this.plot.property.parameters.property,this.references.enumerations.property)//хозяйство
+        parameters.methodscleaning= getRef(this.plot.property.parameters.methodscleaning,this.references.methodscleanings)//способ очистки
+        parameters.undergrowth    = this.plot.property.parameters.undergrowth          //подрост
+        parameters.seedtrees      = this.plot.property.parameters.seedtrees       //семенники
+    }
+
+    //описание рубки
+    writeFelling () {
+        let felling = {}
+        this.data.plot.felling = felling;        
+       // parameters.purposeForests = getRef(this.plot.property.parameters.purposeForests,this.references.enumerations.purposeForests)//Целевое назначение лесов
+       // parameters.property       = getRef(this.plot.property.parameters.property,this.references.enumerations.property)//хозяйство
+      //  parameters.methodscleaning= getRef(this.plot.property.parameters.methodscleaning,this.references.methodscleanings)//способ очистки
+        
+        felling.areacutting     = this.plot.property.felling.areacutting          //площадь делянки
+        
+        //parfellingameters.seedtrees   = this.plot.property.parameters.seedtrees       //семенники
+    }
+
 }
 
 function getRef(id,reference) {
@@ -137,7 +166,8 @@ function getRef(id,reference) {
     }
     let item = reference.find(item => item.id == id);
     if(item){
-        if(item.name) result.name   = item.name;
+        if(item.name)  result.name   = item.name;
+        if(item.value) result.name   = item.value;
         if(item.cod) result.cod     = item.cod;
     }
     return result

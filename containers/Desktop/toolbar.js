@@ -4,8 +4,6 @@ import { connect } from 'react-redux'
 
 import {clickQuestionMenu} from '../../actions/Desktop/questionMenu';
 import {clickMenu} from '../../actions/Desktop/leftMenu';
-import {clearProject} from '../../actions/Desktop/curentproject';
-import {newPlot} from '../../actions/plot';
 import * as background from '../../actions/Abris/background';
 import * as objects from '../../actions/Abris/objects';
 
@@ -20,15 +18,6 @@ class Toolbar extends Component {
 
     constructor(props) {
         super(props);
-    }
-
-    newProject = (restore) => {
-        if(restore){
-            this.props.newPlot(this.props.curentproject.plot)
-        }else{
-            this.props.newPlot()             
-        }  
-        this.props.clearProject(0)        
     }
 
     render() {
@@ -50,7 +39,6 @@ class Toolbar extends Component {
                     leftMenuData = {this.props.leftMenuData}
                     plotObject = {this.props.plotObject}
                     curentproject = {this.props.curentproject}
-                    newProject = {this.newProject}
                     clickQuestionMenu = {this.props.clickQuestionMenu}  
                     clickMenu = {this.props.clickMenu}
                     saveProject = {this.props.saveProject}    
@@ -80,8 +68,6 @@ function mapDispatchToProps(dispatch) {
         clickMenu: bindActionCreators(clickMenu, dispatch),  
         background_reset: bindActionCreators(background.reset, dispatch),
         objects_reset: bindActionCreators(objects.reset, dispatch), 
-        clearProject: bindActionCreators(clearProject, dispatch), 
-        newPlot: bindActionCreators(newPlot, dispatch),     
     }
 }
 
