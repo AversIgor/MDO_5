@@ -1,7 +1,3 @@
-
-
-
-
 //устаревшие функции
 import * as APP from "../../src/app";
 //import * as MDO from "../../js/mdo";

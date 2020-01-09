@@ -483,7 +483,7 @@ class ClassObjectsFeedrates {
             if(!typesrates) continue
             //ставки
             let feedrates = typesrates.feedrates
-            if(!feedrates) continue
+            if(!feedrates.length) continue
             //по породе
             let feedratesBreed = feedrates.filter(item => item.breed == row_objectTaxation.breedId);
             //разряду такс
