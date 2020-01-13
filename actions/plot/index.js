@@ -7,17 +7,14 @@ let cloneDeep = require('lodash/cloneDeep');
 
 
 import * as plot from "./plot";
-let recount = undefined;
-if(NODE_ENV != 'webworker'){
-    recount = require('./recount');
-}
+import * as recount from "./recount";
+
 
 export function mdoRecount(plotObject) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let state       = getState()
-            let new_plotObject = cloneDeep(plotObject)  
-            if(!recount) return        
+            let new_plotObject = cloneDeep(plotObject)
             let new_Recount  = new recount.Recount()
             new_Recount.setProperty({
                 plot:new_plotObject,
