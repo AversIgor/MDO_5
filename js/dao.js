@@ -10,76 +10,12 @@ import {Breed} from "../actions/TypeORM/entity/breed";
 import {Typesrates} from "../actions/TypeORM/entity/typesrates";
 
 import {add} from "../actions/reference/publications";
-import * as FileSaver from "file-saver";
+
 
 
 //БАЗА ДАННЫХ
 export var BD = {	
 	
-	//РЕЗЕРВНОЕ КОПИРОВАНИЕ БД
-	
-	dumpData: function () {
-
-		const asyncProcess = async () => {
-
-			let entityManager = getManager();
-
-			let data = {
-				version:BD.curentVersion,
-				reference:{
-					forestry:[],
-					subforestry:[],
-					tract:[],
-					publications:[],
-				},
-				settingsMDO:{},
-				typesrates:[]
-			}
-
-			//лесничества
-			let repository 	= getRepository(Forestry);
-			data.reference.forestry = await repository.find()
-
-			//участковые лесничества
-			data.reference.subforestry = await repository.query(`SELECT * FROM avers_subforestry`);
-
-			//урочища
-			data.reference.tract = await repository.query(`SELECT * FROM avers_tract`);
-
-			//Издания
-			repository 	= getRepository(Publications);
-			data.reference.publications = await repository.find();
-
-		   //Ставки платы
-		   repository 	= getRepository(Typesrates);
-		   data.typesrates = await repository.find()
-
-           let settingsMDO = {}
-           //Настройки МДО
-           /*let rawData = await entityManager.query('SELECT * FROM constants');
-           for (var i = 0; i < rawData.length; i++) {
-               settingsMDO = {
-                   orderRoundingValues:rawData[i].orderRoundingValues,
-                   orderRoundingRates:rawData[i].orderRoundingRates,
-                   distributionhalfbusiness:rawData[i].distributionhalfbusiness,
-                   assessfirewoodcommonstock:rawData[i].assessfirewoodcommonstock,
-                   assesswastefirewood:rawData[i].assesswastefirewood,
-                   firewoodtrunkslindencountedinbark:rawData[i].firewoodtrunkslindencountedinbark,
-                   barklindenindividualreserves:rawData[i].barklindenindividualreserves,
-                   publication:rawData[i].publication,
-                   foresttax:rawData[i].foresttax,
-               };
-           }
-           data.settingsMDO = settingsMDO*/
-
-           let JSONdata = JSON.stringify(data, null, '\t');
-
-           var blob = new Blob([JSONdata], {type: "json;charset=utf-8"});
-           FileSaver.saveAs(blob, 'dump_'+BD.curentVersion+'.json');
-
-		}
-		return asyncProcess();
-	},
 
 	restoreDB: function () {
 		var input = $("<input/>", {

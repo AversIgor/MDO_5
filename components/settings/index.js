@@ -98,6 +98,49 @@ export default class ComponentSettings extends Component {
             }
         }
 
+        let settingsDB = {
+            cols:[
+                {
+                    view:"button",
+                    value:"Сохранить настройки",
+                    width:200,
+                    align:"center",
+                    on:{
+                        'onItemClick': function(id){
+                           self.props.dumpDB();
+                        }
+                    }
+                },  
+                {
+                    rows:[
+                        {
+                            view:"uploader",
+                            multiple:false,
+                            id:"DB_uploader",
+                            value:"Выбрать файл с настройками",
+                            link:"filelist", autosend:false
+                        },
+                        { view:"list", scroll:false, id:"filelist", type:"uploader", autoheight:true,},
+                    ]
+                },
+                {
+                    view:"button",
+                    value:"Загрузить настройки",
+                    width:200,
+                    align:"center",
+                    on:{
+                        'onItemClick': function(id){
+                            let lastId = $$('filelist').getLastId()
+                            if(lastId){
+                                let item = $$('filelist').getItem(lastId)    
+                                self.props.restoreDB(item);                           
+                            }
+                        }
+                    }
+                },
+            ]
+        }
+
 
         let layout = {
             id:this.id+'_layout',
@@ -122,6 +165,7 @@ export default class ComponentSettings extends Component {
                                     { header:"Настроки МДО", body:settingsMDO,collapsed:true,  }, 
                                     { header:"Настройки абриса", body:settingsAbris,collapsed:true, },
                                     { header:"Контактная информация", body:settingsContacts,collapsed:true, },
+                                    { header:"База данных", body:settingsDB,collapsed:true, },
                                 ]
                             },                            
                         ]

@@ -6,6 +6,7 @@ import {
 
 import {getRepository} from "typeorm";
 import {Settings} from "../TypeORM/entity/settings";
+import * as dump from "./dumpDB";
 
 export function fill_data() {
     return (dispatch,getState) => {
@@ -44,3 +45,25 @@ export function edit(value) {
         asyncProcess()
     }
 }
+
+export function dumpDB() {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            let dumpDB  = new dump.DumpDB(getState())
+            await dumpDB.dump()
+        }
+        asyncProcess()
+    }
+}
+
+export function restoreDB(event) {
+    return (dispatch,getState) => {
+        const asyncProcess = async () => {
+            let dumpDB  = new dump.DumpDB(getState())            
+            await dumpDB.restore(event)
+        }
+        asyncProcess()
+    }
+}
+
+
