@@ -1,10 +1,6 @@
-
-
-
-
 //устаревшие функции
 import * as APP from "../../src/app";
-import * as MDO from "../../js/mdo";
+//import * as MDO from "../../js/mdo";
 
 import FileSaver from "file-saver";
 import JSZip from "jszip";
@@ -53,11 +49,11 @@ export function openProject() {
 
 export function saveProject() {
     return (dispatch,getState) => {
-        MDO.objectMDO.background = getState().background;
-        MDO.objectMDO.polygons = getState().polygons.objects;
-        MDO.save();
-        /*let objectFile = creatFileProject(MDO.objectMDO,common.getBackground(),common.getPolygons().objects)
-        const asyncProcess = async () => {
+
+        let sharingFile = new SharingFile(getState())
+        sharingFile.creatFile()
+        console.log(sharingFile.data)
+        /*const asyncProcess = async () => {
             let blob = new Blob([objectFile], {type: "json;charset=utf-8"});
             let zip = new JSZip();            
             zip.file("Проект.json", blob, {base64: true});
@@ -72,67 +68,112 @@ export function saveProject() {
     }
 };
 
-//создание "нормального "файла проекта
-function creatFileProject(objectMDO,background,polygons) {
+class SharingFile {
 
-    let objectData = {};
+    constructor(state) {
+        this.data           = {}
+        this.plot           = state.plot.plotObject
+        this.typeORM        = state.typeORM
+        this.references     = {
+            forestry: state.forestry.data,  
+            subforestry: state.subforestry.data, 
+            tract: state.tract.data, 
+            methodscleanings:state.methodscleanings.data,
+            enumerations: state.enumerations,        
+        }
+    }           
+    creatFile() {
+        this.writeFormat()
+        this.writeTarget()
+        this.writePlot()
+
+    }
 
     //описание формата
-    let format = {
-        version      : "5.2.0",                         //версия формата
-        developer    : "ООО 'Аверс информ'",            //разработчик формата
-    }
-    objectData.format = format;
-
-    //источник данных
-    let target = {
-        name      : "АВЕРС: МДО#5",              //программа
-        //version   :            //Версия программы
-    }
-    objectData.target = target;   
-
-    //описание делянки
-    let plot = {}
-    objectData.plot = plot;
-
-    //местоположение делянки
-    let location = {}
-    plot.location = location;
-   
-    //Лесничество
-    location.forestry = {}
-    if (Object.keys(objectMDO.forestry).length != 0) {
-        location.forestry = {
-            name : objectMDO.forestry.text,
-            cod : objectMDO.forestry.cod,
-            id : objectMDO.forestry.id,
+    writeFormat () {
+        let format = {
+            version      : "5.2.0",                //версия формата
+            developer    : "ООО 'Аверс информ'",   //разработчик формата
         }
+        this.data.format = format;
     }
 
-    //Участковое лесничество
-    location.subforestry = {}
-    if (Object.keys(objectMDO.subforestry).length != 0) {
-        location.subforestry = {
-            name : objectMDO.subforestry.text,
-            cod : objectMDO.subforestry.cod,
-            id : objectMDO.subforestry.id,
+    //Описание программы
+    writeTarget () {
+        let target = {
+            name      : "АВЕРС: МДО#5",            //программа
+            version   : this.typeORM.curentVersion //Версия программы
         }
-    }    
-
-    //Урочище
-    location.tract = {}
-    if (Object.keys(objectMDO.tract).length != 0) {
-        location.tract = {
-            name : objectMDO.tract.text,
-            cod : objectMDO.tract.cod,
-            id : objectMDO.tract.id,
-        }
+        this.data.target = target;   
     }
 
-    location.quarter        = objectMDO.quarter           //квартал
-    location.isolated       = objectMDO.isolated          //выдела
-    location.cuttingarea    = objectMDO.cuttingarea       //номер делянки
-    
+    //описание лесосеки
+    writePlot () {
+        let plot = {}
+        this.data.plot = plot; 
+        this.writeLocation();
+        this.writeParameters();
+        this.writeFelling();
+    }
+
+    //описание местоположения
+    writeLocation () {
+        let location = {}
+        this.data.plot.location = location;        
+        location.forestry       = getRef(this.plot.property.location.forestry,this.references.forestry)//Лесничество
+        location.subforestry    = getRef(this.plot.property.location.subforestry,this.references.subforestry)//Участковое лесничество
+        location.tract          = getRef(this.plot.property.location.tract,this.references.tract)//Урочище        
+        location.quarter        = this.plot.property.location.quarter           //квартал
+        location.isolated       = this.plot.property.location.isolated          //выдела
+        location.cuttingarea    = this.plot.property.location.cuttingarea       //номер делянки
+    }
+
+    //описание лесосеки
+    writeParameters () {
+        let parameters = {}
+        this.data.plot.parameters = parameters;        
+        parameters.purposeForests = getRef(this.plot.property.parameters.purposeForests,this.references.enumerations.purposeForests)//Целевое назначение лесов
+        parameters.property       = getRef(this.plot.property.parameters.property,this.references.enumerations.property)//хозяйство
+        parameters.methodscleaning= getRef(this.plot.property.parameters.methodscleaning,this.references.methodscleanings)//способ очистки
+        parameters.undergrowth    = this.plot.property.parameters.undergrowth          //подрост
+        parameters.seedtrees      = this.plot.property.parameters.seedtrees       //семенники
+    }
+
+    //описание рубки
+    writeFelling () {
+        let felling = {}
+        this.data.plot.felling = felling;        
+       // parameters.purposeForests = getRef(this.plot.property.parameters.purposeForests,this.references.enumerations.purposeForests)//Целевое назначение лесов
+       // parameters.property       = getRef(this.plot.property.parameters.property,this.references.enumerations.property)//хозяйство
+      //  parameters.methodscleaning= getRef(this.plot.property.parameters.methodscleaning,this.references.methodscleanings)//способ очистки
+        
+        felling.areacutting     = this.plot.property.felling.areacutting          //площадь делянки
+        
+        //parfellingameters.seedtrees   = this.plot.property.parameters.seedtrees       //семенники
+    }
+
+}
+
+function getRef(id,reference) {
+    let result = {
+        id      : id,
+        name    : '',
+        cod     : '',
+    }
+    let item = reference.find(item => item.id == id);
+    if(item){
+        if(item.name)  result.name   = item.name;
+        if(item.value) result.name   = item.value;
+        if(item.cod) result.cod     = item.cod;
+    }
+    return result
+}
+
+
+//создание "нормального "файла проекта
+function creatFileProject(state) {
+
+  
     
     //Параметры делянки
     let parameters = {}
@@ -325,7 +366,7 @@ function creatFileProject(objectMDO,background,polygons) {
         results.totalsumm           = elementOptionsPlot.totalsumm   //Общая стоимость
     }    
     
-    
+    /*
     //описание абриса
     let abris = {
         background  : {},            //подложка
@@ -347,7 +388,7 @@ function creatFileProject(objectMDO,background,polygons) {
 
     //реквизиты объектов
 
-    abris.polygons = polygons
+    abris.polygons = polygons*/
 
 
     var objectFile = JSON.stringify(objectData, null, '\t');

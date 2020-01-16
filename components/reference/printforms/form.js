@@ -154,7 +154,7 @@ export default class ComponentPrintformsForm extends Component {
                 {
                     view:"icon",
                     tooltip:"Закрыть",
-                    icon: "times",
+                    icon: "mdi mdi-close",
                     click: function(e){
                         self.props.handlerClose();
                     },

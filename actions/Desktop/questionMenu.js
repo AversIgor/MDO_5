@@ -2,8 +2,6 @@ import {
     TOOLBAR_QUESTIONMENU_ID
 } from '../../constants/decktop/toolbar'
 
-import {MASTER} from "../../js/master";
-
 export function clickQuestionMenu(id) {
 
     if(id == "site"){
@@ -19,7 +17,7 @@ export function clickQuestionMenu(id) {
         if(id == "question"){
             var exec = 'http://mdoles.ru/'
             let settings = getState().settings.data;
-            exec = exec+'?lic='+MASTER.data.numberlicense;
+            exec = exec+'?lic='+getState().license.numberlicense;
             exec = exec+'&name='+encodeURIComponent(settings.contacts.responsible);
             exec = exec+'&p=feedback';
             exec = exec+'&email='+settings.contacts.email;
@@ -32,6 +30,5 @@ export function clickQuestionMenu(id) {
             id: id,
         })
     }
-
 
 }

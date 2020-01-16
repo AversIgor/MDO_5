@@ -9,15 +9,8 @@ export class Curentproject {
     @Column({ type: "text", nullable: true })
     name = '';
 
-    @Column({ type: "boolean", nullable: true })
-    saved = false;
-
     @Column({ type: "simple-json", nullable: true })
-    plot = {};
-
-    @Column({ type: "simple-json", nullable: true })
-    abris = {};
-
+    data = {};
 
 }
 

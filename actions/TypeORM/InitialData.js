@@ -4,6 +4,7 @@ import {Cuttingmethods} from "../TypeORM/entity/cuttingmethods"
 import {Typesrates} from "../TypeORM/entity/typesrates"
 
 import * as settings from "../settings";
+import * as license from "../license";
 import * as curentproject from "../Desktop/curentproject";
 import * as forestry from "../reference/forestry";
 import * as subforestry from "../reference/subforestry";
@@ -87,8 +88,10 @@ export function updatePrintForms() {
 
 export function feelAllReducers(dispatch) {
     
+    dispatch(settings.fill_data())  
+
     dispatch(curentproject.restoreProject()) 
-    dispatch(settings.fill_data())     
+
     dispatch(forestry.fill_data({status:0}))
     dispatch(subforestry.fill_data({status:0}))
     dispatch(tract.fill_data({status:0}))
@@ -98,6 +101,9 @@ export function feelAllReducers(dispatch) {
     dispatch(breed.fill_data({status:0}))  
     dispatch(publications.fill_data({status:0}))   
     dispatch(printforms.fill_data({status:0})) 
+    
+    dispatch(license.fill_data())  
+
 }
 
 

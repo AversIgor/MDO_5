@@ -15,7 +15,7 @@ import {
     mdoRecount
 } from "../../actions/plot";
 
-import {saveCurentPlot} from "../../actions/Desktop/curentproject";
+import {saveCurentPlot,clearProject} from "../../actions/Desktop/curentproject";
 
 import ComponentConteiner from "../../components/plot/index";
 import ComponentProperty from "../../components/plot/property";
@@ -39,7 +39,16 @@ class Plot extends Component {
     }
 
     conteinerReady = () => {
-        this.setState({conteinerReady: true})      
+        this.setState({conteinerReady: true})   
+    }
+
+    newPlot = (restore) => {
+        if(restore){
+            this.props.newPlot(restore)
+        }else{
+            this.props.newPlot()             
+        }  
+        this.props.clearProject(0) 
     }
     
     changeProperty = (values) => {
@@ -103,7 +112,7 @@ class Plot extends Component {
     }
 
     componentDidMount() {
-      
+  
     }
 
     shouldComponentUpdate(nextProps, nextState){
@@ -121,6 +130,9 @@ class Plot extends Component {
             <Fragment>
                 <ComponentConteiner
                     conteinerReady = {this.conteinerReady}
+                    newPlot = {this.newPlot}                    
+                    plotObject = {this.props.plotObject}
+                    curentproject = {this.props.curentproject}
                 />
                 <ComponentRecount
                     conteinerReady = {this.state.conteinerReady}
@@ -181,6 +193,7 @@ class Plot extends Component {
 
 function mapStateToProps (state) {
     return {
+        curentproject: state.curentproject,
         plotObject: state.plot.plotObject,
         curentRecount: state.plot.curentRecount,
         recount: state.plot.recount,
@@ -208,6 +221,9 @@ function mapDispatchToProps(dispatch) {
         changeCoeficients: bindActionCreators(changeCoeficients, dispatch),
         mdoRecount: bindActionCreators(mdoRecount, dispatch),
         saveCurentPlot: bindActionCreators(saveCurentPlot, dispatch),
+        clearProject: bindActionCreators(clearProject, dispatch),
+
+        
     }
 
 }

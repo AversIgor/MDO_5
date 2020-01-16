@@ -23,7 +23,7 @@ let ui = function(context,conteiner){
                 view:"icon",
                 id:conteiner+"_icon_close",
                 tooltip:"Закрыть",
-                icon: "times",
+                icon: "mdi mdi-close",
                 click: "$$('"+conteiner+"_icon_close').getParentView().getParentView().hide()"
             }
         ]

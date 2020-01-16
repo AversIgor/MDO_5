@@ -22,7 +22,7 @@ export default class selectprintform extends Component {
                     {
                         view:"icon",
                         tooltip:"Закрыть",
-                        icon: "times",
+                        icon: "mdi mdi-close",
                         click: "$$('selectprintform').hide()"
                     }
                 ]
