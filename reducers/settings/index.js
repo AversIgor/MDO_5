@@ -1,6 +1,7 @@
 import {
     SETTINGS_EDIT,
     SETTINGS_FILL_SUCCESS,
+    SETTINGS_RESTORE,
 } from '../../constants/settings/index'
 
 
@@ -44,6 +45,10 @@ const initialState = {
                 angle:30,//60 - грудусы, 30  - 30 минут , 10  - 10 минут, 1 - минуты
             },
         },
+    },
+    progress:{
+        value:0,
+        text:""
     }
 }
 
@@ -56,6 +61,10 @@ export default function settings (state = initialState, action) {
         case SETTINGS_EDIT:
             return { ...state,
                 data: action.data,
+            }
+        case SETTINGS_RESTORE:
+            return { ...state,
+                progress: action.progress,
             }
         default:
             return state

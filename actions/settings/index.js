@@ -1,6 +1,7 @@
 import {
     SETTINGS_EDIT,
     SETTINGS_FILL_SUCCESS,
+    SETTINGS_RESTORE,
 } from '../../constants/settings/index'
 
 
@@ -60,7 +61,36 @@ export function restoreDB(event) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let dumpDB  = new dump.DumpDB(getState())            
-            await dumpDB.restore(event)
+            let progress = await dumpDB.readFile(event)
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            })
+            progress = await dumpDB.restoreForestry()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            })
+            progress = await dumpDB.restoreSubForestry()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            })
+            progress = await dumpDB.restoreTract()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            })
+            progress = await dumpDB.restorePublications()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            })
+            progress = await dumpDB.restoreBreeds()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            })
         }
         asyncProcess()
     }

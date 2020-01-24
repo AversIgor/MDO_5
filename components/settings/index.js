@@ -137,9 +137,34 @@ export default class ComponentSettings extends Component {
                             }
                         }
                     }
-                },
+                },                        
+           
             ]
         }
+
+        var progress = {
+            view:"popup",
+            id:this.id+'_window',
+            modal:true,
+            zIndex:100,
+            width: 800,
+            move:true,
+            position:"center",
+            hidden:true,
+            body: {
+                view:"bullet",
+                value:0, 
+                id:this.id+'_bullet',
+                labelWidth:400,
+                label:"Импорт данных",
+                placeholder:"",
+                hidden:true,
+                bands:[
+                    { value:100, color:"#ffffff"},
+                ],
+                //height: 55,
+            },
+        };
 
 
         let layout = {
@@ -176,6 +201,7 @@ export default class ComponentSettings extends Component {
             ]
         }
         this.ui.push(window.webix.ui(layout))
+        this.ui.push(window.webix.ui(progress))
         $$(this.id+'_MDO').setValues(this.props.settings);
         $$(this.id+'_abris').setValues(this.props.settings);
         $$(this.id+'_contacts').setValues(this.props.settings);
@@ -183,6 +209,15 @@ export default class ComponentSettings extends Component {
 
 
     componentWillReceiveProps(nextProps) {
+        if(nextProps.progress.value>0){
+            $$(this.id+'_window').show()            
+            $$(this.id+'_bullet').define("placeholder", nextProps.progress.text);
+            $$(this.id+'_bullet').refresh();
+            $$(this.id+'_bullet').setValue(nextProps.progress.value)
+        }
+        if(nextProps.progress.value>99){
+            $$(this.id+'_window').hide()
+        }
         $$(this.id+'_MDO').setValues(nextProps.settings);
         $$(this.id+'_abris').setValues(nextProps.settings);
         $$(this.id+'_contacts').setValues(nextProps.settings);

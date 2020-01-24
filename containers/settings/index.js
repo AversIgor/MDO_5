@@ -28,6 +28,7 @@ class Settings extends Component {
         return(
            <ComponentSettings
                 settings = {this.props.settings}
+                progress = {this.props.progress}
                 enumerations={this.props.enumerations}
                 handlerEdit = {this.handlerEdit}
                 dumpDB={this.props.dumpDB}
@@ -40,6 +41,7 @@ class Settings extends Component {
 function mapStateToProps (state) {
     return {
         settings: state.settings.data,
+        progress: state.settings.progress,
         enumerations: state.enumerations,
     }
 }
