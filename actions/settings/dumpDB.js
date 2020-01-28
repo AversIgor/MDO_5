@@ -205,6 +205,7 @@ export class DumpDB {
                 data = this.file_data.reference.publications
             }  
             if(this.oldVersion){
+                //наобходимо загрузить таблицы
                 data.map(function(item) {
                     item.status = 0
                 })

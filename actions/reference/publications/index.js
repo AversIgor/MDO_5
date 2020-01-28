@@ -193,7 +193,6 @@ export function add(id) {
             1. Добавляем издание
             2. Добавляем таблицы
             3. Обновляем породы
-            4. Делаем издание основным
             */
 
             let publicationsRepository  = getRepository(Publications);
