@@ -5,6 +5,8 @@ import {Subforestry} from "../TypeORM/entity/subforestry";
 import {Tract} from "../TypeORM/entity/tract";
 import {Publications} from "../TypeORM/entity/publications";
 import {Breed} from "../TypeORM/entity/breed";
+import {Settings} from "../TypeORM/entity/settings";
+import {Typesrates} from "../TypeORM/entity/typesrates";
 
 export class DumpDB {    
     constructor(store) {
@@ -20,29 +22,29 @@ export class DumpDB {
                 breeds:[],
                 publications:[],
             },
-            settingsMDO:{},
+            settings:{},
             typesrates:[]
         }
     }
 
     dump() {
         const asyncProcess = async () => {
-            let repository 	= getRepository(Forestry);
+            let repositoryForestry 	= getRepository(Forestry);
            
             //лесничества
-            this.data.reference.forestrys = await repository.query(`SELECT * FROM avers_forestry`)
+            this.data.reference.forestrys = await repositoryForestry.query(`SELECT * FROM avers_forestry`)
             //участковые лесничества
-            this.data.reference.subforestrys = await repository.query(`SELECT * FROM avers_subforestry`);            
+            this.data.reference.subforestrys = await repositoryForestry.query(`SELECT * FROM avers_subforestry`);            
             //урочища
-            this.data.reference.tracts = await repository.query(`SELECT * FROM avers_tract`);
+            this.data.reference.tracts = await repositoryForestry.query(`SELECT * FROM avers_tract`);
             //Породы
-			this.data.reference.breeds = await repository.query(`SELECT * FROM avers_breed`);
+			this.data.reference.breeds = await repositoryForestry.query(`SELECT * FROM avers_breed`);
 			//Издания
-			this.data.reference.publications = await repository.query(`SELECT * FROM avers_publications`);
-		    //Ставки платы         
-            this.data.typesrates = await repository.query(`SELECT * FROM avers_typesrates`);
+			this.data.reference.publications = await repositoryForestry.query(`SELECT * FROM avers_publications`);
             //Константы         
-            this.data.settingsMDO = await repository.query(`SELECT * FROM avers_settings`);
+            this.data.settings = this.store.settings.data;
+            //Ставки платы         
+            this.data.typesrates = this.store.typesrates.data;
 
             let JSONdata = JSON.stringify(this.data, null, '\t');
 
@@ -241,6 +243,105 @@ export class DumpDB {
             return {
                 value:80,
                 text:'Обновлен справочник "Породы"'
+            }
+        }
+        return asyncProcess()
+    }
+
+    //Константы
+    restoreSettings(){
+        const asyncProcess = async () => { 
+            if(this.file_data.settings){
+                let repository      = getRepository(Settings);
+                await repository.save({
+                    id:0,
+                    data:this.file_data.settings
+                });
+            } 
+            //старый формат
+            if(this.file_data.settingsMDO){
+                let settings = this.store.settings.data
+                settings.mdo.orderRoundingValues = this.file_data.settingsMDO.orderRoundingValues
+                settings.mdo.orderRoundingRates = this.file_data.settingsMDO.orderRoundingRates
+                settings.mdo.distributionhalfbusiness = this.file_data.settingsMDO.distributionhalfbusiness
+                settings.mdo.assessfirewoodcommonstock = this.file_data.settingsMDO.assessfirewoodcommonstock
+                settings.mdo.assesswastefirewood = this.file_data.settingsMDO.assesswastefirewood
+                settings.mdo.firewoodtrunkslindencountedinbark = this.file_data.settingsMDO.firewoodtrunkslindencountedinbark
+                let repository      = getRepository(Settings);
+                await repository.save({
+                    id:0,
+                    data:settings
+                });
+            } 
+
+            return {
+                value:85,
+                text:'Обновлены настройки программы'
+            }
+        }
+        return asyncProcess()
+    }
+
+    //ВидыСтавок
+    restoreTypesrates(){
+        const asyncProcess = async () => { 
+
+            if(this.file_data.typesrates){
+                let data = this.file_data.typesrates
+                let repository              = getRepository(Typesrates);
+                await repository.clear();
+                let array = []
+                for (var i = 0; i < data.length; i++) {
+                    const element = repository.create({
+                        id: data[i].id,
+                        status: data[i].status,
+                        predefined: data[i].predefined,
+                        orderroundingrates: data[i].orderroundingrates,
+                        name: data[i].name,
+                        region: data[i].region,
+                        coefficientsindexing: data[i].coefficientsindexing,
+                        feedrates: data[i].feedrates,
+                        coefficientsrangesliquidation: data[i].coefficientsrangesliquidation,
+                        coefficientsformcutting: data[i].coefficientsformcutting,
+                        coefficientsdamage: data[i].coefficientsdamage,
+                        coefficientsrandom: data[i].coefficientsrandom,
+                    })
+                    array.push(element)
+                }
+                await repository.save(array);                
+            } 
+
+            //старый формат
+            if(this.file_data.rates){
+                let data = this.file_data.rates
+                let repository              = getRepository(Typesrates);
+                await repository.clear();
+                let array = []
+                for (var i = 0; i < data.types.length; i++) {
+                    const element = repository.create({
+                        id: data.types[i].id,
+                        status: 0,
+                        predefined: data.types[i].predefined,
+                        orderroundingrates: data.types[i].orderroundingrates,
+                        name: data.types[i].name,
+                        coefficientsindexing: data.types[i].coefficientsindexing,
+
+                        //ставки загрузим, а коэффициенты надо оставить по умолчанию.
+
+                        /*feedrates: data[i].feedrates,
+                        coefficientsrangesliquidation: data[i].coefficientsrangesliquidation,
+                        coefficientsformcutting: data[i].coefficientsformcutting,
+                        coefficientsdamage: data[i].coefficientsdamage,
+                        coefficientsrandom: data[i].coefficientsrandom,*/
+                    })
+                    array.push(element)
+                }
+                await repository.save(array);
+            }
+
+            return {
+                value:90,
+                text:'Обновлен справочник "Виды ставок"'
             }
         }
         return asyncProcess()

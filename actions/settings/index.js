@@ -26,7 +26,7 @@ export function fill_data() {
 }
 
 
-export function edit(value) {
+export function edit(value) {    
     return (dispatch,getState) => {
         const asyncProcess = async () => {
             let repository      = getRepository(Settings);
@@ -91,9 +91,32 @@ export function restoreDB(event) {
                 type: SETTINGS_RESTORE,
                 progress: progress
             })
+            progress = await dumpDB.restoreSettings()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            }) 
+            let repository      = getRepository(Settings);  
+            let data            = await repository.find();
+            if(data.length != 0){
+                dispatch({
+                    type: SETTINGS_EDIT,
+                    data: data[0].data
+                })
+            } 
+            progress = await dumpDB.restoreTypesrates()
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: progress
+            }) 
+            dispatch({
+                type: SETTINGS_RESTORE,
+                progress: {
+                    value:100,
+                    text:'Завершение'
+                }
+            })  
         }
         asyncProcess()
     }
 }
-
-
