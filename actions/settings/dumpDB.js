@@ -8,6 +8,8 @@ import {Breed} from "../TypeORM/entity/breed";
 import {Settings} from "../TypeORM/entity/settings";
 import {Typesrates} from "../TypeORM/entity/typesrates";
 
+import {getSorttables} from "../reference/publications";
+
 export class DumpDB {    
     constructor(store) {
         this.file_data  = undefined
@@ -21,6 +23,7 @@ export class DumpDB {
                 tracts:[],
                 breeds:[],
                 publications:[],
+                tables:[],
             },
             settings:{},
             typesrates:[]
@@ -40,7 +43,7 @@ export class DumpDB {
             //Породы
 			this.data.reference.breeds = await repositoryForestry.query(`SELECT * FROM avers_breed`);
 			//Издания
-			this.data.reference.publications = await repositoryForestry.query(`SELECT * FROM avers_publications`);
+            this.data.reference.publications = await repositoryForestry.query(`SELECT * FROM avers_publications`);      
             //Константы         
             this.data.settings = this.store.settings.data;
             //Ставки платы         
@@ -205,15 +208,27 @@ export class DumpDB {
                 data = this.file_data.reference.publications
             }  
             if(this.oldVersion){
-                //наобходимо загрузить таблицы
                 data.map(function(item) {
                     item.status = 0
                 })
             }
+
+            
             if(data){
                 let repository      = getRepository(Publications);
                 await repository.clear();
-                await repository.save(data);
+                //await repository.save(data);
+                let repository      = getRepository(Publications);
+                data.map(function(item) {
+                    //getSorttables(item.id,item.version,item.)
+                    //item.status = 0
+                    
+                    let publicationsObject  = repository.create(item);
+                    await repository.save(publicationsObject);
+    
+                })
+
+
             }
             return {
                 value:75,
