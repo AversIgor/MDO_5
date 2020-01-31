@@ -50,7 +50,10 @@ export function edit(value) {
 export function dumpDB() {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let dumpDB  = new dump.DumpDB(getState())
+            let dumpDB  = new dump.DumpDB({
+                dispatch:dispatch,
+                getState:getState
+            })
             await dumpDB.dump()
         }
         asyncProcess()
@@ -60,7 +63,10 @@ export function dumpDB() {
 export function restoreDB(event) {
     return (dispatch,getState) => {
         const asyncProcess = async () => {
-            let dumpDB  = new dump.DumpDB(getState())            
+            let dumpDB  = new dump.DumpDB({
+                dispatch:dispatch,
+                getState:getState
+            })  
             let progress = await dumpDB.readFile(event)
             dispatch({
                 type: SETTINGS_RESTORE,
@@ -81,12 +87,12 @@ export function restoreDB(event) {
                 type: SETTINGS_RESTORE,
                 progress: progress
             })
-            progress = await dumpDB.restorePublications()
+            progress = await dumpDB.restoreBreeds()
             dispatch({
                 type: SETTINGS_RESTORE,
                 progress: progress
             })
-            progress = await dumpDB.restoreBreeds()
+            progress = await dumpDB.restorePublications()
             dispatch({
                 type: SETTINGS_RESTORE,
                 progress: progress

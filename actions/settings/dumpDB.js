@@ -3,27 +3,28 @@ import * as FileSaver from "file-saver";
 import {Forestry} from "../TypeORM/entity/forestry";
 import {Subforestry} from "../TypeORM/entity/subforestry";
 import {Tract} from "../TypeORM/entity/tract";
-import {Publications} from "../TypeORM/entity/publications";
 import {Breed} from "../TypeORM/entity/breed";
 import {Settings} from "../TypeORM/entity/settings";
 import {Typesrates} from "../TypeORM/entity/typesrates";
 
-import {getSorttables} from "../reference/publications";
+import * as publications  from "../reference/publications";
+import * as breed  from "../reference/breed";
+import * as typesrates  from "../reference/typesrates";
 
 export class DumpDB {    
-    constructor(store) {
+    constructor(params) {
         this.file_data  = undefined
         this.oldVersion = false
-        this.store = store        
+        this.getState = params.getState 
+        this.dispatch = params.dispatch       
         this.data = {
-            version:this.store.typeORM.curentVersion,
+            version:this.getState().typeORM.curentVersion,
             reference:{
                 forestrys:[],
                 subforestrys:[],
                 tracts:[],
                 breeds:[],
                 publications:[],
-                tables:[],
             },
             settings:{},
             typesrates:[]
@@ -45,9 +46,9 @@ export class DumpDB {
 			//Издания
             this.data.reference.publications = await repositoryForestry.query(`SELECT * FROM avers_publications`);      
             //Константы         
-            this.data.settings = this.store.settings.data;
+            this.data.settings = this.getState().settings.data;
             //Ставки платы         
-            this.data.typesrates = this.store.typesrates.data;
+            this.data.typesrates = this.getState().typesrates.data;
 
             let JSONdata = JSON.stringify(this.data, null, '\t');
 
@@ -199,44 +200,6 @@ export class DumpDB {
         return asyncProcess()
     }
 
-    //Издания сортиментных таблиц
-    restorePublications(){
-        const asyncProcess = async () => { 
-
-            let data = undefined
-            if(this.file_data.reference.publications){
-                data = this.file_data.reference.publications
-            }  
-            if(this.oldVersion){
-                data.map(function(item) {
-                    item.status = 0
-                })
-            }
-
-            
-            if(data){
-                let repository      = getRepository(Publications);
-                await repository.clear();
-                //await repository.save(data);
-                let repository      = getRepository(Publications);
-                data.map(function(item) {
-                    //getSorttables(item.id,item.version,item.)
-                    //item.status = 0
-                    
-                    let publicationsObject  = repository.create(item);
-                    await repository.save(publicationsObject);
-    
-                })
-
-
-            }
-            return {
-                value:75,
-                text:'Обновлен справочник "Сортиментные таблицы"'
-            }
-        }
-        return asyncProcess()
-    }
 
     //Породы
     restoreBreeds(){
@@ -254,15 +217,57 @@ export class DumpDB {
             if(data){
                 let repository      = getRepository(Breed);
                 await repository.clear();
-                await repository.save(data);
+                for (const item of data) {
+                    await this.dispatch(breed.add(item));
+                }
+                let breed_data = this.getState().breed.data
+                for (const item of data) {
+                    let obj = breed_data.find(row => row.id == item.id);                    
+                    if(obj){
+                        let values = {}
+                        if(item.publicationId){
+                            values.publication = item.publicationId;
+                        }
+                        if(item.tableId){
+                            values.table = item.tableId;
+                        }
+                        if(item.tablefirewoodId){
+                            values.tablefirewood = item.tablefirewoodId;
+                        }
+                        await this.dispatch(breed.edit(obj,values));
+                    }
+                }
+                //await repository.save(data);
             }
             return {
-                value:80,
+                value:75,
                 text:'Обновлен справочник "Породы"'
             }
         }
         return asyncProcess()
     }
+
+    //Издания сортиментных таблиц
+    restorePublications(){
+        const asyncProcess = async () => { 
+
+            let data = undefined
+            if(this.file_data.reference.publications){
+                data = this.file_data.reference.publications
+            }  
+            if(data){
+                for (const item of data) {
+                    await this.dispatch(publications.add(item.id));
+                }
+            }
+            return {
+                value:80,
+                text:'Обновлен справочник "Сортиментные таблицы"'
+            }
+        }
+        return asyncProcess()
+    }
+
 
     //Константы
     restoreSettings(){
@@ -275,8 +280,8 @@ export class DumpDB {
                 });
             } 
             //старый формат
-            if(this.file_data.settingsMDO){
-                let settings = this.store.settings.data
+            if(this.file_data.settingsMDO){                
+                let settings = this.getState().settings.data
                 settings.mdo.orderRoundingValues = this.file_data.settingsMDO.orderRoundingValues
                 settings.mdo.orderRoundingRates = this.file_data.settingsMDO.orderRoundingRates
                 settings.mdo.distributionhalfbusiness = this.file_data.settingsMDO.distributionhalfbusiness
@@ -298,7 +303,7 @@ export class DumpDB {
         return asyncProcess()
     }
 
-    //ВидыСтавок
+    //Виды cтавок и коэффициенты
     restoreTypesrates(){
         const asyncProcess = async () => { 
 
@@ -332,27 +337,39 @@ export class DumpDB {
                 let data = this.file_data.rates
                 let repository              = getRepository(Typesrates);
                 await repository.clear();
-                let array = []
-                for (var i = 0; i < data.types.length; i++) {
-                    const element = repository.create({
-                        id: data.types[i].id,
-                        status: 0,
-                        predefined: data.types[i].predefined,
-                        orderroundingrates: data.types[i].orderroundingrates,
-                        name: data.types[i].name,
-                        coefficientsindexing: data.types[i].coefficientsindexing,
-
-                        //ставки загрузим, а коэффициенты надо оставить по умолчанию.
-
-                        /*feedrates: data[i].feedrates,
-                        coefficientsrangesliquidation: data[i].coefficientsrangesliquidation,
-                        coefficientsformcutting: data[i].coefficientsformcutting,
-                        coefficientsdamage: data[i].coefficientsdamage,
-                        coefficientsrandom: data[i].coefficientsrandom,*/
-                    })
-                    array.push(element)
-                }
-                await repository.save(array);
+                //загрузим виды ставок
+                if(data.types){                  
+                    for (var i = 0; i < data.types.length; i++) {
+                        let currentObject   = repository.create();                        
+                        let defaultTypesrates       = typesrates.defaultTypesrates()[0]
+                        defaultTypesrates.id                    = data.types[i].id
+                        defaultTypesrates.orderroundingrates    = data.types[i].orderroundingrates
+                        defaultTypesrates.name                  = data.types[i].name
+                        defaultTypesrates.coefficientsindexing  = data.types[i].coefficientsindexing                  
+                        
+                        //сформируем данные по ставкам платы
+                        let feedrates = []
+                        if(data.feeds){
+                            for (var j = 0; j < data.feeds.length; j++) {
+                                let feed = data.feeds[j] 
+                                if(feed.typesrates_id == defaultTypesrates.id){
+                                    let newFeed = {
+                                        breed: feed.breeds_id,
+                                        ranktax: feed.ranktax_id,
+                                        large: feed.large,
+                                        average: feed.average,
+                                        small: feed.small,
+                                        firewood: feed.firewood,
+                                    }
+                                    feedrates.push(newFeed)
+                                }
+                            }
+                        }
+                        defaultTypesrates.feedrates  = feedrates
+                        
+                        await this.dispatch(typesrates.edit(currentObject,defaultTypesrates));
+                    }
+                }                
             }
 
             return {

@@ -219,11 +219,12 @@ export function add(id) {
             await tablesRepository.save(tablesarray);
 
             //3
-            async function procesbreed(sorttables) {
+            async function processbreed(sorttables) {
+                await dispatch(breed.fill_data());
+                let breed_data = getState().breed.data
                 for( const sorttable of sorttables){
-                    await dispatch(breed.fill_data({kodGulf:sorttable.kodGulf}));
-                    let breed_data = getState().breed.data
-                    if(breed_data.length == 0){
+                    let breedrow = breed_data.find(item => item.kodGulf == sorttable.kodGulf);  
+                    if(!breedrow){
                         let values = {
                             publication:sorttable.publication,
                             name:sorttable.breed,
@@ -231,14 +232,21 @@ export function add(id) {
                             table:sorttable.table
                         }
                         await dispatch(breed.add(values));
+                    }else{
+                        let values = {}
+                        if(!breedrow.publication){
+                            values.publication = sorttable.publication;
+                        }
+                        if(!breedrow.table){
+                            values.table = sorttable.table.id;
+                        }
+                        await dispatch(breed.edit(breedrow,values));
                     }
                 }
             }
-            await procesbreed(requisites_sorttables)
-
+            await processbreed(requisites_sorttables)
             let data = await getData(getState,publicationsRepository);
-            await dispatch(breed.fill_data({status:0}));
-            dispatch({
+             dispatch({
                 type: PUBLICATIONS_ADD,
                 data: data
             })
