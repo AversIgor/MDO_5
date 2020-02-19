@@ -6,6 +6,8 @@ import {Tract} from "../TypeORM/entity/tract";
 import {Breed} from "../TypeORM/entity/breed";
 import {Settings} from "../TypeORM/entity/settings";
 import {Typesrates} from "../TypeORM/entity/typesrates";
+import {Publications} from "../TypeORM/entity/publications";
+import {Tables} from "../TypeORM/entity/tables";
 
 import * as publications  from "../reference/publications";
 import * as breed  from "../reference/breed";
@@ -122,8 +124,13 @@ export class DumpDB {
                 let repository          = getRepository(Subforestry);
                 let repositoryForestry  = getRepository(Forestry);
                 await repository.clear();
+                await repository.query("UPDATE sqlite_sequence set seq=0 WHERE name='avers_subforestry'");
                 let array = []
                 for (var i = 0; i < data.length; i++) {
+                    if(array.length > 150){
+                        await this.insert(Subforestry,array)
+                        array.splice(0,array.length);
+                    }
                     let forestry = undefined
                     if(this.oldVersion){
                         forestry = await repositoryForestry.findByIds([data[i].forestry_id]);
@@ -142,7 +149,7 @@ export class DumpDB {
                         array.push(element)
                     }
                 }
-                await repository.save(array);
+                await this.insert(Subforestry,array)
             }
             return {
                 value:40,
@@ -172,8 +179,13 @@ export class DumpDB {
                 let repository              = getRepository(Tract);
                 let repositorySubforestry   = getRepository(Subforestry);
                 await repository.clear();
+                await repository.query("UPDATE sqlite_sequence set seq=0 WHERE name='avers_tract'");
                 let array = []
                 for (var i = 0; i < data.length; i++) {
+                    if(array.length > 150){
+                        await this.insert(Tract,array)
+                        array.splice(0,array.length);
+                    }
                     let subforestry = undefined
                     if(this.oldVersion){
                         subforestry = await repositorySubforestry.findByIds([data[i].subforestry_id]);
@@ -190,7 +202,7 @@ export class DumpDB {
                         array.push(element)
                     }
                 }
-                await repository.save(array);
+                await this.insert(Tract,array)
             }
             return {
                 value:70,
@@ -237,7 +249,6 @@ export class DumpDB {
                         await this.dispatch(breed.edit(obj,values));
                     }
                 }
-                //await repository.save(data);
             }
             return {
                 value:75,
@@ -250,7 +261,10 @@ export class DumpDB {
     //Издания сортиментных таблиц
     restorePublications(){
         const asyncProcess = async () => { 
-
+            let repositoryPublications              = getRepository(Publications);
+            await repositoryPublications.clear();
+            let repositoryTables              = getRepository(Tables);
+            await repositoryTables.clear();            
             let data = undefined
             if(this.file_data.reference.publications){
                 data = this.file_data.reference.publications
