@@ -17,7 +17,8 @@ export default class ComponentCoefficients extends Component {
             coefficientsrandom = this.typesrates.coefficientsrandom
         }
         $$(this.id+"_datatable").refreshColumns([
-            { id:"name", header:["Произвольные коэффициенты"],  editor:"combo", options:coefficientsrandom, fillspace:true},                
+            { id:"coefficient", header:["Произвольные коэффициенты"],  editor:"combo", options:coefficientsrandom, fillspace:true},  
+            { id:"name",  editor:"text",hidden:true},              
             { id:"value", header:{text:"Значение",}, editor:"text", numberFormat:"1.111,00",width:100,},
         ]);
     }
@@ -39,18 +40,21 @@ export default class ComponentCoefficients extends Component {
             columns:[],
             data: [],
             rules:{
-                "name": webix.rules.isNotEmpty,
+                "coefficient": webix.rules.isNotEmpty,
                 "value": webix.rules.isNotEmpty,
             }, 
             on:{
                 "onAfterEditStop":function(state, editor, ignoreUpdate){
-                    if(!ignoreUpdate) {
-                        if(editor.column == 'name'){
-                            let row    = this.getItem(editor.row)
-                            row.value = 0
-                            if(self.typesrates.coefficientsrandom.length){
+                    if(!ignoreUpdate) {                        
+                        if(editor.column == 'coefficient'){
+                            let row     = this.getItem(editor.row)
+                            row.value   = 0
+                            if(self.typesrates.coefficientsrandom.length){                        
                                 let item   = self.typesrates.coefficientsrandom.find(item => item.id == state.value);
-                                if(item) row.value = item.percent
+                                if(item){
+                                    row.name    = item.value
+                                    row.value   = item.percent
+                                } 
                             }     
                             this.updateItem(editor.row, row)
                         }

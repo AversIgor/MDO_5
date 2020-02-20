@@ -34,8 +34,8 @@ export class Plot {
                 taxation:{
                     arearecount:0,
                     coefficient:1,
-                    releasedate:new Date(),
-                    valuationdate:new Date(),
+                    releasedate:"",
+                    valuationdate:"",
                     estimator:"",
                     methodTaxation:1,
                     typesrates:1,
@@ -43,7 +43,15 @@ export class Plot {
                 },
             }//свойства МДО
             this.coefficients = {
-                main:{},
+                main:{
+                    coefficientsindexing            :0,
+                    formCutting                     :undefined,
+                    coefficientsformcutting         :0,
+                    rangesLiquidation               :undefined,
+                    coefficientsrangesliquidation   :0,
+                    damage                          :undefined,
+                    coefficientsdamage              :0,
+                },
                 random:[]
             }//коэффициенты на ставки            
             this.recount = []//объекты таксации,площади/породы,разряды высот/ступени толщины,количество

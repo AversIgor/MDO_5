@@ -1,7 +1,7 @@
 export class Recount {
     constructor() {
         this.plot = undefined
-        this.setting = undefined
+        this.settings = undefined
         this.enumerations = undefined
         this.breed = undefined
         this.publications = undefined
@@ -11,7 +11,7 @@ export class Recount {
         this.objectsSteps       = new ClassObjectsSteps(this)//коллекция ступеней толщшины с сортиментной структурой        
         this.totalValue         = new ClassAssortmentStructure() //итоги запаса по делянке 
 
-        this.objectsFeedrates   = new ClassObjectsFeedrates(this)//коллекция ставок платы с учетом коэффцентов
+         this.objectsFeedrates   = new ClassObjectsFeedrates(this)//коллекция ставок платы с учетом коэффцентов
         this.totalSumm          = new ClassAssortmentStructure() //итоги стоимости по делянке 
 
         this.optionsPlots       = new ClassOptionsPlots(this) //параетры делянки по объектам таксаци
@@ -71,9 +71,6 @@ export class Recount {
     }
 
     feelСoefficients(liquidity,firewoodwaste,totalbusiness) {
-	
-        //очистим основные коэффициенты
-        this.plot.coefficients.main = {}
 
         let typesrates = this.typesrates.find(item => item.id == this.plot.property.taxation.typesrates);
         if(!typesrates) return
@@ -666,6 +663,11 @@ class ClassOptionsPlots {
                 objectBreed.totalsumm 	+= totalSumm.total.liquidity		+totalSumm.total.totalfirewood_f;
             }
 
+            objectBreed.large 		    += totalValue.total.large
+            objectBreed.average 		+= totalValue.total.average
+            objectBreed.small 		    += totalValue.total.small
+
+
 			//заполним параметры объекта таксации
 			objectTaxation.total 				+= totalValue.total.total_b         +totalValue.total.total_f;;
 			objectTaxation.liquidity 			+= totalValue.total.liquidity		+totalValue.total.totalfirewood_f;
@@ -725,7 +727,13 @@ class ClassOptions {
         this.liquidity              = 0.00;
         this.firewood		        = 0.00;        
         this.totalsumm 		        = 0.00;
-        
+
+
+        //запасы по категориям крупности для экспорта в УЛФ
+        this.large		            = 0.00;
+        this.average		        = 0.00;
+        this.small		            = 0.00;
+      
         
         for (var key in options) {
             let value = options[key];
