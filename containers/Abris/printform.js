@@ -217,13 +217,18 @@ class Printform extends Component {
 
     updateStates = (editor) => {
         this.calculateArea()
+        console.log(this.props)
         let plotProperty = this.props.plotObject.property;
         const asyncProcess = async () => {
 
-            let contents = jQuery(editor.contentDocument).contents()
-            
+            let contents = jQuery(editor.contentDocument).contents()     
             let html = contents.find('body').html()
+            if(html.indexOf('data-mce-bogus') != -1){
+                //'шаблон не готов'
+                return
+            }
 
+            console.log(html)
             //замена всех возможных переменных
             let forestry = this.getValueFromId(this.props.forestry,plotProperty.location.forestry)
             html = this.stringReplace(html,'~Лесничество~',forestry)

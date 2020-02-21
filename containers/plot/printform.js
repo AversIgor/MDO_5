@@ -38,7 +38,6 @@ class Printform extends Component {
    
     updateStates = (editor) => {
         let plotProperty = this.props.plotObject.property;
-        let plotPublications = this.props.plotObject.publications;
         const asyncProcess = async () => {
             let contents = jQuery(editor.contentDocument).contents()            
             let html = contents.find('body').html()
