@@ -8,7 +8,7 @@ export default class Overlay extends Component {
     }
 
     getBackground = (props) => {
-        let label   = '<span class="webix_icon alerts fa-image" style="color: black;"></span>'
+        let label   = '<i class="material-icons" style="color: black;">collections</i>'
         let tooltip = 'Выбор подложки из файла'
 
         let background   = $$('abris_overlay_background')
